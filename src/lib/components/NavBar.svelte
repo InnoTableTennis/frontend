@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import logo from '$lib/assets/logo.png';
 	import ProfileLink from '$lib/components/ProfileLink.svelte';
 

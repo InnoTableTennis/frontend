@@ -1,6 +1,6 @@
-<script>
-	import DeleteIcon from '$lib/components/DeleteIcon.svelte';
-	import FinishIcon from '$lib/components/FinishIcon.svelte';
+<script lang='ts'>
+	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
+	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 
 	import * as db from '$lib/requests';
@@ -12,7 +12,7 @@
 	export let isLeader = false;
 	let tournaments = [];
 
-	let lastPageNumber;
+	let lastPageNumber : number;
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
@@ -65,8 +65,6 @@
 		requestNewPage();
 	};
 </script>
-
-<!-- {@debug tournaments} -->
 
 {#await requestNewPage() then}
 	{#if tournaments.length}

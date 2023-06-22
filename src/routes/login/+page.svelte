@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import Rectangles from '$lib/components/Rectangles.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';
 	import Errors from '$lib/components/Errors.svelte';

@@ -1,7 +1,5 @@
-<script>
-	// import { onMount } from 'svelte';
-
-	import DeleteIcon from '$lib/components/DeleteIcon.svelte';
+<script lang='ts'>
+	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 
 	import { createEventDispatcher } from 'svelte';

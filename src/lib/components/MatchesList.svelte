@@ -1,7 +1,7 @@
-<script>
+<script lang='ts'>
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
-	import DeleteIcon from '$lib/components/DeleteIcon.svelte';
+	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 
 	import * as db from '$lib/requests';
 

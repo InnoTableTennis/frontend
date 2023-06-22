@@ -1,7 +1,7 @@
-<script>
-	import DeleteIcon from '$lib/components/DeleteIcon.svelte';
+<script lang='ts'>
+	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 
-	export let title;
+	export let title : string;
 	export let isMain = false;
 	export let isLeader = false;
 </script>
@@ -9,7 +9,6 @@
 <h3 class:main={isMain} class:not-main={!isMain}>{title}</h3>
 {#if !isMain}
 	<div class="separator" />
-	<!-- {:else} -->
 	<div class="table-header">
 		<span>First Player</span>
 		<span>Second Player</span>

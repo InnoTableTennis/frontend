@@ -15,7 +15,7 @@ userToken.subscribe((value) => {
 	token = value;
 });
 
-const serverAPI: string = dev ? 'https://tabletennis.innopolis.university' : '';
+const serverAPI: string = dev ? 'http://10.90.138.217:8080' : '';
 
 /**
  * Retrieves matches from the API.
@@ -136,7 +136,7 @@ export async function getPlayers(
 
 	await handleGetErrors(response, token);
 
-	let totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
+	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data: any = await response.json();
 	return { data, totalPages };
@@ -276,7 +276,7 @@ export async function getTournaments(
 
 	await handleGetErrors(response, token);
 
-	let totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
+	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data: any = await response.json();
 	return { data, totalPages };

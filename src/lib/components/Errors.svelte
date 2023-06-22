@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import Error from '$lib/components/Error.svelte';
 
 	export let errors = [];

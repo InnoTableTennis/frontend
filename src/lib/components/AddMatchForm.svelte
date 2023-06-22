@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	// import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/Button.svelte';

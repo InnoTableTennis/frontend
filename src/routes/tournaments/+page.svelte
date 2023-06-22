@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	// import { fly, slide } from 'svelte/transition';
 	// import { enhance } from '$app/forms';
 	import { getRoles } from '$lib/token';

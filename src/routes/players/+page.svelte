@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
 	import Separator from '$lib/components/Separator.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';

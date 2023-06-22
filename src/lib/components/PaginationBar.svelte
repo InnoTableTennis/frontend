@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import { createEventDispatcher } from 'svelte';
 	import LeftArrow from '$lib/components/icons/LeftArrow.svelte';
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';

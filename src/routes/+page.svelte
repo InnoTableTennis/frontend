@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';

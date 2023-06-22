@@ -1,5 +1,4 @@
-<script>
-	// import { fly, slide } from 'svelte/transition';
+<script lang='ts'>
 	// import { enhance } from '$app/forms';
 	import Rectangles from '$lib/components/Rectangles.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';

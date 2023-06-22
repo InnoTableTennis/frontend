@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	export let dark = false;
 	export let disabled = false;
 	export let type = 'button';

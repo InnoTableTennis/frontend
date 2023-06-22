@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import Errors from '$lib/components/Errors.svelte';
 
 	import { loadedPage } from '$lib/stores';
