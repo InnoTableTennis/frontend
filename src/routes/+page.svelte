@@ -4,7 +4,7 @@
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/AddMatchForm.svelte';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/decorations/Separator.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';
 	import type { Error } from '$lib/types/types';
