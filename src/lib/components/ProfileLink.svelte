@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 
 	import { userToken } from '$lib/stores';

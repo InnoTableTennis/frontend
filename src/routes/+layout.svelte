@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { page } from '$app/stores';
 
 	import { beforeUpdate } from 'svelte';
@@ -10,9 +10,6 @@
 	beforeUpdate(() => {
 		const token = localStorage.getItem('token');
 		userToken.set(token ?? '');
-		// userToken.set(
-		// 	'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJMRUFERVIiLCJVU0VSIiwiQURNSU4iXSwic3ViIjoiYWRtaW4iLCJpYXQiOjE2Nzc2MDYyNTAsImV4cCI6MTY3NzY5MjY1MH0.cuqyrjmlBMDSVcf_qsvi5Hghn3c4h7FqcK_WDsnD0hE'
-		// );
 	});
 </script>
 

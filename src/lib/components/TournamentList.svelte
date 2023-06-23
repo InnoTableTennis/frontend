@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
@@ -10,9 +10,9 @@
 	const dispatch = createEventDispatcher();
 
 	export let isLeader = false;
-	let tournaments = [];
+	let tournaments: any[] = [];
 
-	let lastPageNumber : number;
+	let lastPageNumber: number;
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
@@ -33,32 +33,32 @@
 			});
 	}
 
-	function handleRequest(event) {
+	function handleRequest(event: CustomEvent) {
 		currentPageNumber = event.detail.currentPageNumber;
 		currentPageSize = event.detail.currentPageSize;
 		requestNewPage();
 	}
 
-	const deleteTournament = async (e) => {
+	const deleteTournament = async (e: Event) => {
 		let isConfirmed = confirm('Are you sure that you want to delete this tournament?');
 		if (!isConfirmed) return;
 
-		const data = new FormData(e.target);
+		const data = new FormData(e.target as HTMLFormElement);
 
-		await db.deleteTournament(data.get('id')).catch((error) => {
+		await db.deleteTournament(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
 
 		requestNewPage();
 	};
 
-	const finishTournament = async (e) => {
+	const finishTournament = async (e: Event) => {
 		let isConfirmed = confirm(`Are you sure that you want to finish this tournament?`);
 		if (!isConfirmed) return;
 
-		const data = new FormData(e.target);
+		const data = new FormData(e.target as HTMLFormElement);
 
-		await db.finishTournament(data.get('id')).catch((error) => {
+		await db.finishTournament(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
 

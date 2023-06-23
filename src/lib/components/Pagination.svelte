@@ -1,12 +1,12 @@
-<script lang='ts'>
+<script lang="ts">
 	import PaginationBar from '$lib/components/PaginationBar.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
-	let currentPageNumber;
-	let currentPageSize;
+	let currentPageNumber: number;
+	let currentPageSize: number;
 	export let lastPageNumber = 100;
 
 	function requestNewPage() {

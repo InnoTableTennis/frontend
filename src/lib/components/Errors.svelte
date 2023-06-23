@@ -1,7 +1,9 @@
-<script lang='ts'>
+<script lang="ts">
 	import Error from '$lib/components/Error.svelte';
 
-	export let errors = [];
+	import type { Error as ErrorType } from '$lib/types/types';
+
+	export let errors: ErrorType[] = [];
 </script>
 
 <div class="errors-container">

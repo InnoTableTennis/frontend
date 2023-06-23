@@ -1,9 +1,10 @@
-<script lang='ts'>
+<script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Rectangles from '$lib/components/Rectangles.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';
+	import type { Error } from '$lib/types/types';
 
-	let errors = [];
+	let errors: Error[] = [];
 </script>
 
 <PageWrapper {errors}>

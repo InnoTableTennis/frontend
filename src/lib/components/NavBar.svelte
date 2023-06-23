@@ -1,8 +1,6 @@
-<script lang='ts'>
+<script lang="ts">
 	import logo from '$lib/assets/logo.png';
 	import ProfileLink from '$lib/components/ProfileLink.svelte';
-
-	// import { page } from '$app/stores';
 </script>
 
 <nav>

@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import LeftArrow from '$lib/components/icons/LeftArrow.svelte';
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';
@@ -6,8 +6,8 @@
 	const dispatch = createEventDispatcher();
 
 	let firstPageNumber = 1;
-	let middlePageNumber;
-	let visiblePages = [middlePageNumber - 1, middlePageNumber, middlePageNumber + 1];
+	let middlePageNumber: number;
+	let visiblePages: number[];
 	let currentPageIndex = 0;
 
 	let sizes = [10, 20, 50, 100, 200];
@@ -48,7 +48,7 @@
 		else if (lastPageNumber - firstPageNumber == 0) visiblePages = [firstPageNumber];
 		else if (lastPageNumber - firstPageNumber == 1) {
 			visiblePages = [firstPageNumber, lastPageNumber];
-			currentPageIndex = !(currentPageNumber == firstPageNumber);
+			currentPageIndex = Number(!(currentPageNumber == firstPageNumber));
 		}
 	}
 
@@ -65,13 +65,13 @@
 		dispatch('click');
 	}
 
-	function handleClick(event) {
-		currentPageNumber = +event.target.value;
+	function handleClick(event: Event) {
+		currentPageNumber = Number((<HTMLInputElement>event.target).value);
 		dispatch('click');
 	}
 
-	function handleSizeClick(event) {
-		currentPageSize = +event.target.value;
+	function handleSizeClick(event: Event) {
+		currentPageSize = Number((<HTMLInputElement>event.target).value);
 		currentPageNumber = firstPageNumber;
 		dispatch('click');
 	}

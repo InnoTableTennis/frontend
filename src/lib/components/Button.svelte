@@ -1,7 +1,7 @@
-<script lang='ts'>
+<script lang="ts">
 	export let dark = false;
 	export let disabled = false;
-	export let type = 'button';
+	export let type: 'button' | 'reset' | 'submit' = 'button';
 </script>
 
 <button {disabled} {type} class:dark on:click><slot /></button>

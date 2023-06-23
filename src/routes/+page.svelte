@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
@@ -7,13 +7,14 @@
 	import Separator from '$lib/components/Separator.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';
+	import type { Error } from '$lib/types/types';
 
-	let errors = [];
-	let handleInsert;
+	let errors: Error[] = [];
+	let handleInsert: () => void;
 
 	$: isLeader = getRoles($userToken).includes('LEADER');
 
-	function handleError(event) {
+	function handleError(event: CustomEvent) {
 		errors = [...errors, event.detail];
 	}
 
@@ -21,10 +22,11 @@
 		const playersPromise = db.getPlayers(1, 1000000);
 		const tournamentsPromise = db.getTournaments(1, 1000000);
 
-		const responses = await Promise.all([playersPromise, tournamentsPromise]).catch((error) => {
-			errors = [...errors, error];
-		});
-		return { players: responses[0].data, tournaments: responses[1].data };
+		const [playersResponse, tournamentsResponse] = await Promise.all([
+			playersPromise,
+			tournamentsPromise,
+		]);
+		return { players: playersResponse.data, tournaments: tournamentsResponse.data };
 	}
 </script>
 

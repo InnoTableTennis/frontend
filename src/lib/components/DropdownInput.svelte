@@ -1,12 +1,12 @@
-<script lang='ts'>
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
-	export let options;
-	export let name;
-	export let placeholder;
+	export let options: string[];
+	export let name: string;
+	export let placeholder: string;
 	export let defaultValue = '';
 	export let isFirstInput = false;
 
@@ -16,14 +16,14 @@
 		filteredOptions = options;
 	};
 
-	let filteredOptions = [];
+	let filteredOptions: string[] = [];
 	let selectedOption = '';
 	let isVisible = false;
 	let selectedIndex = -1;
-	let unorderedList;
+	let unorderedList: HTMLUListElement;
 	let inputVal = '';
 
-	let input;
+	let input: HTMLInputElement;
 
 	$: {
 		inputVal = defaultValue;
@@ -31,44 +31,48 @@
 		dispatch('select', defaultValue);
 	}
 
-	function handleInput(event) {
-		inputVal = event.target.value;
+	function handleInput(event: Event) {
+		inputVal = (event.target as HTMLInputElement).value;
 
 		filteredOptions = options.filter(
 			(option) =>
 				option.toLowerCase().includes(inputVal.toLocaleLowerCase()) &&
-				option.toLowerCase() != inputVal.toLocaleLowerCase()
+				option.toLowerCase() != inputVal.toLocaleLowerCase(),
 		);
 
 		selectedOption = '';
 	}
 
-	function handleSelect(event) {
-		selectedOption = event.target.textContent.trim();
+	function handleSelect(event: Event) {
+		selectedOption = (<string>(<HTMLElement>event.target).textContent).trim();
 		inputVal = selectedOption;
 		dispatch('select', selectedOption);
 	}
 
-	function handleKeyDown(event) {
+	function handleKeyDown(event: KeyboardEvent) {
 		const lastIndex = filteredOptions.length - 1;
 
 		if (event.key === 'ArrowUp' && selectedIndex > 0) {
 			event.preventDefault();
 			selectedIndex--;
 
-			if (unorderedList)
-				[...unorderedList.childNodes]
-					.filter((node) => node.nodeType === Node.ELEMENT_NODE)
-					[selectedIndex].focus();
+			if (unorderedList) {
+				const filteredElement = [...unorderedList.childNodes].filter(
+					(node) => node.nodeType === Node.ELEMENT_NODE,
+				)[selectedIndex] as HTMLElement;
+				filteredElement.focus();
+			}
 			return;
 		} else if (event.key === 'ArrowDown' && selectedIndex < lastIndex) {
 			event.preventDefault();
 			selectedIndex++;
 
-			if (unorderedList)
-				[...unorderedList.childNodes]
-					.filter((node) => node.nodeType === Node.ELEMENT_NODE)
-					[selectedIndex].focus();
+			if (unorderedList) {
+				const filteredElement = [...unorderedList.childNodes].filter(
+					(node) => node.nodeType === Node.ELEMENT_NODE,
+				)[selectedIndex] as HTMLElement;
+				filteredElement.focus();
+			}
 			return;
 		} else if (event.key === 'Enter') {
 			selectedOption = filteredOptions[selectedIndex];
@@ -76,7 +80,7 @@
 			else selectedOption = inputVal;
 			dispatch('select', selectedOption);
 			selectedIndex = -1;
-			document.activeElement.blur();
+			(<HTMLElement>document.activeElement).blur();
 			event.preventDefault();
 			filteredOptions = [];
 			return;
@@ -87,8 +91,8 @@
 		isVisible = true;
 		selectedIndex = -1;
 	}
-	function hideOptions(event) {
-		if (!event.target.closest('.component-wrapper')) {
+	function hideOptions(event: Event) {
+		if (!(<HTMLElement>event.target).closest('.component-wrapper')) {
 			isVisible = false;
 		}
 	}
@@ -121,9 +125,10 @@
 	<!-- {#if !('list' in document.createElement('input'))} -->
 	{#if isVisible}
 		<ul bind:this={unorderedList}>
-			{#each filteredOptions as option, index}
+			{#each filteredOptions as option}
 				{#if option.indexOf(selectedOption) !== -1}
 					<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 					<li on:click={handleSelect} tabindex="0" on:keydown={(e) => handleKeyDown(e)}>
 						{option}
 					</li>

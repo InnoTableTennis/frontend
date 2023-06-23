@@ -1,7 +1,7 @@
-<script lang='ts'>
+<script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 
-	export let title : string;
+	export let title: string;
 	export let isMain = false;
 	export let isLeader = false;
 </script>

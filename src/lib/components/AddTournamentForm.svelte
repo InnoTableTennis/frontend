@@ -1,5 +1,4 @@
-<script lang='ts'>
-	// import { fly, slide } from 'svelte/transition';
+<script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 
@@ -17,7 +16,7 @@
 
 	let isSubmissionDisabled = true;
 
-	let firstInput;
+	let firstInput: HTMLInputElement;
 
 	$: {
 		isSubmissionDisabled = !(title && startDateString && endDateString);
@@ -27,10 +26,14 @@
 		endDateString = startDateString;
 	}
 
-	const addTournament = async (e) => {
-		const data = new FormData(e.target);
+	const addTournament = async (e: Event) => {
+		const data = new FormData(e.target as HTMLFormElement);
 
-		db.createTournament(data.get('title'), data.get('startDateString'), data.get('endDateString'))
+		db.createTournament(
+			data.get('title') as string,
+			data.get('startDateString') as string,
+			data.get('endDateString') as string,
+		)
 			.then(() => {
 				dispatch('update');
 				resetForm();

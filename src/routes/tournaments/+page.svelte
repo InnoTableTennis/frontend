@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	// import { fly, slide } from 'svelte/transition';
 	// import { enhance } from '$app/forms';
 	import { getRoles } from '$lib/token';
@@ -9,14 +9,15 @@
 
 	import { userToken } from '$lib/stores';
 
-	import PageWrapper from '../../lib/components/PageWrapper.svelte';
+	import PageWrapper from '$lib/components/PageWrapper.svelte';
+	import type { Error } from '$lib/types/types';
 
-	let errors = [];
-	let handleInsert;
+	let errors: Error[] = [];
+	let handleInsert: () => void;
 
 	$: isLeader = getRoles($userToken).includes('LEADER');
 
-	function handleError(event) {
+	function handleError(event: CustomEvent) {
 		errors = [...errors, event.detail];
 	}
 </script>

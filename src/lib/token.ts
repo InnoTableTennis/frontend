@@ -3,6 +3,7 @@
  */
 
 import jwt_decode from 'jwt-decode';
+import type { DecodedJWT } from './types/types';
 
 /**
  * Retrieves the roles from a token.
@@ -13,7 +14,7 @@ import jwt_decode from 'jwt-decode';
 export function getRoles(token: string): string[] {
 	let roles: string[];
 	try {
-		roles = jwt_decode(token).roles;
+		roles = (<DecodedJWT>jwt_decode(token)).roles;
 	} catch (error) {
 		roles = [];
 	}
@@ -29,7 +30,7 @@ export function getRoles(token: string): string[] {
 export function getExpirationDate(token: string): Date | null {
 	let expDate: Date | null;
 	try {
-		expDate = new Date(jwt_decode(token).exp * 1000);
+		expDate = new Date((<DecodedJWT>jwt_decode(token)).exp * 1000);
 	} catch (error) {
 		expDate = null;
 	}

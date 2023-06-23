@@ -1,5 +1,4 @@
-<script lang='ts'>
-	// import { fly, slide } from 'svelte/transition';
+<script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 
@@ -8,13 +7,12 @@
 	const dispatch = createEventDispatcher();
 
 	import * as db from '$lib/requests';
-	// import Error from './Error.svelte';
 
 	let firstName = '';
 	let secondName = '';
 	let telegramAlias = '';
 	let initialRating = 100;
-	let firstInput;
+	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
 
@@ -22,11 +20,14 @@
 		isSubmissionDisabled = !(firstName && secondName);
 	}
 
-	const addPlayer = async (e) => {
-		const data = new FormData(e.target);
+	const addPlayer = async (e: Event) => {
+		const data = new FormData(e.target as HTMLFormElement);
 
-		const name = data.get('firstName').trim() + ' ' + data.get('secondName').trim();
-		db.createPlayer(name, data.get('telegramAlias'), data.get('rating'))
+		const firstName = data.get('firstName') as string;
+		const secondName = data.get('secondName') as string;
+
+		const name = firstName.trim() + ' ' + secondName.trim();
+		db.createPlayer(name, data.get('telegramAlias') as string, Number(data.get('rating')))
 			.then(() => {
 				dispatch('update');
 				resetForm();

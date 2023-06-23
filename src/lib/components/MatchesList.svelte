@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
@@ -11,9 +11,9 @@
 
 	export let isLeader = false;
 
-	let matches = [];
+	let matches: any[] = [];
 
-	let lastPageNumber;
+	let lastPageNumber: number;
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
@@ -34,23 +34,19 @@
 			});
 	}
 
-	function handleRequest(event) {
+	function handleRequest(event: CustomEvent) {
 		currentPageNumber = event.detail.currentPageNumber;
 		currentPageSize = event.detail.currentPageSize;
 		requestNewPage();
 	}
 
-	// onMount(() => {
-	// 	requestNewPage();
-	// });
-
-	const deleteMatch = async (e) => {
+	const deleteMatch = async (e: Event) => {
 		let isConfirmed = confirm('Are you sure that you want to delete this match?');
 		if (!isConfirmed) return;
 
-		const data = new FormData(e.target);
+		const data = new FormData(e.target as HTMLFormElement);
 
-		await db.deleteMatch(data.get('id')).catch((error) => {
+		await db.deleteMatch(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
 

@@ -7,7 +7,7 @@
  * @returns The matches data.
  */
 export async function getMatches(): Promise<any[]> {
-	const matches: any[] = JSON.parse(localStorage.getItem('matches')) || [];
+	const matches = JSON.parse(localStorage.getItem('matches') as string) || [];
 	return matches;
 }
 
@@ -27,10 +27,16 @@ export async function createMatch(
 	firstPlayerScore: number,
 	secondPlayerScore: number,
 	tournamentTitle: string,
-	localDateString: string | null = null
+	localDateString: string | null = null,
 ): Promise<any> {
-	localDateString = new Date(localDateString).toLocaleDateString('ru');
-	const matches: any[] = JSON.parse(localStorage.getItem('matches')) || [];
+	if (localDateString !== null) {
+		localDateString = new Date(localDateString).toLocaleDateString('ru');
+	} else {
+		localDateString = new Date().toLocaleDateString('ru');
+	}
+
+	const matches = JSON.parse(localStorage.getItem('matches') as string) || [];
+
 	const newMatch = {
 		id: matches.length ? matches[matches.length - 1].id + 1 : 0,
 		firstPlayerName,
@@ -38,7 +44,7 @@ export async function createMatch(
 		firstPlayerScore,
 		secondPlayerScore,
 		localDateString,
-		tournamentTitle
+		tournamentTitle,
 	};
 	matches.push(newMatch);
 	localStorage.setItem('matches', JSON.stringify(matches));
@@ -50,8 +56,8 @@ export async function createMatch(
  * @param matchID - The ID of the match.
  */
 export async function deleteMatch(matchID: number): Promise<void> {
-	const matches: any[] = JSON.parse(localStorage.getItem('matches')) || [];
-	const idx = matches.findIndex((match) => {
+	const matches = JSON.parse(localStorage.getItem('matches') as string) || [];
+	const idx = matches.findIndex((match: any) => {
 		return match.id == matchID;
 	});
 	matches.splice(idx, 1);
@@ -63,7 +69,7 @@ export async function deleteMatch(matchID: number): Promise<void> {
  * @returns The players data.
  */
 export async function getPlayers(): Promise<any[]> {
-	const players: any[] = JSON.parse(localStorage.getItem('players')) || [];
+	const players = JSON.parse(localStorage.getItem('players') as string) || [];
 	return players;
 }
 
@@ -77,14 +83,14 @@ export async function getPlayers(): Promise<any[]> {
 export async function createPlayer(
 	name: string,
 	telegramAlias: string | null = null,
-	rating: number | null = null
+	rating: number | null = null,
 ): Promise<any> {
-	const players: any[] = JSON.parse(localStorage.getItem('players')) || [];
+	const players = JSON.parse(localStorage.getItem('players') as string) || [];
 	const newPlayer = {
 		id: players.length ? players[players.length - 1].id + 1 : 0,
 		name,
 		telegramAlias,
-		rating
+		rating,
 	};
 	players.push(newPlayer);
 	localStorage.setItem('players', JSON.stringify(players));
@@ -96,8 +102,8 @@ export async function createPlayer(
  * @param playerID - The ID of the player.
  */
 export async function deletePlayer(playerID: number): Promise<void> {
-	const players: any[] = JSON.parse(localStorage.getItem('players')) || [];
-	const idx = players.findIndex((player) => {
+	const players = JSON.parse(localStorage.getItem('players') as string) || [];
+	const idx = players.findIndex((player: any) => {
 		return player.id == playerID;
 	});
 	players.splice(idx, 1);
@@ -120,7 +126,7 @@ export async function authenticate(username: string, password: string): Promise<
  * @returns The tournaments data.
  */
 export async function getTournaments(): Promise<any[]> {
-	const tournaments: any[] = JSON.parse(localStorage.getItem('tournaments')) || [];
+	const tournaments = JSON.parse(localStorage.getItem('tournaments') as string) || [];
 	return tournaments;
 }
 
@@ -134,16 +140,16 @@ export async function getTournaments(): Promise<any[]> {
 export async function createTournament(
 	title: string,
 	startDateString: string,
-	endDateString: string
+	endDateString: string,
 ): Promise<any> {
 	startDateString = new Date(startDateString).toLocaleDateString('ru');
 	endDateString = new Date(endDateString).toLocaleDateString('ru');
-	const tournaments: any[] = JSON.parse(localStorage.getItem('tournaments')) || [];
+	const tournaments = JSON.parse(localStorage.getItem('tournaments') as string) || [];
 	const newTournament = {
 		id: tournaments.length ? tournaments[tournaments.length - 1].id + 1 : 0,
 		title,
 		startDateString,
-		endDateString
+		endDateString,
 	};
 	tournaments.push(newTournament);
 	localStorage.setItem('tournaments', JSON.stringify(tournaments));
@@ -155,8 +161,8 @@ export async function createTournament(
  * @param tournamentID - The ID of the tournament.
  */
 export async function deleteTournament(tournamentID: number): Promise<void> {
-	const tournaments: any[] = JSON.parse(localStorage.getItem('tournaments')) || [];
-	const idx = tournaments.findIndex((tournament) => {
+	const tournaments = JSON.parse(localStorage.getItem('tournaments') as string) || [];
+	const idx = tournaments.findIndex((tournament: any) => {
 		return tournament.id == tournamentID;
 	});
 	tournaments.splice(idx, 1);

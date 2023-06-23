@@ -23,11 +23,11 @@ export function titleCase(phrase: string): string {
 export const convertDateToString = (date: Date): string => {
 	date = new Date(date);
 	const yyyy = date.getFullYear();
-	let mm = date.getMonth() + 1; // Months start at 0!
-	let dd = date.getDate();
+	let mm = String(date.getMonth() + 1); // Months start at 0!
+	let dd = String(date.getDate());
 
-	if (dd < 10) dd = '0' + dd;
-	if (mm < 10) mm = '0' + mm;
+	if (+dd < 10) dd = '0' + dd;
+	if (+mm < 10) mm = '0' + mm;
 
 	const formattedDate = dd + '.' + mm + '.' + yyyy;
 	return formattedDate;
@@ -41,11 +41,11 @@ export const convertDateToString = (date: Date): string => {
 export const convertDateToStringDash = (date: Date): string => {
 	date = new Date(date);
 	const yyyy = date.getFullYear();
-	let mm = date.getMonth() + 1; // Months start at 0!
-	let dd = date.getDate();
+	let mm = String(date.getMonth() + 1); // Months start at 0!
+	let dd = String(date.getDate());
 
-	if (dd < 10) dd = '0' + dd;
-	if (mm < 10) mm = '0' + mm;
+	if (+dd < 10) dd = '0' + dd;
+	if (+mm < 10) mm = '0' + mm;
 
 	const formattedDate = yyyy + '-' + mm + '-' + dd;
 	return formattedDate;

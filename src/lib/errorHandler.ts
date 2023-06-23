@@ -15,7 +15,7 @@ export async function handleGetErrors(response: Response, token: string): Promis
 	if (!response.ok) {
 		checkExpiration(response, token);
 
-		if (response.status == '403') {
+		if (response.status == 403) {
 			let errorMessage = 'You are not authorized to see the content of this page.';
 			if (token == '') errorMessage += ' Please Log In first!';
 			throw new Error(errorMessage);
@@ -35,7 +35,7 @@ export async function handleModifyErrors(response: Response, token: string): Pro
 	if (!response.ok) {
 		checkExpiration(response, token);
 
-		if (response.status == '403') {
+		if (response.status == 403) {
 			let errorMessage = 'You do not have rights to perform this action.';
 			if (token == '') errorMessage += ' Please Log In first!';
 			else if (getRoles(token).includes('USER'))
@@ -54,7 +54,7 @@ export async function handleModifyErrors(response: Response, token: string): Pro
  * @throws An error if the token has expired.
  */
 function checkExpiration(response: Response, token: string): void {
-	if (response.status == '401') {
+	if (response.status == 401) {
 		const expDate = getExpirationDate(token);
 		if (expDate && expDate < new Date()) {
 			localStorage.removeItem('token');

@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	// import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/Button.svelte';
@@ -11,8 +11,8 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let players;
-	export let tournaments;
+	export let players: any[];
+	export let tournaments: any[];
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
@@ -46,8 +46,8 @@
 
 	let localDateString = convertDateToStringDash(new Date());
 
-	const addMatch = async (e) => {
-		const data = new FormData(e.target);
+	const addMatch = async (e: Event) => {
+		const data = new FormData(e.target as HTMLFormElement);
 
 		if (
 			!players.find((player) => player.name === firstPlayerName) ||
@@ -58,12 +58,12 @@
 			dispatch('error', 'There is no such tournament!');
 		} else {
 			db.createMatch(
-				data.get('firstPlayerName'),
-				data.get('secondPlayerName'),
-				data.get('firstPlayerScore'),
-				data.get('secondPlayerScore'),
-				data.get('tournamentTitle'),
-				data.get('localDateString')
+				data.get('firstPlayerName') as string,
+				data.get('secondPlayerName') as string,
+				Number(data.get('firstPlayerScore')),
+				Number(data.get('secondPlayerScore')),
+				data.get('tournamentTitle') as string,
+				data.get('localDateString') as string,
 			)
 				.then(() => {
 					dispatch('update');
@@ -85,18 +85,18 @@
 		});
 	}
 
-	function handleSelectFirstPlayerName(event) {
+	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
 	}
-	function handleSelectSecondPlayerName(event) {
+	function handleSelectSecondPlayerName(event: CustomEvent) {
 		secondPlayerName = event.detail;
 	}
-	function handleSelectTournament(event) {
+	function handleSelectTournament(event: CustomEvent) {
 		tournamentTitle = event.detail;
 		changeDateByTournamentTitle(tournamentTitle);
 	}
 
-	function changeDateByTournamentTitle(tournamentTitle) {
+	function changeDateByTournamentTitle(tournamentTitle: string) {
 		const tournament = tournaments.find((tournament) => tournament.title === tournamentTitle);
 		if (tournament) {
 			const dateString = tournament.startDateString;
@@ -137,7 +137,6 @@
 		</label>
 	</div>
 	<div class="line-4-elems">
-		<!-- <div class="line-2-elems"> -->
 		<label>
 			<span class="form-label">First Player Score</span>
 			<input
@@ -164,9 +163,6 @@
 				placeholder="0"
 			/>
 		</label>
-		<!-- </div>
-		<div class="line-2-elems"> -->
-		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
 			<span class="form-label">Date</span>
 			<input
@@ -187,7 +183,6 @@
 				on:select={handleSelectTournament}
 			/>
 		</label>
-		<!-- </div> -->
 	</div>
 	<div class="line-4-elems">
 		<div class="last-box full-width">

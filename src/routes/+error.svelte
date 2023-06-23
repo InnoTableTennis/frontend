@@ -1,9 +1,14 @@
-<script lang='ts'>
+<script lang="ts">
 	import { page } from '$app/stores';
 </script>
 
 <div class="container">
-	<h1>{$page.status} {$page.error.message}</h1>
+	<h1>
+		{$page.status}
+		{#if $page.error}
+			{$page.error.message}
+		{/if}
+	</h1>
 	{#if $page.status >= 500 && $page.status < 600}
 		<div>Server currently is under maintenance</div>
 	{/if}

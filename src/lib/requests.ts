@@ -9,9 +9,9 @@ import { userToken } from '$lib/stores';
  * This file contains functions for making API requests.
  */
 
-let token: string | null = null;
+let token = '';
 
-userToken.subscribe((value) => {
+userToken.subscribe((value: string) => {
 	token = value;
 });
 
@@ -25,9 +25,9 @@ const serverAPI: string = dev ? 'http://10.90.138.217:8080' : '';
  */
 export async function getMatches(
 	pageNumber: number | null = null,
-	pageSize: number | null = null
+	pageSize: number | null = null,
 ): Promise<{
-	data: any;
+	data: any[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/matches';
@@ -38,15 +38,15 @@ export async function getMatches(
 
 	const response: Response = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleGetErrors(response, token);
 
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '999', 10);
 
-	const data: any = await response.json();
+	const data = await response.json();
 
 	return { data, totalPages };
 }
@@ -67,16 +67,20 @@ export async function createMatch(
 	firstPlayerScore: number,
 	secondPlayerScore: number,
 	tournamentTitle: string,
-	localDateString: string | null = null
+	localDateString: string | null = null,
 ): Promise<any> {
-	localDateString = new Date(localDateString).toLocaleDateString('ru');
+	if (localDateString !== null) {
+		localDateString = new Date(localDateString).toLocaleDateString('ru');
+	} else {
+		localDateString = new Date().toLocaleDateString('ru');
+	}
 
 	const response: Response = await fetch(serverAPI + '/api/matches', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + token
+			Authorization: 'Bearer ' + token,
 		},
 		body: JSON.stringify({
 			firstPlayerName,
@@ -84,13 +88,13 @@ export async function createMatch(
 			firstPlayerScore,
 			secondPlayerScore,
 			localDateString,
-			tournamentTitle
-		})
+			tournamentTitle,
+		}),
 	});
 
 	await handleModifyErrors(response, token);
 
-	const data: any = await response.json();
+	const data = await response.json();
 	return data;
 }
 
@@ -102,8 +106,8 @@ export async function deleteMatch(matchID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/api/matches/' + matchID, {
 		method: 'DELETE',
 		headers: {
-			Authorization: 'Bearer ' + token
-		}
+			Authorization: 'Bearer ' + token,
+		},
 	});
 
 	await handleModifyErrors(response, token);
@@ -117,9 +121,9 @@ export async function deleteMatch(matchID: string): Promise<void> {
  */
 export async function getPlayers(
 	pageNumber: number | null = null,
-	pageSize: number | null = null
+	pageSize: number | null = null,
 ): Promise<{
-	data: any;
+	data: any[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/players';
@@ -130,15 +134,16 @@ export async function getPlayers(
 
 	const response: Response = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleGetErrors(response, token);
 
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
-	const data: any = await response.json();
+	const data = await response.json();
+
 	return { data, totalPages };
 }
 
@@ -152,13 +157,14 @@ export async function getPlayers(
 export async function createPlayer(
 	name: string,
 	telegramAlias: string | null = null,
-	rating: number | null = null
+	rating: number | null = null,
 ): Promise<any> {
 	name = name.trim();
 
-	telegramAlias = telegramAlias.trim();
-
-	if (telegramAlias === '') telegramAlias = null;
+	if (telegramAlias !== null) {
+		telegramAlias = telegramAlias.trim();
+		if (telegramAlias === '') telegramAlias = null;
+	}
 
 	if (telegramAlias !== null) {
 		if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);
@@ -182,18 +188,18 @@ export async function createPlayer(
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + token
+			Authorization: 'Bearer ' + token,
 		},
 		body: JSON.stringify({
 			name,
 			telegramAlias,
-			rating
-		})
+			rating,
+		}),
 	});
 
 	await handleModifyErrors(response, token);
 
-	const data: any = await response.json();
+	const data = await response.json();
 	return data;
 }
 
@@ -205,8 +211,8 @@ export async function deletePlayer(playerID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/api/players/' + playerID, {
 		method: 'DELETE',
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleModifyErrors(response, token);
@@ -232,20 +238,20 @@ export async function authenticate(username: string, password: string): Promise<
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
 			username: telegramAlias,
-			password
-		})
+			password,
+		}),
 	});
 
 	if (!response.ok) {
-		const errorResponse: any = await response.json();
+		const errorResponse = await response.json();
 		throw errorResponse;
 	}
 
-	const data: any = await response.json();
+	const data = await response.json();
 	return data.token;
 }
 
@@ -257,9 +263,9 @@ export async function authenticate(username: string, password: string): Promise<
  */
 export async function getTournaments(
 	pageNumber: number | null = null,
-	pageSize: number | null = null
+	pageSize: number | null = null,
 ): Promise<{
-	data: any;
+	data: any[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/tournaments';
@@ -270,15 +276,15 @@ export async function getTournaments(
 
 	const response: Response = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleGetErrors(response, token);
 
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
-	const data: any = await response.json();
+	const data = await response.json();
 	return { data, totalPages };
 }
 
@@ -292,7 +298,7 @@ export async function getTournaments(
 export async function createTournament(
 	title: string,
 	startDateString: string,
-	endDateString: string
+	endDateString: string,
 ): Promise<any> {
 	startDateString = new Date(startDateString).toLocaleDateString('ru');
 	endDateString = new Date(endDateString).toLocaleDateString('ru');
@@ -302,18 +308,18 @@ export async function createTournament(
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + token
+			Authorization: 'Bearer ' + token,
 		},
 		body: JSON.stringify({
 			title,
 			startDateString,
-			endDateString
-		})
+			endDateString,
+		}),
 	});
 
 	await handleModifyErrors(response, token);
 
-	const data: any = await response.json();
+	const data = await response.json();
 	return data;
 }
 
@@ -325,8 +331,8 @@ export async function deleteTournament(tournamentID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/api/tournaments/' + tournamentID, {
 		method: 'DELETE',
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleModifyErrors(response, token);
@@ -340,8 +346,8 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/api/tournaments/' + tournamentID, {
 		method: 'PATCH',
 		headers: {
-			Authorization: `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 
 	await handleModifyErrors(response, token);

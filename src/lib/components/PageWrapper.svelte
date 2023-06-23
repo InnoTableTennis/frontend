@@ -1,11 +1,14 @@
-<script lang='ts'>
+<script lang="ts">
 	import Errors from '$lib/components/Errors.svelte';
 
 	import { loadedPage } from '$lib/stores';
 	import { page } from '$app/stores';
 
 	import { onDestroy } from 'svelte';
-	export let errors;
+
+	import type { Error } from '$lib/types/types';
+
+	export let errors: Error[];
 
 	let isLoaded = false;
 

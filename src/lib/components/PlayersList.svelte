@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 
@@ -9,9 +9,9 @@
 	import * as db from '$lib/requests';
 
 	export let isLeader = false;
-	let players = [];
+	let players: any[] = [];
 
-	let lastPageNumber;
+	let lastPageNumber: number;
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
@@ -32,7 +32,7 @@
 			});
 	}
 
-	function handleRequest(event) {
+	function handleRequest(event: CustomEvent) {
 		currentPageNumber = event.detail.currentPageNumber;
 		currentPageSize = event.detail.currentPageSize;
 		requestNewPage();
@@ -42,20 +42,20 @@
 	// 	requestNewPage();
 	// });
 
-	function getAlias(alias) {
+	function getAlias(alias: string) {
 		if (alias) {
 			return '@' + alias;
 		}
 		return '-';
 	}
 
-	const deletePlayer = async (e) => {
+	const deletePlayer = async (e: Event) => {
 		let isConfirmed = confirm('Are you sure that you want to delete this player?');
 		if (!isConfirmed) return;
 
-		const data = new FormData(e.target);
+		const data = new FormData(e.target as HTMLFormElement);
 
-		await db.deletePlayer(data.get('id')).catch((error) => {
+		await db.deletePlayer(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
 
