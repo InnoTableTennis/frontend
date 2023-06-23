@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Errors from '$lib/components/Errors.svelte';
+	import Errors from '$lib/components/error/Errors.svelte';
 
 	import { loadedPage } from '$lib/stores';
 	import { page } from '$app/stores';

@@ -3,7 +3,7 @@
 
 	import { beforeUpdate } from 'svelte';
 
-	import NavBar from '$lib/components/NavBar.svelte';
+	import NavBar from '$lib/components/navigation/NavBar.svelte';
 
 	import { userToken } from '$lib/stores';
 

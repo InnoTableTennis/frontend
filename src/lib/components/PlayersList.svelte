@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
+	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 

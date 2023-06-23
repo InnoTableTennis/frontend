@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Error from '$lib/components/Error.svelte';
+	import Error from '$lib/components/error/Error.svelte';
 
 	import type { Error as ErrorType } from '$lib/types/types';
 

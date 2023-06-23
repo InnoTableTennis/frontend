@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import Rectangles from '$lib/components/Rectangles.svelte';
+	import Rectangles from '$lib/components/decorations/Rectangles.svelte';
 	import PageWrapper from '$lib/components/PageWrapper.svelte';
 	import type { Error } from '$lib/types/types';
 

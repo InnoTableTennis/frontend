@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PaginationBar from '$lib/components/PaginationBar.svelte';
+	import PaginationBar from '$lib/components/base/pagination/PaginationBar.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
