@@ -1,4 +1,4 @@
-name: ESLint and Prettier
+name: ESLint, Prettier, and TypeScript Testing
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: ['main']
 
 jobs:
-  eslint:
+  node_test:
     permissions: write-all
-    name: Run format and lint
+    name: Run format, lint, and TypeScript check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,5 +36,7 @@ jobs:
         with:
           name: eslint_report.json
           path: eslint_report.json
+      - name: TypeScript Check
+        run: npm run check
       - name: Test That The Project Builds
         run: npm run build
