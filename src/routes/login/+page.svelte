@@ -7,7 +7,6 @@
 	import type { Error } from '$lib/types/types';
 
 	let errors: Error[] = [];
-
 	function handleError(event: CustomEvent) {
 		errors = [...errors, event.detail];
 	}
