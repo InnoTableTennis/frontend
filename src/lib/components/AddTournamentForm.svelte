@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import Button from '$lib/components/Button.svelte';
+	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
 

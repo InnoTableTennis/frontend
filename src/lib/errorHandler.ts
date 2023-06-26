@@ -1,5 +1,6 @@
 import { getExpirationDate, getRoles } from '$lib/token';
-import { userToken } from '$lib/stores';
+import { errors, userToken } from '$lib/stores';
+import type { Error } from './types/types';
 
 /**
  * This file contains error handling functions for handling API response errors.
@@ -62,4 +63,11 @@ function checkExpiration(response: Response, token: string): void {
 			throw new Error('Your login session is over. Please log in again!');
 		}
 	}
+}
+
+export function handleError(event: CustomEvent) {
+	errors.update((errors) => [...errors, event.detail]);
+	setTimeout(() => {
+		errors.update((errors) => errors.slice(0, errors.length - 1));
+	}, 5000);
 }

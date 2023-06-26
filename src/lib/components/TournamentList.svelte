@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
+	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Tournaments } from '$lib/types/types';
 
 	import * as db from '$lib/requests';

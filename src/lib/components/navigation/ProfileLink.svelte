@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/components/Button.svelte';
+	import Button from '$lib/components/base/Button.svelte';
 
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';

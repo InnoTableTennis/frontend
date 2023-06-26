@@ -1,11 +1,11 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 
-	import Button from '$lib/components/Button.svelte';
+	import Button from '$lib/components/base/Button.svelte';
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
-	import DropdownInput from '$lib/components/DropdownInput.svelte';
+	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';

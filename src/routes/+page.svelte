@@ -4,19 +4,13 @@
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/AddMatchForm.svelte';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/decorations/Separator.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
-	import PageWrapper from '$lib/components/PageWrapper.svelte';
-	import type { Error } from '$lib/types/types';
+	import { handleError } from '$lib/errorHandler';
 
-	let errors: Error[] = [];
 	let handleInsert: () => void;
 
 	$: isLeader = getRoles($userToken).includes('LEADER');
-
-	function handleError(event: CustomEvent) {
-		errors = [...errors, event.detail];
-	}
 
 	async function getFormData() {
 		const playersPromise = db.getPlayers(1, 1000000);
@@ -30,19 +24,17 @@
 	}
 </script>
 
-<PageWrapper {errors}>
-	{#if isLeader}
-		{#await getFormData() then resp}
-			<AddMatchForm
-				players={resp.players}
-				tournaments={resp.tournaments}
-				on:error={handleError}
-				on:update={() => handleInsert()}
-			/>
+{#if isLeader}
+	{#await getFormData() then resp}
+		<AddMatchForm
+			players={resp.players}
+			tournaments={resp.tournaments}
+			on:error={handleError}
+			on:update={() => handleInsert()}
+		/>
 
-			<Separator />
-		{/await}
-	{/if}
+		<Separator />
+	{/await}
+{/if}
 
-	<MatchesList on:error={handleError} {isLeader} bind:handleInsert />
-</PageWrapper>
+<MatchesList on:error={handleError} {isLeader} bind:handleInsert />
