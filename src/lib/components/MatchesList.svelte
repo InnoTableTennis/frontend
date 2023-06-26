@@ -2,7 +2,6 @@
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
-	import type { Matches } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
@@ -12,7 +11,7 @@
 
 	export let isLeader = false;
 
-	let matches: Matches[] = [];
+	let matches: any[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;
@@ -33,7 +32,6 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		console.log(matches);
 	}
 
 	function handleRequest(event: CustomEvent) {
