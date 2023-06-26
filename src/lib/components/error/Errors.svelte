@@ -1,13 +1,10 @@
 <script lang="ts">
 	import Error from '$lib/components/error/Error.svelte';
-
-	import type { Error as ErrorType } from '$lib/types/types';
-
-	export let errors: ErrorType[] = [];
+	import { errors } from '$lib/stores';
 </script>
 
 <div class="errors-container">
-	{#each errors as error}
+	{#each $errors as error}
 		<Error message={error.message} />
 	{/each}
 </div>

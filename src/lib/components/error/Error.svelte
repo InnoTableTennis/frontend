@@ -1,22 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-
-	import { onMount } from 'svelte';
-
 	export let message = 'Unexpected Error Happened';
-
-	let showError = true;
-
-	onMount(async () => {
-		setTimeout(() => {
-			showError = false;
-		}, 5000);
-	});
 </script>
 
-{#if showError}
-	<div class="message" transition:fade>{message}</div>
-{/if}
+<div class="message" transition:fade>{message}</div>
 
 <style>
 	div.message {
