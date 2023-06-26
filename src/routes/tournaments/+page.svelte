@@ -4,7 +4,7 @@
 	import { getRoles } from '$lib/token';
 
 	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/decorations/Separator.svelte';
 	import TournamentList from '$lib/components/TournamentList.svelte';
 
 	import { userToken } from '$lib/stores';

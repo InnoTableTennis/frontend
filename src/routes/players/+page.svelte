@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
-	import Separator from '$lib/components/Separator.svelte';
+	import Separator from '$lib/components/decorations/Separator.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
 
 	import { userToken } from '$lib/stores';

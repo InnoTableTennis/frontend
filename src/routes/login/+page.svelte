@@ -1,12 +1,7 @@
 <script lang="ts">
-	import Rectangles from '$lib/components/Rectangles.svelte';
-
-	import Login from '$lib/components/Login.svelte';
-	import { errors } from '$lib/stores';
-
-	function handleError(event: CustomEvent) {
-		$errors = [...$errors, event.detail];
-	}
+	import Rectangles from '$lib/components/decorations/Rectangles.svelte';
+	import Login from '$lib/components/navigation/Login.svelte';
+	import { handleError } from '$lib/errorHandler';
 </script>
 
 <Rectangles />

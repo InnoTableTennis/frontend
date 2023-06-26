@@ -1,6 +1,6 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.png';
-	import ProfileLink from '$lib/components/ProfileLink.svelte';
+	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
 </script>
 
 <nav>

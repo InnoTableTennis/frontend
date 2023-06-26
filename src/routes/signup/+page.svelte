@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import Rectangles from '$lib/components/Rectangles.svelte';
+	import Rectangles from '$lib/components/decorations/Rectangles.svelte';
 </script>
 
 <Rectangles />
