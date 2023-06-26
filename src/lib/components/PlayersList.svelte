@@ -31,7 +31,6 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		console.log(players);
 	}
 
 	function handleRequest(event: CustomEvent) {

@@ -32,7 +32,6 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		console.log(tournaments);
 	}
 
 	function handleRequest(event: CustomEvent) {

@@ -33,7 +33,6 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		console.log(matches);
 	}
 
 	function handleRequest(event: CustomEvent) {
