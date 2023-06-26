@@ -1,15 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { beforeUpdate } from 'svelte';
+	import { beforeUpdate, onDestroy } from 'svelte';
 
+	import Errors from '$lib/components/Errors.svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 
-	import { userToken } from '$lib/stores';
+	import { loadedPage, userToken } from '$lib/stores';
+
+	let isLoaded = false;
+
+	$: if ($loadedPage == $page.data.title || $loadedPage === null) {
+		isLoaded = true;
+		$loadedPage = $page.data.title;
+	}
 
 	beforeUpdate(() => {
 		const token = localStorage.getItem('token');
 		userToken.set(token ?? '');
+	});
+
+	onDestroy(() => {
+		isLoaded = false;
+		$loadedPage = null;
 	});
 </script>
 
@@ -20,9 +33,13 @@
 <header>
 	<NavBar />
 </header>
-<main>
-	<slot />
-</main>
+
+{#if isLoaded}
+	<main>
+		<slot />
+	</main>
+	<Errors />
+{/if}
 
 <style>
 	header {
