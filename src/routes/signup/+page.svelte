@@ -1,32 +1,25 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import Rectangles from '$lib/components/Rectangles.svelte';
-	import PageWrapper from '$lib/components/PageWrapper.svelte';
-	import type { Error } from '$lib/types/types';
-
-	let errors: Error[] = [];
+	import Rectangles from '$lib/components/decorations/Rectangles.svelte';
 </script>
 
-<PageWrapper {errors}>
-	<Rectangles />
+<Rectangles />
 
-	<div class="container">
-		<h2>Sign Up</h2>
-		<p>
-			1. Contact the <a href="https://t.me/+pSAqcDY6eqM5Mjg6" target="_blank" rel="noreferrer"
-				>club</a
-			>
-			leaders to add yourself to the players' list. Check the <a href="/">matches section</a> to confirm
-			if you're already added.
-		</p>
-		<p>
-			2. Use the <a href="https://t.me/InnoTableTennisBot" target="_blank" rel="noreferrer"
-				>telegram bot</a
-			> to get your password once your telegram alias is added.
-		</p>
-		<p>3. <a href="/login">Log in</a> to the website using your password to access the services.</p>
-	</div>
-</PageWrapper>
+<div class="container">
+	<h2>Sign Up</h2>
+	<p>
+		1. Contact the <a href="https://t.me/+pSAqcDY6eqM5Mjg6" target="_blank" rel="noreferrer">club</a
+		>
+		leaders to add yourself to the players' list. Check the <a href="/">matches section</a> to confirm
+		if you're already added.
+	</p>
+	<p>
+		2. Use the <a href="https://t.me/InnoTableTennisBot" target="_blank" rel="noreferrer"
+			>telegram bot</a
+		> to get your password once your telegram alias is added.
+	</p>
+	<p>3. <a href="/login">Log in</a> to the website using your password to access the services.</p>
+</div>
 
 <style>
 	h2 {

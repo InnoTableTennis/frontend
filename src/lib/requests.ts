@@ -17,6 +17,8 @@ userToken.subscribe((value: string) => {
 
 const serverAPI: string = dev ? 'http://10.90.138.217:8080' : '';
 
+console.log(serverAPI);
+
 /**
  * Retrieves matches from the API.
  * @param pageNumber - The page number.
@@ -47,6 +49,8 @@ export async function getMatches(
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '999', 10);
 
 	const data = await response.json();
+
+	console.log(data);
 
 	return { data, totalPages };
 }

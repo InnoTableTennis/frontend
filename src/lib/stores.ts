@@ -1,5 +1,6 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
+import type { Error } from './types/types';
 
 /**
  * Represents the user token store.
@@ -12,3 +13,5 @@ export const userToken: Writable<string> = writable('');
  * Stores the title of the loaded page, if any page is loaded.
  */
 export const loadedPage: Writable<string | null> = writable(null);
+
+export const errors: Writable<Error[]> = writable([]);
