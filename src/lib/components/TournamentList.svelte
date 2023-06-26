@@ -2,6 +2,7 @@
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
+	import type { Tournaments } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
@@ -10,7 +11,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let isLeader = false;
-	let tournaments: any[] = [];
+	let tournaments: Tournaments[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;
@@ -31,6 +32,7 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
+		console.log(tournaments);
 	}
 
 	function handleRequest(event: CustomEvent) {

@@ -8,11 +8,12 @@
 	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
+	import type { Players, Tournaments } from '$lib/types/types';
 
 	const dispatch = createEventDispatcher();
 
-	export let players: any[];
-	export let tournaments: any[];
+	export let players: Players[];
+	export let tournaments: Tournaments[];
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
@@ -100,9 +101,9 @@
 		const tournament = tournaments.find((tournament) => tournament.title === tournamentTitle);
 		if (tournament) {
 			const dateString = tournament.startDateString;
-			const year = dateString.slice(6, 10);
-			const month = dateString.slice(3, 5) - 1;
-			const day = dateString.slice(0, 2);
+			const year = Number(dateString.slice(6, 10));
+			const month = Number(dateString.slice(3, 5)) - 1;
+			const day = Number(dateString.slice(0, 2));
 			localDateString = convertDateToStringDash(new Date(year, month, day));
 		}
 	}
