@@ -21,17 +21,17 @@
 
 <style>
 	span {
-		color: #c4d6b0;
+		color: var(--accent-color);
 	}
 	h3 {
 		margin: 0.75em 0;
-		color: #ffffff;
+		color: var(--table-header-title-color);
 		/* text-transform: uppercase; */
 	}
 	.separator {
 		width: 100%;
 		height: 2px;
-		background-color: #c4d6b0;
+		background-color: var(--accent-color);
 		margin: 0.75em 0;
 	}
 	.invisible {
@@ -40,15 +40,15 @@
 		height: 1em;
 	}
 	.table-header {
-		font-size: 0.8em;
+		font-size: var(--fontsize-table-header);
 		display: grid;
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		margin-bottom: 1.25rem;
 	}
 	.not-main {
-		font-size: 0.8em;
-		color: rgba(255, 255, 255, 0.5);
+		font-size: var(--fontsize-table-column-heading);
+		color: var(--table-header-subtitle-color);
 	}
 	.main {
 		margin-top: 3em;

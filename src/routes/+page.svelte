@@ -7,6 +7,7 @@
 	import Separator from '$lib/components/decorations/Separator.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import { handleError } from '$lib/errorHandler';
+	import '$lib/app.css';
 
 	let handleInsert: () => void;
 

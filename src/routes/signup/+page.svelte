@@ -1,6 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Rectangles from '$lib/components/decorations/Rectangles.svelte';
+	import '$lib/app.css';
 </script>
 
 <Rectangles />
@@ -23,7 +24,7 @@
 
 <style>
 	h2 {
-		font-size: 1.5em;
+		font-size: var(--fontsize-signup-heading);
 		margin-bottom: 0.5em;
 		text-align: center;
 		color: inherit;
@@ -31,7 +32,7 @@
 	p {
 		text-align: justify;
 		color: inherit;
-		color: #363636;
+		color: var(--signup-text-color);
 	}
 
 	.container {
@@ -39,11 +40,11 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: #c4d6b0;
-		color: #000;
+		background-color: var(--accent-color);
+		color: var(--signup-heading-color);
 		max-width: 350px;
 		margin: 0 auto;
-		font-size: 1em;
+		font-size: var(--fontsize-signup-text);
 		padding: 1.5em;
 		border-radius: 30px;
 		display: flex;

@@ -103,20 +103,20 @@
 
 <style>
 	.details {
-		font-size: large;
+		font-size: var(--fontsize-table-list-details);
 		margin: 2rem;
 	}
 	.games-list {
 		max-width: 800px;
 		margin: 3em auto;
-		font-size: 1em;
+		font-size: var(--fontsize-table-list);
 	}
 	.players-grid {
 		height: 1.1em;
 		display: grid;
 		grid-template-columns: 1.8em 1fr 1fr 3.2em 1em;
 		gap: 1rem 1rem;
-		color: #fff;
+		color: var(--table-grid-color);
 		margin-bottom: 1rem;
 	}
 	.delete-btn {
@@ -142,10 +142,10 @@
 	}
 
 	.table-header span {
-		color: #c4d6b0;
+		color: var(--accent-color);
 	}
 	.position {
-		color: #c4d6b0;
+		color: var(--accent-color);
 		text-align: right;
 		display: inline-block;
 		width: 100%;
