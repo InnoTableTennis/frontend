@@ -57,7 +57,6 @@
 	--fontsize-signup-heading: 1.5rem;
 
 	--fontsize-media-800: 0.7rem;
-    
 	/* Font weights */
 	--fontweight-pag-bar: 600;
 
@@ -69,4 +68,33 @@
 	/* Font families */
 
 	--main-font: 'Poppins', sans-serif;
+}
+
+*,
+a {
+	font-family: var(--main-font);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+ul,
+div,
+span {
+	color: var(--page-text-color);
+}
+
+body {
+	background-color: var(--page-backround);
+}
+
+@media (max-width: 800px) {
+	* {
+		font-size: var(--fontsize-media-800);
+	}
 }

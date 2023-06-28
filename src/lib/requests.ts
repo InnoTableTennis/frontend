@@ -4,7 +4,7 @@ import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
-import '$lib/app.css';
+
 /**
  * This file contains functions for making API requests.
  */
