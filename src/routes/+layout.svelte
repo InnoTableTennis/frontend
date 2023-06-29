@@ -44,7 +44,7 @@
 <style>
 	header {
 		height: 4em;
-		background-color: #c4d6b0;
+		background-color: var(--accent-color);
 	}
 	main {
 		align-items: center;
@@ -55,7 +55,7 @@
 
 	@media (max-width: 800px) {
 		* {
-			font-size: 85%;
+			font-size: var(--fontsize-media-800);
 		}
 		main {
 			padding: 0 1em;

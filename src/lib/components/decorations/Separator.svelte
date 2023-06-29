@@ -4,6 +4,6 @@
 	div {
 		width: 100%;
 		height: 3px;
-		background-color: #fff;
+		background-color: var(--separator-back-color);
 	}
 </style>

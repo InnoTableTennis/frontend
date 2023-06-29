@@ -110,13 +110,13 @@
 	.games-list {
 		max-width: 800px;
 		margin: 3em auto;
-		font-size: 1em;
+		font-size: var(--fontsize-table-list);
 	}
 	.tournaments-grid {
 		display: grid;
 		grid-template-columns: 1fr 5.7em 5.7em 5.7em 1em 1em;
 		gap: 1rem 1rem;
-		color: #fff;
+		color: var(--table-grid-color);
 		margin-bottom: 1rem;
 		height: 1.1em;
 	}
@@ -144,7 +144,7 @@
 	}
 
 	.details {
-		font-size: large;
+		font-size: var(--fontsize-table-list-details);
 		margin: 2rem;
 	}
 
@@ -154,6 +154,6 @@
 	}
 
 	.table-header span {
-		color: #c4d6b0;
+		color: var(--accent-color);
 	}
 </style>

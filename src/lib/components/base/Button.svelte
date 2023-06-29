@@ -12,33 +12,33 @@
 		outline: none;
 		border: 0;
 		padding: 0.8em 1em;
-		background-color: #c4d6b0;
-		color: rgba(0, 0, 0, 0.8);
-		font-weight: 600;
+		background-color: var(--accent-color);
+		color: var(--main-back-color);
+		font-weight: var(--fontweight-button);
 		transition: 0.1s;
 		width: 100%;
 		height: 100%;
 	}
 
 	button:hover {
-		box-shadow: 0px 4px 4px 2px rgba(105, 105, 105, 0.4);
+		box-shadow: 0px 4px 4px 2px var(--light-shadow-color);
 		cursor: pointer;
 	}
 
 	.dark {
-		background-color: #212121;
-		color: #fff;
-		font-weight: 500;
+		background-color: var(--main-back-color);
+		color: var(--button-text-color);
+		font-weight: var(--fontweight-button-dark);
 	}
 
 	button.dark:hover {
-		box-shadow: 0px 4px 4px 2px rgba(33, 33, 33, 0.4);
+		box-shadow: 0px 4px 4px 2px var(--dark-shadow-color);
 	}
 	button:disabled,
 	button[disabled] {
 		/* border: 1px solid #444; */
-		background-color: #666666;
-		color: #222;
+		background-color: var(--inactive-button-back-color);
+		color: var(--inactive-button-text-color);
 		box-shadow: none;
 		cursor: auto;
 	}
