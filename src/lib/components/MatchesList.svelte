@@ -132,7 +132,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
-		color: var(--table-grid-color);
+		color: var(--content-color);
 		margin-bottom: 1rem;
 	}
 	.score {

@@ -72,7 +72,7 @@
 		font-size: var(--fontsize-large);
 		margin-bottom: 0.5em;
 		text-align: center;
-		color: var(--login-text-color);
+		color: var(--main-color);
 	}
 
 	p {
@@ -85,8 +85,8 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--accent-color);
-		color: var(--login-text-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 		max-width: 350px;
 		margin: 0 auto;
 		font-size: var(--fontsize-medium2);
@@ -106,7 +106,7 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--accent-color);
+		outline: solid var(--secondary-color);
 	}
 	.button-container {
 		width: 10rem;

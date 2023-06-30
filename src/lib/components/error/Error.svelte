@@ -12,7 +12,7 @@
 		padding: 1em 2em;
 		text-align: left;
 		background-color: var(--error-back-color);
-		color: var(--error-text-color);
+		color: var(--content-color);
 		min-width: 7em;
 		max-width: 20em;
 	}

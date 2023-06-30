@@ -21,17 +21,17 @@
 
 <style>
 	span {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 	}
 	h3 {
 		margin: 0.75em 0;
-		color: var(--table-header-title-color);
+		color: var(--content-color);
 		/* text-transform: uppercase; */
 	}
 	.separator {
 		width: 100%;
 		height: 2px;
-		background-color: var(--accent-color);
+		background-color: var(--secondary-color);
 		margin: 0.75em 0;
 	}
 	.invisible {
@@ -48,7 +48,7 @@
 	}
 	.not-main {
 		font-size: var(--fontsize-medium2);
-		color: var(--table-header-subtitle-color);
+		color: var(--tertiary-color);
 	}
 	.main {
 		margin-top: 3em;

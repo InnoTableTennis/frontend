@@ -31,11 +31,11 @@
 	}
 	.nav-links li a {
 		text-decoration: none;
-		color: var(--main-back-color);
+		color: var(--main-color);
 		transition: 0.1s;
 	}
 	.nav-links li a:hover {
-		border-bottom: 2px solid var(--main-back-color);
+		border-bottom: 2px solid var(--main-color);
 	}
 
 	/* .active {

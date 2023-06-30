@@ -1,37 +1,15 @@
 :root {
 	/* Colors */
-	--accent-color: #c4d6b0;
-	--main-back-color: rgba(0, 0, 0, 0.8);
-	--page-backround: #1e1e1e;
-	--page-text-color: #ffffff;
-
-	--button-text-color: #ffffff;
-	--light-shadow-color: rgba(105, 105, 105, 0.4);
-	--dark-shadow-color: rgba(33, 33, 33, 0.4);
-	--inactive-button-back-color: #666666;
-	--inactive-button-text-color: #222;
-
-	--dropdown-item-back-color: rgb(43, 43, 50);
-	--dropdown-border-color: #7a7989;
-	--dropdown-hover-back-color: #65666f;
-	--dropdown-focus-back-color: #728cd4;
-
-	--separator-back-color: #ffffff;
+	--main-color: #1e1e1e;
+	--secondary-color: #c4d6b0;
+	--content-color: #fff;
+	--tertiary-color: #666666;
 
 	--error-back-color: rgba(150, 0, 0, 0.7);
-	--error-text-color: #ffffff;
 
-	--login-text-color: #000000;
-
-	--table-header-title-color: #ffffff;
-	--table-header-subtitle-color: rgba(255, 255, 255, 0.5);
-
-	--table-grid-color: #ffffff;
 	--rating-positive-color: green;
 	--rating-negative-color: red;
 
-	--signup-text-color: #363636;
-	--signup-heading-color: #000000;
 
 	/* Font sizes */
 
@@ -72,15 +50,15 @@ label,
 ul,
 div,
 span {
-	color: var(--page-text-color);
+	color: var(--content-color);
 }
 
 body {
-	background-color: var(--page-backround);
+	background-color: var(--main-color);
 }
 
 @media (max-width: 800px) {
 	* {
-		font-size: var(--fontsize-media-800);
+		font-size: var(--fontsize-medium2);
 	}
 }

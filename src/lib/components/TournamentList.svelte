@@ -115,7 +115,7 @@
 		display: grid;
 		grid-template-columns: 1fr 5.7em 5.7em 5.7em 1em 1em;
 		gap: 1rem 1rem;
-		color: var(--table-grid-color);
+		color: var(--content-color);
 		margin-bottom: 1rem;
 		height: 1.1em;
 	}
@@ -153,6 +153,6 @@
 	}
 
 	.table-header span {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 	}
 </style>

@@ -229,11 +229,11 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--accent-color);
+		outline: solid var(--secondary-color);
 	}
 	input:disabled {
-		background-color: var(--inactive-button-back-color);
-		color: var(--inactive-button-text-color);
+		background-color: var(--tertiary-color);
+		color: var(--main-color);
 		box-shadow: none;
 		cursor: default;
 	}

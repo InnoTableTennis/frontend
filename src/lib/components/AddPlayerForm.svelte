@@ -137,7 +137,7 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--accent-color);
+		outline: solid var(--secondary-color);
 	}
 	.last-box {
 		grid-column: 4;

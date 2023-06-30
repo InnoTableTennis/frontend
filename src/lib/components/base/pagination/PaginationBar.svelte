@@ -128,7 +128,7 @@
 
 <style>
 	.sizes-label {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 		margin-right: 0.8rem;
 	}
 	.container {
@@ -145,7 +145,7 @@
 		margin-bottom: 0;
 	}
 	.number {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 		outline: none;
 		border: none;
 		background: none;
@@ -154,7 +154,7 @@
 	}
 	.ellipses {
 		font-size: var(--fontsize-medium1);
-		color: var(--accent-color);
+		color: var(--secondary-color);
 		cursor: default;
 	}
 	.sizes .number {
@@ -190,8 +190,8 @@
 		visibility: hidden;
 	}
 	.current {
-		background-color: var(--accent-color);
-		color: var(--main-back-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 	}
 	.number.current:hover {
 		box-shadow: none;
