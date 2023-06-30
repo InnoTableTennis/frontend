@@ -149,7 +149,7 @@
 		outline: none;
 		border: none;
 		background: none;
-		font-weight: var(--fontweight-pag-bar);
+		font-weight: var(--fontweight-1);
 		transition: 0.1s;
 	}
 	.ellipses {

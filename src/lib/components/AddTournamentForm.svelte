@@ -100,7 +100,7 @@
 		text-transform: uppercase;
 		font-size: var(--fontsize-medium1);
 		margin: 1.5em 0;
-		font-weight: var(--fontweight-admin-form-heading);
+		font-weight: var(--fontweight-1);
 	}
 
 	form {
