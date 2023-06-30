@@ -19,7 +19,7 @@
 	}
 	.rect {
 		position: absolute;
-		background: #c4d6b0;
+		background: var(--accent-color);
 		height: 8vw;
 		width: 100vw;
 	}

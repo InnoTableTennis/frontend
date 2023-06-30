@@ -128,7 +128,7 @@
 
 <style>
 	.sizes-label {
-		color: #c4d6b0;
+		color: var(--accent-color);
 		margin-right: 0.8rem;
 	}
 	.container {
@@ -145,16 +145,16 @@
 		margin-bottom: 0;
 	}
 	.number {
-		color: #c4d6b0;
+		color: var(--accent-color);
 		outline: none;
 		border: none;
 		background: none;
-		font-weight: 600;
+		font-weight: var(--fontweight-pag-bar);
 		transition: 0.1s;
 	}
 	.ellipses {
-		font-size: 1em;
-		color: #c4d6b0;
+		font-size: var(--fontsize-pag-bar);
+		color: var(--accent-color);
 		cursor: default;
 	}
 	.sizes .number {
@@ -173,7 +173,7 @@
 	}
 	.arrow,
 	.number {
-		font-size: 1em;
+		font-size: var(--fontsize-pag-bar);
 		width: 2.5rem;
 		height: 2.5rem;
 	}
@@ -190,8 +190,8 @@
 		visibility: hidden;
 	}
 	.current {
-		background-color: #c4d6b0;
-		color: rgba(0, 0, 0, 0.8);
+		background-color: var(--accent-color);
+		color: var(--main-back-color);
 	}
 	.number.current:hover {
 		box-shadow: none;

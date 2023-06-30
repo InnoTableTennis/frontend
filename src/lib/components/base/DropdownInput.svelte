@@ -147,15 +147,15 @@
 	ul {
 		position: absolute;
 		width: 100%;
-		background-color: rgb(43, 43, 50);
+		background-color: var(--dropdown-item-back-color);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
 		max-height: 100px;
 		overflow-y: auto;
 		box-sizing: border-box;
-		border: 0.01em solid #7a7989;
-		font-size: 0.8em;
+		border: 0.01em solid var(--dropdown-border-color);
+		font-size: var(--fontsize-dropdown-item);
 		z-index: 10;
 	}
 	li {
@@ -163,10 +163,10 @@
 		cursor: pointer;
 	}
 	li:hover {
-		background-color: #65666f;
+		background-color: var(--dropdown-hover-back-color);
 	}
 	li:focus {
-		background-color: #728cd4;
+		background-color: var(--dropdown-focus-back-color);
 	}
 	div,
 	input {
@@ -186,6 +186,6 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid #c4d6b0;
+		outline: solid var(--accent-color);
 	}
 </style>

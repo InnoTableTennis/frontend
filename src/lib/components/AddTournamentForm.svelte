@@ -98,15 +98,15 @@
 <style>
 	h2 {
 		text-transform: uppercase;
-		font-size: 1.5em;
+		font-size: var(--fontsize-admin-form-heading);
 		margin: 1.5em 0;
-		font-weight: bold;
+		font-weight: var(--fontweight-admin-form-heading);
 	}
 
 	form {
 		max-width: 800px;
 		margin: 0 auto 3em;
-		font-size: 0.9em;
+		font-size: var(--fontsize-admin-form-input);
 	}
 	.line-3-elems {
 		margin-top: 1rem;
@@ -127,7 +127,7 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid #c4d6b0;
+		outline: solid var(--accent-color);
 	}
 	.last-box {
 		grid-column: 3;

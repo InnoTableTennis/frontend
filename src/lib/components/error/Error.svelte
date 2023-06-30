@@ -11,8 +11,8 @@
 		border-radius: 0px 15px 15px 0px;
 		padding: 1em 2em;
 		text-align: left;
-		background-color: rgba(150, 0, 0, 0.7);
-		color: #ffffff;
+		background-color: var(--error-back-color);
+		color: var(--error-text-color);
 		min-width: 7em;
 		max-width: 20em;
 	}
