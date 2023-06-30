@@ -14,7 +14,7 @@
 		padding: 0.8em 1em;
 		background-color: var(--secondary-color);
 		color: var(--main-color);
-		font-weight: var(--fontweight-1);
+		font-weight: var(--fontweight-2);
 		transition: 0.1s;
 		width: 100%;
 		height: 100%;
@@ -28,7 +28,7 @@
 	.dark {
 		background-color: var(--main-color);
 		color: var(--content-color);
-		font-weight: var(--fontweight-1);
+		font-weight: var(--fontweight-2);
 	}
 
 	button.dark:hover {
