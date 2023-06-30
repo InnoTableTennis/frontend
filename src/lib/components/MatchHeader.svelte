@@ -40,14 +40,14 @@
 		height: 1em;
 	}
 	.table-header {
-		font-size: var(--fontsize-table-header);
+		font-size: var(--fontsize-medium2);
 		display: grid;
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		margin-bottom: 1.25rem;
 	}
 	.not-main {
-		font-size: var(--fontsize-table-column-heading);
+		font-size: var(--fontsize-medium2);
 		color: var(--table-header-subtitle-color);
 	}
 	.main {

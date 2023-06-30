@@ -153,7 +153,7 @@
 		transition: 0.1s;
 	}
 	.ellipses {
-		font-size: var(--fontsize-pag-bar);
+		font-size: var(--fontsize-medium1);
 		color: var(--accent-color);
 		cursor: default;
 	}
@@ -173,7 +173,7 @@
 	}
 	.arrow,
 	.number {
-		font-size: var(--fontsize-pag-bar);
+		font-size: var(--fontsize-medium1);
 		width: 2.5rem;
 		height: 2.5rem;
 	}

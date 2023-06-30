@@ -69,14 +69,14 @@
 
 <style>
 	h2 {
-		font-size: var(--fontsize-login-heading);
+		font-size: var(--fontsize-large);
 		margin-bottom: 0.5em;
 		text-align: center;
 		color: var(--login-text-color);
 	}
 
 	p {
-		font-size: var(--fontsize-login-text);
+		font-size: var(--fontsize-medium1);
 		color: inherit;
 	}
 
@@ -89,7 +89,7 @@
 		color: var(--login-text-color);
 		max-width: 350px;
 		margin: 0 auto;
-		font-size: var(--fontsize-login-form);
+		font-size: var(--fontsize-medium2);
 		padding: 1.5em;
 		border-radius: 30px;
 		display: flex;

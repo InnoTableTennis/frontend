@@ -103,13 +103,13 @@
 
 <style>
 	.details {
-		font-size: var(--fontsize-table-list-details);
+		font-size: var(--fontsize-medium1);
 		margin: 2rem;
 	}
 	.games-list {
 		max-width: 800px;
 		margin: 3em auto;
-		font-size: var(--fontsize-table-list);
+		font-size: var(--fontsize-medium1);
 	}
 	.players-grid {
 		height: 1.1em;

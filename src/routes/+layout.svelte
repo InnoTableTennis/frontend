@@ -55,7 +55,7 @@
 
 	@media (max-width: 800px) {
 		* {
-			font-size: var(--fontsize-media-800);
+			font-size: var(--fontsize-medium2);
 		}
 		main {
 			padding: 0 1em;

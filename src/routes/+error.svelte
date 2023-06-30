@@ -16,7 +16,7 @@
 
 <style>
 	h1 {
-		font-size: var(--fontsize-error-heading);
+		font-size: var(--fontsize-x-large);
 		margin-bottom: 0.1em;
 	}
 	.container {
@@ -25,6 +25,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		font-size: var(--fontsize-error-text);
+		font-size: var(--fontsize-large);
 	}
 </style>

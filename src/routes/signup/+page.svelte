@@ -23,7 +23,7 @@
 
 <style>
 	h2 {
-		font-size: var(--fontsize-signup-heading);
+		font-size: var(--fontsize-large);
 		margin-bottom: 0.5em;
 		text-align: center;
 		color: inherit;
@@ -43,7 +43,7 @@
 		color: var(--signup-heading-color);
 		max-width: 350px;
 		margin: 0 auto;
-		font-size: var(--fontsize-signup-text);
+		font-size: var(--fontsize-medium1);
 		padding: 1.5em;
 		border-radius: 30px;
 		display: flex;

@@ -34,29 +34,15 @@
 	--signup-heading-color: #000000;
 
 	/* Font sizes */
-	--fontsize-pag-bar: 0.85rem;
-	--fontsize-dropdown-item: 0.8rem;
 
-	--fontsize-login-heading: 1.25rem;
-	--fontsize-login-text: 0.7rem;
-	--fontsize-login-form: 0.85rem;
+	--fontsize-x-large: 2rem;
+	--fontsize-large: 1.5rem;
 
-	--fontsize-error-heading: 2.25rem;
-	--fontsize-error-text: 2rem;
-
-	--fontsize-admin-form-heading: 1.25rem;
-	--fontsize-admin-form-input: 0.8rem;
-
-	--fontsize-table-header: 0.7rem;
-	--fontsize-table-column-heading: 0.7rem;
-
-	--fontsize-table-list-details: 1.1rem;
-	--fontsize-table-list: 0.85rem;
-
-	--fontsize-signup-text: 1rem;
-	--fontsize-signup-heading: 1.5rem;
-
-	--fontsize-media-800: 0.7rem;
+	--fontsize-medium1: 1rem;
+	--fontsize-medium2: 0.8rem;
+		
+	--fontsize-small: 0.6rem;
+	
 	/* Font weights */
 	--fontweight-pag-bar: 600;
 

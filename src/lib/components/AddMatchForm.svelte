@@ -194,7 +194,7 @@
 <style>
 	h2 {
 		text-transform: uppercase;
-		font-size: var(--fontsize-admin-form-heading);
+		font-size: var(--fontsize-medium1);
 		margin: 1.5em 0;
 		font-weight: var(--fontweight-admin-form-heading);
 	}
@@ -202,7 +202,7 @@
 	form {
 		max-width: 800px;
 		margin: 0 auto 3em;
-		font-size: var(--fontsize-admin-form-input);
+		font-size: var(--fontsize-medium2);
 	}
 	.line-2-elems {
 		display: grid;

@@ -155,7 +155,7 @@
 		overflow-y: auto;
 		box-sizing: border-box;
 		border: 0.01em solid var(--dropdown-border-color);
-		font-size: var(--fontsize-dropdown-item);
+		font-size: var(--fontsize-medium2);
 		z-index: 10;
 	}
 	li {
