@@ -233,7 +233,7 @@
 	}
 	input:disabled {
 		background-color: var(--tertiary-color);
-		color: var(--main-color);
+		color: var(--tertiary-font-color);
 		box-shadow: none;
 		cursor: default;
 	}
