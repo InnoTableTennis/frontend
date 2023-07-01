@@ -1,6 +1,7 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.png';
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
+	import ToggleTheme from '../ToggleTheme.svelte';
 </script>
 
 <nav>
@@ -10,6 +11,7 @@
 		<li><a href="/tournaments">Tournaments</a></li>
 		<li><a href="/players">Players</a></li>
 	</ul>
+	<ToggleTheme />
 	<ProfileLink />
 </nav>
 

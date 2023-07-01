@@ -5,13 +5,11 @@
 	--content-color: #fff;
 	--tertiary-color: #666666;
 	--tertiary-font-color: #000;
-	
 
 	--error-back-color: rgba(150, 0, 0, 0.7);
 
 	--rating-positive-color: green;
 	--rating-negative-color: red;
-
 
 	/* Font sizes */
 
@@ -20,9 +18,9 @@
 
 	--fontsize-medium1: 1rem;
 	--fontsize-medium2: 0.8rem;
-		
+
 	--fontsize-small: 0.6rem;
-	
+
 	/* Font weights */
 	--fontweight-1: 600;
 	--fontweight-2: 500;
@@ -30,6 +28,15 @@
 	/* Font families */
 
 	--main-font: 'Poppins', sans-serif;
+}
+
+[color-scheme='light'] {
+	--secondary-color: #d22d19;
+	--main-color: #fff;
+	--content-color: #373a3d;
+	--tertiary-color: #373a3d99;
+	--tertiary-font-color: #000;
+	--title-color: #2b2b2b;
 }
 
 *,
