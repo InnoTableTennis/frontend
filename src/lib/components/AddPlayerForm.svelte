@@ -108,15 +108,16 @@
 <style>
 	h2 {
 		text-transform: uppercase;
-		font-size: var(--fontsize-player-form-heading);
+		font-size: var(--fontsize-medium1);
 		margin: 1.5em 0;
-		font-weight: var(--fontweight-admin-form-heading);
+		font-weight: var(--fontweight-1);
+		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
 		margin: 0 auto 3em;
-		font-size: var(--fontsize-admin-form-input);
+		font-size: var(--fontsize-medium2);
 	}
 	.line-4-elems {
 		margin-top: 1rem;
@@ -137,7 +138,7 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--accent-color);
+		outline: solid var(--secondary-color);
 	}
 	.last-box {
 		grid-column: 4;

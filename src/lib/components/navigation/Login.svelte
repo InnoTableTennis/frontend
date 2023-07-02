@@ -69,14 +69,14 @@
 
 <style>
 	h2 {
-		font-size: var(--fontsize-login-heading);
+		font-size: var(--fontsize-large);
 		margin-bottom: 0.5em;
 		text-align: center;
-		color: var(--login-text-color);
+		color: var(--main-color);
 	}
 
 	p {
-		font-size: var(--fontsize-login-text);
+		font-size: var(--fontsize-medium1);
 		color: inherit;
 	}
 
@@ -85,11 +85,11 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--accent-color);
-		color: var(--login-text-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 		max-width: 350px;
 		margin: 0 auto;
-		font-size: var(--fontsize-login-form);
+		font-size: var(--fontsize-medium2);
 		padding: 1.5em;
 		border-radius: 30px;
 		display: flex;
@@ -106,7 +106,7 @@
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--accent-color);
+		outline: solid var(--secondary-color);
 	}
 	.button-container {
 		width: 10rem;

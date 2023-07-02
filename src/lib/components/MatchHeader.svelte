@@ -21,17 +21,17 @@
 
 <style>
 	span {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 	}
 	h3 {
 		margin: 0.75em 0;
-		color: var(--table-header-title-color);
+		color: var(--content-color);
 		/* text-transform: uppercase; */
 	}
 	.separator {
 		width: 100%;
 		height: 2px;
-		background-color: var(--accent-color);
+		background-color: var(--secondary-color);
 		margin: 0.75em 0;
 	}
 	.invisible {
@@ -40,15 +40,15 @@
 		height: 1em;
 	}
 	.table-header {
-		font-size: var(--fontsize-table-header);
+		font-size: var(--fontsize-medium2);
 		display: grid;
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		margin-bottom: 1.25rem;
 	}
 	.not-main {
-		font-size: var(--fontsize-table-column-heading);
-		color: var(--table-header-subtitle-color);
+		font-size: var(--fontsize-medium2);
+		color: var(--tertiary-color);
 	}
 	.main {
 		margin-top: 3em;

@@ -23,7 +23,7 @@
 
 <style>
 	h2 {
-		font-size: var(--fontsize-signup-heading);
+		font-size: var(--fontsize-large);
 		margin-bottom: 0.5em;
 		text-align: center;
 		color: inherit;
@@ -31,7 +31,7 @@
 	p {
 		text-align: justify;
 		color: inherit;
-		color: var(--signup-text-color);
+		color: var(--main-color);
 	}
 
 	.container {
@@ -39,11 +39,11 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--accent-color);
-		color: var(--signup-heading-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 		max-width: 350px;
 		margin: 0 auto;
-		font-size: var(--fontsize-signup-text);
+		font-size: var(--fontsize-medium1);
 		padding: 1.5em;
 		border-radius: 30px;
 		display: flex;

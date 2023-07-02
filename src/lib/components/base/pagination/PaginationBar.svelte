@@ -128,7 +128,7 @@
 
 <style>
 	.sizes-label {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 		margin-right: 0.8rem;
 	}
 	.container {
@@ -145,16 +145,16 @@
 		margin-bottom: 0;
 	}
 	.number {
-		color: var(--accent-color);
+		color: var(--secondary-color);
 		outline: none;
 		border: none;
 		background: none;
-		font-weight: var(--fontweight-pag-bar);
+		font-weight: var(--fontweight-1);
 		transition: 0.1s;
 	}
 	.ellipses {
-		font-size: var(--fontsize-pag-bar);
-		color: var(--accent-color);
+		font-size: var(--fontsize-medium1);
+		color: var(--secondary-color);
 		cursor: default;
 	}
 	.sizes .number {
@@ -173,7 +173,7 @@
 	}
 	.arrow,
 	.number {
-		font-size: var(--fontsize-pag-bar);
+		font-size: var(--fontsize-medium1);
 		width: 2.5rem;
 		height: 2.5rem;
 	}
@@ -190,8 +190,8 @@
 		visibility: hidden;
 	}
 	.current {
-		background-color: var(--accent-color);
-		color: var(--main-back-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 	}
 	.number.current:hover {
 		box-shadow: none;
