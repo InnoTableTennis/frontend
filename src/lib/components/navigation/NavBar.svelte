@@ -1,7 +1,6 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.png';
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-	import ToggleTheme from '../ToggleTheme.svelte';
 </script>
 
 <nav>

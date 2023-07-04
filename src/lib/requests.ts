@@ -5,7 +5,7 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
-import type { Players, Matches, Tournaments} from '$lib/types/types';
+import type { Players, Matches, Tournaments } from '$lib/types/types';
 
 /**
  * This file contains functions for making API requests.
