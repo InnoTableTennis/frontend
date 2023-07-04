@@ -225,7 +225,7 @@
 
 	input {
 		box-sizing: border-box;
-		border: none;
+		border: 1px solid var(--secondary-color);
 		padding: 0.8em 1em;
 		border-radius: 10px;
 		transition: 0.1s;

@@ -147,7 +147,7 @@
 	ul {
 		position: absolute;
 		width: 100%;
-		background-color: rgb(43, 43, 50);
+		background-color: var(--main-color);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -180,7 +180,7 @@
 
 	input {
 		box-sizing: border-box;
-		border: none;
+		border: 1px solid var(--secondary-color);
 		padding: 0.8em 1em;
 		border-radius: 10px;
 		transition: 0.1s;
