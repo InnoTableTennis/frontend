@@ -11,7 +11,6 @@
 		<li><a href="/tournaments">Tournaments</a></li>
 		<li><a href="/players">Players</a></li>
 	</ul>
-	<ToggleTheme />
 	<ProfileLink />
 </nav>
 
