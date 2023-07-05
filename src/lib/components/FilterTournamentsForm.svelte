@@ -49,7 +49,7 @@
 	});
 </script>
 
-<h2>Add Player</h2>
+<h2>Filters</h2>
 
 <form on:submit={addPlayer}>
 	<div class="line-4-elems">
@@ -60,17 +60,7 @@
 				bind:this={firstInput}
 				required
 				autocomplete="off"
-				placeholder="Player's Name"
-				class="full-width"
-			/>
-		</label>
-		<label>
-			<input
-				name="secondName"
-				bind:value={secondName}
-				required
-				autocomplete="off"
-				placeholder="Player's Surname"
+				placeholder="Search by name"
 				class="full-width"
 			/>
 		</label>
@@ -79,7 +69,25 @@
 				name="telegramAlias"
 				bind:value={telegramAlias}
 				autocomplete="off"
-				placeholder="Player's alias"
+				placeholder="Search by alias"
+				class="full-width"
+			/>
+		</label>
+        <label>
+			<input
+				name="telegramAlias"
+				bind:value={telegramAlias}
+				autocomplete="off"
+				placeholder="Min rating"
+				class="full-width"
+			/>
+		</label>
+        <label>
+			<input
+				name="telegramAlias"
+				bind:value={telegramAlias}
+				autocomplete="off"
+				placeholder="Max rating"
 				class="full-width"
 			/>
 		</label>
@@ -97,7 +105,7 @@
 	</div>
 	<div class="line-4-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Add player</Button>
+			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
 		</div>
 	</div>
 </form>
