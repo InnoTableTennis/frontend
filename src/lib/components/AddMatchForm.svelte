@@ -112,13 +112,12 @@
 <h2>Add Match</h2>
 
 <form on:submit={addMatch}>
-	<div class="line-2-elems">
+	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">First Player Name</span>
 			<DropdownInput
 				name="firstPlayerName"
-				placeholder="First Player"
+				placeholder="First player"
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				isFirstInput={true}
@@ -127,55 +126,51 @@
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">Second Player Name</span>
 			<DropdownInput
 				name="secondPlayerName"
-				placeholder="Second Player"
+				placeholder="Second player"
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
 				bind:reset={dropdownResets[1]}
 			/>
 		</label>
 	</div>
-	<div class="line-4-elems">
+	<div class="line-2-elems">
 		<label>
-			<span class="form-label">First Player Score</span>
 			<input
 				type="number"
 				min="0"
 				max="10"
 				name="firstPlayerScore"
-				bind:value={firstPlayerScore}
 				required
-				class="text-center full-width"
-				placeholder="0"
+				class="full-width"
+				placeholder="First score"
 			/>
 		</label>
 		<label>
-			<span class="form-label">Second Player Score</span>
 			<input
 				type="number"
 				min="0"
 				max="10"
 				name="secondPlayerScore"
-				bind:value={secondPlayerScore}
-				class="text-center full-width"
+				class="full-width"
 				required
-				placeholder="0"
+				placeholder="Second score"
 			/>
 		</label>
+	</div>
+	<div class="column-2-elems">
 		<label>
-			<span class="form-label">Date</span>
 			<input
 				type="date"
 				name="localDateString"
+				placeholder="Date"
 				bind:value={localDateString}
-				class="text-center full-width"
+				class="full-width"
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">Tournament</span>
 			<DropdownInput
 				name="tournamentTitle"
 				placeholder="Tournament"
@@ -185,7 +180,7 @@
 			/>
 		</label>
 	</div>
-	<div class="line-4-elems">
+	<div class="line-2-elems">
 		<div class="last-box full-width">
 			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Add match</Button>
 		</div>
@@ -206,32 +201,34 @@
 		margin: 0 auto 3em;
 		font-size: var(--fontsize-medium2);
 	}
+	.column-2-elems {
+		margin-top: 1rem;
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 1.25rem;
+		align-items: end;
+	}
 	.line-2-elems {
+		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.25rem;
 		align-items: end;
 	}
-	.line-4-elems {
-		margin-top: 1rem;
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 1.25rem;
-		align-items: end;
-	}
-	.text-center {
-		text-align: center;
-	}
 
 	input {
 		box-sizing: border-box;
 		border: none;
+		border-bottom: 5px solid var(--tertiary-color);
 		padding: 0.8em 1em;
-		border-radius: 10px;
+		color: var(--tertiary-font-color);
+		background-color: var(--main-color);
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--secondary-color);
+		outline: none;
+		color: var(--content-color);
+		border-bottom: 5px solid var(--secondary-color);
 	}
 	input:disabled {
 		background-color: var(--tertiary-color);
@@ -240,19 +237,15 @@
 		cursor: default;
 	}
 	.last-box {
-		grid-column: 4;
+		grid-column: 2;
 		margin-top: 1.5em;
 	}
 	.full-width {
 		width: 100%;
 	}
-	.form-label {
-		display: inline-block;
-		margin-bottom: 0.25em;
-	}
 
 	@media (max-width: 800px) {
-		.line-4-elems {
+		.line-2-elems {
 			grid-template-columns: repeat(2, 1fr);
 		}
 		.last-box {

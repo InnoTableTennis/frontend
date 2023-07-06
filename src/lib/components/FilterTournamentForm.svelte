@@ -2,47 +2,38 @@
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
-
-	import * as db from '$lib/requests';
-
-	let firstName = '';
-	let secondName = '';
-	let telegramAlias = '';
-	let initialRating = 100;
+	let title = '';
+	let minParticipants = '';
+	let maxParticipants = '';
+	let startDateString = '';
+	let endDateString = '';
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(firstName && secondName);
+		isSubmissionDisabled = !(
+			title ||
+			minParticipants ||
+			maxParticipants ||
+			startDateString ||
+			endDateString
+		);
 	}
 
-	const addPlayer = async (e: Event) => {
-		const data = new FormData(e.target as HTMLFormElement);
-
-		const firstName = data.get('firstName') as string;
-		const secondName = data.get('secondName') as string;
-
-		const name = firstName.trim() + ' ' + secondName.trim();
-		db.createPlayer(name, data.get('telegramAlias') as string, Number(data.get('rating')))
-			.then(() => {
-				dispatch('update');
-				resetForm();
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
+	const searchTournament = function () {
+		console.log(title, minParticipants, maxParticipants, startDateString, endDateString);
 	};
 
-	function resetForm() {
-		firstName = '';
-		secondName = '';
-		telegramAlias = '';
-		initialRating = 100;
-	}
+	/* function resetForm() {
+		let title = '';
+		let minParticipants = '';
+		let maxParticipants = '';
+		let startDateString = '';
+		let endDateString = '';
+	} */
 
 	onMount(() => {
 		firstInput.focus();
@@ -51,43 +42,29 @@
 
 <h2>Filters</h2>
 
-<form on:submit={addPlayer}>
-	<div class="line-4-elems">
+<form on:submit={searchTournament}>
+	<div class="column-1-elems">
 		<label>
 			<input
-				name="firstName"
-				bind:value={firstName}
+				name="title"
+				bind:value={title}
 				bind:this={firstInput}
-				required
 				autocomplete="off"
-				placeholder="Search by name"
+				placeholder="Search by title"
 				class="full-width"
 			/>
 		</label>
+	</div>
+	<div class="line-2-elems">
 		<label>
 			<input
-				name="telegramAlias"
-				bind:value={telegramAlias}
+				type="number"
+				min="0"
+				max="1000"
+				name="minParticipants"
+				bind:value={minParticipants}
 				autocomplete="off"
-				placeholder="Search by alias"
-				class="full-width"
-			/>
-		</label>
-        <label>
-			<input
-				name="telegramAlias"
-				bind:value={telegramAlias}
-				autocomplete="off"
-				placeholder="Min rating"
-				class="full-width"
-			/>
-		</label>
-        <label>
-			<input
-				name="telegramAlias"
-				bind:value={telegramAlias}
-				autocomplete="off"
-				placeholder="Max rating"
+				placeholder="Min participants"
 				class="full-width"
 			/>
 		</label>
@@ -96,14 +73,34 @@
 				type="number"
 				min="0"
 				max="1000"
-				name="rating"
-				bind:value={initialRating}
-				placeholder="Rating"
+				name="maxParticipants"
+				bind:value={maxParticipants}
+				autocomplete="off"
+				placeholder="Max participants"
+				class="full-width"
+			/>
+		</label>
+		<label>
+			<input
+				type="date"
+				name="startDateString"
+				bind:value={startDateString}
+				autocomplete="off"
+				placeholder="Start date"
+				class="full-width"
+			/>
+		</label>
+		<label>
+			<input
+				type="date"
+				name="endDateString"
+				bind:value={endDateString}
+				placeholder="End date"
 				class="full-width"
 			/>
 		</label>
 	</div>
-	<div class="line-4-elems">
+	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
 			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
 		</div>
@@ -124,10 +121,17 @@
 		margin: 0 auto 3em;
 		font-size: var(--fontsize-medium2);
 	}
-	.line-4-elems {
+	.column-1-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
+		gap: 1.25rem;
+		align-items: end;
+	}
+	.line-2-elems {
+		margin-top: 1rem;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
 		gap: 1.25rem;
 		align-items: end;
 	}
@@ -148,20 +152,12 @@
 		/* outline: solid var(--secondary-color); */
 	}
 	.last-box {
-		grid-column: 4;
+		grid-column: 2;
 	}
 	.full-width {
 		width: 100%;
 	}
 
-	@media (max-width: 800px) {
-		.line-4-elems {
-			grid-template-columns: repeat(2, 1fr);
-		}
-		.last-box {
-			grid-column: 2;
-		}
-	}
 	.margin-top {
 		margin-top: 1em;
 	}

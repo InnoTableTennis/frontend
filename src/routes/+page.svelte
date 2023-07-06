@@ -4,11 +4,10 @@
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/AddMatchForm.svelte';
-	import Separator from '$lib/components/decorations/Separator.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import FilterMatchesForm from '$lib/components/FilterMatchesForm.svelte';
+	import FilterMatchForm from '$lib/components/FilterMatchForm.svelte';
 
 	let handleInsert: () => void;
 
@@ -30,7 +29,7 @@
 {#if isLeader}
 	<div class="edit-mode">
 		<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
-		<span></span>
+		<span />
 	</div>
 {/if}
 
@@ -48,26 +47,35 @@
 		{/await}
 	{:else}
 		<div>
-			<FilterMatchesForm on:error={handleError} on:update={() => handleInsert()} />
+			<FilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
-	<div>
+	<div class="matches-list">
 		<MatchesList on:error={handleError} bind:handleInsert {isLeader} />
 	</div>
 </div>
 
 <style>
 	.wrapper {
+		height: 600px;
 		display: grid;
 		grid-template-columns: 1fr 2fr;
+		align-items: center;
 	}
+	.edit-mode {
+		text-align: right;
+		margin-top: 2rem;
+	}
+	.matches-list {
+		margin-left: 3rem;
+	}
+
 	@media (max-width: 800px) {
 		.wrapper {
 			display: block;
 		}
-	}
-	
-	.edit-mode {
-		display: inline;
+		.matches-list {
+			margin: 0;
+		}
 	}
 </style>

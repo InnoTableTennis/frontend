@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
-	import FilterPlayersForm from '$lib/components/FilterMatchesForm.svelte';
+	import FilterPlayerForm from '$lib/components/FilterPlayerForm.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 
 	import { userToken } from '$lib/stores';
@@ -17,7 +17,6 @@
 {#if isLeader}
 	<div class="edit-mode">
 		<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
-		<span></span>
 	</div>
 {/if}
 
@@ -26,28 +25,37 @@
 		<div>
 			<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
-	{:else}
+	{:else if $userToken}
 		<div>
-			<FilterPlayersForm on:error={handleError} on:update={() => handleInsert()} />
+			<FilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
-	<div>
+	<div class="players-list">
 		<PlayersList on:error={handleError} bind:handleInsert {isLeader} />
 	</div>
 </div>
 
 <style>
 	.wrapper {
+		height: 600px;
 		display: grid;
 		grid-template-columns: 1fr 2fr;
+		align-items: center;
 	}
+	.players-list {
+		margin-left: 3rem;
+	}
+	.edit-mode {
+		text-align: right;
+		margin-top: 2rem;
+	}
+
 	@media (max-width: 800px) {
 		.wrapper {
 			display: block;
 		}
-	}
-	
-	.edit-mode {
-		display: inline;
+		.players-list {
+			margin: 0;
+		}
 	}
 </style>

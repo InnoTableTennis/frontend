@@ -181,11 +181,15 @@
 	input {
 		box-sizing: border-box;
 		border: none;
+		border-bottom: 5px solid var(--tertiary-color);
 		padding: 0.8em 1em;
-		border-radius: 10px;
+		color: var(--tertiary-font-color);
+		background-color: var(--main-color);
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--secondary-color);
+		outline: none;
+		color: var(--content-color);
+		border-bottom: 5px solid var(--secondary-color);
 	}
 </style>

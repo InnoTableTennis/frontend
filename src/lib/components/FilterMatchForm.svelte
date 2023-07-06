@@ -2,59 +2,37 @@
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher, onMount } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
-	import * as db from '$lib/requests';
+	import { onMount } from 'svelte';
 
 	let name = '';
-	let telegramAlias = '';
-	let initialRating = 100;
+	let score = '';
+	let minDateString = '';
+	let maxDateString = '';
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(countNameWords(name) >= 2);
+		isSubmissionDisabled = !(name || minDateString || maxDateString || score);
 	}
 
-	function countNameWords(name: string): number {
-		const arrayStrings: string[] = name.split(/\W+/);
-		let counter = 0;
-		arrayStrings.forEach((element) => {
-			if (element !== '') counter++;
-		});
-		return counter;
-	}
-
-	const addPlayer = async (e: Event) => {
-		const data = new FormData(e.target as HTMLFormElement);
-
-		const name = data.get('firstName') as string;
-
-		db.createPlayer(name.trim(), data.get('telegramAlias') as string, Number(data.get('rating')))
-			.then(() => {
-				dispatch('update');
-				resetForm();
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
+	const addPlayer = function () {
+		console.log(name, score, minDateString, maxDateString);
 	};
 
-	function resetForm() {
-		name = '';
-		telegramAlias = '';
-		initialRating = 100;
-	}
+	/* function resetForm() {
+		let name = '';
+		let score = '';
+		let minDateString = '';
+		let maxDateString = '';
+	} */
 
 	onMount(() => {
 		firstInput.focus();
 	});
 </script>
 
-<h2>Add Player</h2>
+<h2>Filters</h2>
 
 <form on:submit={addPlayer}>
 	<div class="column-2-elems">
@@ -63,38 +41,48 @@
 				name="name"
 				bind:value={name}
 				bind:this={firstInput}
-				required
 				autocomplete="off"
-				placeholder="Player's Name"
+				placeholder="Search by player"
 				class="full-width"
 			/>
 		</label>
-		<label>
-			<input
-				name="telegramAlias"
-				bind:value={telegramAlias}
-				autocomplete="off"
-				placeholder="Player's alias"
-				class="full-width"
-			/>
-		</label>
-	</div>
-	<div class="column-1-elems">
 		<label>
 			<input
 				type="number"
 				min="0"
 				max="1000"
-				name="rating"
-				bind:value={initialRating}
-				placeholder="Rating"
-				class="full-width text-center"
+				name="score"
+				bind:value={score}
+				autocomplete="off"
+				placeholder="Search by score"
+				class="full-width"
+			/>
+		</label>
+	</div>
+	<div class="line-2-elems">
+		<label>
+			<input
+				type="date"
+				name="minDateString"
+				bind:value={minDateString}
+				autocomplete="off"
+				placeholder="Min date"
+				class="full-width"
+			/>
+		</label>
+		<label>
+			<input
+				type="date"
+				name="maxDateString"
+				bind:value={maxDateString}
+				placeholder="Max date"
+				class="full-width"
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Add player</Button>
+			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
 		</div>
 	</div>
 </form>
@@ -114,13 +102,6 @@
 		font-size: var(--fontsize-medium2);
 	}
 	.column-2-elems {
-		margin-top: 1rem;
-		display: grid;
-		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
-		align-items: end;
-	}
-	.column-1-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
@@ -148,6 +129,7 @@
 		outline: none;
 		color: var(--content-color);
 		border-bottom: 5px solid var(--secondary-color);
+		/* outline: solid var(--secondary-color); */
 	}
 	.last-box {
 		grid-column: 2;
@@ -156,17 +138,6 @@
 		width: 100%;
 	}
 
-	@media (max-width: 800px) {
-		.column-2-elems {
-			grid-template-columns: repeat(2, 1fr);
-		}
-		.text-center {
-			text-align: center;
-		}
-		.last-box {
-			grid-column: 2;
-		}
-	}
 	.margin-top {
 		margin-top: 1em;
 	}
