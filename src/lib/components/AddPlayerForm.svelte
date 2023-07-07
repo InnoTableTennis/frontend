@@ -33,9 +33,9 @@
 	const addPlayer = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
 
-		const name = data.get('firstName') as string;
+		const name = data.get('name') as string;
 
-		db.createPlayer(name.trim(), data.get('telegramAlias') as string, Number(data.get('rating')))
+		db.createPlayer(name, data.get('telegramAlias') as string, Number(data.get('rating')))
 			.then(() => {
 				dispatch('update');
 				resetForm();
