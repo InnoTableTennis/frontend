@@ -1,5 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
+	import { get } from 'svelte/store';
+	import { AddTournamentFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
@@ -10,9 +12,9 @@
 	import { convertDateToStringDash } from '$lib/helper';
 	// import Error from './Error.svelte';
 
-	let title = '';
-	let startDateString = convertDateToStringDash(new Date());
-	let endDateString = convertDateToStringDash(new Date());
+	let title = get(AddTournamentFormStore).title;
+	let startDateString = get(AddTournamentFormStore).startDateString;
+	let endDateString = get(AddTournamentFormStore).endDateString;
 
 	let isSubmissionDisabled = true;
 
@@ -43,9 +45,15 @@
 			});
 	};
 
+	const saveForm = function () {
+		AddTournamentFormStore.set({ title: title, startDateString: startDateString, endDateString: endDateString });
+	}
+
 	function resetForm() {
-		title = '';
-		startDateString = convertDateToStringDash(new Date());
+		AddTournamentFormStore.set({ title: '', startDateString: convertDateToStringDash(new Date()), endDateString: convertDateToStringDash(new Date()) });
+		title = get(AddTournamentFormStore).title;
+		startDateString = get(AddTournamentFormStore).startDateString;
+		endDateString = get(AddTournamentFormStore).endDateString;
 	}
 
 	onMount(() => {
@@ -55,7 +63,7 @@
 
 <h2>Add Tournament</h2>
 
-<form on:submit={addTournament}>
+<form on:submit={addTournament} on:change={saveForm}>
 	<div class="column-1-elems">
 		<label class="elem1">
 			<input

@@ -1,14 +1,16 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
+	import { get } from 'svelte/store';
+	import { FilterTournamentFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { onMount } from 'svelte';
 
-	let title = '';
-	let minParticipants = '';
-	let maxParticipants = '';
-	let startDateString = '';
-	let endDateString = '';
+	let title = get(FilterTournamentFormStore).title;
+	let minParticipants = get(FilterTournamentFormStore).minParticipants;
+	let maxParticipants = get(FilterTournamentFormStore).maxParticipants;
+	let startDateString = get(FilterTournamentFormStore).startDateString;
+	let endDateString = get(FilterTournamentFormStore).endDateString;
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
@@ -27,13 +29,18 @@
 		console.log(title, minParticipants, maxParticipants, startDateString, endDateString);
 	};
 
-	/* function resetForm() {
-		let title = '';
-		let minParticipants = '';
-		let maxParticipants = '';
-		let startDateString = '';
-		let endDateString = '';
-	} */
+	const saveForm = function () {
+		FilterTournamentFormStore.set({ title:title, minParticipants: minParticipants, maxParticipants: maxParticipants, startDateString: startDateString, endDateString: endDateString });
+	};
+
+	// function resetForm() {
+	// 	FilterTournamentFormStore.set({ title: '', minParticipants: '', maxParticipants: '', startDateString: '', endDateString: '' });
+	// 	title = get(FilterTournamentFormStore).title;
+	// 	minParticipants = get(FilterTournamentFormStore).minParticipants;
+	// 	maxParticipants = get(FilterTournamentFormStore).maxParticipants;
+	// 	startDateString = get(FilterTournamentFormStore).startDateString;
+	// 	endDateString = get(FilterTournamentFormStore).endDateString;
+	// }
 
 	onMount(() => {
 		firstInput.focus();
@@ -42,7 +49,7 @@
 
 <h2>Filters</h2>
 
-<form on:submit={searchTournament}>
+<form on:submit={searchTournament} on:change={saveForm}>
 	<div class="column-1-elems">
 		<label>
 			<input

@@ -1,13 +1,15 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
+	import { FilterMatchFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
-	let name = '';
-	let score = '';
-	let minDateString = '';
-	let maxDateString = '';
+	let name = get(FilterMatchFormStore).name;
+	let score = get(FilterMatchFormStore).score;
+	let minDateString = get(FilterMatchFormStore).minDateString;
+	let maxDateString = get(FilterMatchFormStore).maxDateString;
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
@@ -20,12 +22,17 @@
 		console.log(name, score, minDateString, maxDateString);
 	};
 
-	/* function resetForm() {
-		let name = '';
-		let score = '';
-		let minDateString = '';
-		let maxDateString = '';
-	} */
+	const saveForm = function () {
+		FilterMatchFormStore.set({ name: name, score: score, minDateString: minDateString, maxDateString: maxDateString });
+	}
+
+	// function resetForm() {
+	// 	FilterMatchFormStore.set({ name: '', score: '', minDateString: '', maxDateString: '' });
+	// 	name = get(FilterMatchFormStore).name;
+	// 	score = get(FilterMatchFormStore).score;
+	// 	minDateString = get(FilterMatchFormStore).minDateString;
+	// 	maxDateString = get(FilterMatchFormStore).maxDateString;
+	// }
 
 	onMount(() => {
 		firstInput.focus();
@@ -34,7 +41,7 @@
 
 <h2>Filters</h2>
 
-<form on:submit={addPlayer}>
+<form on:submit={addPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
 		<label>
 			<input
