@@ -18,7 +18,7 @@
 		isSubmissionDisabled = !(name || minDateString || maxDateString || score);
 	}
 
-	const addPlayer = function () {
+	const searchMatch = function () {
 		console.log(name, score, minDateString, maxDateString);
 	};
 
@@ -41,7 +41,7 @@
 
 <h2>Filters</h2>
 
-<form on:submit={addPlayer} on:change={saveForm}>
+<form on:submit={searchMatch} on:change={saveForm}>
 	<div class="column-2-elems">
 		<label>
 			<input
