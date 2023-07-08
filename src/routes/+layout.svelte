@@ -44,7 +44,7 @@
 <style>
 	header {
 		height: 4em;
-		background-color: var(--secondary-color);
+		background-color: transparent;
 	}
 	main {
 		align-items: center;
