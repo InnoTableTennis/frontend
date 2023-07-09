@@ -8,11 +8,18 @@
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
 	import FilterMatchForm from '$lib/components/FilterMatchForm.svelte';
+	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
+	import EditMatchForm from '$lib/components/EditMatchForm.svelte';
+	import type { Matches } from '$lib/types/types';
 
 	let handleInsert: () => void;
-
+	let editData: Matches = {} as Matches;
+	$: editData;
 	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isEditing = false;
+	$: mode = 'add';
+	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
+	$: chosenId = -1;
 
 	async function getFormData() {
 		const playersPromise = db.getPlayers(1, 1000000);
@@ -28,22 +35,48 @@
 
 {#if isLeader}
 	<div class="edit-mode">
-		<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
+		<ToggleCheckboxButton
+			bind:checked={isEditing}
+			bind:chosenId
+			bind:editData
+			bind:mode
+			label={'Edit Mode'}
+		/>
 		<span />
+	</div>
+{/if}
+
+{#if isEditing}
+	<div class="edit-switch-bar">
+		<EditSwitchBar bind:mode bind:chosenId bind:editData />
 	</div>
 {/if}
 
 <div class="wrapper">
 	{#if isEditing}
 		{#await getFormData() then resp}
-			<div>
-				<AddMatchForm
-					players={resp.players}
-					tournaments={resp.tournaments}
-					on:error={handleError}
-					on:update={() => handleInsert()}
-				/>
-			</div>
+			{#if mode === 'add'}
+				<div>
+					<AddMatchForm
+						players={resp.players}
+						tournaments={resp.tournaments}
+						on:error={handleError}
+						on:update={() => handleInsert()}
+					/>
+				</div>
+			{:else if mode === 'edit'}
+				<div>
+					<EditMatchForm
+						players={resp.players}
+						tournaments={resp.tournaments}
+						on:error={handleError}
+						on:update={() => handleInsert()}
+						bind:match={editData}
+					/>
+				</div>
+			{:else if mode === 'delete'}
+				Please choose a match to delete
+			{/if}
 		{/await}
 	{:else}
 		<div>
@@ -51,7 +84,14 @@
 		</div>
 	{/if}
 	<div class="matches-list">
-		<MatchesList on:error={handleError} bind:handleInsert {isLeader} />
+		<MatchesList
+			on:error={handleError}
+			bind:handleInsert
+			{isLeader}
+			bind:isChoosing
+			bind:chosenId
+			bind:editData
+		/>
 	</div>
 </div>
 

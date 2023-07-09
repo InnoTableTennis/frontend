@@ -12,7 +12,6 @@
 	--rating-positive-color: green;
 	--rating-negative-color: red;
 
-
 	/* Font sizes */
 
 	--fontsize-x-large: 2rem;
@@ -20,9 +19,9 @@
 
 	--fontsize-medium1: 1rem;
 	--fontsize-medium2: 0.8rem;
-		
+
 	--fontsize-small: 0.6rem;
-	
+
 	/* Font weights */
 	--fontweight-1: 600;
 	--fontweight-2: 500;
@@ -31,7 +30,6 @@
 
 	--main-font: 'Poppins', sans-serif;
 }
-
 
 *,
 a {

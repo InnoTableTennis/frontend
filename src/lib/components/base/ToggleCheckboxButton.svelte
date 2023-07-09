@@ -1,10 +1,26 @@
 <script lang="ts">
 	export let checked: true | false;
 	export let label: string;
+	export let chosenId;
+	export let editData;
+	export let mode;
+
+	function changeState() {
+		checked = checked ? false : true;
+		chosenId = -1;
+		mode = 'add';
+		editData = {};
+	}
 </script>
 
 <label class="toggle">
-	<input type="checkbox" id="check" class="toggle-checkbox" bind:checked value="checkbox" />
+	<input
+		type="checkbox"
+		id="check"
+		class="toggle-checkbox"
+		on:click={changeState}
+		value="checkbox"
+	/>
 	<div class="toggle-switch" />
 </label>
 <span class="toggle-label">{label}</span>

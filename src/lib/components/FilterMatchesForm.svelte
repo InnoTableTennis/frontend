@@ -73,7 +73,7 @@
 				class="full-width"
 			/>
 		</label>
-        <label>
+		<label>
 			<input
 				name="telegramAlias"
 				bind:value={telegramAlias}
@@ -82,7 +82,7 @@
 				class="full-width"
 			/>
 		</label>
-        <label>
+		<label>
 			<input
 				name="telegramAlias"
 				bind:value={telegramAlias}

@@ -11,6 +11,9 @@
 	const dispatch = createEventDispatcher();
 
 	export let isLeader = false;
+	export let chosenId = -1;
+	export let isChoosing = false;
+	export let editData;
 
 	let matches: Matches[] = [];
 
@@ -50,7 +53,7 @@
 		await db.deleteMatch(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
-
+		console.log(data);
 		requestNewPage();
 	};
 </script>
@@ -70,46 +73,57 @@
 					{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
 						<MatchHeader title={matches[i].localDateString} {isLeader} />
 					{/if}
-
-					<div class="matches-grid">
-						<div class="no-wrap">
-							{match.firstPlayerName}
-							<span class="rating">
-								{#if match.firstPlayerRatingDelta}
-									({match.firstPlayerRatingBefore})
-									{#if match.firstPlayerRatingDelta > 0}
-										<span class="positive">+{match.firstPlayerRatingDelta}</span>
-									{:else}
-										<span class="negative">{match.firstPlayerRatingDelta}</span>
+					<button
+						class="match-line"
+						class:selected={chosenId === match.id}
+						on:click|preventDefault={() => {
+							chosenId = match.id;
+							editData = match;
+						}}
+						disabled={!isChoosing}
+					>
+						<div class="matches-grid">
+							<div class="no-wrap">
+								{match.firstPlayerName}
+								<span class="rating">
+									{#if match.firstPlayerRatingDelta}
+										({match.firstPlayerRatingBefore})
+										{#if match.firstPlayerRatingDelta > 0}
+											<span class="positive">+{match.firstPlayerRatingDelta}</span>
+										{:else}
+											<span class="negative">{match.firstPlayerRatingDelta}</span>
+										{/if}
 									{/if}
-								{/if}
-							</span>
-						</div>
-						<div class="no-wrap">
-							{match.secondPlayerName}
-							<span class="rating">
-								{#if match.secondPlayerRatingDelta}
-									({match.secondPlayerRatingBefore})
-									{#if match.secondPlayerRatingDelta > 0}
-										<span class="positive">+{match.secondPlayerRatingDelta}</span>
-									{:else}
-										<span class="negative">{match.secondPlayerRatingDelta}</span>
+								</span>
+							</div>
+							<div class="no-wrap">
+								{match.secondPlayerName}
+								<span class="rating">
+									{#if match.secondPlayerRatingDelta}
+										({match.secondPlayerRatingBefore})
+										{#if match.secondPlayerRatingDelta > 0}
+											<span class="positive">+{match.secondPlayerRatingDelta}</span>
+										{:else}
+											<span class="negative">{match.secondPlayerRatingDelta}</span>
+										{/if}
 									{/if}
-								{/if}
-							</span>
+								</span>
+							</div>
+							<div class="score">
+								{match.firstPlayerScore}
+								:
+								{match.secondPlayerScore}
+							</div>
+							{#if isLeader}
+								<form on:submit|preventDefault={deleteMatch}>
+									<input type="hidden" name="id" value={match.id} />
+									<button type="submit" aria-label="Delete" class="delete-btn"
+										><DeleteIcon /></button
+									>
+								</form>
+							{/if}
 						</div>
-						<div class="score">
-							{match.firstPlayerScore}
-							:
-							{match.secondPlayerScore}
-						</div>
-						{#if isLeader}
-							<form on:submit|preventDefault={deleteMatch}>
-								<input type="hidden" name="id" value={match.id} />
-								<button type="submit" aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-							</form>
-						{/if}
-					</div>
+					</button>
 				{/each}
 			</section>
 		</Pagination>
@@ -134,8 +148,27 @@
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		color: var(--content-color);
+	}
+
+	.match-line {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		border: none;
+		width: 100%;
+		height: 2rem;
 		margin-bottom: 1rem;
 	}
+
+	.match-line:disabled {
+		cursor: default;
+	}
+
+	.selected {
+		background-color: var(--secondary-color);
+	}
+
 	.score {
 		white-space: nowrap;
 	}
@@ -149,6 +182,7 @@
 		width: 1em;
 	}
 	.no-wrap {
+		text-align: left;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

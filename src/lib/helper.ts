@@ -51,6 +51,16 @@ export const convertDateToStringDash = (date: Date): string => {
 	return formattedDate;
 };
 
+export function changeDateFormat(initDate: string) {
+	if (initDate) {
+		const year = Number(initDate.slice(6, 10));
+		const month = Number(initDate.slice(3, 5)) - 1;
+		const day = Number(initDate.slice(0, 2));
+		return convertDateToStringDash(new Date(year, month, day));
+	}
+	return '';
+}
+
 /**
  * Retrieves a shorter name by taking the first name and the last name initial.
  * @param name - The input name to shorten.

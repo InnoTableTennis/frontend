@@ -21,7 +21,8 @@
 	let isVisible = false;
 	let selectedIndex = -1;
 	let unorderedList: HTMLUListElement;
-	let inputVal = '';
+
+	export let inputVal = '';
 
 	let input: HTMLInputElement;
 
@@ -183,7 +184,7 @@
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
 		padding: 0.8em 1em;
-		color: var(--tertiary-font-color);
+		color: var(--content-color);
 		background-color: var(--main-color);
 		transition: 0.1s;
 	}
