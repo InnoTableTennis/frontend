@@ -42,3 +42,45 @@ export interface Tournaments {
 	startDateString: string;
 	title: string;
 }
+
+export interface filterPlayerFormStore {
+    name: string;
+    telegramAlias: string;
+    minRating: string;
+    maxRating: string;
+}
+
+export interface filterTournamentFormStore {
+    title: string;
+	minParticipants: string;
+	maxParticipants: string;
+	startDateString: string;
+	endDateString: string;
+}
+
+export interface filterMatchFormStore {
+    name: string;
+	score: string;
+	minDateString: string;
+	maxDateString: string;
+}
+
+export interface addPlayerFormStore {
+    name: string;
+	telegramAlias: string;
+	initialRating: number;
+}
+
+export interface addTournamentFormStore {
+    title: string;
+	startDateString: string;
+	endDateString: string;
+}
+
+export interface addMatchFormStore {
+    firstPlayerName: string;
+	secondPlayerName: string;
+	tournamentTitle: string;
+	firstPlayerScore: number;
+	secondPlayerScore: number;
+}

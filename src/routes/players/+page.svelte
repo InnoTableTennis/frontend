@@ -16,7 +16,7 @@
 
 {#if isLeader}
 	<div class="edit-mode">
-		<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
+		<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'}/>
 	</div>
 {/if}
 

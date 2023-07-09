@@ -1,6 +1,8 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
+	import { get } from 'svelte/store';
+	import { AddPlayerFormStore } from '$lib/stores';
 
 	import { createEventDispatcher, onMount } from 'svelte';
 
@@ -8,9 +10,9 @@
 
 	import * as db from '$lib/requests';
 
-	let name = '';
-	let telegramAlias = '';
-	let initialRating = 100;
+	let name = get(AddPlayerFormStore).name;
+	let telegramAlias = get(AddPlayerFormStore).telegramAlias;
+	let initialRating = get(AddPlayerFormStore).initialRating;
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
@@ -31,9 +33,9 @@
 	const addPlayer = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
 
-		const name = data.get('firstName') as string;
+		const name = data.get('name') as string;
 
-		db.createPlayer(name.trim(), data.get('telegramAlias') as string, Number(data.get('rating')))
+		db.createPlayer(name, data.get('telegramAlias') as string, Number(data.get('rating')))
 			.then(() => {
 				dispatch('update');
 				resetForm();
@@ -43,10 +45,15 @@
 			});
 	};
 
+	const saveForm = function () {
+		AddPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, initialRating: initialRating });
+	}
+
 	function resetForm() {
-		name = '';
-		telegramAlias = '';
-		initialRating = 100;
+		AddPlayerFormStore.set({ name: '', telegramAlias: '', initialRating: 100 });
+		name = get(AddPlayerFormStore).name;
+		telegramAlias = get(AddPlayerFormStore).telegramAlias;
+		initialRating = get(AddPlayerFormStore).initialRating;
 	}
 
 	onMount(() => {
@@ -56,7 +63,7 @@
 
 <h2>Add Player</h2>
 
-<form on:submit={addPlayer}>
+<form on:submit={addPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
 		<label>
 			<input

@@ -148,7 +148,7 @@
 	ul {
 		position: absolute;
 		width: 100%;
-		background-color: rgb(43, 43, 50);
+		background-color: var(--tertiary-color);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -167,7 +167,7 @@
 		background-color: var(--tertiary-color);
 	}
 	li:focus {
-		background-color: #728cd4;
+		background-color: var(--secondary-color);
 	}
 	div,
 	input {

@@ -1,13 +1,15 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
+	import { get } from 'svelte/store';
+	import { FilterPlayerFormStore } from '$lib/stores'; 
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { onMount } from 'svelte';
 
-	let name = '';
-	let telegramAlias = '';
-	let minRating = '';
-	let maxRating = '';
+	let name = get(FilterPlayerFormStore).name;
+	let telegramAlias = get(FilterPlayerFormStore).telegramAlias;
+	let minRating = get(FilterPlayerFormStore).minRating;
+	let maxRating = get(FilterPlayerFormStore).maxRating;
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
@@ -20,12 +22,17 @@
 		console.log(name, telegramAlias, minRating, maxRating);
 	};
 
-	/* function resetForm() {
-		name = '';
-		telegramAlias = '';
-		minRating = '';
-		maxRating = '';
-	} */
+	const saveForm = function () {
+		FilterPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, minRating: minRating, maxRating: maxRating });
+	};
+
+	// function resetForm() {
+	// 	FilterPlayerFormStore.set({ name: '', telegramAlias: '', minRating: '', maxRating: '' });
+	// 	name = get(FilterPlayerFormStore).name;
+	// 	telegramAlias = get(FilterPlayerFormStore).telegramAlias;
+	// 	minRating = get(FilterPlayerFormStore).minRating;
+	// 	maxRating = get(FilterPlayerFormStore).maxRating;
+	// }
 
 	onMount(() => {
 		firstInput.focus();
@@ -34,7 +41,7 @@
 
 <h2>Filters</h2>
 
-<form on:submit={searchPlayer}>
+<form on:submit={searchPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
 		<label>
 			<input

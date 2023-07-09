@@ -2,6 +2,8 @@
 	// import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
+	import { get } from 'svelte/store';
+	import { AddMatchFormStore } from '$lib/stores';
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
@@ -28,11 +30,12 @@
 		}
 	}
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
+	let firstPlayerName = get(AddMatchFormStore).firstPlayerName;
+	let secondPlayerName = get(AddMatchFormStore).secondPlayerName;
+	let tournamentTitle = get(AddMatchFormStore).tournamentTitle;
+	let firstPlayerScore = get(AddMatchFormStore).firstPlayerScore;
+	let secondPlayerScore = get(AddMatchFormStore).secondPlayerScore;
+	
 	let isSubmissionDisabled = true;
 
 	$: {
@@ -76,11 +79,17 @@
 		}
 	};
 
+	const saveForm = function () {
+		console.log(get(AddMatchFormStore).firstPlayerName, get(AddMatchFormStore).secondPlayerName);
+		AddMatchFormStore.set({ firstPlayerName: firstPlayerName, secondPlayerName: secondPlayerName, tournamentTitle: tournamentTitle, firstPlayerScore: firstPlayerScore, secondPlayerScore: secondPlayerScore });
+	}
+
 	let dropdownResets = new Array(2);
 
 	function resetForm() {
-		firstPlayerScore = 0;
-		secondPlayerScore = 0;
+		AddMatchFormStore.set({ firstPlayerName: '', secondPlayerName: '', tournamentTitle: '', firstPlayerScore: 0, secondPlayerScore: 0 });
+		firstPlayerScore = firstPlayerScore;
+		secondPlayerScore = secondPlayerScore;
 		dropdownResets.forEach((reset) => {
 			reset();
 		});
@@ -88,13 +97,16 @@
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
+		saveForm();
 	}
 	function handleSelectSecondPlayerName(event: CustomEvent) {
 		secondPlayerName = event.detail;
+		saveForm();
 	}
 	function handleSelectTournament(event: CustomEvent) {
 		tournamentTitle = event.detail;
 		changeDateByTournamentTitle(tournamentTitle);
+		saveForm();
 	}
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
@@ -111,7 +123,7 @@
 
 <h2>Add Match</h2>
 
-<form on:submit={addMatch}>
+<form on:submit={addMatch} on:change={saveForm}>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -121,6 +133,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				isFirstInput={true}
+				defaultValue={firstPlayerName}
 				bind:reset={dropdownResets[0]}
 			/>
 		</label>
@@ -131,6 +144,7 @@
 				placeholder="Second player"
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
+				defaultValue={secondPlayerName}
 				bind:reset={dropdownResets[1]}
 			/>
 		</label>
@@ -142,9 +156,10 @@
 				min="0"
 				max="10"
 				name="firstPlayerScore"
-				required
-				class="full-width"
 				placeholder="First score"
+				bind:value={firstPlayerScore}
+				class="full-width"
+				required
 			/>
 		</label>
 		<label>
@@ -153,9 +168,10 @@
 				min="0"
 				max="10"
 				name="secondPlayerScore"
+				placeholder="Second score"
+				bind:value={secondPlayerScore}
 				class="full-width"
 				required
-				placeholder="Second score"
 			/>
 		</label>
 	</div>
