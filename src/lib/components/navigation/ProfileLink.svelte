@@ -44,6 +44,9 @@
 	.sign-up {
 		width: 100%;
 	}
+	.log-out {
+		margin-left: 1em;
+	}
 	.profile-container a {
 		text-decoration: none;
 		display: flex;
