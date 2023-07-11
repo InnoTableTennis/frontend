@@ -5,9 +5,9 @@
 <nav>
 	<input type="checkbox">
 	<div class="hamburger-lines">
-		<span class="line line1"></span>
-		<span class="line line2"></span>
-		<span class="line line3"></span>
+		<div class="line line1"></div>
+		<div class="line line2"></div>
+		<div class="line line3"></div>
 	</div>
 	<div class="nav-container">
 	<ul class="nav-links">
@@ -68,7 +68,7 @@
 	/*	 border-bottom: 2px solid var(--content-color);*/
 	/*}*/
 
-	@media (max-width: 500px) {
+	@media (max-width: 480px) {
 		.hamburger-lines {
 			height: 1.5rem;
 			width: 2rem;
@@ -114,7 +114,7 @@
 			background-color: var(--main-color);
 			border-left: 1px solid var(--content-color);
 			opacity: 0.90;
-			transition: all 0.5s ease-in-out;
+			transition: transform 0.5s ease-in-out;
 			justify-content: center;
 		}
 		.nav-links {
