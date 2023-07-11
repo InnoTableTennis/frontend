@@ -56,7 +56,7 @@
 		justify-content: center;
 		color: var(--content-color);
 	}
-	@media (min-width: 500px) {
+	@media (min-width: 480px) {
 		.profile-container .sign-in a:hover {
 			border-bottom: 2px solid var(--content-color);
 		}
@@ -66,10 +66,10 @@
 			gap: 0.5em;
 		}
 		.sign-in {
-			margin-top: 1px;
+			margin-top: 0.078125rem;
 		}
 	}
-	@media (max-width: 500px) {
+	@media (max-width: 480px) {
 		.profile-container {
 			display: block;
 			height: 6rem;
