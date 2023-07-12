@@ -31,92 +31,160 @@
 		usernameInput.focus();
 	});
 </script>
+<button class="back-btn" on:click={() => {
+	window.history.back()
+}}>← Back</button>
 
 <div class="container">
-	<form on:submit={login}>
-		<h2>Sign in</h2>
-
-		<label>
-			<!-- <span class="form-label">Telegram Alias</span> -->
-			<input
-				name="username"
-				bind:value={username}
-				required
-				autocomplete="off"
-				placeholder="@telegram_alias"
-				class="full-width"
-				bind:this={usernameInput}
-			/>
-		</label>
-		<label>
-			<!-- <span class="form-label">Password</span> -->
-			<input
-				type="password"
-				name="password"
-				bind:value={password}
-				required
-				autocomplete="off"
-				placeholder="Password"
-				class="full-width"
-			/>
-		</label>
-		<div class="button-container">
-			<Button dark={true} type={'submit'}>Sign In</Button>
+	<div class="row">
+		<div class="container">
+			<div class="wrapper-left">
+				<div class="column">
+					<form on:submit={login}>
+						<h2>Sign in</h2>
+				
+						<label>
+							<!-- <span class="form-label">Telegram Alias</span> -->
+							<input
+								name="username"
+								bind:value={username}
+								required
+								autocomplete="off"
+								placeholder="@Telegram alias"
+								class="full-width"
+								bind:this={usernameInput}
+							/>
+						</label>
+						<label>
+							<!-- <span class="form-label">Password</span> -->
+							<input
+								type="password"
+								name="password"
+								bind:value={password}
+								required
+								autocomplete="off"
+								placeholder="Password"
+								class="full-width"
+							/>
+						</label>
+						<div class="button-container">
+							<Button dark={true} type={'submit'}>Sign In</Button>
+						</div>
+						<a class="sp-link" href="/signup">I don`t have an account</a>
+					</form>					
+				</div>	
+			</div>	
 		</div>
-		<p><a href="/signup">Sign Up</a> If you don't have an account yet!</p>
-	</form>
+		<div class="wrapper-right">
+			<div class="container">
+				<img src="../../../../signin.jpg" alt="">
+			</div>
+		</div>
+	</div>
 </div>
-
 <style>
 	h2 {
-		font-size: var(--fontsize-large);
+		font-size: var(--fontsize-x-large);
 		margin-bottom: 0.5em;
-		text-align: center;
-		color: var(--main-color);
-	}
-
-	p {
-		font-size: var(--fontsize-medium1);
+		text-align: end;
+		align-self: start;
 		color: inherit;
 	}
-
 	form {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: var(--secondary-color);
-		color: var(--main-color);
-		max-width: 350px;
+		color: var(--content-color);
+		width: 100%;
+		height: 100%;
 		margin: 0 auto;
-		font-size: var(--fontsize-medium2);
-		padding: 1.5em;
-		border-radius: 30px;
+		font-size: var(--fontsize-medium1);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		gap: 1rem;
 	}
-
+	label {
+		align-self:flex-start;
+		width: 100%;
+	}
 	input {
+		background: var(--main-color);
 		box-sizing: border-box;
-		border: none;
+		width: 100%;
+		border-top:none;
+		border-left: none;
+		border-right: none;
+		border-bottom: 0.2rem solid;
+		border-color: var(--tertiary-color);
 		padding: 0.8em 1em;
-		border-radius: 20px;
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--secondary-color);
+		border-color: var(--secondary-color);
+		outline: none;
+	}
+	.back-btn {
+		position:absolute;
+		left: 5%;
+		top: 5%;
+		color: var(--secondary-color);
+		font-size: 1.5em;
+		background-color: var(--main-color);
+		border: 0;
+		text-decoration: underline;
+	}
+	.row {
+		display:flex;
+		flex-direction: row;
+		width: 100%;
+		height: 100%;
+	}
+	.sp-link {
+		padding-top: 1.5em;
+		color: var(--secondary-color);
+		text-align: center;
+	}
+	.container {
+		color: var(--content-color);
+		display:flex;
+		flex-direction: column;
+		width: 100%;
+		max-height: 100%;
+		align-content: center;
+		justify-content: center;
+	}
+	.wrapper-right {
+		display: flex;
+		width: 100vw;
+		height: 100%;
+		align-items: start;
+	}
+	.wrapper-left {
+		display: flex;
+		flex-direction: column;
+		padding: 6em;
+	}
+	.column {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		align-content: center;
+		justify-content: center;
 	}
 	.button-container {
 		width: 10rem;
+		align-self: flex-end;
 	}
-
-	@media (max-height: 500px) {
+	img {
+		height: 100vh;
+		object-fit: cover;
+	}
+	@media (max-width: 500px) {
 		form {
 			margin: 7vh 0;
 			padding: 0.75em;
 			gap: 0.5rem;
+		}
+		.wrapper-right{
+			display: none;
 		}
 	}
 </style>

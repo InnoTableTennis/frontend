@@ -9,6 +9,7 @@
 	import { loadedPage, userToken } from '$lib/stores';
 
 	let isLoaded = false;
+	let isNavBarNeed = true;
 
 	$: if ($loadedPage == $page.data.title || $loadedPage === null) {
 		isLoaded = true;
@@ -31,7 +32,7 @@
 </svelte:head>
 
 <header>
-	<NavBar />
+	<NavBar/>
 </header>
 
 {#if isLoaded}
@@ -50,7 +51,7 @@
 		align-items: center;
 		max-width: 1440px;
 		margin: 0 auto;
-		padding: 0 2em;
+		/* padding: 0 2em; */
 	}
 
 	@media (max-width: 800px) {

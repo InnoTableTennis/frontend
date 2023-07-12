@@ -4,6 +4,4 @@
 	import { handleError } from '$lib/errorHandler';
 </script>
 
-<Rectangles />
-
 <Login on:erorr={handleError} />

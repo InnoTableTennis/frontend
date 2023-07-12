@@ -12,6 +12,9 @@
 	{#if $page.status >= 500 && $page.status < 600}
 		<div>Server currently is under maintenance</div>
 	{/if}
+	{#if $page.status == 401}
+		<div>Username or password is wrong</div>
+	{/if}
 </div>
 
 <style>
