@@ -4,12 +4,10 @@
 	import { beforeUpdate, onDestroy } from 'svelte';
 
 	import Errors from '$lib/components/error/Errors.svelte';
-	import NavBar from '$lib/components/navigation/NavBar.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
 
 	let isLoaded = false;
-	let isNavBarNeed = true;
 
 	$: if ($loadedPage == $page.data.title || $loadedPage === null) {
 		isLoaded = true;
@@ -30,7 +28,6 @@
 <svelte:head>
 	<title>InnoTableTennis | {$page.data.title}</title>
 </svelte:head>
-
 
 {#if isLoaded}
 	<main>

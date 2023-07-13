@@ -66,9 +66,9 @@ function checkExpiration(response: Response, token: string): void {
 }
 
 export function handleError(event: CustomEvent) {
-	console.log("hi");
+	console.log('hi');
 	errors.update((errors) => [...errors, event.detail]);
-	console.log("Im there");
+	console.log('Im there');
 	setTimeout(() => {
 		errors.update((errors) => errors.slice(0, errors.length - 1));
 	}, 5000);

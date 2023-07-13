@@ -9,7 +9,6 @@
 	import { loadedPage, userToken } from '$lib/stores';
 
 	let isLoaded = false;
-	let isNavBarNeed = true;
 
 	$: if ($loadedPage == $page.data.title || $loadedPage === null) {
 		isLoaded = true;
@@ -32,7 +31,7 @@
 </svelte:head>
 
 <header>
-	<NavBar/>
+	<NavBar />
 </header>
 
 {#if isLoaded}

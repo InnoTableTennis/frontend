@@ -16,5 +16,5 @@
 		min-width: 7em;
 		max-width: 20em;
 		font-family: inherit;
-		}
+	}
 </style>

@@ -3,15 +3,18 @@
 	// import Rectangles from '$lib/components/decorations/Rectangles.svelte';
 </script>
 
-<button class="back-btn" on:click={() => {
-	window.history.back()
-}}>Back →</button>
+<button
+	class="back-btn"
+	on:click={() => {
+		window.history.back();
+	}}>Back →</button
+>
 
 <div class="container">
 	<div class="row">
 		<div class="wrapper-left">
 			<div class="container">
-				<img src="../../../signup.png">
+				<img src="../../../signup.png" alt="Problem with downloading" />
 			</div>
 		</div>
 		<div class="container">
@@ -20,25 +23,36 @@
 					<h2>Sign Up</h2>
 					<div class="index">01</div>
 					<p>
-						Contact the <a class="link" href="https://t.me/+pSAqcDY6eqM5Mjg6" target="_blank" rel="noreferrer">club</a
+						Contact the <a
+							class="link"
+							href="https://t.me/+pSAqcDY6eqM5Mjg6"
+							target="_blank"
+							rel="noreferrer">club</a
 						>
-						leaders to add yourself to the players' list. Check the <a class="link" href="/">matches section</a> to confirm
-						if you're already added.
+						leaders to add yourself to the players' list. Check the
+						<a class="link" href="/">matches section</a> to confirm if you're already added.
 					</p>
 					<div class="index">02</div>
 					<p>
-						Use the <a class="link" href="https://t.me/InnoTableTennisBot" target="_blank" rel="noreferrer"
-							>telegram bot</a
+						Use the <a
+							class="link"
+							href="https://t.me/InnoTableTennisBot"
+							target="_blank"
+							rel="noreferrer">telegram bot</a
 						> to get your password once your telegram alias is added.
 					</p>
 					<div class="index">03</div>
-					<p><a class="link" href="/login">Log in</a> to the website using your password to access the services.</p>
+					<p>
+						<a class="link" href="/login">Log in</a> to the website using your password to access the
+						services.
+					</p>
 					<a class="sp-link" href="/login">Already have an account</a>
-				</div>	
-			</div>	
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
 <style>
 	h2 {
 		font-size: var(--fontsize-x-large);
@@ -56,7 +70,7 @@
 	}
 
 	.back-btn {
-		position:absolute;
+		position: absolute;
 		left: 85%;
 		top: 5%;
 		color: var(--secondary-color);
@@ -67,7 +81,7 @@
 	}
 
 	.row {
-		display:flex;
+		display: flex;
 		flex-direction: row;
 		width: 100%;
 		height: 100%;
@@ -94,7 +108,7 @@
 
 	.container {
 		color: var(--content-color);
-		display:flex;
+		display: flex;
 		flex-direction: column;
 		width: 100%;
 		max-height: 100%;
@@ -142,7 +156,7 @@
 			padding: 0.75em;
 			gap: 0.5rem;
 		}
-		.wrapper-left{
+		.wrapper-left {
 			display: none;
 		}
 	}

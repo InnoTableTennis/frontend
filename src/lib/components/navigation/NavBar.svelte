@@ -3,24 +3,24 @@
 </script>
 
 <nav>
-	<input type="checkbox">
+	<input type="checkbox" />
 	<div class="hamburger-lines">
-		<div class="line line1"></div>
-		<div class="line line2"></div>
-		<div class="line line3"></div>
+		<div class="line line1" />
+		<div class="line line2" />
+		<div class="line line3" />
 	</div>
 	<div class="nav-container">
-	<ul class="nav-links">
-		<li><a href="/">Matches</a></li>
-		<li><a href="/tournaments">Tournaments</a></li>
-		<li><a href="/players">Players</a></li>
-	</ul>
-	<ProfileLink />
+		<ul class="nav-links">
+			<li><a href="/">Matches</a></li>
+			<li><a href="/tournaments">Tournaments</a></li>
+			<li><a href="/players">Players</a></li>
+		</ul>
+		<ProfileLink />
 	</div>
 </nav>
 
 <style>
-	input[type="checkbox"] {
+	input[type='checkbox'] {
 		display: none;
 		margin: 0;
 	}
@@ -88,10 +88,10 @@
 			border-radius: 10px;
 			background: var(--content-color);
 		}
-		input[type="checkbox"]:checked ~ .hamburger-lines {
+		input[type='checkbox']:checked ~ .hamburger-lines {
 			transform: rotate(-90deg);
 		}
-		input[type="checkbox"] {
+		input[type='checkbox'] {
 			position: absolute;
 			display: block;
 			border: none;
@@ -113,14 +113,14 @@
 			margin: 0;
 			background-color: var(--main-color);
 			border-left: 1px solid var(--content-color);
-			opacity: 0.90;
+			opacity: 0.9;
 			transition: transform 0.5s ease-in-out;
 			justify-content: center;
 		}
 		.nav-links {
 			display: block;
 		}
-		input[type="checkbox"]:checked ~ .nav-container {
+		input[type='checkbox']:checked ~ .nav-container {
 			transform: translateX(0);
 		}
 		.nav-links li a:hover {

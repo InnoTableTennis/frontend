@@ -31,9 +31,13 @@
 		usernameInput.focus();
 	});
 </script>
-<button class="back-btn" on:click={() => {
-	window.history.back()
-}}>← Back</button>
+
+<button
+	class="back-btn"
+	on:click={() => {
+		window.history.back();
+	}}>← Back</button
+>
 
 <div class="container">
 	<div class="row">
@@ -42,7 +46,7 @@
 				<div class="column">
 					<form on:submit={login}>
 						<h2>Sign in</h2>
-				
+
 						<label>
 							<!-- <span class="form-label">Telegram Alias</span> -->
 							<input
@@ -71,17 +75,18 @@
 							<Button dark={true} type={'submit'}>Sign In</Button>
 						</div>
 						<a class="sp-link" href="/signup">I don`t have an account</a>
-					</form>					
-				</div>	
-			</div>	
+					</form>
+				</div>
+			</div>
 		</div>
 		<div class="wrapper-right">
 			<div class="container">
-				<img src="../../../../signin.jpg" alt="">
+				<img src="../../../../signin.jpg" alt="" />
 			</div>
 		</div>
 	</div>
 </div>
+
 <style>
 	h2 {
 		font-size: var(--fontsize-x-large);
@@ -101,14 +106,14 @@
 		gap: 1rem;
 	}
 	label {
-		align-self:flex-start;
+		align-self: flex-start;
 		width: 100%;
 	}
 	input {
 		background: var(--main-color);
 		box-sizing: border-box;
 		width: 100%;
-		border-top:none;
+		border-top: none;
 		border-left: none;
 		border-right: none;
 		border-bottom: 0.2rem solid;
@@ -121,7 +126,7 @@
 		outline: none;
 	}
 	.back-btn {
-		position:absolute;
+		position: absolute;
 		left: 5%;
 		top: 5%;
 		color: var(--secondary-color);
@@ -131,7 +136,7 @@
 		text-decoration: underline;
 	}
 	.row {
-		display:flex;
+		display: flex;
 		flex-direction: row;
 		width: 100%;
 		height: 100%;
@@ -143,7 +148,7 @@
 	}
 	.container {
 		color: var(--content-color);
-		display:flex;
+		display: flex;
 		flex-direction: column;
 		width: 100%;
 		max-height: 100%;
@@ -183,7 +188,7 @@
 			padding: 0.75em;
 			gap: 0.5rem;
 		}
-		.wrapper-right{
+		.wrapper-right {
 			display: none;
 		}
 	}
