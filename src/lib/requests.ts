@@ -5,6 +5,8 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
+import type { Players, Matches, Tournaments } from '$lib/types/types';
+
 /**
  * This file contains functions for making API requests.
  */
@@ -29,7 +31,7 @@ export async function getMatches(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: any[];
+	data: Matches[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/matches';
@@ -72,7 +74,7 @@ export async function createMatch(
 	secondPlayerScore: number,
 	tournamentTitle: string,
 	localDateString: string | null = null,
-): Promise<any> {
+): Promise<Matches> {
 	if (localDateString !== null) {
 		localDateString = new Date(localDateString).toLocaleDateString('ru');
 	} else {
@@ -127,7 +129,7 @@ export async function getPlayers(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: any[];
+	data: Players[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/players';
@@ -162,7 +164,7 @@ export async function createPlayer(
 	name: string,
 	telegramAlias: string | null = null,
 	rating: number | null = null,
-): Promise<any> {
+): Promise<Players> {
 	name = name.trim();
 
 	if (telegramAlias !== null) {
@@ -269,7 +271,7 @@ export async function getTournaments(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: any[];
+	data: Tournaments[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/tournaments';
@@ -303,7 +305,7 @@ export async function createTournament(
 	title: string,
 	startDateString: string,
 	endDateString: string,
-): Promise<any> {
+): Promise<Tournaments> {
 	startDateString = new Date(startDateString).toLocaleDateString('ru');
 	endDateString = new Date(endDateString).toLocaleDateString('ru');
 

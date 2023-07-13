@@ -101,6 +101,7 @@
 		font-size: var(--fontsize-medium1);
 		margin: 1.5em 0;
 		font-weight: var(--fontweight-1);
+		color: var(--title-color);
 	}
 
 	form {

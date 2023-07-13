@@ -1,5 +1,6 @@
 <script>
-	import { theme, toggleTheme } from '$lib/theme';
+	import { theme } from '$lib/stores';
+	import { toggleTheme } from '$lib/theme';
 </script>
 
 <button on:click={toggleTheme} aria-label="Toggle theme">
