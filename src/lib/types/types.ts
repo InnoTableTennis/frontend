@@ -43,26 +43,32 @@ export interface Tournaments {
 	title: string;
 }
 
-export interface filterPlayerFormStore {
+export interface sortFilterPlayerFormStore {
     name: string;
     telegramAlias: string;
     minRating: string;
     maxRating: string;
+	descending: boolean;
+	sortBy: "rating" | "name";
 }
 
-export interface filterTournamentFormStore {
+export interface sortFilterTournamentFormStore {
     title: string;
 	minParticipants: string;
 	maxParticipants: string;
 	startDateString: string;
 	endDateString: string;
+	descending: boolean;
+	sortBy: "date" | "numberOfPlayers" | "kf";
 }
 
-export interface filterMatchFormStore {
+export interface sortFilterMatchFormStore {
     name: string;
 	score: string;
 	minDateString: string;
 	maxDateString: string;
+	descending: boolean;
+	sortBy: "date";
 }
 
 export interface addPlayerFormStore {

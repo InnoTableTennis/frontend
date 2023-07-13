@@ -23,11 +23,22 @@ console.log(serverAPI);
 
 /**
  * Retrieves matches from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param name - The string that player has in their name in match.
+ * @param score - The score of the match.
+ * @param startDateString - The start date of showed matches.
+ * @param endDateString - The end date of showed matches.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The matches data and total number of pages.
  */
 export async function getMatches(
+	descending: boolean | null = null,
+	name: string | null = null,
+	score: string | null = null,
+	minDateString: string | null = null,
+	maxDateString: string | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -35,8 +46,13 @@ export async function getMatches(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/matches';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	if (descending != null) {
+		url += '?descending=' + descending;
+		if (name) url += '&hasPlayerWith=' + name;
+		if (minDateString) url += '&startDate=' + minDateString;
+		if (maxDateString) url += '&endDate=' + maxDateString;
+		if (score) url += '&score=' + score;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 
@@ -51,8 +67,6 @@ export async function getMatches(
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '999', 10);
 
 	const data = await response.json();
-
-	console.log(data);
 
 	return { data, totalPages };
 }
@@ -121,11 +135,23 @@ export async function deleteMatch(matchID: string): Promise<void> {
 
 /**
  * Retrieves players from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param name - The string that players has in their name.
+ * @param alias - The string that players has in their alias. 
+ * @param minRating - The minimum rating of showed players.
+ * @param maxRating - The maximum rating of showed players.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The players data and total number of pages.
  */
 export async function getPlayers(
+	sortBy: "name" | "rating" = "rating",
+	descending: boolean | null = null,
+	name: string | null = null,
+	alias: string | null = null,
+	minRating: number | null = null,
+	maxRating: number | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -133,8 +159,14 @@ export async function getPlayers(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/players';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	if (sortBy) {
+		url += '?sortBy=' + sortBy;
+		if (descending != null) url += '&descending=' + descending;
+		if (alias) url += '&aliasHas=' + alias;
+		if (name) url += '&nameHas=' + name;
+		if (minRating != null && !isNaN(minRating)) url += '&minRating=' + minRating;
+		if (maxRating != null && !isNaN(maxRating)) url += '&maxRating=' + maxRating;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 
@@ -263,11 +295,25 @@ export async function authenticate(username: string, password: string): Promise<
 
 /**
  * Retrieves tournaments from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param title - The string that tournaments has in their title.
+ * @param minParticipants - The minimum number of players in tournament.
+ * @param maxParticipants - The maximum number of players in tournament.
+ * @param startDateString - The start date of showed tournaments.
+ * @param endDateString - The end date of showed tournaments.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The tournaments data and total number of pages.
  */
 export async function getTournaments(
+	sortBy: "date" | "kf" | "numberOfPlayers" = "date",
+	descending: boolean | null = null,
+	title: string | null = null,
+	minParticipants: number | null = null,
+	maxParticipants: number | null = null,
+	startDateString: string | null = null,
+	endDateString: string | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -275,8 +321,16 @@ export async function getTournaments(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/tournaments';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	console.log(minParticipants, maxParticipants, sortBy);
+	if (sortBy) {
+		url += '?sortBy=' + sortBy;
+		if (descending != null) url += '&descending=' + descending;
+		if (title) url += '&titleHas=' + title;
+		if (startDateString) url += '&minEndDate=' + startDateString;
+		if (endDateString) url += '&maxEndDate=' + endDateString;
+		if (minParticipants != null && !isNaN(minParticipants)) url += '&minPlayers=' + minParticipants;
+		if (maxParticipants != null && !isNaN(maxParticipants)) url += '&maxPlayers=' + maxParticipants;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 

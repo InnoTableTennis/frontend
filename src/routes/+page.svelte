@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { userToken } from '$lib/stores';
+	import { SortFilterPlayerFormStore, SortFilterTournamentFormStore, userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
@@ -7,10 +7,11 @@
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import FilterMatchForm from '$lib/components/FilterMatchForm.svelte';
+	import SortFilterMatchForm from '$lib/components/SortFilterMatchForm.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/EditMatchForm.svelte';
 	import type { Matches } from '$lib/types/types';
+	import { get } from 'svelte/store';
 
 	let handleInsert: () => void;
 	let editData: Matches = {} as Matches;
@@ -22,8 +23,23 @@
 	$: chosenId = -1;
 
 	async function getFormData() {
-		const playersPromise = db.getPlayers(1, 1000000);
-		const tournamentsPromise = db.getTournaments(1, 1000000);
+		let sortByPlayer = get(SortFilterPlayerFormStore).sortBy;
+		let descendingPlayer = get(SortFilterPlayerFormStore).descending;
+		let name = get(SortFilterPlayerFormStore).name;
+		let alias = get(SortFilterPlayerFormStore).telegramAlias;
+		let minRating = get(SortFilterPlayerFormStore).minRating;
+		let maxRating = get(SortFilterPlayerFormStore).maxRating;
+
+		let title = get(SortFilterTournamentFormStore).title;
+		let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
+		let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
+		let startDateString = get(SortFilterTournamentFormStore).startDateString;
+		let endDateString = get(SortFilterTournamentFormStore).endDateString;
+		let sortByTournament = get(SortFilterTournamentFormStore).sortBy;
+		let descendingTournament = get(SortFilterTournamentFormStore).descending;
+
+		const playersPromise = db.getPlayers(sortByPlayer, descendingPlayer, name, alias, Number(minRating), Number(maxRating), 1, 1000000);
+		const tournamentsPromise = db.getTournaments(sortByTournament, descendingTournament, title, Number(minParticipants), Number(maxParticipants), startDateString, endDateString, 1, 1000000);
 
 		const [playersResponse, tournamentsResponse] = await Promise.all([
 			playersPromise,
@@ -33,84 +49,108 @@
 	}
 </script>
 
-{#if isLeader}
-	<div class="edit-mode">
-		<ToggleCheckboxButton
-			bind:checked={isEditing}
-			bind:chosenId
-			bind:editData
-			bind:mode
-			label={'Edit Mode'}
-		/>
-		<span />
-	</div>
-{/if}
-
-{#if isEditing}
-	<div class="edit-switch-bar">
-		<EditSwitchBar bind:mode bind:chosenId bind:editData />
-	</div>
-{/if}
-
-<div class="wrapper">
-	{#if isEditing}
-		{#await getFormData() then resp}
-			{#if mode === 'add'}
-				<div>
-					<AddMatchForm
-						players={resp.players}
-						tournaments={resp.tournaments}
-						on:error={handleError}
-						on:update={() => handleInsert()}
-					/>
-				</div>
-			{:else if mode === 'edit'}
-				<div>
-					<EditMatchForm
-						players={resp.players}
-						tournaments={resp.tournaments}
-						on:error={handleError}
-						on:update={() => handleInsert()}
-						bind:match={editData}
-					/>
-				</div>
-			{:else if mode === 'delete'}
-				Please choose a match to delete
-			{/if}
-		{/await}
-	{:else}
-		<div>
-			<FilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+<div class="page">
+	{#if isLeader}
+		<div class="edit-mode">
+			<ToggleCheckboxButton
+				bind:checked={isEditing}
+				bind:chosenId
+				bind:editData
+				bind:mode
+				label={'Edit Mode'}
+			/>
+			<span />
 		</div>
 	{/if}
-	<div class="matches-list">
-		<MatchesList
-			on:error={handleError}
-			bind:handleInsert
-			{isLeader}
-			bind:isChoosing
-			bind:chosenId
-			bind:editData
-		/>
+
+	{#if isEditing}
+		<div class="edit-switch-bar">
+			<EditSwitchBar bind:mode bind:chosenId bind:editData />
+		</div>
+	{/if}
+
+	<div class="wrapper">
+		{#if isEditing}
+			{#await getFormData() then resp}
+				{#if mode === 'add'}
+					<div class="form">
+						<AddMatchForm
+							players={resp.players}
+							tournaments={resp.tournaments}
+							on:error={handleError}
+							on:update={() => handleInsert()}
+						/>
+					</div>
+				{:else if mode === 'edit'}
+					<div class="form">
+						<EditMatchForm
+							players={resp.players}
+							tournaments={resp.tournaments}
+							on:error={handleError}
+							on:update={() => handleInsert()}
+							bind:match={editData}
+						/>
+					</div>
+				{:else if mode === 'delete'}
+					Please choose a match to delete
+				{/if}
+			{/await}
+		{:else}
+			<div class="form">
+				<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+			</div>
+		{/if}
+		<div class="matches-list">
+			<MatchesList
+				on:error={handleError}
+				bind:handleInsert
+				{isLeader}
+				bind:isChoosing
+				bind:chosenId
+				bind:editData
+			/>
+		</div>
 	</div>
 </div>
 
 <style>
+	.page {
+		padding: 0 5%;
+	}
 	.wrapper {
 		height: 600px;
 		display: grid;
-		grid-template-columns: 1fr 2fr;
+		grid-auto-flow: column;
 		align-items: center;
+
+	}
+	.form {
+		max-width: 350px;
+		margin-right: 2rem;
 	}
 	.edit-mode {
 		text-align: right;
 		margin-top: 2rem;
 	}
 	.matches-list {
-		margin-left: 3rem;
+		margin-right: 0;
+		margin-left: auto;
+		max-width: 900px;
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: 1300px) {
+		.page {
+			padding: 0;
+		}
+		.form {
+			margin-right: 2rem;
+		}
+	}
+	@media (max-width: 1000px) {
+		.form {
+			max-width: 500px;
+			margin: 0 auto;
+		}
 		.wrapper {
 			display: block;
 		}

@@ -2,6 +2,8 @@
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
+	import { SortFilterTournamentFormStore } from '$lib/stores';
+	import { get } from 'svelte/store';
 	import type { Tournaments } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
@@ -23,8 +25,15 @@
 	};
 
 	async function requestNewPage() {
+		let title = get(SortFilterTournamentFormStore).title;
+		let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
+		let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
+		let startDateString = get(SortFilterTournamentFormStore).startDateString;
+		let endDateString = get(SortFilterTournamentFormStore).endDateString;
+		let sortBy = get(SortFilterTournamentFormStore).sortBy;
+		let descending = get(SortFilterTournamentFormStore).descending;
 		await db
-			.getTournaments(currentPageNumber, currentPageSize)
+			.getTournaments(sortBy, descending, title, parseInt(minParticipants), parseInt(maxParticipants), startDateString, endDateString, currentPageNumber, currentPageSize)
 			.then((result) => {
 				tournaments = result.data;
 				lastPageNumber = result.totalPages;
@@ -102,13 +111,13 @@
 			</section>
 		</Pagination>
 	{:else}
-		<p class="details">Oops! That page doesn't exist or it is private</p>
+		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
 {/await}
 
 <style>
 	.games-list {
-		max-width: 800px;
+		max-width: 900px;
 		margin: 3em auto;
 		font-size: var(--fontsize-medium1);
 	}

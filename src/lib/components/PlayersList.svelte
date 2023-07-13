@@ -1,6 +1,8 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
+	import { SortFilterPlayerFormStore } from '$lib/stores'; 
+	import { get } from 'svelte/store';
 	import type { Players } from '$lib/types/types';
 
 	import { createEventDispatcher } from 'svelte';
@@ -22,8 +24,15 @@
 	};
 
 	async function requestNewPage() {
+		let sortBy = get(SortFilterPlayerFormStore).sortBy;
+		let descending = get(SortFilterPlayerFormStore).descending;
+		let name = get(SortFilterPlayerFormStore).name;
+		let alias = get(SortFilterPlayerFormStore).telegramAlias;
+		let minRating = get(SortFilterPlayerFormStore).minRating;
+		let maxRating = get(SortFilterPlayerFormStore).maxRating;
+		console.log(minRating, maxRating);
 		await db
-			.getPlayers(currentPageNumber, currentPageSize)
+			.getPlayers(sortBy, descending, name, alias, parseInt(minRating), parseInt(maxRating), currentPageNumber, currentPageSize)
 			.then((result) => {
 				players = result.data;
 				lastPageNumber = result.totalPages;
@@ -98,7 +107,7 @@
 			</section>
 		</Pagination>
 	{:else}
-		<p class="details">Oops! That page doesn't exist or it is private</p>
+		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
 {/await}
 
@@ -108,7 +117,7 @@
 		margin: 2rem;
 	}
 	.games-list {
-		max-width: 800px;
+		max-width: 900px;
 		margin: 3em auto;
 		font-size: var(--fontsize-medium1);
 	}

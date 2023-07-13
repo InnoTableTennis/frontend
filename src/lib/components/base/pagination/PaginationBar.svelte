@@ -132,7 +132,7 @@
 		margin-right: 0.8rem;
 	}
 	.container {
-		max-width: 800px;
+		max-width: 900px;
 		margin: 0 auto;
 		margin-bottom: 3em;
 		display: flex;
