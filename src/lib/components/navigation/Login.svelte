@@ -113,7 +113,7 @@
 		border-right: none;
 		border-bottom: 0.2rem solid;
 		border-color: var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		transition: 0.1s;
 	}
 	input:focus {

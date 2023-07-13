@@ -12,8 +12,9 @@
 		padding: 1em 2em;
 		text-align: left;
 		background-color: var(--error-back-color);
-		color: var(--content-color);
+		color: var(--main-color);
 		min-width: 7em;
 		max-width: 20em;
-	}
+		font-family: inherit;
+		}
 </style>
