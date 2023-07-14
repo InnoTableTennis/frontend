@@ -30,14 +30,15 @@
 <style>
 	.profile-container {
 		display: flex;
-		gap: 1.5em;
+		gap: 1.5rem;
 		/* min-width: 10px; */
 		height: 100%;
 		align-items: center;
+		white-space: nowrap;
 	}
 	.sign-in {
-		margin-left: 1em;
-		margin-right: 1em;
+		margin-left: 1rem;
+		margin-right: 1rem;
 		height: 100%;
 		width: 7rem;
 	}
@@ -45,7 +46,7 @@
 		width: 100%;
 	}
 	.log-out {
-		margin-left: 1em;
+		margin-left: 1rem;
 	}
 	.profile-container a {
 		text-decoration: none;
@@ -63,11 +64,21 @@
 	}
 	@media (max-width: 800px) {
 		.profile-container {
-			gap: 0.5em;
+			gap: 0.5rem;
 		}
+		.log-out {
+		margin-left: 0.7rem;
+	}
 		.sign-in {
 			margin-top: 0.078125rem;
-		}
+		margin-left: 0.7rem;
+		margin-right: 0.7rem;
+		height: 100%;
+		width: 5rem;
+	}
+	/* .sign-up {
+		width: 4rem;
+	} */
 	}
 	@media (max-width: 480px) {
 		.profile-container {

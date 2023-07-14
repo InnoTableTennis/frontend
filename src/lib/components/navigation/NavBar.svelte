@@ -3,24 +3,25 @@
 </script>
 
 <nav>
-	<input type="checkbox">
+	<input type="checkbox" />
 	<div class="hamburger-lines">
-		<div class="line line1"></div>
-		<div class="line line2"></div>
-		<div class="line line3"></div>
+		<div class="line line1" />
+		<div class="line line2" />
+		<div class="line line3" />
 	</div>
 	<div class="nav-container">
-	<ul class="nav-links">
-		<li><a href="/">Matches</a></li>
-		<li><a href="/tournaments">Tournaments</a></li>
-		<li><a href="/players">Players</a></li>
-	</ul>
-	<ProfileLink />
+		<ul class="nav-links">
+			<li><a href="/admin">Admin panel</a></li>
+			<li><a href="/">Matches</a></li>
+			<li><a href="/tournaments">Tournaments</a></li>
+			<li><a href="/players">Players</a></li>
+		</ul>
+		<ProfileLink />
 	</div>
 </nav>
 
 <style>
-	input[type="checkbox"] {
+	input[type='checkbox'] {
 		display: none;
 		margin: 0;
 	}
@@ -44,13 +45,17 @@
 		display: flex;
 	}
 	.nav-links li {
+		white-space: nowrap;
 		text-decoration: none;
-		margin-left: 1em;
-		margin-right: 1em;
+		margin-left: 1.5em;
+		margin-right: 1.5em;
 		height: 100%;
-		width: 100%;
 		line-height: 4em;
 	}
+	.nav-links li:first-child {
+		margin-left: 0em;
+	}
+
 	.nav-links li a {
 		text-decoration: none;
 		display: flex;
@@ -64,9 +69,22 @@
 		border-bottom: 2px solid var(--content-color);
 	}
 
-	/* .active {*/
-	/*	 border-bottom: 2px solid var(--content-color);*/
-	/*}*/
+	@media (max-width: 800px) {
+		.nav-links li {
+			text-decoration: none;
+			margin-left: 0.7rem;
+			margin-right: 0.7rem;
+			height: 100%;
+			line-height: 4em;
+		}
+		nav {
+		padding: 0 1rem;
+		}
+
+		.nav-links li:first-child {
+			margin-left: 0rem;
+		}
+	}
 
 	@media (max-width: 480px) {
 		.hamburger-lines {
@@ -88,10 +106,10 @@
 			border-radius: 10px;
 			background: var(--content-color);
 		}
-		input[type="checkbox"]:checked ~ .hamburger-lines {
+		input[type='checkbox']:checked ~ .hamburger-lines {
 			transform: rotate(-90deg);
 		}
-		input[type="checkbox"] {
+		input[type='checkbox'] {
 			position: absolute;
 			display: block;
 			border: none;
@@ -113,21 +131,21 @@
 			margin: 0;
 			background-color: var(--main-color);
 			border-left: 1px solid var(--content-color);
-			opacity: 0.90;
+			opacity: 0.9;
 			transition: transform 0.5s ease-in-out;
 			justify-content: center;
 		}
 		.nav-links {
 			display: block;
 		}
-		input[type="checkbox"]:checked ~ .nav-container {
+		input[type='checkbox']:checked ~ .nav-container {
 			transform: translateX(0);
 		}
 		.nav-links li a:hover {
 			border-bottom: 2px solid var(--content-color);
 		}
 		.nav-links li {
-			margin: 0.15em;
+			margin: 0.15rem;
 		}
 	}
 </style>

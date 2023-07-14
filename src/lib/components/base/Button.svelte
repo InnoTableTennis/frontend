@@ -11,13 +11,19 @@
 		border-radius: 10px;
 		outline: none;
 		border: 0;
-		padding: 0.8em 1em;
+		padding: 0.8em 1rem;
 		background-color: var(--secondary-color);
 		color: var(--main-color);
 		font-weight: var(--fontweight-2);
 		transition: 0.1s;
 		width: 100%;
 		height: 100%;
+	}
+
+	@media (max-width: 800px) {
+		button {
+		padding: 0.5em 0.5rem;
+	}
 	}
 
 	button:hover {
