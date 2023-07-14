@@ -5,7 +5,7 @@
 >
 
 <style>
-    path{
-        fill: var(--secondary-color)
-    }
+	path {
+		fill: var(--secondary-color);
+	}
 </style>

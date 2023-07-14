@@ -7,10 +7,11 @@
 	class="back-btn"
 	on:click={() => {
 		window.history.back();
-	}}>
+	}}
+>
 	Back
 	<div class="arrow">
-		<NewRightArrow/>
+		<NewRightArrow />
 	</div>
 </button>
 
@@ -156,11 +157,11 @@
 	}
 
 	@media (max-width: 850px) {
-		.row{
-			font-size:small;
+		.row {
+			font-size: small;
 		}
 		p {
-			font-size:small;
+			font-size: small;
 		}
 	}
 
@@ -169,7 +170,6 @@
 			display: none;
 		}
 		.wrapper-right {
-
 		}
 		.arrow {
 			display: flex;

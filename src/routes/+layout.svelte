@@ -4,7 +4,6 @@
 	import { beforeUpdate, onDestroy } from 'svelte';
 
 	import Errors from '$lib/components/error/Errors.svelte';
-	import NavBar from '$lib/components/navigation/NavBar.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
 

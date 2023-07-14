@@ -3,16 +3,11 @@
 
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
-	import profileIconLight from '$lib/assets/profile-icon-light.jpg'
 
 	const logOut = () => {
 		localStorage.removeItem('token');
 		userToken.set('');
 	};
-
-	const profileMenu = () => {
-
-	}
 </script>
 
 <div class="profile-container">

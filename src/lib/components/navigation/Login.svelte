@@ -38,9 +38,10 @@
 	class="back-btn"
 	on:click={() => {
 		window.history.back();
-	}}>
+	}}
+>
 	<div class="arrow">
-		<NewLeftArrow/>
+		<NewLeftArrow />
 	</div>
 	Back
 </button>
