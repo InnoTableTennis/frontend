@@ -7,7 +7,7 @@
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import FilterMatchForm from '$lib/components/FilterMatchForm.svelte';
+	import SortFilterMatchForm from '$lib/components/SortFilterMatchForm.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/EditMatchForm.svelte';
 	import type { Matches } from '$lib/types/types';
@@ -23,24 +23,8 @@
 	$: chosenId = -1;
 
 	async function getFormData() {
-		let sortByPlayer = get(SortFilterPlayerFormStore).sortBy;
-		let descendingPlayer = get(SortFilterPlayerFormStore).descending;
-		let name = get(SortFilterPlayerFormStore).name;
-		let alias = get(SortFilterPlayerFormStore).telegramAlias;
-		let minRating = get(SortFilterPlayerFormStore).minRating;
-		let maxRating = get(SortFilterPlayerFormStore).maxRating;
-
-		let title = get(SortFilterTournamentFormStore).title;
-		let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
-		let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
-		let startDateString = get(SortFilterTournamentFormStore).startDateString;
-		let endDateString = get(SortFilterTournamentFormStore).endDateString;
-		let sortByTournament = get(SortFilterTournamentFormStore).sortBy;
-		let descendingTournament = get(SortFilterTournamentFormStore).descending;
-
-		const playersPromise = db.getPlayers(sortByPlayer, descendingPlayer, name, alias, Number(minRating), Number(maxRating), 1, 1000000);
-		const tournamentsPromise = db.getTournaments(sortByTournament, descendingTournament, title, Number(minParticipants), Number(maxParticipants), startDateString, endDateString, 1, 1000000);
-
+		const playersPromise = db.getPlayers("rating", true, '', '', null, null, 1, 1000000);
+    	const tournamentsPromise = db.getTournaments("date", true, '', null, null, '', '', 1, 1000000);
 		const [playersResponse, tournamentsResponse] = await Promise.all([
 			playersPromise,
 			tournamentsPromise,
@@ -102,7 +86,7 @@
 			{/await}
 		{:else}
 			<div class="form">
-				<FilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+				<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 		{/if}
 		<div class="matches-list">

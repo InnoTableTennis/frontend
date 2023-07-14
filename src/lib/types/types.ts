@@ -48,6 +48,8 @@ export interface sortFilterPlayerFormStore {
     telegramAlias: string;
     minRating: string;
     maxRating: string;
+	descending: boolean;
+	sortBy: "rating" | "name";
 }
 
 export interface sortFilterTournamentFormStore {
