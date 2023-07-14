@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import { SortFilterPlayerFormStore } from '$lib/stores'; 
+	import { SortFilterPlayerFormStore } from '$lib/stores';
 	import { get } from 'svelte/store';
 	import type { Players } from '$lib/types/types';
 
@@ -32,7 +32,16 @@
 		let maxRating = get(SortFilterPlayerFormStore).maxRating;
 		console.log(minRating, maxRating);
 		await db
-			.getPlayers(sortBy, descending, name, alias, parseInt(minRating), parseInt(maxRating), currentPageNumber, currentPageSize)
+			.getPlayers(
+				sortBy,
+				descending,
+				name,
+				alias,
+				parseInt(minRating),
+				parseInt(maxRating),
+				currentPageNumber,
+				currentPageSize,
+			)
 			.then((result) => {
 				players = result.data;
 				lastPageNumber = result.totalPages;

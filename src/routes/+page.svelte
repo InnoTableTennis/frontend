@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SortFilterPlayerFormStore, SortFilterTournamentFormStore, userToken } from '$lib/stores';
+	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
@@ -11,7 +11,6 @@
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/EditMatchForm.svelte';
 	import type { Matches } from '$lib/types/types';
-	import { get } from 'svelte/store';
 
 	let handleInsert: () => void;
 	let editData: Matches = {} as Matches;
@@ -23,8 +22,8 @@
 	$: chosenId = -1;
 
 	async function getFormData() {
-		const playersPromise = db.getPlayers("rating", true, '', '', null, null, 1, 1000000);
-    	const tournamentsPromise = db.getTournaments("date", true, '', null, null, '', '', 1, 1000000);
+		const playersPromise = db.getPlayers('rating', true, '', '', null, null, 1, 1000000);
+		const tournamentsPromise = db.getTournaments('date', true, '', null, null, '', '', 1, 1000000);
 		const [playersResponse, tournamentsResponse] = await Promise.all([
 			playersPromise,
 			tournamentsPromise,
@@ -66,9 +65,9 @@
 						/>
 					</div>
 				{:else if mode === 'edit'}
-				{#if chosenId === -1}
-					Please choose a match to edit
-				{:else}
+					{#if chosenId === -1}
+						Please choose a match to edit
+					{:else}
 						<div class="form">
 							<EditMatchForm
 								players={resp.players}
@@ -76,10 +75,10 @@
 								on:error={handleError}
 								on:update={() => handleInsert()}
 								bind:match={editData}
-							bind:chosenId
+								bind:chosenId
 							/>
 						</div>
-				{/if}
+					{/if}
 				{:else if mode === 'delete'}
 					Please choose a match to delete
 				{/if}
@@ -111,7 +110,6 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-
 	}
 	.form {
 		max-width: 350px;

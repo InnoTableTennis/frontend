@@ -39,12 +39,6 @@
 	let secondPlayerName = match.secondPlayerName;
 	let tournamentTitle = match.tournamentTitle;
 
-	$: {
-		firstPlayerName = match.firstPlayerName;
-		secondPlayerName = match.secondPlayerName;
-		tournamentTitle = match.tournamentTitle;
-	}
-
 	let localDateString = '';
 
 	$: localDateString = selectedDate;
@@ -164,7 +158,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				bind:value={selectedDate}
+				bind:value={localDateString}
 				class="full-width"
 			/>
 		</label>

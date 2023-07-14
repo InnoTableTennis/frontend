@@ -35,7 +35,15 @@
 		let maxDateString = get(SortFilterMatchFormStore).maxDateString;
 		let descending = get(SortFilterMatchFormStore).descending;
 		await db
-			.getMatches(descending, name, score, minDateString, maxDateString, currentPageNumber, currentPageSize)
+			.getMatches(
+				descending,
+				name,
+				score,
+				minDateString,
+				maxDateString,
+				currentPageNumber,
+				currentPageSize,
+			)
 			.then((result) => {
 				matches = result.data;
 				lastPageNumber = result.totalPages;

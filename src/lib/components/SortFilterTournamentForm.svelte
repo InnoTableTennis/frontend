@@ -16,11 +16,11 @@
 	let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
 	let startDateString = get(SortFilterTournamentFormStore).startDateString;
 	let endDateString = get(SortFilterTournamentFormStore).endDateString;
-	let sortBy = "date";
+	let sortBy = 'date';
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
-	let radioValues = ["date", "numberOfPlayers", "kf"];
+	let radioValues = ['date', 'numberOfPlayers', 'kf'];
 	let radioLabels = ['Sort by date', 'Sort by number of players', 'Sort by kf'];
 
 	let isSubmissionDisabled = true;
@@ -41,15 +41,24 @@
 
 	const saveForm = function () {
 		console.log(maxParticipants);
-		const sortby: "date" | "kf" | "numberOfPlayers" = sortBy === "date" ? "date" : sortBy === "kf" ? "kf" : "numberOfPlayers";
-		SortFilterTournamentFormStore.set({ title: title, minParticipants: minParticipants, maxParticipants: maxParticipants, startDateString: startDateString, endDateString: endDateString, descending: isDescending, sortBy: sortby });
+		const sortby: 'date' | 'kf' | 'numberOfPlayers' =
+			sortBy === 'date' ? 'date' : sortBy === 'kf' ? 'kf' : 'numberOfPlayers';
+		SortFilterTournamentFormStore.set({
+			title: title,
+			minParticipants: minParticipants,
+			maxParticipants: maxParticipants,
+			startDateString: startDateString,
+			endDateString: endDateString,
+			descending: isDescending,
+			sortBy: sortby,
+		});
 	};
 
-	function updateValue(event: any) {
+	function updateValue(event: CustomEvent) {
 		// TO DO: make event type
 		sortBy = event.detail.value;
 		saveForm();
-	};
+	}
 
 	onMount(() => {
 		firstInput.focus();
@@ -131,13 +140,25 @@
 	</div>
 	<div class="line-2-elems">
 		<label class="sorting-order" id="sorting-order-descending">
-			<input type="radio" id="descending" name="sorting-order" bind:group={isDescending} value={true}>
-			<DescendingIcon disabled={!isDescending}/>
+			<input
+				type="radio"
+				id="descending"
+				name="sorting-order"
+				bind:group={isDescending}
+				value={true}
+			/>
+			<DescendingIcon disabled={!isDescending} />
 		</label>
 		<label class="sorting-order">
-			<input type="radio" id="ascending" name="sorting-order" bind:group={isDescending} value={false}>
-			<AscendingIcon disabled={isDescending}/>
-		</label>		
+			<input
+				type="radio"
+				id="ascending"
+				name="sorting-order"
+				bind:group={isDescending}
+				value={false}
+			/>
+			<AscendingIcon disabled={isDescending} />
+		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">

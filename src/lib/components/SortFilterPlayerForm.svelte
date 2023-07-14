@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import { get } from 'svelte/store';
-	import { SortFilterPlayerFormStore } from '$lib/stores'; 
+	import { SortFilterPlayerFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 	import DescendingIcon from './icons/DescendingIcon.svelte';
 	import AscendingIcon from './icons/AscendingIcon.svelte';
@@ -15,22 +15,22 @@
 	let telegramAlias = get(SortFilterPlayerFormStore).telegramAlias;
 	let minRating = get(SortFilterPlayerFormStore).minRating;
 	let maxRating = get(SortFilterPlayerFormStore).maxRating;
-	let sortBy = "name";
+	let sortBy = 'name';
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
-	let radioValues = ["name", "date"];
+	let radioValues = ['name', 'date'];
 	let radioLabels = ['Sort by rating', 'Sort by name'];
 
 	let isSubmissionDisabled = true;
 
 	$: {
 		isSubmissionDisabled = !(
-			name || 
-			telegramAlias || 
+			name ||
+			telegramAlias ||
 			!isNaN(parseInt(minRating)) ||
 			!isNaN(parseInt(maxRating))
-			);
+		);
 	}
 
 	const sortPlayer = () => {
@@ -38,15 +38,22 @@
 	};
 
 	const saveForm = function () {
-		const sortby: "name" | "rating" = sortBy === "name" ? "name" : "rating";
-		SortFilterPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, minRating: minRating, maxRating: maxRating, descending: isDescending, sortBy: sortby });
+		const sortby: 'name' | 'rating' = sortBy === 'name' ? 'name' : 'rating';
+		SortFilterPlayerFormStore.set({
+			name: name,
+			telegramAlias: telegramAlias,
+			minRating: minRating,
+			maxRating: maxRating,
+			descending: isDescending,
+			sortBy: sortby,
+		});
 	};
 
-	function updateValue(event: any) {
+	function updateValue(event: CustomEvent) {
 		// TO DO: make event type
 		sortBy = event.detail.value;
 		saveForm();
-	};
+	}
 
 	onMount(() => {
 		firstInput.focus();
@@ -118,13 +125,25 @@
 	</div>
 	<div class="line-2-elems">
 		<label class="sorting-order" id="sorting-order-descending">
-			<input type="radio" id="descending" name="sorting-order" bind:group={isDescending} value={true}>
-			<DescendingIcon disabled={!isDescending}/>
+			<input
+				type="radio"
+				id="descending"
+				name="sorting-order"
+				bind:group={isDescending}
+				value={true}
+			/>
+			<DescendingIcon disabled={!isDescending} />
 		</label>
 		<label class="sorting-order">
-			<input type="radio" id="ascending" name="sorting-order" bind:group={isDescending} value={false}>
-			<AscendingIcon disabled={isDescending}/>
-		</label>		
+			<input
+				type="radio"
+				id="ascending"
+				name="sorting-order"
+				bind:group={isDescending}
+				value={false}
+			/>
+			<AscendingIcon disabled={isDescending} />
+		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
@@ -169,7 +188,7 @@
 		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
-		transition: .2s linear;
+		transition: 0.2s linear;
 	}
 	input:focus {
 		outline: none;

@@ -30,7 +30,7 @@
 			</div>
 		{:else if $userToken}
 			<div class="form">
-				<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()}/>
+				<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 		{/if}
 		<div class="players-list">
@@ -48,7 +48,6 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-
 	}
 	.form {
 		max-width: 350px;

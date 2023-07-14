@@ -1,7 +1,14 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type { Error } from './types/types';
-import type { sortFilterPlayerFormStore, sortFilterTournamentFormStore, sortFilterMatchFormStore, addPlayerFormStore, addTournamentFormStore, addMatchFormStore } from "../lib/types/types";
+import type {
+	sortFilterPlayerFormStore,
+	sortFilterTournamentFormStore,
+	sortFilterMatchFormStore,
+	addPlayerFormStore,
+	addTournamentFormStore,
+	addMatchFormStore,
+} from '../lib/types/types';
 import { convertDateToStringDash } from '$lib/helper';
 
 /**
@@ -18,9 +25,31 @@ export const loadedPage: Writable<string | null> = writable(null);
 
 export const errors: Writable<Error[]> = writable([]);
 
-const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = { name: '', telegramAlias: '', minRating: '', maxRating: '', descending: true, sortBy: "rating" };
-const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = { title: '', minParticipants: '', maxParticipants: '', startDateString: '', endDateString: '', descending: true, sortBy: "date" };
-const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = { name: '', score: '', minDateString: '', maxDateString: '', descending: true, sortBy: "date" };
+const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {
+	name: '',
+	telegramAlias: '',
+	minRating: '',
+	maxRating: '',
+	descending: true,
+	sortBy: 'rating',
+};
+const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = {
+	title: '',
+	minParticipants: '',
+	maxParticipants: '',
+	startDateString: '',
+	endDateString: '',
+	descending: true,
+	sortBy: 'date',
+};
+const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
+	name: '',
+	score: '',
+	minDateString: '',
+	maxDateString: '',
+	descending: true,
+	sortBy: 'date',
+};
 const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 100 };
 const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
 	title: '',

@@ -20,10 +20,7 @@
 <div class="page">
 	{#if isLeader}
 		<div class="edit-mode">
-			<ToggleCheckboxButton 
-				bind:checked={isEditing} 
-				label={'Edit Mode'} 
-			/>
+			<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
 			<span />
 		</div>
 	{/if}
@@ -53,7 +50,6 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-
 	}
 	.form {
 		max-width: 350px;
@@ -74,7 +70,6 @@
 		.form {
 			margin-right: 2rem;
 		}
-
 	}
 	@media (max-width: 1000px) {
 		.form {

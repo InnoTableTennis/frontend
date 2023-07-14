@@ -44,31 +44,31 @@ export interface Tournaments {
 }
 
 export interface sortFilterPlayerFormStore {
-    name: string;
-    telegramAlias: string;
-    minRating: string;
-    maxRating: string;
+	name: string;
+	telegramAlias: string;
+	minRating: string;
+	maxRating: string;
 	descending: boolean;
-	sortBy: "rating" | "name";
+	sortBy: 'rating' | 'name';
 }
 
 export interface sortFilterTournamentFormStore {
-    title: string;
+	title: string;
 	minParticipants: string;
 	maxParticipants: string;
 	startDateString: string;
 	endDateString: string;
 	descending: boolean;
-	sortBy: "date" | "numberOfPlayers" | "kf";
+	sortBy: 'date' | 'numberOfPlayers' | 'kf';
 }
 
 export interface sortFilterMatchFormStore {
-    name: string;
+	name: string;
 	score: string;
 	minDateString: string;
 	maxDateString: string;
 	descending: boolean;
-	sortBy: "date";
+	sortBy: 'date';
 }
 
 export interface addPlayerFormStore {

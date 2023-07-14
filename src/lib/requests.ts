@@ -172,7 +172,7 @@ export async function deleteMatch(matchID: string): Promise<void> {
  * @param sortBy - The sorting type either by name or by rating.
  * @param descending - The sorting order.
  * @param name - The string that players has in their name.
- * @param alias - The string that players has in their alias. 
+ * @param alias - The string that players has in their alias.
  * @param minRating - The minimum rating of showed players.
  * @param maxRating - The maximum rating of showed players.
  * @param pageNumber - The page number.
@@ -180,7 +180,7 @@ export async function deleteMatch(matchID: string): Promise<void> {
  * @returns The players data and total number of pages.
  */
 export async function getPlayers(
-	sortBy: "name" | "rating" = "rating",
+	sortBy: 'name' | 'rating' = 'rating',
 	descending: boolean | null = null,
 	name: string | null = null,
 	alias: string | null = null,
@@ -341,7 +341,7 @@ export async function authenticate(username: string, password: string): Promise<
  * @returns The tournaments data and total number of pages.
  */
 export async function getTournaments(
-	sortBy: "date" | "kf" | "numberOfPlayers" = "date",
+	sortBy: 'date' | 'kf' | 'numberOfPlayers' = 'date',
 	descending: boolean | null = null,
 	title: string | null = null,
 	minParticipants: number | null = null,

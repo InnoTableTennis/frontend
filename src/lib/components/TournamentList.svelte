@@ -33,7 +33,17 @@
 		let sortBy = get(SortFilterTournamentFormStore).sortBy;
 		let descending = get(SortFilterTournamentFormStore).descending;
 		await db
-			.getTournaments(sortBy, descending, title, parseInt(minParticipants), parseInt(maxParticipants), startDateString, endDateString, currentPageNumber, currentPageSize)
+			.getTournaments(
+				sortBy,
+				descending,
+				title,
+				parseInt(minParticipants),
+				parseInt(maxParticipants),
+				startDateString,
+				endDateString,
+				currentPageNumber,
+				currentPageSize,
+			)
 			.then((result) => {
 				tournaments = result.data;
 				lastPageNumber = result.totalPages;
