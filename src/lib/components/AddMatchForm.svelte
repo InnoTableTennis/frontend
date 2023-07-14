@@ -35,7 +35,7 @@
 	let tournamentTitle = get(AddMatchFormStore).tournamentTitle;
 	let firstPlayerScore = get(AddMatchFormStore).firstPlayerScore;
 	let secondPlayerScore = get(AddMatchFormStore).secondPlayerScore;
-	
+
 	let isSubmissionDisabled = true;
 
 	$: {
@@ -81,13 +81,25 @@
 
 	const saveForm = function () {
 		console.log(get(AddMatchFormStore).firstPlayerName, get(AddMatchFormStore).secondPlayerName);
-		AddMatchFormStore.set({ firstPlayerName: firstPlayerName, secondPlayerName: secondPlayerName, tournamentTitle: tournamentTitle, firstPlayerScore: firstPlayerScore, secondPlayerScore: secondPlayerScore });
-	}
+		AddMatchFormStore.set({
+			firstPlayerName: firstPlayerName,
+			secondPlayerName: secondPlayerName,
+			tournamentTitle: tournamentTitle,
+			firstPlayerScore: firstPlayerScore,
+			secondPlayerScore: secondPlayerScore,
+		});
+	};
 
 	let dropdownResets = new Array(2);
 
 	function resetForm() {
-		AddMatchFormStore.set({ firstPlayerName: '', secondPlayerName: '', tournamentTitle: '', firstPlayerScore: 0, secondPlayerScore: 0 });
+		AddMatchFormStore.set({
+			firstPlayerName: '',
+			secondPlayerName: '',
+			tournamentTitle: '',
+			firstPlayerScore: 0,
+			secondPlayerScore: 0,
+		});
 		firstPlayerScore = firstPlayerScore;
 		secondPlayerScore = secondPlayerScore;
 		dropdownResets.forEach((reset) => {

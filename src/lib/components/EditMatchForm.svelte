@@ -16,6 +16,8 @@
 	export let tournaments: Tournaments[];
 
 	export let match: Matches;
+
+	export let chosenId = -1;
 	let selectedDate = '';
 
 	$: selectedDate = changeDateFormat(match.localDateString);
@@ -33,28 +35,21 @@
 		}
 	}
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
-	let isSubmissionDisabled = true;
+	let firstPlayerName = match.firstPlayerName;
+	let secondPlayerName = match.secondPlayerName;
+	let tournamentTitle = match.tournamentTitle;
 
 	$: {
-		isSubmissionDisabled = !(
-			firstPlayerName &&
-			secondPlayerName &&
-			firstPlayerScore !== null &&
-			secondPlayerScore !== null &&
-			tournamentTitle !== null
-		);
+		firstPlayerName = match.firstPlayerName;
+		secondPlayerName = match.secondPlayerName;
+		tournamentTitle = match.tournamentTitle;
 	}
 
 	let localDateString = '';
 
 	$: localDateString = selectedDate;
 
-	const addMatch = async (e: Event) => {
+	const editMatch = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
 		if (
 			!players.find((player) => player.name === firstPlayerName) ||
@@ -64,7 +59,8 @@
 		} else if (!tournaments.find((tournament) => tournament.title === tournamentTitle)) {
 			dispatch('error', 'There is no such tournament!');
 		} else {
-			db.createMatch(
+			db.editMatch(
+				match.id.toString(),
 				data.get('firstPlayerName') as string,
 				data.get('secondPlayerName') as string,
 				Number(data.get('firstPlayerScore')),
@@ -74,23 +70,17 @@
 			)
 				.then(() => {
 					dispatch('update');
-					resetForm();
 				})
 				.catch((error) => {
+					console.log(error);
 					dispatch('error', error);
 				});
 		}
+		match = {} as Matches;
+		chosenId = -1;
 	};
 
 	let dropdownResets = new Array(2);
-
-	function resetForm() {
-		firstPlayerScore = 0;
-		secondPlayerScore = 0;
-		dropdownResets.forEach((reset) => {
-			reset();
-		});
-	}
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
@@ -117,7 +107,7 @@
 
 <h2>Edit Match</h2>
 
-<form on:submit={addMatch}>
+<form on:submit={editMatch}>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -127,7 +117,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				bind:reset={dropdownResets[0]}
-				bind:inputVal={match.firstPlayerName}
+				defaultValue={match.firstPlayerName}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -138,7 +128,7 @@
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
 				bind:reset={dropdownResets[1]}
-				bind:inputVal={match.secondPlayerName}
+				defaultValue={match.secondPlayerName}
 			/>
 		</label>
 	</div>
@@ -174,7 +164,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				bind:value={localDateString}
+				bind:value={selectedDate}
 				class="full-width"
 			/>
 		</label>
@@ -185,13 +175,13 @@
 				placeholder="Tournament"
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
-				bind:inputVal={match.tournamentTitle}
+				defaultValue={match.tournamentTitle}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Save</Button>
+			<Button dark={false} type={'submit'}>Save</Button>
 		</div>
 	</div>
 </form>

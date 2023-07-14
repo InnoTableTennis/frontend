@@ -23,8 +23,13 @@
 	};
 
 	const saveForm = function () {
-		FilterMatchFormStore.set({ name: name, score: score, minDateString: minDateString, maxDateString: maxDateString });
-	}
+		FilterMatchFormStore.set({
+			name: name,
+			score: score,
+			minDateString: minDateString,
+			maxDateString: maxDateString,
+		});
+	};
 
 	// function resetForm() {
 	// 	FilterMatchFormStore.set({ name: '', score: '', minDateString: '', maxDateString: '' });

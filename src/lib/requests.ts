@@ -52,8 +52,6 @@ export async function getMatches(
 
 	const data = await response.json();
 
-	console.log(data);
-
 	return { data, totalPages };
 }
 
@@ -102,6 +100,40 @@ export async function createMatch(
 
 	const data = await response.json();
 	return data;
+}
+
+export async function editMatch(
+	id: string,
+	firstPlayerName: string,
+	secondPlayerName: string,
+	firstPlayerScore: number,
+	secondPlayerScore: number,
+	tournamentTitle: string,
+	localDateString: string | null = null,
+): Promise<void> {
+	if (localDateString !== null) {
+		localDateString = new Date(localDateString).toLocaleDateString('ru');
+	} else {
+		localDateString = new Date().toLocaleDateString('ru');
+	}
+
+	const response: Response = await fetch(serverAPI + '/api/matches/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			firstPlayerScore,
+			secondPlayerScore,
+			tournamentTitle,
+			firstPlayerName,
+			secondPlayerName,
+			localDateString,
+		}),
+	});
+	await handleModifyErrors(response, token);
 }
 
 /**

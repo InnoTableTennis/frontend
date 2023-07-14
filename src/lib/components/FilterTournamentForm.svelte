@@ -30,7 +30,13 @@
 	};
 
 	const saveForm = function () {
-		FilterTournamentFormStore.set({ title:title, minParticipants: minParticipants, maxParticipants: maxParticipants, startDateString: startDateString, endDateString: endDateString });
+		FilterTournamentFormStore.set({
+			title: title,
+			minParticipants: minParticipants,
+			maxParticipants: maxParticipants,
+			startDateString: startDateString,
+			endDateString: endDateString,
+		});
 	};
 
 	// function resetForm() {

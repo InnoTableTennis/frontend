@@ -46,11 +46,19 @@
 	};
 
 	const saveForm = function () {
-		AddTournamentFormStore.set({ title: title, startDateString: startDateString, endDateString: endDateString });
-	}
+		AddTournamentFormStore.set({
+			title: title,
+			startDateString: startDateString,
+			endDateString: endDateString,
+		});
+	};
 
 	function resetForm() {
-		AddTournamentFormStore.set({ title: '', startDateString: convertDateToStringDash(new Date()), endDateString: convertDateToStringDash(new Date()) });
+		AddTournamentFormStore.set({
+			title: '',
+			startDateString: convertDateToStringDash(new Date()),
+			endDateString: convertDateToStringDash(new Date()),
+		});
 		title = get(AddTournamentFormStore).title;
 		startDateString = get(AddTournamentFormStore).startDateString;
 		endDateString = get(AddTournamentFormStore).endDateString;

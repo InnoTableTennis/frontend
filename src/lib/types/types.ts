@@ -44,14 +44,14 @@ export interface Tournaments {
 }
 
 export interface filterPlayerFormStore {
-    name: string;
-    telegramAlias: string;
-    minRating: string;
-    maxRating: string;
+	name: string;
+	telegramAlias: string;
+	minRating: string;
+	maxRating: string;
 }
 
 export interface filterTournamentFormStore {
-    title: string;
+	title: string;
 	minParticipants: string;
 	maxParticipants: string;
 	startDateString: string;
@@ -59,26 +59,26 @@ export interface filterTournamentFormStore {
 }
 
 export interface filterMatchFormStore {
-    name: string;
+	name: string;
 	score: string;
 	minDateString: string;
 	maxDateString: string;
 }
 
 export interface addPlayerFormStore {
-    name: string;
+	name: string;
 	telegramAlias: string;
 	initialRating: number;
 }
 
 export interface addTournamentFormStore {
-    title: string;
+	title: string;
 	startDateString: string;
 	endDateString: string;
 }
 
 export interface addMatchFormStore {
-    firstPlayerName: string;
+	firstPlayerName: string;
 	secondPlayerName: string;
 	tournamentTitle: string;
 	firstPlayerScore: number;

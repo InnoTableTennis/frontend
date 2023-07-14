@@ -46,8 +46,12 @@
 	};
 
 	const saveForm = function () {
-		AddPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, initialRating: initialRating });
-	}
+		AddPlayerFormStore.set({
+			name: name,
+			telegramAlias: telegramAlias,
+			initialRating: initialRating,
+		});
+	};
 
 	function resetForm() {
 		AddPlayerFormStore.set({ name: '', telegramAlias: '', initialRating: 100 });

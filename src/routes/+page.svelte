@@ -65,15 +65,20 @@
 					/>
 				</div>
 			{:else if mode === 'edit'}
-				<div>
-					<EditMatchForm
-						players={resp.players}
-						tournaments={resp.tournaments}
-						on:error={handleError}
-						on:update={() => handleInsert()}
-						bind:match={editData}
-					/>
-				</div>
+				{#if chosenId === -1}
+					Please choose a match to edit
+				{:else}
+					<div>
+						<EditMatchForm
+							players={resp.players}
+							tournaments={resp.tournaments}
+							on:error={handleError}
+							on:update={() => handleInsert()}
+							bind:match={editData}
+							bind:chosenId
+						/>
+					</div>
+				{/if}
 			{:else if mode === 'delete'}
 				Please choose a match to delete
 			{/if}

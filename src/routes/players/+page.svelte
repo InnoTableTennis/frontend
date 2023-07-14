@@ -2,7 +2,6 @@
 	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
 	import FilterPlayerForm from '$lib/components/FilterPlayerForm.svelte';
-	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';

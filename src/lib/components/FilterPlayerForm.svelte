@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import { get } from 'svelte/store';
-	import { FilterPlayerFormStore } from '$lib/stores'; 
+	import { FilterPlayerFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { onMount } from 'svelte';
@@ -23,7 +23,12 @@
 	};
 
 	const saveForm = function () {
-		FilterPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, minRating: minRating, maxRating: maxRating });
+		FilterPlayerFormStore.set({
+			name: name,
+			telegramAlias: telegramAlias,
+			minRating: minRating,
+			maxRating: maxRating,
+		});
 	};
 
 	// function resetForm() {
