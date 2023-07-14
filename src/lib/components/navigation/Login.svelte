@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { userToken } from '$lib/stores';
+	import signin from '$lib/assets/signin.jpg';
+	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 	import * as db from '$lib/requests';
 
 	const dispatch = createEventDispatcher();
@@ -36,8 +38,12 @@
 	class="back-btn"
 	on:click={() => {
 		window.history.back();
-	}}>← Back</button
->
+	}}>
+	<div class="arrow">
+		<NewLeftArrow/>
+	</div>
+	Back
+</button>
 
 <div class="container">
 	<div class="row">
@@ -46,9 +52,7 @@
 				<div class="column">
 					<form on:submit={login}>
 						<h2>Sign in</h2>
-
 						<label>
-							<!-- <span class="form-label">Telegram Alias</span> -->
 							<input
 								name="username"
 								bind:value={username}
@@ -60,7 +64,6 @@
 							/>
 						</label>
 						<label>
-							<!-- <span class="form-label">Password</span> -->
 							<input
 								type="password"
 								name="password"
@@ -81,7 +84,7 @@
 		</div>
 		<div class="wrapper-right">
 			<div class="container">
-				<img src="../../../../signin.jpg" alt="" />
+				<img class="backgroundImage" src={signin} alt="" />
 			</div>
 		</div>
 	</div>
@@ -125,16 +128,7 @@
 		border-color: var(--secondary-color);
 		outline: none;
 	}
-	.back-btn {
-		position: absolute;
-		left: 5%;
-		top: 5%;
-		color: var(--secondary-color);
-		font-size: 1.5em;
-		background-color: var(--main-color);
-		border: 0;
-		text-decoration: underline;
-	}
+
 	.row {
 		display: flex;
 		flex-direction: row;
@@ -157,7 +151,7 @@
 	}
 	.wrapper-right {
 		display: flex;
-		width: 100vw;
+		width: 50vw;
 		height: 100%;
 		align-items: start;
 	}
@@ -178,18 +172,50 @@
 		width: 10rem;
 		align-self: flex-end;
 	}
-	img {
+	.backgroundImage {
 		height: 100vh;
 		object-fit: cover;
 	}
-	@media (max-width: 500px) {
-		form {
-			margin: 7vh 0;
-			padding: 0.75em;
-			gap: 0.5rem;
+	.back-btn {
+		position: absolute;
+		left: 5%;
+		top: 5%;
+		width: 15%;
+		color: var(--secondary-color);
+		font-size: 1.5em;
+		background-color: var(--main-color);
+		display: flex;
+		flex-direction: row;
+		border: 0;
+		text-decoration: underline;
+		justify-content: center;
+		align-items: center;
+	}
+	.arrow {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 10%;
+		height: 10%;
+	}
+	@media (max-width: 480px) {
+		.container {
+			height: 100vh;
 		}
 		.wrapper-right {
 			display: none;
+		}
+		.arrow {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+		}
+		.back-btn {
+			width: 20%;
+			top: 1%;
+			left: 8%;
 		}
 	}
 </style>

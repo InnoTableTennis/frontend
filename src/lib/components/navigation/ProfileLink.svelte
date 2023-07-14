@@ -3,11 +3,16 @@
 
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
+	import profileIconLight from '$lib/assets/profile-icon-light.jpg'
 
 	const logOut = () => {
 		localStorage.removeItem('token');
 		userToken.set('');
 	};
+
+	const profileMenu = () => {
+
+	}
 </script>
 
 <div class="profile-container">
@@ -22,12 +27,24 @@
 		</div>
 	{:else}
 		<div class="log-out">
-			<Button on:click={logOut}>Log Out</Button>
+			<Button on:click={logOut}>Log out</Button>
 		</div>
 	{/if}
 </div>
 
 <style>
+	/* .profile-menu-button {
+		width: 3rem;
+		height: 3rem;
+		border: 0px solid;
+		border-radius: 5px;
+		background-color: #FFFFFF;
+	}
+	.in-button-icon {
+		width: 100%;
+		height: 85%;
+
+	} */
 	.profile-container {
 		display: flex;
 		gap: 1.5em;

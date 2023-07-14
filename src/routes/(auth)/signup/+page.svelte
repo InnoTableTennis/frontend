@@ -1,20 +1,24 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
-	// import Rectangles from '$lib/components/decorations/Rectangles.svelte';
+	import signup from '$lib/assets/signup.jpg';
+	import NewRightArrow from '$lib/components/icons/NewRightArrow.svelte';
 </script>
 
 <button
 	class="back-btn"
 	on:click={() => {
 		window.history.back();
-	}}>Back →</button
->
+	}}>
+	Back
+	<div class="arrow">
+		<NewRightArrow/>
+	</div>
+</button>
 
 <div class="container">
 	<div class="row">
 		<div class="wrapper-left">
 			<div class="container">
-				<img src="../../../signup.png" alt="Problem with downloading" />
+				<img class="backgroundImage" src={signup} alt="Problem with downloading" />
 			</div>
 		</div>
 		<div class="container">
@@ -69,17 +73,6 @@
 		padding-right: 0.5em;
 	}
 
-	.back-btn {
-		position: absolute;
-		left: 85%;
-		top: 5%;
-		color: var(--secondary-color);
-		font-size: 1.5em;
-		background-color: var(--main-color);
-		border: 0;
-		text-decoration: underline;
-	}
-
 	.row {
 		display: flex;
 		flex-direction: row;
@@ -124,8 +117,7 @@
 	}
 	.wrapper-left {
 		display: flex;
-		width: 100vw;
-		/* height: 100%; */
+		width: 50vw;
 		align-items: start;
 	}
 
@@ -137,27 +129,61 @@
 		align-content: center;
 		justify-content: center;
 	}
-	img {
+	.backgroundImage {
 		height: 100vh;
 		object-fit: cover;
 	}
+	.back-btn {
+		position: absolute;
+		left: 85%;
+		top: 3%;
+		color: var(--secondary-color);
+		font-size: 1.5em;
+		background-color: var(--main-color);
+		border: 0;
+		text-decoration: underline;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.arrow {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 10%;
+		height: 10%;
+	}
 
-	/* .full-width {
-		width: 100%;
-	} */
-	/* .form-label {
-		display: inline-block;
-		margin-bottom: 0.25em;
-	} */
-
-	@media (max-height: 500px) {
-		.container {
-			margin: 7vh 0;
-			padding: 0.75em;
-			gap: 0.5rem;
+	@media (max-width: 850px) {
+		.row{
+			font-size:small;
 		}
+		p {
+			font-size:small;
+		}
+	}
+
+	@media (max-width: 480px) {
 		.wrapper-left {
 			display: none;
+		}
+		.wrapper-right {
+
+		}
+		.arrow {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 20%;
+			height: 20%;
+		}
+		.back-btn {
+			left: 75%;
+			top: 0.5%;
+		}
+		.container {
+			height: 100vh;
 		}
 	}
 </style>
