@@ -1,43 +1,52 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import { get } from 'svelte/store';
-	import { FilterPlayerFormStore } from '$lib/stores';
+	import { SortFilterPlayerFormStore } from '$lib/stores'; 
 	import Button from '$lib/components/base/Button.svelte';
+	import DescendingIcon from './icons/DescendingIcon.svelte';
+	import AscendingIcon from './icons/AscendingIcon.svelte';
+	import RadioGroup from './base/RadioGroup.svelte';
 
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
-	let name = get(FilterPlayerFormStore).name;
-	let telegramAlias = get(FilterPlayerFormStore).telegramAlias;
-	let minRating = get(FilterPlayerFormStore).minRating;
-	let maxRating = get(FilterPlayerFormStore).maxRating;
+	const dispatch = createEventDispatcher();
+
+	let name = get(SortFilterPlayerFormStore).name;
+	let telegramAlias = get(SortFilterPlayerFormStore).telegramAlias;
+	let minRating = get(SortFilterPlayerFormStore).minRating;
+	let maxRating = get(SortFilterPlayerFormStore).maxRating;
+	let sortBy = "name";
+	let isDescending = true;
 	let firstInput: HTMLInputElement;
+
+	let radioValues = ["name", "date"];
+	let radioLabels = ['Sort by rating', 'Sort by name'];
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(name || telegramAlias || minRating || maxRating);
+		isSubmissionDisabled = !(
+			name || 
+			telegramAlias || 
+			!isNaN(parseInt(minRating)) ||
+			!isNaN(parseInt(maxRating))
+			);
 	}
 
-	const searchPlayer = function () {
-		console.log(name, telegramAlias, minRating, maxRating);
+	const sortPlayer = () => {
+		dispatch('update');
 	};
 
 	const saveForm = function () {
-		FilterPlayerFormStore.set({
-			name: name,
-			telegramAlias: telegramAlias,
-			minRating: minRating,
-			maxRating: maxRating,
-		});
+		const sortby: "name" | "rating" = sortBy === "name" ? "name" : "rating";
+		SortFilterPlayerFormStore.set({ name: name, telegramAlias: telegramAlias, minRating: minRating, maxRating: maxRating, descending: isDescending, sortBy: sortby });
 	};
 
-	// function resetForm() {
-	// 	FilterPlayerFormStore.set({ name: '', telegramAlias: '', minRating: '', maxRating: '' });
-	// 	name = get(FilterPlayerFormStore).name;
-	// 	telegramAlias = get(FilterPlayerFormStore).telegramAlias;
-	// 	minRating = get(FilterPlayerFormStore).minRating;
-	// 	maxRating = get(FilterPlayerFormStore).maxRating;
-	// }
+	function updateValue(event: any) {
+		// TO DO: make event type
+		sortBy = event.detail.value;
+		saveForm();
+	};
 
 	onMount(() => {
 		firstInput.focus();
@@ -46,7 +55,7 @@
 
 <h2>Filters</h2>
 
-<form on:submit={searchPlayer} on:change={saveForm}>
+<form on:submit={sortPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
 		<label>
 			<input
@@ -101,6 +110,29 @@
 	</div>
 </form>
 
+<h2>Sort by</h2>
+
+<form on:submit={sortPlayer} on:change={saveForm}>
+	<div class="column-2-elems">
+		<RadioGroup group={sortBy} values={radioValues} labels={radioLabels} on:update={updateValue} />
+	</div>
+	<div class="line-2-elems">
+		<label class="sorting-order" id="sorting-order-descending">
+			<input type="radio" id="descending" name="sorting-order" bind:group={isDescending} value={true}>
+			<DescendingIcon disabled={!isDescending}/>
+		</label>
+		<label class="sorting-order">
+			<input type="radio" id="ascending" name="sorting-order" bind:group={isDescending} value={false}>
+			<AscendingIcon disabled={isDescending}/>
+		</label>		
+	</div>
+	<div class="line-2-elems">
+		<div class="last-box full-width margin-top">
+			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>
+		</div>
+	</div>
+</form>
+
 <style>
 	h2 {
 		text-transform: uppercase;
@@ -134,15 +166,24 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
-		transition: 0.1s;
+		transition: .2s linear;
 	}
 	input:focus {
 		outline: none;
 		color: var(--content-color);
 		border-bottom: 5px solid var(--secondary-color);
+	}
+	#sorting-order-descending {
+		display: flex;
+		justify-content: end;
+	}
+	.sorting-order input {
+		position: fixed;
+		opacity: 0;
+		pointer-events: none;
 	}
 	.last-box {
 		grid-column: 2;

@@ -7,6 +7,8 @@
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
+	import { SortFilterMatchFormStore } from '$lib/stores';
+	import { get } from 'svelte/store';
 
 	const dispatch = createEventDispatcher();
 
@@ -27,8 +29,13 @@
 	};
 
 	async function requestNewPage() {
+		let name = get(SortFilterMatchFormStore).name;
+		let score = get(SortFilterMatchFormStore).score;
+		let minDateString = get(SortFilterMatchFormStore).minDateString;
+		let maxDateString = get(SortFilterMatchFormStore).maxDateString;
+		let descending = get(SortFilterMatchFormStore).descending;
 		await db
-			.getMatches(currentPageNumber, currentPageSize)
+			.getMatches(descending, name, score, minDateString, maxDateString, currentPageNumber, currentPageSize)
 			.then((result) => {
 				matches = result.data;
 				lastPageNumber = result.totalPages;
@@ -128,7 +135,7 @@
 			</section>
 		</Pagination>
 	{:else}
-		<p class="details">Oops! That page doesn't exist or it is private</p>
+		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
 {/await}
 
@@ -138,7 +145,7 @@
 		margin: 2rem;
 	}
 	.games-list {
-		max-width: 800px;
+		max-width: 900px;
 		margin: 3em auto;
 		font-size: var(--fontsize-medium1);
 	}
