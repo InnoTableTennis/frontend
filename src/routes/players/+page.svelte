@@ -2,6 +2,7 @@
 	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
 	import SortFilterPlayerForm from '$lib/components/SortFilterPlayerForm.svelte';
+	// import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
@@ -48,6 +49,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
+		grid-template-columns: 1fr 2fr;
 	}
 	.form {
 		max-width: 350px;
@@ -56,6 +58,7 @@
 	.players-list {
 		margin-right: 0;
 		max-width: 900px;
+		width: 90%;
 	}
 	.edit-mode {
 		text-align: right;

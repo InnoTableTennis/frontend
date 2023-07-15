@@ -10,7 +10,7 @@
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
-	// import Error from './Error.svelte';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
 
 	let title = get(AddTournamentFormStore).title;
 	let startDateString = get(AddTournamentFormStore).startDateString;
@@ -54,14 +54,10 @@
 	};
 
 	function resetForm() {
-		AddTournamentFormStore.set({
-			title: '',
-			startDateString: convertDateToStringDash(new Date()),
-			endDateString: convertDateToStringDash(new Date()),
-		});
-		title = get(AddTournamentFormStore).title;
-		startDateString = get(AddTournamentFormStore).startDateString;
-		endDateString = get(AddTournamentFormStore).endDateString;
+		title = '';
+		startDateString = convertDateToStringDash(new Date());
+		endDateString = convertDateToStringDash(new Date());
+		saveForm();
 	}
 
 	onMount(() => {
@@ -69,7 +65,10 @@
 	});
 </script>
 
-<h2>Add Tournament</h2>
+<div class="line-2-elems">
+	<h2>Add Tournament</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={addTournament} on:change={saveForm}>
 	<div class="column-1-elems">
@@ -152,7 +151,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;

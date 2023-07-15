@@ -213,7 +213,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--content-color);
 		background-color: var(--main-color);
 		transition: 0.1s;

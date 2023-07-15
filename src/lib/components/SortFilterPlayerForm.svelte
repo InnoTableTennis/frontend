@@ -3,11 +3,12 @@
 	import { get } from 'svelte/store';
 	import { SortFilterPlayerFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
-	import DescendingIcon from './icons/DescendingIcon.svelte';
-	import AscendingIcon from './icons/AscendingIcon.svelte';
-	import RadioGroup from './base/RadioGroup.svelte';
+	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
+	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
+	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -15,23 +16,12 @@
 	let telegramAlias = get(SortFilterPlayerFormStore).telegramAlias;
 	let minRating = get(SortFilterPlayerFormStore).minRating;
 	let maxRating = get(SortFilterPlayerFormStore).maxRating;
-	let sortBy = 'name';
+	let sortBy = 'rating';
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
-	let radioValues = ['name', 'date'];
+	let radioValues = ['rating', 'name'];
 	let radioLabels = ['Sort by rating', 'Sort by name'];
-
-	let isSubmissionDisabled = true;
-
-	$: {
-		isSubmissionDisabled = !(
-			name ||
-			telegramAlias ||
-			!isNaN(parseInt(minRating)) ||
-			!isNaN(parseInt(maxRating))
-		);
-	}
 
 	const sortPlayer = () => {
 		dispatch('update');
@@ -49,8 +39,17 @@
 		});
 	};
 
+	const resetForm = function () {
+		name = '';
+		telegramAlias = '';
+		minRating = '';
+		maxRating = '';
+		sortBy = 'rating';
+		isDescending = true;
+		saveForm();
+	};
+
 	function updateValue(event: CustomEvent) {
-		// TO DO: make event type
 		sortBy = event.detail.value;
 		saveForm();
 	}
@@ -60,7 +59,10 @@
 	});
 </script>
 
-<h2>Filters</h2>
+<div class="line-2-elems">
+	<h2>Filters</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={sortPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
@@ -112,7 +114,7 @@
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
+			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
 </form>

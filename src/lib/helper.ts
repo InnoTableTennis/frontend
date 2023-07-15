@@ -51,12 +51,32 @@ export const convertDateToStringDash = (date: Date): string => {
 	return formattedDate;
 };
 
+/**
+ * Converts a string date in a format "dd-mm-yyyy" to a formatted string in the format"yyyy-mm-dd" .
+ * @param initDate - The input date string to convert.
+ * @returns The formatted date string.
+ */
 export function changeDateFormat(initDate: string) {
 	if (initDate) {
 		const year = Number(initDate.slice(6, 10));
 		const month = Number(initDate.slice(3, 5)) - 1;
 		const day = Number(initDate.slice(0, 2));
 		return convertDateToStringDash(new Date(year, month, day));
+	}
+	return '';
+}
+
+/**
+ * Converts a string date in a format "yyyy-mm-dd" to a formatted string in the format"dd.mm.yyyy" .
+ * @param initDate - The input date string to convert.
+ * @returns The formatted date string.
+ */
+export function changeDateAnotherFormat(initDate: string) {
+	if (initDate) {
+		const year = Number(initDate.slice(0, 4));
+		const month = Number(initDate.slice(5, 7)) - 1;
+		const day = Number(initDate.slice(8, 10));
+		return convertDateToString(new Date(year, month, day));
 	}
 	return '';
 }

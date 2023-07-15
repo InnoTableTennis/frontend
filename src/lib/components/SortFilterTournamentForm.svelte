@@ -3,11 +3,13 @@
 	import { get } from 'svelte/store';
 	import { SortFilterTournamentFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
-	import RadioGroup from './base/RadioGroup.svelte';
-	import AscendingIcon from './icons/AscendingIcon.svelte';
-	import DescendingIcon from './icons/DescendingIcon.svelte';
+	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
+	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
+	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import { changeDateAnotherFormat } from '$lib/helper';
 
 	const dispatch = createEventDispatcher();
 
@@ -23,39 +25,37 @@
 	let radioValues = ['date', 'numberOfPlayers', 'kf'];
 	let radioLabels = ['Sort by date', 'Sort by number of players', 'Sort by kf'];
 
-	let isSubmissionDisabled = true;
-
-	$: {
-		isSubmissionDisabled = !(
-			title ||
-			!isNaN(parseInt(minParticipants)) ||
-			!isNaN(parseInt(maxParticipants)) ||
-			startDateString ||
-			endDateString
-		);
-	}
-
 	const sortTournament = function () {
 		dispatch('update');
 	};
 
 	const saveForm = function () {
-		console.log(maxParticipants);
+		console.log(endDateString);
 		const sortby: 'date' | 'kf' | 'numberOfPlayers' =
 			sortBy === 'date' ? 'date' : sortBy === 'kf' ? 'kf' : 'numberOfPlayers';
 		SortFilterTournamentFormStore.set({
 			title: title,
 			minParticipants: minParticipants,
 			maxParticipants: maxParticipants,
-			startDateString: startDateString,
-			endDateString: endDateString,
+			startDateString: changeDateAnotherFormat(startDateString),
+			endDateString: changeDateAnotherFormat(endDateString),
 			descending: isDescending,
 			sortBy: sortby,
 		});
 	};
 
+	const resetForm = function () {
+		title = '';
+		minParticipants = '';
+		maxParticipants = '';
+		startDateString = '';
+		endDateString = '';
+		sortBy = 'date';
+		isDescending = true;
+		saveForm();
+	};
+
 	function updateValue(event: CustomEvent) {
-		// TO DO: make event type
 		sortBy = event.detail.value;
 		saveForm();
 	}
@@ -65,7 +65,10 @@
 	});
 </script>
 
-<h2>Filters</h2>
+<div class="line-2-elems">
+	<h2>Filters</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={sortTournament} on:change={saveForm}>
 	<div class="column-1-elems">
@@ -110,8 +113,8 @@
 				type="date"
 				name="startDateString"
 				bind:value={startDateString}
+				placeholder="YYYY-MM-DD"
 				autocomplete="off"
-				placeholder="Start date"
 				class="full-width"
 			/>
 		</label>
@@ -127,7 +130,7 @@
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
+			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
 </form>
@@ -207,7 +210,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;
@@ -217,6 +220,7 @@
 		color: var(--content-color);
 		border-bottom: 5px solid var(--secondary-color);
 	}
+
 	#sorting-order-descending {
 		display: flex;
 		justify-content: end;

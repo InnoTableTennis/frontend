@@ -9,6 +9,7 @@
 	const dispatch = createEventDispatcher();
 
 	import * as db from '$lib/requests';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
 
 	let name = get(AddPlayerFormStore).name;
 	let telegramAlias = get(AddPlayerFormStore).telegramAlias;
@@ -54,10 +55,10 @@
 	};
 
 	function resetForm() {
-		AddPlayerFormStore.set({ name: '', telegramAlias: '', initialRating: 100 });
-		name = get(AddPlayerFormStore).name;
-		telegramAlias = get(AddPlayerFormStore).telegramAlias;
-		initialRating = get(AddPlayerFormStore).initialRating;
+		name = '';
+		telegramAlias = '';
+		initialRating = 100;
+		saveForm();
 	}
 
 	onMount(() => {
@@ -65,7 +66,10 @@
 	});
 </script>
 
-<h2>Add Player</h2>
+<div class="line-2-elems">
+	<h2>Add Player</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={addPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
@@ -150,7 +154,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;

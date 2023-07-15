@@ -5,7 +5,7 @@
 
 	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
 	import TournamentList from '$lib/components/TournamentList.svelte';
-	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
+	// import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/SortFilterTournamentForm.svelte';
 
 	import { userToken } from '$lib/stores';
@@ -20,7 +20,10 @@
 <div class="page">
 	{#if isLeader}
 		<div class="edit-mode">
-			<ToggleCheckboxButton bind:checked={isEditing} label={'Edit Mode'} />
+			<!-- <ToggleCheckboxButton 
+				bind:checked={isEditing} 
+				label={'Edit Mode'} 
+			/> -->
 			<span />
 		</div>
 	{/if}
@@ -50,9 +53,11 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
+		grid-template-columns: 1fr 2fr;
 	}
 	.form {
 		max-width: 350px;
+		margin-right: 2rem;
 	}
 	.tournaments-list {
 		margin-right: 0;
@@ -78,6 +83,7 @@
 		}
 		.wrapper {
 			display: block;
+			margin: 0;
 		}
 		.tournaments-list {
 			margin: 0;

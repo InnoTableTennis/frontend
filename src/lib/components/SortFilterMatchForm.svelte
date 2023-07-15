@@ -5,9 +5,11 @@
 
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import RadioGroup from './base/RadioGroup.svelte';
-	import AscendingIcon from './icons/AscendingIcon.svelte';
-	import DescendingIcon from './icons/DescendingIcon.svelte';
+	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
+	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
+	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import { changeDateAnotherFormat } from '$lib/helper';
 
 	const dispatch = createEventDispatcher();
 
@@ -22,30 +24,34 @@
 	let radioValues = ['date'];
 	let radioLabels = ['Sort by date'];
 
-	let isSubmissionDisabled = true;
-
-	$: {
-		isSubmissionDisabled = !(name || minDateString || maxDateString || !isNaN(parseInt(score)));
-	}
-
 	const sortMatch = () => {
 		dispatch('update');
 	};
 
 	const saveForm = function () {
+		score = score.replace(/\s/g, '');
 		const sortby: 'date' = 'date' as const;
 		SortFilterMatchFormStore.set({
 			name: name,
 			score: score,
-			minDateString: minDateString,
-			maxDateString: maxDateString,
+			minDateString: changeDateAnotherFormat(minDateString),
+			maxDateString: changeDateAnotherFormat(maxDateString),
 			descending: isDescending,
 			sortBy: sortby,
 		});
 	};
 
+	const resetForm = function () {
+		name = '';
+		score = '';
+		minDateString = '';
+		maxDateString = '';
+		sortBy = 'date';
+		isDescending = true;
+		saveForm();
+	};
+
 	function updateValue(event: CustomEvent) {
-		// TO DO: make event type
 		sortBy = event.detail.value;
 		saveForm();
 	}
@@ -55,7 +61,10 @@
 	});
 </script>
 
-<h2>Sort by</h2>
+<div class="line-2-elems">
+	<h2>Filters</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={sortMatch} on:change={saveForm}>
 	<div class="column-2-elems">
@@ -71,7 +80,6 @@
 		</label>
 		<label>
 			<input
-				type="number"
 				name="score"
 				bind:value={score}
 				autocomplete="off"
@@ -103,7 +111,7 @@
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Search</Button>
+			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
 </form>
@@ -183,7 +191,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;

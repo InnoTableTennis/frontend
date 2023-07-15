@@ -110,6 +110,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
+		grid-template-columns: 1fr 2fr;
 	}
 	.form {
 		max-width: 350px;

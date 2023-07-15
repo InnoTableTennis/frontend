@@ -131,12 +131,12 @@
 		font-size: var(--fontsize-medium1);
 	}
 	.players-grid {
-		height: 1.1em;
 		display: grid;
 		grid-template-columns: 1.8em 1fr 1fr 3.2em 1em;
 		gap: 1rem 1rem;
 		color: var(--content-color);
 		margin-bottom: 1rem;
+		height: 1.1em;
 	}
 	.delete-btn {
 		background: none;

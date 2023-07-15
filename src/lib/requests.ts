@@ -355,7 +355,6 @@ export async function getTournaments(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/tournaments';
-	console.log(minParticipants, maxParticipants, sortBy);
 	if (sortBy) {
 		url += '?sortBy=' + sortBy;
 		if (descending != null) url += '&descending=' + descending;

@@ -167,10 +167,10 @@
 		margin: 2rem;
 	}
 
-	.tournaments-grid.not-leader,
+	/* .tournaments-grid.not-leader,
 	.table-header.not-leader {
 		grid-template-columns: 1fr 5.7em 5.7em 5.7em;
-	}
+	} */
 
 	.table-header span {
 		color: var(--secondary-color);

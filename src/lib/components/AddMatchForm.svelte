@@ -11,6 +11,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -80,7 +81,6 @@
 	};
 
 	const saveForm = function () {
-		console.log(get(AddMatchFormStore).firstPlayerName, get(AddMatchFormStore).secondPlayerName);
 		AddMatchFormStore.set({
 			firstPlayerName: firstPlayerName,
 			secondPlayerName: secondPlayerName,
@@ -93,18 +93,15 @@
 	let dropdownResets = new Array(2);
 
 	function resetForm() {
-		AddMatchFormStore.set({
-			firstPlayerName: '',
-			secondPlayerName: '',
-			tournamentTitle: '',
-			firstPlayerScore: 0,
-			secondPlayerScore: 0,
-		});
-		firstPlayerScore = firstPlayerScore;
-		secondPlayerScore = secondPlayerScore;
+		firstPlayerName = '';
+		secondPlayerName = '';
+		tournamentTitle = '';
+		firstPlayerScore = 0;
+		secondPlayerScore = 0;
 		dropdownResets.forEach((reset) => {
 			reset();
 		});
+		saveForm();
 	}
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
@@ -133,7 +130,10 @@
 	}
 </script>
 
-<h2>Add Match</h2>
+<div class="line-2-elems">
+	<h2>Add Match</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
 <form on:submit={addMatch} on:change={saveForm}>
 	<div class="column-2-elems">
@@ -202,7 +202,7 @@
 			<DropdownInput
 				name="tournamentTitle"
 				placeholder="Tournament"
-				defaultValue={latestTournamentTitle}
+				defaultValue={tournamentTitle}
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
 			/>
@@ -248,7 +248,7 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--tertiary-color);
-		padding: 0.8em 1em;
+		padding: 0.8em 0;
 		color: var(--tertiary-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;
