@@ -1,16 +1,16 @@
 :root {
 	/* Colors */
-	--main-color: #1e1e1e;
-	--secondary-color: #c4d6b0;
-	--content-color: #fff;
-	--tertiary-color: #666666;
-	--tertiary-font-color: #000;
-	--title-color: #fff;
+	--main-color: #292626;
+	--secondary-color: #D22D19;
+	--content-color: #EBEBEB;
+	--title-color: #FFF6F6;
+	--secondary-bg-color: #4F4B4B;
+	--not-chosen-font-color: #AFAFAF;
 
 	--error-back-color: rgba(150, 0, 0, 0.7);
 
-	--rating-positive-color: green;
-	--rating-negative-color: red;
+	--rating-positive-color: #2CA800;
+	--rating-negative-color: #FF0000;
 
 	/* Font sizes */
 
@@ -32,12 +32,11 @@
 }
 
 [color-scheme='light'] {
-	--secondary-color: #d22d19;
-	--main-color: #fff;
-	--content-color: #373a3d;
-	--tertiary-color: #de9b8a;
-	--tertiary-font-color: #000;
+	--main-color: #FFFFFF;
+	--content-color: #373A3D;
 	--title-color: #2b2b2b;
+	--secondary-bg-color: #DE9B8A;
+	--not-chosen-font-color: #373A3D;
 }
 
 *,
