@@ -20,7 +20,7 @@
                     <Button type={'submit'}>Yes</Button>
                 </div>
                 <div class="overlay-button-no">
-                    <Button dark={"false"} type={'submit'}>No</Button>
+                    <Button dark={true} type={'submit'}>No</Button>
                 </div>
             </div>
         </div>
