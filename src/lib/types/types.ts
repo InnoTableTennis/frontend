@@ -39,6 +39,7 @@ export interface Tournaments {
 	endDateString: string;
 	finished: boolean;
 	id: number;
+	players: number;
 	startDateString: string;
 	title: string;
 }
@@ -59,7 +60,7 @@ export interface sortFilterTournamentFormStore {
 	startDateString: string;
 	endDateString: string;
 	descending: boolean;
-	sortBy: 'date' | 'numberOfPlayers' | 'kf';
+	sortBy: 'date' | 'players' | 'kf';
 }
 
 export interface sortFilterMatchFormStore {

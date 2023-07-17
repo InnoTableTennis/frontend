@@ -88,23 +88,25 @@
 	{#if players.length}
 		<Pagination {lastPageNumber} on:request={handleRequest}>
 			<section class="games-list">
-				<div class="table-header">
-					<span />
+				<div class="table-header" class:not-leader={!isLeader}>
+					<span>#</span>
 					<span>Name</span>
 					<span>Telegram Alias</span>
+					<span>W/L</span>
 					<span>Rating</span>
 					<!-- <span>Additional Info</span> -->
 					<span />
 				</div>
 
 				{#each players as player, i}
-					<div class="players-grid">
+					<div class="players-grid" class:not-leader={!isLeader}>
 						<div>
 							<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
 						</div>
 						<div class="no-wrap">{player.name}</div>
 						<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
-						<div>{player.rating}</div>
+						<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
+						<div class="rating">{player.rating}</div>
 						{#if isLeader}
 							<form on:submit|preventDefault={deletePlayer}>
 								<input type="hidden" name="id" value={player.id} />
@@ -132,7 +134,7 @@
 	}
 	.players-grid {
 		display: grid;
-		grid-template-columns: 1.8em 1fr 1fr 3.2em 1em;
+		grid-template-columns: 1.8em 1fr 1fr 3.2em 3.3em 1em;
 		gap: 1rem 1rem;
 		color: var(--content-color);
 		margin-bottom: 1rem;
@@ -155,7 +157,7 @@
 
 	.table-header {
 		display: grid;
-		grid-template-columns: 1.8em 1fr 1fr 3.2em 1em;
+		grid-template-columns: 1.8em 1fr 1fr 3.8em 3.3em 0.5em;
 		gap: 1rem 1rem;
 		margin-bottom: 1.25rem;
 	}
@@ -165,8 +167,17 @@
 	}
 	.position {
 		color: var(--secondary-color);
-		text-align: right;
 		display: inline-block;
 		width: 100%;
+	}
+	.rating {
+		display: inline-block;
+		text-align: right;
+		width: 100%;
+	}
+
+	.players-grid.not-leader,
+	.table-header.not-leader {
+		grid-template-columns: 1.8em 1fr 1fr 3.8em 3.4em;
 	}
 </style>

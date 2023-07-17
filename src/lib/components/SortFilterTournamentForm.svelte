@@ -22,7 +22,7 @@
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
-	let radioValues = ['date', 'numberOfPlayers', 'kf'];
+	let radioValues = ['date', 'players', 'kf'];
 	let radioLabels = ['Sort by date', 'Sort by number of players', 'Sort by kf'];
 
 	const sortTournament = function () {
@@ -31,8 +31,8 @@
 
 	const saveForm = function () {
 		console.log(endDateString);
-		const sortby: 'date' | 'kf' | 'numberOfPlayers' =
-			sortBy === 'date' ? 'date' : sortBy === 'kf' ? 'kf' : 'numberOfPlayers';
+		const sortby: 'date' | 'kf' | 'players' =
+			sortBy === 'date' ? 'date' : sortBy === 'kf' ? 'kf' : 'players';
 		SortFilterTournamentFormStore.set({
 			title: title,
 			minParticipants: minParticipants,

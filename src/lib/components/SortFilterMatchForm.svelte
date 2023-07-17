@@ -104,6 +104,7 @@
 				type="date"
 				name="maxDateString"
 				bind:value={maxDateString}
+				
 				placeholder="Max date"
 				class="full-width"
 			/>

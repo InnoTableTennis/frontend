@@ -1,11 +1,14 @@
 <script lang="ts">
-	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
-	import PlayersList from '$lib/components/PlayersList.svelte';
-	import SortFilterPlayerForm from '$lib/components/SortFilterPlayerForm.svelte';
+	// import { fly, slide } from 'svelte/transition';
+	// import { enhance } from '$app/forms';
+	import { getRoles } from '$lib/token';
+
+	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
+	import TournamentList from '$lib/components/TournamentList.svelte';
 	// import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
+	import SortFilterTournamentForm from '$lib/components/SortFilterTournamentForm.svelte';
 
 	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
 	import { handleError } from '$lib/errorHandler';
 
 	let handleInsert: () => void;
@@ -19,23 +22,24 @@
 		<div class="edit-mode">
 			<!-- <ToggleCheckboxButton 
 				bind:checked={isEditing} 
-				label={'Edit Mode'}
+				label={'Edit Mode'} 
 			/> -->
+			<span />
 		</div>
 	{/if}
 
 	<div class="wrapper">
 		{#if isEditing}
 			<div class="form">
-				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
-		{:else if $userToken}
+		{:else}
 			<div class="form">
-				<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<SortFilterTournamentForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 		{/if}
-		<div class="players-list">
-			<PlayersList on:error={handleError} bind:handleInsert {isLeader} />
+		<div class="tournaments-list">
+			<TournamentList on:error={handleError} bind:handleInsert {isLeader} />
 		</div>
 	</div>
 </div>
@@ -55,10 +59,9 @@
 		max-width: 350px;
 		margin-right: 2rem;
 	}
-	.players-list {
+	.tournaments-list {
 		margin-right: 0;
 		max-width: 900px;
-		width: 90%;
 	}
 	.edit-mode {
 		text-align: right;
@@ -80,8 +83,9 @@
 		}
 		.wrapper {
 			display: block;
+			margin: 0;
 		}
-		.players-list {
+		.tournaments-list {
 			margin: 0;
 		}
 	}
