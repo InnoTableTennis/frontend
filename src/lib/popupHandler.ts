@@ -1,5 +1,4 @@
 import {overlayText} from "$lib/stores";
-import {handleError} from "$lib/errorHandler";
 
 function getPromiseFromEvent(item: HTMLDivElement, event: string) {
     return new Promise((resolve) => {
