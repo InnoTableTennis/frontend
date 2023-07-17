@@ -104,7 +104,10 @@
 						<div class="no-wrap">{tournament.title}</div>
 						<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
 						<div class="no-wrap">{tournament.coefficient}</div>
-						<div class="no-wrap" style="text-align: right;">{tournament.players} <PlayersIcon /></div>
+						<div class="no-wrap" style="text-align: right;">
+							{tournament.players}
+							<PlayersIcon />
+						</div>
 						{#if isLeader}
 							<form on:submit|preventDefault={deleteTournament}>
 								<input type="hidden" name="id" value={tournament.id} />
