@@ -2,7 +2,7 @@
     import Button from "$lib/components/base/Button.svelte";
     import { fade } from 'svelte/transition';
     import {overlayText} from "$lib/stores";
-    export let popupText;
+    export let popupText: string;
     const buttonPressed = () => {
         overlayText.set(null);
     };
@@ -20,7 +20,7 @@
                     <Button type={'submit'}>Yes</Button>
                 </div>
                 <div class="overlay-button-no">
-                    <Button dark="false" type={'submit'}>No</Button>
+                    <Button dark={"false"} type={'submit'}>No</Button>
                 </div>
             </div>
         </div>
