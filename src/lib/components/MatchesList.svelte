@@ -43,7 +43,7 @@
 	}
 
 	const deleteMatch = async (e: Event) => {
-		let isConfirmed = alertPopup('Are you sure that you want to delete this match?');
+		let isConfirmed = await alertPopup('Are you sure that you want to delete this match?');
 		if (!isConfirmed) return;
 
 		const data = new FormData(e.target as HTMLFormElement);
