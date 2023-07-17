@@ -8,8 +8,8 @@
     };
 </script>
 
-<div class="fullscreen-overlay" transition:fade>
-        <div class="overlay-background" on:click={buttonPressed}></div>
+<form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
+        <button class="overlay-background" type="submit"></button>
         <div class="overlay-content">
             <div class="overlay-head">
                 <div class="circle">!</div>
@@ -17,14 +17,14 @@
             <p class="overlay-text">{popupText}</p>
             <div class="overlay-button-block">
                 <div class="overlay-button-yes">
-                    <Button type={'submit'} on:click={buttonPressed}>Yes</Button>
+                    <Button type={'submit'}>Yes</Button>
                 </div>
                 <div class="overlay-button-no">
-                    <Button dark="false" on:click={buttonPressed}>No</Button>
+                    <Button dark="false" type={'submit'}>No</Button>
                 </div>
             </div>
         </div>
-</div>
+</form>
 
 {#if popupText != null}
     <style>
@@ -69,6 +69,9 @@
         width: 100%;
         background-color: var(--content-color);
         z-index: 0;
+        border: none;
+        padding: 0;
+        outline: none;
     }
     .overlay-content {
         margin: 0 auto;

@@ -1,6 +1,6 @@
 import {overlayText} from "$lib/stores";
 
-function getPromiseFromEvent(item: HTMLDivElement, event: string) {
+function getPromiseFromEvent(item: HTMLDivElement | HTMLButtonElement, event: string) {
     return new Promise<void>((resolve) => {
         const listener = () => {
             item.removeEventListener(event, listener);
@@ -33,7 +33,7 @@ async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
 async function waitForClick() {
     const yesButton: HTMLDivElement = await waitFor(".overlay-button-yes");
     const noButton: HTMLDivElement = await waitFor(".overlay-button-no");
-    const background: HTMLDivElement = await waitFor(".overlay-background");
+    const background: HTMLButtonElement = await waitFor(".overlay-background");
     return await Promise.race([getPromiseFromEvent(yesButton, "click"),
         getPromiseFromEvent(noButton, "click"), getPromiseFromEvent(background, "click")]);
 }
