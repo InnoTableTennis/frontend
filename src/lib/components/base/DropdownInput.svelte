@@ -22,7 +22,7 @@
 	let selectedIndex = -1;
 	let unorderedList: HTMLUListElement;
 
-	export let inputVal = '';
+	let inputVal = '';
 
 	let input: HTMLInputElement;
 

@@ -194,6 +194,10 @@
 		height: 1em;
 		width: 1em;
 	}
+
+	.match-line:enabled:hover {
+		background-color: var(--tertiary-color);
+	}
 	.no-wrap {
 		text-align: left;
 		white-space: nowrap;

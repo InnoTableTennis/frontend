@@ -136,7 +136,7 @@
 				required
 				class="full-width"
 				placeholder="First score"
-				bind:value={match.firstPlayerScore}
+				value={match.firstPlayerScore}
 			/>
 		</label>
 		<label>
@@ -148,7 +148,7 @@
 				class="full-width"
 				required
 				placeholder="Second score"
-				bind:value={match.secondPlayerScore}
+				value={match.secondPlayerScore}
 			/>
 		</label>
 	</div>
