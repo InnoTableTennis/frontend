@@ -1,0 +1,145 @@
+<script lang="ts">
+    import Button from "$lib/components/base/Button.svelte";
+    import { fade } from 'svelte/transition';
+    import {overlayText} from "$lib/stores";
+    export let popupText;
+    const buttonPressed = async (e: Event) => {
+        overlayText.set(null);
+    };
+</script>
+
+<div class="fullscreen-overlay" transition:fade>
+        <div class="overlay-background" on:click={buttonPressed}></div>
+        <div class="overlay-content">
+            <div class="overlay-head">
+                <div class="circle">!</div>
+            </div>
+            <p class="overlay-text">{popupText}</p>
+            <div class="overlay-button-block">
+                <div class="overlay-button-yes">
+                    <Button type={'submit'} on:click={buttonPressed}>Yes</Button>
+                </div>
+                <div class="overlay-button-no">
+                    <Button dark="false" on:click={buttonPressed}>No</Button>
+                </div>
+            </div>
+        </div>
+</div>
+
+{#if popupText != null}
+    <style>
+        .fullscreen-overlay {
+            visibility: visible;
+        }
+        .overlay-background {
+            opacity: 0.8;
+        }
+        .overlay-content {
+            transform: translateY(15rem);
+            opacity: 1;
+        }
+    </style>
+{:else}
+    <style>
+        .fullscreen-overlay {
+            visibility: hidden;
+        }
+        .overlay-background {
+            opacity: 0;
+        }
+        .overlay-content {
+            opacity: 0;
+        }
+    </style>
+{/if}
+
+<style>
+    .fullscreen-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 10;
+        align-items: center;
+    }
+    .overlay-background {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: var(--content-color);
+        z-index: 0;
+    }
+    .overlay-content {
+        margin: 0 auto;
+        position: relative;
+        background: var(--main-color);
+        z-index: 1;
+        height: 20rem;
+        width: 30rem;
+        text-align: center;
+        border-radius: 30px;
+    }
+    .overlay-head {
+        display: flex;
+        height: 30%;
+        background-color: var(--secondary-color);
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        align-items:  center;
+        justify-content: center;
+    }
+    .circle {
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        border-radius: 100%;
+        border: 3px solid var(--main-color);
+        align-items: center;
+        justify-content: center;
+        color: var(--main-color);
+        font-size: var(--fontsize-large);
+        font-weight: var(--fontweight-1);
+    }
+    .overlay-text {
+        margin: 2.5rem 1rem;
+        font-size: var(--fontsize-medium1);
+        font-weight: var(--fontweight-2);
+    }
+    .overlay-button-block {
+        position: absolute;
+        display: flex;
+        bottom: 10%;
+        height: 15%;
+        width: 100%;
+        justify-content: center;
+    }
+    .overlay-button-yes {
+        width: 20%;
+        margin-right: 1rem;
+    }
+    .overlay-button-no {
+        margin-left: 1rem;
+        width: 20%
+    }
+    @media(max-width: 800px) {
+        .overlay-content {
+            height: 45%;
+            width: 60%;
+        }
+    }
+    @media(max-width: 480px) {
+        .overlay-button-block {
+            display: block;
+            margin-bottom: 20%;
+        }
+        .overlay-button-yes {
+            width: 60%;
+            margin: 0 auto;
+        }
+        .overlay-button-no {
+            width: 60%;
+            margin: 7% auto;
+        }
+    }
+</style>

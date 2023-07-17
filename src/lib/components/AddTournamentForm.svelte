@@ -25,10 +25,12 @@
 	$: {
 		endDateString = startDateString;
 	}
-
+	import {alertPopup} from "$lib/popupHandler";
 	const addTournament = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
-
+		if (!await alertPopup("Do you wand to add the tournament?")) {
+			return;
+		}
 		db.createTournament(
 			data.get('title') as string,
 			data.get('startDateString') as string,
