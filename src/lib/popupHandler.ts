@@ -1,7 +1,7 @@
 import {overlayText} from "$lib/stores";
 
 function getPromiseFromEvent(item: HTMLDivElement, event: string) {
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
         const listener = () => {
             item.removeEventListener(event, listener);
             resolve();
@@ -12,29 +12,28 @@ function getPromiseFromEvent(item: HTMLDivElement, event: string) {
     })
 }
 
-async function waitFor(selector: string) {
-    return new Promise(resolve => {
-        const element = document.querySelector(selector);
+async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
+    return new Promise<T>(resolve => {
+        const element = document.querySelector(selector) as T;
         if (element) {
             resolve(element);
         } else {
             const observer = new MutationObserver((mutationsList, observer) => {
-                const targetElement = document.querySelector(selector);
+                const targetElement = document.querySelector(selector) as T;
                 if (targetElement) {
                     observer.disconnect();
                     resolve(targetElement);
                 }
             });
-
             observer.observe(document.documentElement, { childList: true, subtree: true });
         }
     });
 }
 
 async function waitForClick() {
-    const yesButton = await waitFor(".overlay-button-yes");
-    const noButton = await waitFor(".overlay-button-no");
-    const background = await waitFor(".overlay-background");
+    const yesButton: HTMLDivElement = await waitFor(".overlay-button-yes");
+    const noButton: HTMLDivElement = await waitFor(".overlay-button-no");
+    const background: HTMLDivElement = await waitFor(".overlay-background");
     return await Promise.race([getPromiseFromEvent(yesButton, "click"),
         getPromiseFromEvent(noButton, "click"), getPromiseFromEvent(background, "click")]);
 }

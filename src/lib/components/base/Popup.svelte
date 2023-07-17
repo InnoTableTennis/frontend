@@ -3,7 +3,7 @@
     import { fade } from 'svelte/transition';
     import {overlayText} from "$lib/stores";
     export let popupText;
-    const buttonPressed = async (e: Event) => {
+    const buttonPressed = () => {
         overlayText.set(null);
     };
 </script>
