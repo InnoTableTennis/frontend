@@ -234,8 +234,8 @@
 		outline: solid var(--secondary-color);
 	}
 	input:disabled {
-		background-color: var(--tertiary-color);
-		color: var(--tertiary-font-color);
+		background-color: var(--not-chosen-font-color);
+		color: var(--secondary-bg-color);
 		box-shadow: none;
 		cursor: default;
 	}
