@@ -4,3 +4,9 @@
 		fill="#C4D6B0"
 	/>
 </svg>
+
+<style>
+	path {
+		fill: var(--content-color);
+	}
+</style>

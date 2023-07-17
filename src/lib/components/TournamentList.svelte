@@ -9,6 +9,7 @@
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
+	import PlayersIcon from './icons/PlayersIcon.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -92,18 +93,18 @@
 			<section class="games-list">
 				<div class="table-header" class:not-leader={!isLeader}>
 					<span>Title</span>
-					<span>Start Date</span>
-					<span>End Date</span>
-					<span>Status</span>
+					<span>Dates</span>
+					<span>Kf</span>
+					<span>Players</span>
 					<span />
 				</div>
 
 				{#each tournaments as tournament}
 					<div class="tournaments-grid" class:not-leader={!isLeader}>
 						<div class="no-wrap">{tournament.title}</div>
-						<div class="no-wrap">{tournament.startDateString}</div>
-						<div class="no-wrap">{tournament.endDateString}</div>
-						<div class="no-wrap">{tournament.finished ? 'Finished' : 'In progress'}</div>
+						<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
+						<div class="no-wrap">{tournament.coefficient}</div>
+						<div class="no-wrap" style="text-align: right;">{tournament.players} <PlayersIcon /></div>
 						{#if isLeader}
 							<form on:submit|preventDefault={deleteTournament}>
 								<input type="hidden" name="id" value={tournament.id} />
@@ -133,7 +134,7 @@
 	}
 	.tournaments-grid {
 		display: grid;
-		grid-template-columns: 1fr 5.7em 5.7em 5.7em 1em 1em;
+		grid-template-columns: 1fr 1fr 2.7em 4em 1em 1em;
 		gap: 1rem 1rem;
 		color: var(--content-color);
 		margin-bottom: 1rem;
@@ -157,7 +158,7 @@
 
 	.table-header {
 		display: grid;
-		grid-template-columns: 1fr 5.7em 5.7em 5.7em 1em 1em;
+		grid-template-columns: 1fr 1fr 3.7em 1em 3em 1em;
 		gap: 1rem 1rem;
 		margin-bottom: 1.25rem;
 	}
@@ -167,10 +168,10 @@
 		margin: 2rem;
 	}
 
-	/* .tournaments-grid.not-leader,
+	.tournaments-grid.not-leader,
 	.table-header.not-leader {
-		grid-template-columns: 1fr 5.7em 5.7em 5.7em;
-	} */
+		grid-template-columns: 1fr 1fr 4.7em 3.7em;
+	}
 
 	.table-header span {
 		color: var(--secondary-color);

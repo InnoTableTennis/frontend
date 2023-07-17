@@ -101,7 +101,7 @@
 			>
 		{/each}
 		{#if !isSmall}
-			<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
+			<span class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
 			<button
 				class="last number"
 				class:invisible={lastPageNumber - currentPageNumber < 2}
@@ -128,16 +128,19 @@
 
 <style>
 	.sizes-label {
-		color: var(--secondary-color);
+		color: var(--content-color);
 		margin-right: 0.8rem;
 	}
 	.container {
 		max-width: 900px;
+		height: 50px;
 		margin: 0 auto;
 		margin-bottom: 3em;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		background-color: var(--secondary-bg-color);
+		border-radius: 20px 20px 0px 0px;
 		cursor: default;
 	}
 	.isTop {
@@ -145,7 +148,7 @@
 		margin-bottom: 0;
 	}
 	.number {
-		color: var(--secondary-color);
+		color: var(--content-color);
 		outline: none;
 		border: none;
 		background: none;
@@ -191,7 +194,7 @@
 	}
 	.current {
 		background-color: var(--secondary-color);
-		color: var(--main-color);
+		color: var(--content-color);
 	}
 	.number.current:hover {
 		box-shadow: none;

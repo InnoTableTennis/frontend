@@ -341,7 +341,7 @@ export async function authenticate(username: string, password: string): Promise<
  * @returns The tournaments data and total number of pages.
  */
 export async function getTournaments(
-	sortBy: 'date' | 'kf' | 'numberOfPlayers' = 'date',
+	sortBy: 'date' | 'kf' | 'players' = 'date',
 	descending: boolean | null = null,
 	title: string | null = null,
 	minParticipants: number | null = null,
