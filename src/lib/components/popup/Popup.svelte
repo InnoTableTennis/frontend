@@ -4,7 +4,7 @@
     import {overlayText} from "$lib/stores";
     export let popupText: string;
     const buttonPressed = () => {
-        overlayText.set(null);
+        $overlayText = null
     };
 </script>
 
