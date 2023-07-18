@@ -180,8 +180,18 @@
 	}
 
 	.selected {
-		background-color: var(--secondary-color);
+		background-color: var(--secondary-color);	
+		border-radius: 3px;
 	}
+
+	.selected .no-wrap {
+		color: var(--main-color);
+	}
+
+	.selected .score {
+		color: var(--main-color);
+	}
+
 
 	.score {
 		white-space: nowrap;
@@ -196,11 +206,9 @@
 		width: 1em;
 	}
 
-	.selected:hover {
-		background-color: var(--secondary-color);
-	}
 	.match-line:enabled:hover {
 		background-color: var(--secondary-bg-color);
+		border-radius: 3px;
 	}
 
 	.no-wrap {
