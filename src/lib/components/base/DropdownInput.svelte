@@ -183,8 +183,8 @@
 		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 1em;
-		color: var(--content-color);
+		padding: 0.8em 0;
+		color: var(--not-chosen-font-color);
 		background-color: var(--main-color);
 		transition: 0.1s;
 	}
