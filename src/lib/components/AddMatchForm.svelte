@@ -12,6 +12,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import NumberInput from './base/NumberInput.svelte';
+	import DateInput from './base/DateInput.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -90,7 +92,7 @@
 		});
 	};
 
-	let dropdownResets = new Array(2);
+	let inputResets = new Array(4);
 
 	function resetForm() {
 		firstPlayerName = '';
@@ -98,7 +100,7 @@
 		tournamentTitle = '';
 		firstPlayerScore = 0;
 		secondPlayerScore = 0;
-		dropdownResets.forEach((reset) => {
+		inputResets.forEach((reset) => {
 			reset();
 		});
 		saveForm();
@@ -146,7 +148,7 @@
 				on:select={handleSelectFirstPlayerName}
 				isFirstInput={true}
 				defaultValue={firstPlayerName}
-				bind:reset={dropdownResets[0]}
+				bind:reset={inputResets[0]}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -155,49 +157,46 @@
 				name="secondPlayerName"
 				placeholder="Second player"
 				options={playerNames}
-				on:select={handleSelectSecondPlayerName}
 				defaultValue={secondPlayerName}
-				bind:reset={dropdownResets[1]}
+				on:select={handleSelectSecondPlayerName}
+				bind:reset={inputResets[1]}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="number"
-				min="0"
-				max="10"
+			<NumberInput
 				name="firstPlayerScore"
 				placeholder="First score"
-				bind:value={firstPlayerScore}
-				class="full-width"
-				required
+				defaultValue={firstPlayerScore}
+				bind:reset={inputResets[2]}
 			/>
 		</label>
+
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="number"
-				min="0"
-				max="10"
+			<NumberInput
 				name="secondPlayerScore"
 				placeholder="Second score"
-				bind:value={secondPlayerScore}
-				class="full-width"
-				required
+				defaultValue={secondPlayerScore}
+				bind:reset={inputResets[3]}
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="date"
+			<DateInput
 				name="localDateString"
 				placeholder="Date"
-				bind:value={localDateString}
-				class="full-width"
+				bind:defaultValue={localDateString}
+				bind:reset={inputResets[4]}
 			/>
 		</label>
+
 		<!-- svelte-ignore a11y-label-has-associated-control -->
+
 		<label>
 			<DropdownInput
 				name="tournamentTitle"
@@ -244,26 +243,6 @@
 		align-items: end;
 	}
 
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--not-chosen-font-color);
-		background-color: var(--main-color);
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
-	input:disabled {
-		background-color: var(--not-chosen-font-color);
-		color: var(--secondary-bg-color);
-		box-shadow: none;
-		cursor: default;
-	}
 	.last-box {
 		grid-column: 2;
 		margin-top: 1.5em;

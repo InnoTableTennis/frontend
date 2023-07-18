@@ -95,7 +95,7 @@
 							chosenId = match.id;
 							editData = match;
 						}}
-						disabled={!isChoosing}
+						disabled={!isChoosing || chosenId === match.id}
 					>
 						<div class="matches-grid">
 							<div class="no-wrap">
@@ -182,6 +182,7 @@
 	.selected {
 		background-color: var(--secondary-color);
 	}
+
 	.score {
 		white-space: nowrap;
 	}
@@ -195,9 +196,13 @@
 		width: 1em;
 	}
 
+	.selected:hover {
+		background-color: var(--secondary-color);
+	}
 	.match-line:enabled:hover {
 		background-color: var(--secondary-bg-color);
 	}
+
 	.no-wrap {
 		text-align: left;
 		white-space: nowrap;

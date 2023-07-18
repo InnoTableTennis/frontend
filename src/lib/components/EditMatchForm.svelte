@@ -9,6 +9,8 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
+	import NumberInput from './base/NumberInput.svelte';
+	import DateInput from './base/DateInput.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -37,7 +39,7 @@
 
 	let firstPlayerName = match.firstPlayerName;
 	let secondPlayerName = match.secondPlayerName;
-	let tournamentTitle = match.tournamentTitle;
+	$: tournamentTitle = match.tournamentTitle;
 
 	let localDateString = '';
 
@@ -74,8 +76,6 @@
 		chosenId = -1;
 	};
 
-	let dropdownResets = new Array(2);
-
 	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
 	}
@@ -110,7 +110,6 @@
 				placeholder="First player"
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
-				bind:reset={dropdownResets[0]}
 				defaultValue={match.firstPlayerName}
 			/>
 		</label>
@@ -121,47 +120,35 @@
 				placeholder="Second player"
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
-				bind:reset={dropdownResets[1]}
 				defaultValue={match.secondPlayerName}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="number"
-				min="0"
-				max="10"
+			<NumberInput
 				name="firstPlayerScore"
-				required
-				class="full-width"
 				placeholder="First score"
-				value={match.firstPlayerScore}
+				defaultValue={match.firstPlayerScore}
 			/>
 		</label>
+
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="number"
-				min="0"
-				max="10"
+			<NumberInput
 				name="secondPlayerScore"
-				class="full-width"
-				required
 				placeholder="Second score"
-				value={match.secondPlayerScore}
+				defaultValue={match.secondPlayerScore}
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="date"
-				name="localDateString"
-				placeholder="Date"
-				bind:value={localDateString}
-				class="full-width"
-			/>
+			<DateInput name="localDateString" placeholder="Date" defaultValue={localDateString} />
 		</label>
+
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
 			<DropdownInput
@@ -169,7 +156,7 @@
 				placeholder="Tournament"
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
-				defaultValue={match.tournamentTitle}
+				defaultValue={tournamentTitle}
 			/>
 		</label>
 	</div>
@@ -209,32 +196,9 @@
 		align-items: end;
 	}
 
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--content-color);
-		background-color: var(--main-color);
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
-	input:disabled {
-		background-color: var(--secondary-bg-color);
-		color: var(--not-chosen-font-color);
-		box-shadow: none;
-		cursor: default;
-	}
 	.last-box {
 		grid-column: 2;
 		margin-top: 1.5em;
-	}
-	.full-width {
-		width: 100%;
 	}
 
 	@media (max-width: 800px) {

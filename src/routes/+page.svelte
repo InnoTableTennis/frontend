@@ -14,12 +14,11 @@
 
 	let handleInsert: () => void;
 	let editData: Matches = {} as Matches;
-	$: editData;
+	let isEditing = false;
+	let chosenId = -1;
+	let mode = 'add';
 	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isEditing = false;
-	$: mode = 'add';
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
-	$: chosenId = -1;
 
 	async function getFormData() {
 		const playersPromise = db.getPlayers('rating', true, '', '', null, null, 1, 1000000);
