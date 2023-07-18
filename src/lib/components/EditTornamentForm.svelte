@@ -4,7 +4,7 @@
 	import { AddTournamentFormStore } from '$lib/stores';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 

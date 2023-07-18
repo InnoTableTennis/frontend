@@ -3,7 +3,7 @@
 	import { get } from 'svelte/store';
 	import { AddPlayerFormStore } from '$lib/stores';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -19,19 +19,8 @@
 	export let player: Players;
 	export let chosenId = -1;
 
-	function countNameWords(name: string): number {
-		const arrayStrings: string[] = name.split(/\W+/);
-		let counter = 0;
-		arrayStrings.forEach((element) => {
-			if (element !== '') counter++;
-		});
-		return counter;
-	}
-
 	const editPlayer = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
-
-		const name = data.get('name') as string;
 
 		db.editPlayer(
 			player.id.toString() as string,
@@ -65,11 +54,7 @@
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<TextInput
-				name="name"
-				defaultValue={player.name}
-				placeholder="Player's name"
-			/>
+			<TextInput name="name" defaultValue={player.name} placeholder="Player's name" />
 		</label>
 		<label>
 			<TextInput
