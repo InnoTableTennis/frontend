@@ -155,7 +155,7 @@
 		max-height: 100px;
 		overflow-y: auto;
 		box-sizing: border-box;
-		border: 0.01em solid var(--tertiary-color);
+		border: 0.01em solid var(--not-chosen-font-color);
 		font-size: var(--fontsize-medium2);
 		z-index: 10;
 	}
@@ -164,7 +164,7 @@
 		cursor: pointer;
 	}
 	li:hover {
-		background-color: var(--tertiary-color);
+		background-color: var(--not-chosen-font-color);
 	}
 	li:focus {
 		background-color: var(--secondary-color);
