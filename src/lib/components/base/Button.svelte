@@ -21,7 +21,7 @@
 	}
 
 	button:hover {
-		box-shadow: 0px 4px 4px 2px var(--tertiary-color);
+		box-shadow: 0px 4px 4px 2px var(--not-chosen-font-color);
 		cursor: pointer;
 	}
 
@@ -32,13 +32,13 @@
 	}
 
 	button.dark:hover {
-		box-shadow: 0px 4px 4px 2px var(--tertiary-color);
+		box-shadow: 0px 4px 4px 2px var(--not-chosen-font-color);
 	}
 	button:disabled,
 	button[disabled] {
 		/* border: 1px solid #444; */
-		background-color: var(--tertiary-color);
-		color: var(--tertiary-font-color);
+		background-color: var(--secondary-bg-color);
+		color: var(--not-chosen-font-color);
 		box-shadow: none;
 		cursor: auto;
 	}

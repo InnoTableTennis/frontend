@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
+	import ToggleTheme from '../ToggleTheme.svelte';
 </script>
 
 <nav>
@@ -10,12 +11,13 @@
 		<div class="line line3" />
 	</div>
 	<div class="nav-container">
+		<ToggleTheme />
 		<ul class="nav-links">
-			<li><a href="/">Matches</a></li>
-			<li><a href="/tournaments">Tournaments</a></li>
-			<li><a href="/players">Players</a></li>
-		</ul>
-		<ProfileLink />
+		<li><a href="/">Matches</a></li>
+		<li><a href="/tournaments">Tournaments</a></li>
+		<li><a href="/players">Players</a></li>
+	</ul>
+	<ProfileLink />
 	</div>
 </nav>
 

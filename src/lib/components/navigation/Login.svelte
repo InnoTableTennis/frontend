@@ -121,7 +121,7 @@
 		border-left: none;
 		border-right: none;
 		border-bottom: 0.2rem solid;
-		border-color: var(--tertiary-color);
+		border-color: var(--secondary-bg-color);
 		padding: 0.8em 0;
 		transition: 0.1s;
 	}

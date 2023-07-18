@@ -95,7 +95,7 @@
 
 	.index {
 		text-align: end;
-		color: var(--tertiary-color);
+		color: var(--secondary-bg-color);
 		font-size: 6em;
 		margin-bottom: -0.5em;
 	}
@@ -168,8 +168,6 @@
 	@media (max-width: 480px) {
 		.wrapper-left {
 			display: none;
-		}
-		.wrapper-right {
 		}
 		.arrow {
 			display: flex;
