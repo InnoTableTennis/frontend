@@ -13,11 +13,11 @@
 	<div class="nav-container">
 		<ToggleTheme />
 		<ul class="nav-links">
-		<li><a href="/">Matches</a></li>
-		<li><a href="/tournaments">Tournaments</a></li>
-		<li><a href="/players">Players</a></li>
-	</ul>
-	<ProfileLink />
+			<li><a href="/">Matches</a></li>
+			<li><a href="/tournaments">Tournaments</a></li>
+			<li><a href="/players">Players</a></li>
+		</ul>
+		<ProfileLink />
 	</div>
 </nav>
 
