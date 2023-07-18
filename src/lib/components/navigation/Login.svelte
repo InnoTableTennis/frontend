@@ -181,7 +181,7 @@
 		position: absolute;
 		left: 5%;
 		top: 5%;
-		width: 15%;
+		width: 10rem;
 		color: var(--secondary-color);
 		font-size: 1.5em;
 		background-color: var(--main-color);
@@ -196,8 +196,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 10%;
-		height: 10%;
+		width: 1rem;
+		height: 1rem;
 	}
 	@media (max-width: 480px) {
 		.container {
