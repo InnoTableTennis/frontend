@@ -32,79 +32,75 @@
 	}
 </script>
 
-<div class="page">
-	{#if isLeader}
-		<div class="edit-mode">
-			<ToggleCheckboxButton
-				bind:checked={isEditing}
-				bind:chosenId
-				bind:editData
-				bind:mode
-				label={'Edit Mode'}
-			/>
-			<span />
-		</div>
-	{/if}
+{#if isLeader}
+	<div class="edit-mode">
+		<ToggleCheckboxButton
+			bind:checked={isEditing}
+			bind:chosenId
+			bind:editData
+			bind:mode
+			label={'Edit Mode'}
+		/>
+		<span />
+	</div>
+{/if}
 
+{#if isEditing}
+	<div class="edit-switch-bar">
+		<EditSwitchBar bind:mode bind:chosenId bind:editData />
+	</div>
+{/if}
+
+<div class="wrapper">
 	{#if isEditing}
-		<div class="edit-switch-bar">
-			<EditSwitchBar bind:mode bind:chosenId bind:editData />
-		</div>
-	{/if}
-
-	<div class="wrapper">
-		{#if isEditing}
-			{#await getFormData() then resp}
-				{#if mode === 'add'}
+		{#await getFormData() then resp}
+			{#if mode === 'add'}
+				<div class="form">
+					<AddMatchForm
+						players={resp.players}
+						tournaments={resp.tournaments}
+						on:error={handleError}
+						on:update={() => handleInsert()}
+					/>
+				</div>
+			{:else if mode === 'edit'}
+				{#if chosenId === -1}
+					Please choose a match to edit
+				{:else}
 					<div class="form">
-						<AddMatchForm
+						<EditMatchForm
 							players={resp.players}
 							tournaments={resp.tournaments}
 							on:error={handleError}
 							on:update={() => handleInsert()}
+							bind:match={editData}
+							bind:chosenId
 						/>
 					</div>
-				{:else if mode === 'edit'}
-					{#if chosenId === -1}
-						Please choose a match to edit
-					{:else}
-						<div class="form">
-							<EditMatchForm
-								players={resp.players}
-								tournaments={resp.tournaments}
-								on:error={handleError}
-								on:update={() => handleInsert()}
-								bind:match={editData}
-								bind:chosenId
-							/>
-						</div>
-					{/if}
-				{:else if mode === 'delete'}
-					Please choose a match to delete
 				{/if}
-			{/await}
-		{:else}
-			<div class="form">
-				<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
-			</div>
-		{/if}
-		<div class="matches-list">
-			<MatchesList
-				on:error={handleError}
-				bind:handleInsert
-				{isLeader}
-				bind:isChoosing
-				bind:chosenId
-				bind:editData
-			/>
+			{:else if mode === 'delete'}
+				Please choose a match to delete
+			{/if}
+		{/await}
+	{:else}
+		<div class="form">
+			<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
+	{/if}
+	<div class="matches-list">
+		<MatchesList
+			on:error={handleError}
+			bind:handleInsert
+			{isLeader}
+			bind:isChoosing
+			bind:chosenId
+			bind:editData
+		/>
 	</div>
 </div>
 
+
 <style>
-	.page {
-		padding: 0 5%;
-	}
 	.wrapper {
 		height: 600px;
 		display: grid;
@@ -126,15 +122,7 @@
 		max-width: 900px;
 	}
 
-	@media (max-width: 1300px) {
-		.page {
-			padding: 0;
-		}
-		.form {
-			margin-right: 2rem;
-		}
-	}
-	@media (max-width: 1000px) {
+	@media (max-width: 1100px) {
 		.form {
 			max-width: 500px;
 			margin: 0 auto;
@@ -143,7 +131,7 @@
 			display: block;
 		}
 		.matches-list {
-			margin: 0;
+			margin: 0 auto;
 		}
 	}
 </style>

@@ -37,7 +37,7 @@
 
 	let firstPlayerName = match.firstPlayerName;
 	let secondPlayerName = match.secondPlayerName;
-	let tournamentTitle = match.tournamentTitle;
+	$: tournamentTitle = match.tournamentTitle;
 
 	let localDateString = '';
 
@@ -169,7 +169,7 @@
 				placeholder="Tournament"
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
-				defaultValue={match.tournamentTitle}
+				defaultValue={tournamentTitle}
 			/>
 		</label>
 	</div>

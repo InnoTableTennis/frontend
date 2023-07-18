@@ -14,36 +14,31 @@
 	$: isEditing = false;
 </script>
 
-<div class="page">
-	{#if isLeader}
-		<div class="edit-mode">
-			<!-- <ToggleCheckboxButton 
-				bind:checked={isEditing} 
-				label={'Edit Mode'}
-			/> -->
+{#if isLeader}
+	<div class="edit-mode">
+		<!-- <ToggleCheckboxButton 
+			bind:checked={isEditing} 
+			label={'Edit Mode'}
+		/> -->
+	</div>
+{/if}
+
+<div class="wrapper">
+	{#if isEditing}
+		<div class="form">
+			<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+		</div>
+	{:else}
+		<div class="form">
+			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
-
-	<div class="wrapper">
-		{#if isEditing}
-			<div class="form">
-				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
-			</div>
-		{:else}
-			<div class="form">
-				<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
-			</div>
-		{/if}
-		<div class="players-list">
-			<PlayersList on:error={handleError} bind:handleInsert {isLeader} />
-		</div>
+	<div class="players-list">
+		<PlayersList on:error={handleError} bind:handleInsert {isLeader} />
 	</div>
 </div>
 
 <style>
-	.page {
-		padding: 0 5%;
-	}
 	.wrapper {
 		height: 600px;
 		display: grid;
@@ -64,15 +59,7 @@
 		margin-top: 2rem;
 	}
 
-	@media (max-width: 1300px) {
-		.page {
-			padding: 0;
-		}
-		.form {
-			margin-right: 2rem;
-		}
-	}
-	@media (max-width: 1000px) {
+	@media (max-width: 1100px) {
 		.form {
 			max-width: 500px;
 			margin: 0 auto;
@@ -81,7 +68,7 @@
 			display: block;
 		}
 		.players-list {
-			margin: 0;
+			margin: 0 auto;
 		}
 	}
 </style>
