@@ -5,41 +5,80 @@
 
 	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
 	import TournamentList from '$lib/components/TournamentList.svelte';
-	// import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
+	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/SortFilterTournamentForm.svelte';
 
 	import { userToken } from '$lib/stores';
 	import { handleError } from '$lib/errorHandler';
+	import type { Tournaments } from '$lib/types/types';
+	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
+	import EditTornamentForm from '$lib/components/EditTornamentForm.svelte';
 
 	let handleInsert: () => void;
-
+	let editData: Tournaments = {} as Tournaments;
+	let isEditing = false;
+	let chosenId = -1;
+	let mode = 'add';
 	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isEditing = false;
+	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 </script>
 
 <div class="page">
 	{#if isLeader}
 		<div class="edit-mode">
-			<!-- <ToggleCheckboxButton 
-				bind:checked={isEditing} 
-				label={'Edit Mode'} 
-			/> -->
+			<ToggleCheckboxButton
+				bind:checked={isEditing}
+				bind:chosenId
+				bind:editData
+				bind:mode
+				label={'Edit Mode'}
+			/>
 			<span />
+		</div>
+	{/if}
+
+	{#if isEditing}
+		<div class="edit-switch-bar">
+			<EditSwitchBar bind:mode bind:chosenId bind:editData />
 		</div>
 	{/if}
 
 	<div class="wrapper">
 		{#if isEditing}
-			<div class="form">
-				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
-			</div>
+			{#if mode === 'add'}
+				<div class="form">
+					<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+				</div>
+			{:else if mode === 'edit'}
+				{#if chosenId === -1}
+					Please choose a tournament to edit
+				{:else}
+					<div class="form">
+						<EditTornamentForm
+							on:error={handleError}
+							on:update={() => handleInsert()}
+							bind:tournament={editData}
+							bind:chosenId
+						/>
+					</div>
+				{/if}
+			{:else if mode === 'delete'}
+				Please choose a tournament to delete
+			{/if}
 		{:else}
 			<div class="form">
 				<SortFilterTournamentForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 		{/if}
 		<div class="tournaments-list">
-			<TournamentList on:error={handleError} bind:handleInsert {isLeader} />
+			<TournamentList
+				on:error={handleError}
+				bind:handleInsert
+				{isLeader}
+				bind:isChoosing
+				bind:chosenId
+				bind:editData
+			/>
 		</div>
 	</div>
 </div>

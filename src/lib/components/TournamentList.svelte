@@ -25,6 +25,10 @@
 		requestNewPage();
 	};
 
+	export let chosenId = -1;
+	export let isChoosing = false;
+	export let editData;
+
 	async function requestNewPage() {
 		let title = get(SortFilterTournamentFormStore).title;
 		let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
@@ -100,27 +104,37 @@
 				</div>
 
 				{#each tournaments as tournament}
-					<div class="tournaments-grid" class:not-leader={!isLeader}>
-						<div class="no-wrap">{tournament.title}</div>
-						<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
-						<div class="no-wrap">{tournament.coefficient}</div>
-						<div class="no-wrap" style="text-align: right;">
-							{tournament.players}
-							<PlayersIcon />
-						</div>
-						{#if isLeader}
-							<form on:submit|preventDefault={deleteTournament}>
-								<input type="hidden" name="id" value={tournament.id} />
-								<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-							</form>
-							{#if !tournament.finished}
-								<form on:submit|preventDefault={finishTournament}>
+					<button
+						class="tournament-line"
+						class:selected={chosenId === tournament.id}
+						on:click|preventDefault={() => {
+							chosenId = tournament.id;
+							editData = tournament;
+						}}
+						disabled={!isChoosing || chosenId === tournament.id}
+					>
+						<div class="tournaments-grid" class:not-leader={!isLeader}>
+							<div class="no-wrap">{tournament.title}</div>
+							<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
+							<div class="no-wrap">{tournament.coefficient}</div>
+							<div class="no-wrap" style="text-align: right;">
+								{tournament.players}
+								<PlayersIcon />
+							</div>
+							{#if isLeader}
+								<form on:submit|preventDefault={deleteTournament}>
 									<input type="hidden" name="id" value={tournament.id} />
-									<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
+									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
 								</form>
+								{#if !tournament.finished}
+									<form on:submit|preventDefault={finishTournament}>
+										<input type="hidden" name="id" value={tournament.id} />
+										<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
+									</form>
+								{/if}
 							{/if}
-						{/if}
-					</div>
+						</div>
+					</button>
 				{/each}
 			</section>
 		</Pagination>
@@ -137,12 +151,41 @@
 	}
 	.tournaments-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr 2.7em 4em 1em 1em;
-		gap: 1rem 1rem;
+		grid-template-columns: 1fr 1fr 3.5em 3em 1em 1em;
+		gap: 1rem 1.5rem;
 		color: var(--content-color);
 		margin-bottom: 1rem;
 		height: 1.1em;
 	}
+
+	.tournament-line {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0 5px;
+		border: none;
+		width: 100%;
+		height: 1.3rem;
+		margin-bottom: 0.6rem;
+	}
+	.tournament-line:disabled {
+		cursor: default;
+	}
+
+	.selected {
+		background-color: var(--secondary-color);
+		border-radius: 3px;
+	}
+
+	.selected .no-wrap {
+		color: var(--main-color);
+	}
+
+	.tournament-line:enabled:hover {
+		background-color: var(--secondary-bg-color);
+		border-radius: 3px;
+	}
+
 	.delete-btn,
 	.finish-btn {
 		background: none;
@@ -154,6 +197,9 @@
 		width: 1em;
 	}
 	.no-wrap {
+		display: flex;
+		align-items: center;
+		text-align: left;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

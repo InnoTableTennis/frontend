@@ -18,6 +18,10 @@
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
+	export let chosenId = -1;
+	export let isChoosing = false;
+	export let editData;
+
 	export const handleInsert = () => {
 		currentPageNumber = 1;
 		requestNewPage();
@@ -99,21 +103,31 @@
 				</div>
 
 				{#each players as player, i}
-					<div class="players-grid" class:not-leader={!isLeader}>
-						<div>
-							<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
+					<button
+						class="player-line"
+						class:selected={chosenId === player.id}
+						on:click|preventDefault={() => {
+							chosenId = player.id;
+							editData = player;
+						}}
+						disabled={!isChoosing || chosenId === player.id}
+					>
+						<div class="players-grid" class:not-leader={!isLeader}>
+							<div>
+								<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
+							</div>
+							<div class="no-wrap">{player.name}</div>
+							<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
+							<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
+							<div class="rating">{player.rating}</div>
+							{#if isLeader}
+								<form on:submit|preventDefault={deletePlayer}>
+									<input type="hidden" name="id" value={player.id} />
+									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
+								</form>
+							{/if}
 						</div>
-						<div class="no-wrap">{player.name}</div>
-						<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
-						<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
-						<div class="rating">{player.rating}</div>
-						{#if isLeader}
-							<form on:submit|preventDefault={deletePlayer}>
-								<input type="hidden" name="id" value={player.id} />
-								<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-							</form>
-						{/if}
-					</div>
+					</button>
 				{/each}
 			</section>
 		</Pagination>
@@ -140,6 +154,39 @@
 		margin-bottom: 1rem;
 		height: 1.1em;
 	}
+
+	.player-line {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0 5px;
+		border: none;
+		width: 100%;
+		height: 1.3rem;
+		margin-bottom: 0.6rem;
+	}
+	.player-line:disabled {
+		cursor: default;
+	}
+
+	.player-line:enabled:hover {
+		background-color: var(--secondary-bg-color);
+		border-radius: 3px;
+	}
+
+	.selected {
+		background-color: var(--secondary-color);
+		border-radius: 3px;
+	}
+
+	.selected .position {
+		color: var(--main-color);
+	}
+
+	.selected .no-wrap {
+		color: var(--main-color);
+	}
+
 	.delete-btn {
 		background: none;
 		border: none;
@@ -150,6 +197,9 @@
 		width: 1em;
 	}
 	.no-wrap {
+		display: flex;
+		align-items: center;
+		text-align: left;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

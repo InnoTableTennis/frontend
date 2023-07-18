@@ -276,6 +276,61 @@ export async function createPlayer(
 }
 
 /**
+ * Creates a new player.
+ * @param name - The name of the player.
+ * @param telegramAlias - The Telegram alias of the player.
+ * @param rating - The rating of the player.
+ */
+export async function editPlayer(
+	id: string,
+	name: string,
+	telegramAlias: string | null = null,
+	rating: number | null = null,
+): Promise<void> {
+	console.log(id, name, telegramAlias, rating);
+
+	name = name.trim();
+
+	if (telegramAlias !== null) {
+		telegramAlias = telegramAlias.trim();
+		if (telegramAlias === '') telegramAlias = null;
+	}
+
+	if (telegramAlias !== null) {
+		if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);
+		if (!/^[A-Za-z0-9_]*$/.test(telegramAlias)) {
+			throw new Error('telegram alias must consist only of latin alphabet letters and digits! ');
+		}
+	}
+
+	if (!/^[A-Za-z ().]*$/.test(name)) {
+		throw new Error('name must consist only of latin alphabet letters!');
+	}
+
+	if (name.split(' ').length < 2) {
+		throw new Error('Name must consist of at least two parts!');
+	}
+
+	name = titleCase(name);
+
+	const response: Response = await fetch(serverAPI + '/api/players/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			name,
+			telegramAlias,
+			rating,
+		}),
+	});
+
+	await handleModifyErrors(response, token);
+}
+
+/**
  * Deletes a player.
  * @param playerID - The ID of the player.
  */
@@ -414,6 +469,31 @@ export async function createTournament(
 
 	const data = await response.json();
 	return data;
+}
+
+export async function editTournament(
+	id: string,
+	title: string,
+	startDateString: string,
+	endDateString: string,
+): Promise<void> {
+	startDateString = new Date(startDateString).toLocaleDateString('ru');
+	endDateString = new Date(endDateString).toLocaleDateString('ru');
+
+	const response: Response = await fetch(serverAPI + '/api/tournaments/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			title,
+			startDateString,
+			endDateString,
+		}),
+	});
+	await handleModifyErrors(response, token);
 }
 
 /**

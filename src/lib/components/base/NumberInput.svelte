@@ -20,10 +20,6 @@
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
-	}
-
-	input {
-		box-sizing: border-box;
 		border: none;
 		border-bottom: 5px solid var(--secondary-bg-color);
 		padding: 0.8em 0;
