@@ -10,6 +10,7 @@ import type {
 	addMatchFormStore,
 } from '../lib/types/types';
 import { convertDateToStringDash } from '$lib/helper';
+import { browser } from '$app/environment';
 
 /**
  * Represents the user token store.
@@ -70,3 +71,9 @@ export const SortFilterMatchFormStore = writable(SORT_FILTER_MATCH_FORM);
 export const AddPlayerFormStore = writable(ADD_PLAYER_FORM);
 export const AddTournamentFormStore = writable(ADD_TOURNAMENT_FORM);
 export const AddMatchFormStore = writable(ADD_MATCH_FORM);
+
+/**
+ * Represents the color-scheme store.
+ * Stores the color-scheme value.
+ */
+export const theme = writable((browser && localStorage.getItem('color-scheme')) ?? 'light');

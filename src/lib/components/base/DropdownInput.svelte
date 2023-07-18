@@ -148,7 +148,7 @@
 	ul {
 		position: absolute;
 		width: 100%;
-		background-color: var(--tertiary-color);
+		background-color: var(--secondary-bg-color);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -182,7 +182,7 @@
 	input {
 		box-sizing: border-box;
 		border: none;
-		border-bottom: 5px solid var(--tertiary-color);
+		border-bottom: 5px solid var(--secondary-bg-color);
 		padding: 0.8em 1em;
 		color: var(--content-color);
 		background-color: var(--main-color);

@@ -212,7 +212,7 @@
 	input {
 		box-sizing: border-box;
 		border: none;
-		border-bottom: 5px solid var(--tertiary-color);
+		border-bottom: 5px solid var(--secondary-bg-color);
 		padding: 0.8em 0;
 		color: var(--content-color);
 		background-color: var(--main-color);
@@ -224,8 +224,8 @@
 		border-bottom: 5px solid var(--secondary-color);
 	}
 	input:disabled {
-		background-color: var(--tertiary-color);
-		color: var(--tertiary-font-color);
+		background-color: var(--secondary-bg-color);
+		color: var(--not-chosen-font-color);
 		box-shadow: none;
 		cursor: default;
 	}

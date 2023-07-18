@@ -45,7 +45,7 @@
 	}
 
 	.bar-wrapper {
-		background-color: var(--tertiary-color);
+		background-color: var(--secondary-bg-color);
 		display: flex;
 		flex-direction: row;
 		width: 36rem;

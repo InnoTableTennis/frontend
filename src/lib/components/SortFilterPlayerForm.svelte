@@ -186,9 +186,9 @@
 	input {
 		box-sizing: border-box;
 		border: none;
-		border-bottom: 5px solid var(--tertiary-color);
+		border-bottom: 5px solid var(--secondary-bg-color);
 		padding: 0.8em 0;
-		color: var(--tertiary-font-color);
+		color: var(--not-chosen-font-color);
 		background-color: var(--main-color);
 		transition: 0.2s linear;
 	}

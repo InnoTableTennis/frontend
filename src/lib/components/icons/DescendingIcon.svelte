@@ -17,7 +17,7 @@
 		fill: var(--secondary-color);
 	}
 	.disabled {
-		fill: var(--tertiary-color);
+		fill: var(--secondary-bg-color);
 	}
 	path {
 		fill: var(--main-color);

@@ -196,7 +196,7 @@
 	}
 
 	.match-line:enabled:hover {
-		background-color: var(--tertiary-color);
+		background-color: var(--secondary-bg-color);
 	}
 	.no-wrap {
 		text-align: left;
