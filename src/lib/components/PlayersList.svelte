@@ -19,7 +19,7 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData;
+	export let editData: Players;
 	export let mode: string;
 
 	export const handleInsert = () => {
@@ -98,35 +98,34 @@
 						<span />
 					</div>
 
-				{#each players as player, i}
-					<button
-						class="player-line"
-						class:selected={chosenId === player.id}
-						on:click|preventDefault={() => {
-							chosenId = player.id;
-							editData = player;
-						}}
-						disabled={!isChoosing || chosenId === player.id}
-					>
-						<div class="players-grid" class:not-leader={!isLeader}>
-							<div>
-								<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
+					{#each players as player, i}
+						<button
+							class="player-line"
+							class:selected={chosenId === player.id}
+							on:click|preventDefault={() => {
+								chosenId = player.id;
+								if (mode === 'delete') {
+									deletePlayer(player.id.toString());
+								} else {
+									editData = player;
+								}
+							}}
+							disabled={!isChoosing || chosenId === player.id}
+						>
+							<div class="players-grid" class:not-leader={!isLeader}>
+								<div>
+									<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
+								</div>
+								<div class="no-wrap">{player.name}</div>
+								<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
+								<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
+								<div class="rating">{player.rating}</div>
 							</div>
-							<div class="no-wrap">{player.name}</div>
-							<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
-							<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
-							<div class="rating">{player.rating}</div>
-							{#if isLeader}
-								<form on:submit|preventDefault={deletePlayer}>
-									<input type="hidden" name="id" value={player.id} />
-									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-								</form>
-							{/if}
-						</div>
-					</button>
-				{/each}
-			</section>
-		</Pagination>
+						</button>
+					{/each}
+				</section>
+			</div></Pagination
+		>
 	{:else}
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}

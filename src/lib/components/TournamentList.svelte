@@ -26,7 +26,7 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData;
+	export let editData: Tournaments;
 	export let mode: string;
 
 	async function requestNewPage() {
@@ -100,41 +100,40 @@
 						<span />
 					</div>
 
-				{#each tournaments as tournament}
-					<button
-						class="tournament-line"
-						class:selected={chosenId === tournament.id}
-						on:click|preventDefault={() => {
-							chosenId = tournament.id;
-							editData = tournament;
-						}}
-						disabled={!isChoosing || chosenId === tournament.id}
-					>
-						<div class="tournaments-grid" class:not-leader={!isLeader}>
-							<div class="no-wrap">{tournament.title}</div>
-							<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
-							<div class="no-wrap">{tournament.coefficient}</div>
-							<div class="no-wrap" style="text-align: right;">
-								{tournament.players}
-								<PlayersIcon />
-							</div>
-							{#if isLeader}
-								<form on:submit|preventDefault={deleteTournament}>
-									<input type="hidden" name="id" value={tournament.id} />
-									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-								</form>
-								{#if !tournament.finished}
+					{#each tournaments as tournament}
+						<button
+							class="tournament-line"
+							class:selected={chosenId === tournament.id}
+							on:click|preventDefault={() => {
+								chosenId = tournament.id;
+								if (mode === 'delete') {
+									deleteTournament(tournament.id.toString());
+								} else {
+									editData = tournament;
+								}
+							}}
+							disabled={!isChoosing || chosenId === tournament.id}
+						>
+							<div class="tournaments-grid" class:not-leader={!isLeader}>
+								<div class="no-wrap">{tournament.title}</div>
+								<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
+								<div class="no-wrap">{tournament.coefficient}</div>
+								<div class="no-wrap" style="text-align: right;">
+									{tournament.players}
+									<PlayersIcon />
+								</div>
+								{#if isLeader && !tournament.finished && mode === 'add'}
 									<form on:submit|preventDefault={finishTournament}>
 										<input type="hidden" name="id" value={tournament.id} />
-										<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
+										<button aria-label="Finish" class="finish-btn"><FinishIcon /></button>
 									</form>
 								{/if}
-							{/if}
-						</div>
-					</button>
-				{/each}
-			</section>
-		</Pagination>
+							</div>
+						</button>
+					{/each}
+				</section>
+			</div></Pagination
+		>
 	{:else}
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}

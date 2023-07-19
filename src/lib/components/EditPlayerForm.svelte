@@ -26,7 +26,7 @@
 	}
 
 	const editPlayer = async (e: Event) => {
-		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this player?');
 		if (!isConfirmed) return;
 		const data = new FormData(e.target as HTMLFormElement);
 
