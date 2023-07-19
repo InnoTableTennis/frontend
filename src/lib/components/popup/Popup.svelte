@@ -8,9 +8,9 @@
     };
 </script>
 
-<form class="fullscreen-overlay" class:hidden={popupText == null} transition:fade on:submit={buttonPressed}>
-    <button class="overlay-background" class:hidden={popupText == null} type="submit"></button>
-    <div class="overlay-content" class:hidden={popupText == null}>
+<form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
+    <button class="overlay-background" type="submit"></button>
+    <div class="overlay-content">
         <div class="overlay-head">
             <div class="circle">!</div>
         </div>
@@ -60,10 +60,6 @@
         opacity: 1;
         top: 50%;
         transform: translateY(-50%);
-    }
-    .hidden {
-        visibility: hidden;
-        opacity: 0;
     }
     .overlay-head {
         display: flex;
