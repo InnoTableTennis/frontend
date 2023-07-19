@@ -26,7 +26,8 @@
 		<h3>Bot Message</h3>
 		<p>Here you can write the message that bot will send to all players</p>
 		<textarea class="scrollable" placeholder="Write here the message" />
-		<div>
+		<div class='send-message'>
+			<div></div>
 			<Button type="submit">Send</Button>
 		</div>
 	</div>
@@ -50,14 +51,13 @@
 
 	.wrapper {
 		height: 30rem;
-		gap: 1rem;
+		gap: 1.2rem;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
 	.side-wrapper {
 		height: 30rem;
-		/* width: 50%; */
-		border: 2px solid var(--tertiary-color);
+		box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25); 
 		border-radius: 30px;
 		padding: 1.5rem;
 	}
@@ -65,10 +65,6 @@
 	.side-wrapper.left {
 		display: grid;
 		grid-template-rows: auto minmax(0, 1fr) auto;
-
-		/* display: flex;
-        flex: auto;
-        flex-direction: column; */
 		height: 30rem;
 	}
 
@@ -82,6 +78,10 @@
 		overflow-y: scroll;
         margin-bottom: 0.75rem;
         border-radius: 20px;
+		resize: none;
+		box-sizing: border-box;
+		border: 3px solid var(--tertiary-color);
+		padding: 0.75em;
 	}
 
 	.side-wrapper.right p {
@@ -108,6 +108,13 @@
 		gap: 2rem;
 	}
 
+	.send-message {
+		width: 100%;
+		font-size: var(--fontsize-small);
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		gap: 2rem;
+	}
 	@media (max-width: 480px) {
 		.wrapper {
 			margin: 1rem;
