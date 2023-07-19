@@ -40,7 +40,8 @@
 }
 
 *,
-a {
+a,
+html {
 	font-family: var(--main-font);
 }
 
