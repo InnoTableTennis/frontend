@@ -11,6 +11,7 @@
 	import { changeDateFormat } from '$lib/helper';
 	import type { Tournaments } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { alertPopup } from '$lib/popupHandler';
 
 	let title = $AddTournamentFormStore.title;
 	let startDateString = $AddTournamentFormStore.startDateString;
@@ -30,6 +31,8 @@
 	}
 
 	const editTournament = async (e: Event) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this tournament?');
+		if (!isConfirmed) return;
 		const data = new FormData(e.target as HTMLFormElement);
 
 		db.editTournament(

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { SortFilterTournamentFormStore } from '$lib/formStores';
@@ -27,7 +26,8 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData;
+	export let editData: Tournaments;
+	export let mode: string;
 
 	async function requestNewPage() {
 		let title = $SortFilterTournamentFormStore.title;
@@ -64,18 +64,14 @@
 		requestNewPage();
 	}
 
-	const deleteTournament = async (e: Event) => {
+	async function deleteTournament(id: string) {
 		let isConfirmed = await alertPopup('Are you sure that you want to delete this tournament?');
 		if (!isConfirmed) return;
-
-		const data = new FormData(e.target as HTMLFormElement);
-
-		await db.deleteTournament(data.get('id') as string).catch((error) => {
+		await db.deleteTournament(id as string).catch((error) => {
 			dispatch('error', error);
 		});
-
 		requestNewPage();
-	};
+	}
 
 	const finishTournament = async (e: Event) => {
 		let isConfirmed = await alertPopup(`Are you sure that you want to finish this tournament?`);
@@ -110,7 +106,11 @@
 							class:selected={chosenId === tournament.id}
 							on:click|preventDefault={() => {
 								chosenId = tournament.id;
-								editData = tournament;
+								if (mode === 'delete') {
+									deleteTournament(tournament.id.toString());
+								} else {
+									editData = tournament;
+								}
 							}}
 							disabled={!isChoosing || chosenId === tournament.id}
 						>
@@ -122,24 +122,18 @@
 									{tournament.players}
 									<PlayersIcon />
 								</div>
-								{#if isLeader}
-									<form on:submit|preventDefault={deleteTournament}>
+								{#if isLeader && !tournament.finished && mode === 'add'}
+									<form on:submit|preventDefault={finishTournament}>
 										<input type="hidden" name="id" value={tournament.id} />
-										<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
+										<button aria-label="Finish" class="finish-btn"><FinishIcon /></button>
 									</form>
-									{#if !tournament.finished}
-										<form on:submit|preventDefault={finishTournament}>
-											<input type="hidden" name="id" value={tournament.id} />
-											<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
-										</form>
-									{/if}
 								{/if}
 							</div>
 						</button>
 					{/each}
 				</section>
-			</div>
-		</Pagination>
+			</div></Pagination
+		>
 	{:else}
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
@@ -201,7 +195,6 @@
 		border-radius: 3px;
 	}
 
-	.delete-btn,
 	.finish-btn {
 		background: none;
 		border: none;

@@ -10,6 +10,7 @@
 	import type { Players } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { countNameWords } from '$lib/helper';
+	import { alertPopup } from '$lib/popupHandler';
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;
@@ -25,6 +26,8 @@
 	}
 
 	const editPlayer = async (e: Event) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this player?');
+		if (!isConfirmed) return;
 		const data = new FormData(e.target as HTMLFormElement);
 
 		db.editPlayer(

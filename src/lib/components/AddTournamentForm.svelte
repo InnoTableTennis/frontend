@@ -81,6 +81,7 @@
 				type="date"
 				name="startDateString"
 				placeholder="Start date"
+				defaultValue={startDateString}
 				bind:stringVal={startDateString}
 			/>
 		</label>
@@ -90,6 +91,7 @@
 				type="date"
 				name="endDateString"
 				placeholder="End date"
+				defaultValue={endDateString}
 				bind:stringVal={endDateString}
 			/>
 		</label>

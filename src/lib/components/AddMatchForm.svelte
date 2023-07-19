@@ -188,6 +188,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
+				defaultValue={localDateString}
 				bind:stringVal={localDateString}
 			/>
 		</label>

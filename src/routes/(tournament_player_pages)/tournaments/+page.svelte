@@ -18,7 +18,7 @@
 	let editData: Tournaments = {} as Tournaments;
 	let isEditing = false;
 	let chosenId = -1;
-	let mode = 'add';
+	let mode = '';
 	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 </script>
@@ -74,6 +74,7 @@
 			on:error={handleError}
 			bind:handleInsert
 			{isLeader}
+			bind:mode
 			bind:isChoosing
 			bind:chosenId
 			bind:editData

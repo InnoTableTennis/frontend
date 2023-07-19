@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { SortFilterPlayerFormStore } from '$lib/formStores';
 	import type { Players } from '$lib/types/types';
@@ -20,7 +19,8 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData;
+	export let editData: Players;
+	export let mode: string;
 
 	export const handleInsert = () => {
 		currentPageNumber = 1;
@@ -71,18 +71,14 @@
 		return '-';
 	}
 
-	const deletePlayer = async (e: Event) => {
+	async function deletePlayer(id: string) {
 		let isConfirmed = await alertPopup('Are you sure that you want to delete this player?');
 		if (!isConfirmed) return;
-
-		const data = new FormData(e.target as HTMLFormElement);
-
-		await db.deletePlayer(data.get('id') as string).catch((error) => {
+		await db.deletePlayer(id as string).catch((error) => {
 			dispatch('error', error);
 		});
-
 		requestNewPage();
-	};
+	}
 </script>
 
 <!-- {@debug matches} -->
@@ -108,7 +104,11 @@
 							class:selected={chosenId === player.id}
 							on:click|preventDefault={() => {
 								chosenId = player.id;
-								editData = player;
+								if (mode === 'delete') {
+									deletePlayer(player.id.toString());
+								} else {
+									editData = player;
+								}
 							}}
 							disabled={!isChoosing || chosenId === player.id}
 						>
@@ -120,18 +120,12 @@
 								<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
 								<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
 								<div class="rating">{player.rating}</div>
-								{#if isLeader}
-									<form on:submit|preventDefault={deletePlayer}>
-										<input type="hidden" name="id" value={player.id} />
-										<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-									</form>
-								{/if}
 							</div>
 						</button>
 					{/each}
 				</section>
-			</div>
-		</Pagination>
+			</div></Pagination
+		>
 	{:else}
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
@@ -201,15 +195,6 @@
 		color: var(--main-color);
 	}
 
-	.delete-btn {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		border: none;
-		height: 1em;
-		width: 1em;
-	}
 	.no-wrap {
 		display: flex;
 		align-items: center;
