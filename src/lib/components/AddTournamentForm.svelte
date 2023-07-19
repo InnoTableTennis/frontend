@@ -2,12 +2,11 @@
 	// import { enhance } from '$app/forms';
 	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import TextInput from '$lib/components/base/TextInput.svelte';
-	import DateInput from '$lib/components/base/DateInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -17,8 +16,6 @@
 
 	let isSubmissionDisabled = true;
 
-	let firstInput: HTMLInputElement;
-
 	$: {
 		isSubmissionDisabled = !(title && startDateString && endDateString);
 	}
@@ -26,10 +23,8 @@
 	$: {
 		endDateString = startDateString;
 	}
-
 	const addTournament = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
-
 		db.createTournament(
 			data.get('title') as string,
 			data.get('startDateString') as string,
@@ -58,10 +53,6 @@
 		endDateString = convertDateToStringDash(new Date());
 		saveForm();
 	}
-
-	onMount(() => {
-		firstInput.focus();
-	});
 </script>
 
 <div class="line-2-elems">
@@ -73,23 +64,34 @@
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem1">
-			<TextInput
+			<InputTemplate
+				type="text"
 				name="title"
-				bind:inputVal={title}
-				required={true}
 				placeholder="Tournament title"
-				bind:firstInput
+				required={true}
+				isFirst={true}
+				bind:stringVal={title}
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem2">
-			<DateInput name="startDateString" defaultValue={startDateString} placeholder="Start date" />
+			<InputTemplate
+				type="date"
+				name="startDateString"
+				placeholder="Start date"
+				bind:stringVal={startDateString}
+			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem3">
-			<DateInput defaultValue={endDateString} name="endDateString" placeholder="End date" />
+			<InputTemplate
+				type="date"
+				name="endDateString"
+				placeholder="End date"
+				bind:stringVal={endDateString}
+			/>
 		</label>
 	</div>
 	<div class="line-2-elems">

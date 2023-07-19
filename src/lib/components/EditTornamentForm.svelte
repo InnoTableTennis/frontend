@@ -10,8 +10,7 @@
 	import * as db from '$lib/requests';
 	import { changeDateFormat } from '$lib/helper';
 	import type { Tournaments } from '$lib/types/types';
-	import DateInput from '$lib/components/base/DateInput.svelte';
-	import TextInput from '$lib/components/base/TextInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	let title = $AddTournamentFormStore.title;
 	let startDateString = $AddTournamentFormStore.startDateString;
@@ -65,12 +64,14 @@
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<TextInput
+			<InputTemplate
+				type="text"
 				name="title"
 				placeholder="Tournament title"
-				defaultValue={tournament.title}
-				bind:inputVal={title}
 				required={true}
+				isFirst={true}
+				defaultValue={tournament.title}
+				bind:stringVal={title}
 			/>
 		</label>
 	</div>
@@ -78,21 +79,23 @@
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 
 		<label>
-			<DateInput
+			<InputTemplate
+				type="date"
 				name="startDateString"
 				placeholder="Start date"
 				defaultValue={changeDateFormat(tournament.startDateString)}
-				bind:inputVal={startDateString}
+				bind:stringVal={startDateString}
 			/>
 		</label>
 
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<DateInput
+			<InputTemplate
+				type="date"
 				name="endDateString"
 				placeholder="End date"
 				defaultValue={changeDateFormat(tournament.endDateString)}
-				bind:inputVal={endDateString}
+				bind:stringVal={endDateString}
 			/>
 		</label>
 	</div>

@@ -3,34 +3,23 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import { AddPlayerFormStore } from '$lib/formStores';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	import * as db from '$lib/requests';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import TextInput from '$lib/components/base/TextInput.svelte';
-	import NumberInput from '$lib/components/base/NumberInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { countNameWords } from '$lib/helper';
 
 	const dispatch = createEventDispatcher();
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;
 	let initialRating = $AddPlayerFormStore.initialRating;
-	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		console.log(name, initialRating, telegramAlias);
 		isSubmissionDisabled = !(countNameWords(name) >= 2);
-	}
-
-	function countNameWords(name: string): number {
-		const arrayStrings: string[] = name.split(/\W+/);
-		let counter = 0;
-		arrayStrings.forEach((element) => {
-			if (element !== '') counter++;
-		});
-		return counter;
 	}
 
 	const addPlayer = async (e: Event) => {
@@ -62,10 +51,6 @@
 		initialRating = 100;
 		saveForm();
 	}
-
-	onMount(() => {
-		firstInput.focus();
-	});
 </script>
 
 <div class="line-2-elems">
@@ -77,28 +62,35 @@
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<TextInput
+			<InputTemplate
+				type="text"
 				name="name"
-				required={true}
 				placeholder="Player's name"
-				bind:inputVal={name}
-				bind:firstInput
+				required={true}
+				isFirst={true}
+				bind:stringVal={name}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<TextInput name="telegramAlias" defaultValue={telegramAlias} placeholder="Player's alias" />
+			<InputTemplate
+				type="text"
+				name="telegramAlias"
+				bind:stringVal={telegramAlias}
+				placeholder="Player's alias"
+			/>
 		</label>
 	</div>
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
-				minValue={0}
-				maxValue={1000}
+			<InputTemplate
+				type="number"
+				min="0"
+				max="1000"
 				name="rating"
 				placeholder="Rating"
-				defaultValue={initialRating}
+				bind:numberVal={initialRating}
 			/>
 		</label>
 	</div>

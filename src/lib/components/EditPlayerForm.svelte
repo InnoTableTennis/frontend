@@ -8,8 +8,8 @@
 
 	import * as db from '$lib/requests';
 	import type { Players } from '$lib/types/types';
-	import TextInput from '$lib/components/base/TextInput.svelte';
-	import NumberInput from '$lib/components/base/NumberInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { countNameWords } from '$lib/helper';
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;
@@ -17,6 +17,12 @@
 
 	export let player: Players;
 	export let chosenId = -1;
+
+	let isSubmissionDisabled = true;
+
+	$: {
+		isSubmissionDisabled = !(countNameWords(name) >= 2);
+	}
 
 	const editPlayer = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
@@ -53,31 +59,41 @@
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<TextInput name="name" defaultValue={player.name} placeholder="Player's name" />
+			<InputTemplate
+				type="text"
+				name="name"
+				placeholder="Player's name"
+				required={true}
+				isFirst={true}
+				defaultValue={player.name}
+				bind:stringVal={name}
+			/>
 		</label>
 		<label>
-			<TextInput
+			<InputTemplate
+				type="text"
 				name="telegramAlias"
-				defaultValue={player.telegramAlias}
 				placeholder="Player's alias"
+				defaultValue={player.telegramAlias}
 			/>
 		</label>
 	</div>
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
+			<InputTemplate
+				type="number"
+				min="0"
+				max="1000"
 				name="rating"
-				minValue={0}
-				maxValue={1000}
-				defaultValue={player.rating}
 				placeholder="Rating"
+				defaultNumValue={player.rating}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} type={'submit'}>Save</Button>
+			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Save</Button>
 		</div>
 	</div>
 </form>

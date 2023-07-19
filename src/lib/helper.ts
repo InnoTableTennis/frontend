@@ -92,3 +92,12 @@ export const getShorterName = (name: string): string => {
 	const secondName = arr.splice(1).join(' ');
 	return firstName[0] + '. ' + secondName;
 };
+
+export function countNameWords(name: string): number {
+	const arrayStrings: string[] = name.split(/\W+/);
+	let counter = 0;
+	arrayStrings.forEach((element) => {
+		if (element !== '') counter++;
+	});
+	return counter;
+}

@@ -9,6 +9,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import PlayersIcon from './icons/PlayersIcon.svelte';
+	import { alertPopup } from "$lib/popupHandler";
 
 	const dispatch = createEventDispatcher();
 
@@ -64,7 +65,7 @@
 	}
 
 	const deleteTournament = async (e: Event) => {
-		let isConfirmed = confirm('Are you sure that you want to delete this tournament?');
+		let isConfirmed = await alertPopup('Are you sure that you want to delete this tournament?');
 		if (!isConfirmed) return;
 
 		const data = new FormData(e.target as HTMLFormElement);
@@ -77,7 +78,7 @@
 	};
 
 	const finishTournament = async (e: Event) => {
-		let isConfirmed = confirm(`Are you sure that you want to finish this tournament?`);
+		let isConfirmed = await alertPopup(`Are you sure that you want to finish this tournament?`);
 		if (!isConfirmed) return;
 
 		const data = new FormData(e.target as HTMLFormElement);

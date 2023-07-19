@@ -6,13 +6,12 @@
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
-	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
+	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import NumberInput from '$lib/components/base/NumberInput.svelte';
-	import DateInput from '$lib/components/base/DateInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -90,7 +89,7 @@
 		});
 	};
 
-	let inputResets = new Array(4);
+	let inputResets = new Array(2);
 
 	function resetForm() {
 		firstPlayerName = '';
@@ -164,32 +163,32 @@
 	<div class="line-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
+			<InputTemplate
+				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
-				bind:inputVal={firstPlayerScore}
-				bind:reset={inputResets[2]}
+				bind:numberVal={firstPlayerScore}
 			/>
 		</label>
 
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
+			<InputTemplate
+				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
-				bind:inputVal={secondPlayerScore}
-				bind:reset={inputResets[3]}
+				bind:numberVal={secondPlayerScore}
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<DateInput
+			<InputTemplate
+				type="date"
 				name="localDateString"
 				placeholder="Date"
-				defaultValue={localDateString}
-				bind:reset={inputResets[4]}
+				bind:stringVal={localDateString}
 			/>
 		</label>
 
