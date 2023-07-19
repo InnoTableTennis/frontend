@@ -4,58 +4,32 @@
     import {overlayText} from "$lib/stores";
     export let popupText: string;
     const buttonPressed = () => {
-        $overlayText = null
+        $overlayText = null;
     };
 </script>
 
-<form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
-        <button class="overlay-background" type="submit"></button>
-        <div class="overlay-content">
-            <div class="overlay-head">
-                <div class="circle">!</div>
+<form class="fullscreen-overlay" class:hidden={popupText == null} transition:fade on:submit={buttonPressed}>
+    <button class="overlay-background" class:hidden={popupText == null} type="submit"></button>
+    <div class="overlay-content" class:hidden={popupText == null}>
+        <div class="overlay-head">
+            <div class="circle">!</div>
+        </div>
+        <p class="overlay-text">{popupText}</p>
+        <div class="overlay-button-block">
+            <div class="overlay-button-yes">
+                <Button type={'submit'}>Yes</Button>
             </div>
-            <p class="overlay-text">{popupText}</p>
-            <div class="overlay-button-block">
-                <div class="overlay-button-yes">
-                    <Button type={'submit'}>Yes</Button>
-                </div>
-                <div class="overlay-button-no">
-                    <Button dark={true} type={'submit'}>No</Button>
-                </div>
+            <div class="overlay-button-no">
+                <Button dark={true} type={'submit'}>No</Button>
             </div>
         </div>
+    </div>
 </form>
-
-{#if popupText != null}
-    <style>
-        .fullscreen-overlay {
-            visibility: visible;
-        }
-        .overlay-background {
-            opacity: 0.8;
-        }
-        .overlay-content {
-            transform: translateY(15rem);
-            opacity: 1;
-        }
-    </style>
-{:else}
-    <style>
-        .fullscreen-overlay {
-            visibility: hidden;
-        }
-        .overlay-background {
-            opacity: 0;
-        }
-        .overlay-content {
-            opacity: 0;
-        }
-    </style>
-{/if}
 
 <style>
     .fullscreen-overlay {
         position: fixed;
+        visibility: visible;
         top: 0;
         left: 0;
         height: 100%;
@@ -72,6 +46,7 @@
         border: none;
         padding: 0;
         outline: none;
+        opacity: 0.8;
     }
     .overlay-content {
         margin: 0 auto;
@@ -82,6 +57,12 @@
         width: 30rem;
         text-align: center;
         border-radius: 30px;
+        transform: translateY(15rem);
+        opacity: 1;
+    }
+    .hidden {
+        visibility: hidden;
+        opacity: 0;
     }
     .overlay-head {
         display: flex;
