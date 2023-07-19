@@ -23,7 +23,6 @@
 	$: currentPageNumber = currentPageNumber < lastPageNumber ? currentPageNumber : lastPageNumber;
 
 	$: {
-		console.log(isSmallLeft, isSmallRight);
 		if (lastPageNumber - firstPageNumber >= 2)
 			visiblePages = [middlePageNumber - 1, middlePageNumber, middlePageNumber + 1];
 		else {

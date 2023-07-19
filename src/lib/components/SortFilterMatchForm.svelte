@@ -3,12 +3,12 @@
 	import { SortFilterMatchFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
-	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
-	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import { changeDateAnotherFormat } from '$lib/helper';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import OrderButton from '$lib/components/base/OrderButton.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -18,7 +18,6 @@
 	let maxDateString = $SortFilterMatchFormStore.maxDateString;
 	let sortBy: 'date' = 'date' as const;
 	let isDescending = true;
-	let firstInput: HTMLInputElement;
 
 	let radioValues = ['date'];
 	let radioLabels = ['Sort by date'];
@@ -53,10 +52,6 @@
 		sortBy = event.detail.value;
 		saveForm();
 	}
-
-	onMount(() => {
-		firstInput.focus();
-	});
 </script>
 
 <div class="line-2-elems">
@@ -64,46 +59,54 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortMatch} on:change={saveForm}>
+<form on:submit={sortMatch} on:change={saveForm} class="filters">
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
+				type="text"
 				name="name"
-				bind:value={name}
-				bind:this={firstInput}
-				autocomplete="off"
+				isFirst={true}
+				bind:stringVal={name}
+				bind:defaultValue={name}
 				placeholder="Search by player"
-				class="full-width"
 			/>
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
+				type="text"
 				name="score"
-				bind:value={score}
-				autocomplete="off"
+				bind:stringVal={score}
+				bind:defaultValue={score}
 				placeholder="Search by score"
-				class="full-width"
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input type="text" placeholder="Min date" class="placeholder" />
-			<input
+			<InputTemplate
 				type="date"
 				name="minDateString"
-				bind:value={minDateString}
-				autocomplete="off"
-				class="full-width"
+				placeholder="Min date"
+				bind:defaultValue={minDateString}
+				bind:stringVal={minDateString}
 			/>
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input type="text" placeholder="Max date" class="placeholder" />
-			<input type="date" name="maxDateString" bind:value={maxDateString} class="full-width" />
+			<InputTemplate
+				type="date"
+				name="maxDateString"
+				placeholder="Max date"
+				bind:defaultValue={maxDateString}
+				bind:stringVal={maxDateString}
+			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<div class="last-box full-width margin-top">
+		<div class="last-box margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
@@ -115,28 +118,7 @@
 	<div class="column-1-elems">
 		<RadioGroup group={sortBy} values={radioValues} labels={radioLabels} on:update={updateValue} />
 	</div>
-	<div class="line-2-elems">
-		<label class="sorting-order" id="sorting-order-descending">
-			<input
-				type="radio"
-				id="descending"
-				name="sorting-order"
-				bind:group={isDescending}
-				value={true}
-			/>
-			<DescendingIcon disabled={!isDescending} />
-		</label>
-		<label class="sorting-order">
-			<input
-				type="radio"
-				id="ascending"
-				name="sorting-order"
-				bind:group={isDescending}
-				value={false}
-			/>
-			<AscendingIcon disabled={isDescending} />
-		</label>
-	</div>
+	<OrderButton bind:value={isDescending} bind:defaultVal={isDescending} />
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>
@@ -146,68 +128,39 @@
 
 <style>
 	h2 {
-		font-size: var(--fontsize-medium1);
-		margin: 1.5em 0;
+		font-size: var(--fontsize-large);
+		margin: 0.9em 0;
 		font-weight: var(--fontweight-1);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		margin: 0 auto 3em;
-		font-size: var(--fontsize-medium2);
+		font-size: var(--fontsize-medium1);
+	}
+	.filters {
+		margin: 0 auto 1em;
 	}
 	.column-2-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
 	}
 	.column-1-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
 	}
 	.line-2-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
+		gap: 0.44rem;
 		align-items: end;
-	}
-
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--not-chosen-font-color);
-		background-color: var(--main-color);
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
-	.placeholder {
-		position: absolute;
-	}
-	input[type='date'] {
-		opacity: 0;
-	}
-	input[type='date']:focus {
-		opacity: 1;
-	}
-	#sorting-order-descending {
-		display: flex;
-		justify-content: end;
-	}
-	.sorting-order input {
-		display: none;
 	}
 	.last-box {
 		grid-column: 2;

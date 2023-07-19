@@ -55,7 +55,7 @@
 	}
 </script>
 
-<div class="line-2-elems">
+<div class="header-line">
 	<h2>Add Tournament</h2>
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
@@ -105,42 +105,44 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;
-		font-size: var(--fontsize-medium1);
-		margin: 1.5em 0;
+		font-size: var(--fontsize-large);
+		margin: 0.9em 0;
 		font-weight: var(--fontweight-1);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		margin: 0 auto 3em;
 		font-size: var(--fontsize-medium2);
 	}
 	.column-2-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
 	}
 	.column-1-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
 	}
 	.line-2-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
+	}
+	.header-line {
+		display: flex;
 	}
 
 	.last-box {
 		grid-column: 2;
+		margin-top: 1.5em;
 	}
 	.full-width {
 		width: 100%;
