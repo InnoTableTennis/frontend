@@ -9,7 +9,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import PlayersIcon from './icons/PlayersIcon.svelte';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 

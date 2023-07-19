@@ -8,7 +8,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import { SortFilterMatchFormStore } from '$lib/formStores';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 

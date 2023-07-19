@@ -99,12 +99,7 @@
 		</label>
 		<label>
 			<input type="text" placeholder="Max date" class="placeholder" />
-			<input
-				type="date"
-				name="maxDateString"
-				bind:value={maxDateString}
-				class="full-width"
-			/>
+			<input type="date" name="maxDateString" bind:value={maxDateString} class="full-width" />
 		</label>
 	</div>
 	<div class="line-2-elems">
@@ -201,10 +196,10 @@
 	.placeholder {
 		position: absolute;
 	}
-	input[type="date"] {
+	input[type='date'] {
 		opacity: 0;
 	}
-	input[type="date"]:focus {
+	input[type='date']:focus {
 		opacity: 1;
 	}
 	#sorting-order-descending {

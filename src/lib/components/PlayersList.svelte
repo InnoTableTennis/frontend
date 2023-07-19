@@ -9,7 +9,7 @@
 	const dispatch = createEventDispatcher();
 
 	import * as db from '$lib/requests';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	export let isLeader = false;
 	let players: Players[] = [];
