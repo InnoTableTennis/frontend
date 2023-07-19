@@ -93,7 +93,7 @@
 		input[type='checkbox']:checked ~ .hamburger-lines {
 			transform: rotate(-90deg);
 		}
-		input[type="checkbox"] {
+		input[type='checkbox'] {
 			position: fixed;
 			display: block;
 			border: none;

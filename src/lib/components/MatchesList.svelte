@@ -7,7 +7,7 @@
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
