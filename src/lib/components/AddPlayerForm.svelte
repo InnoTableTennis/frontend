@@ -9,6 +9,8 @@
 
 	import * as db from '$lib/requests';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import TextInput from './base/TextInput.svelte';
+	import NumberInput from './base/NumberInput.svelte';
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;
@@ -18,6 +20,7 @@
 	let isSubmissionDisabled = true;
 
 	$: {
+		console.log(name, initialRating, telegramAlias);
 		isSubmissionDisabled = !(countNameWords(name) >= 2);
 	}
 
@@ -72,37 +75,30 @@
 
 <form on:submit={addPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<TextInput
 				name="name"
-				bind:value={name}
-				bind:this={firstInput}
-				required
-				autocomplete="off"
-				placeholder="Player's Name"
-				class="full-width"
+				required={true}
+				placeholder="Player's name"
+				bind:inputVal={name}
+				bind:firstInput
 			/>
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				name="telegramAlias"
-				bind:value={telegramAlias}
-				autocomplete="off"
-				placeholder="Player's alias"
-				class="full-width"
-			/>
+			<TextInput name="telegramAlias" defaultValue={telegramAlias} placeholder="Player's alias" />
 		</label>
 	</div>
 	<div class="column-1-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
-				type="number"
-				min="0"
-				max="1000"
+			<NumberInput
+				minValue={0}
+				maxValue={1000}
 				name="rating"
-				bind:value={initialRating}
 				placeholder="Rating"
-				class="full-width text-center"
+				defaultValue={initialRating}
 			/>
 		</label>
 	</div>
@@ -149,20 +145,6 @@
 		align-items: end;
 	}
 
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--not-chosen-font-color);
-		background-color: var(--main-color);
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
 	.last-box {
 		grid-column: 2;
 	}
@@ -173,9 +155,6 @@
 	@media (max-width: 800px) {
 		.column-2-elems {
 			grid-template-columns: repeat(2, 1fr);
-		}
-		.text-center {
-			text-align: center;
 		}
 		.last-box {
 			grid-column: 2;

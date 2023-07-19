@@ -20,6 +20,12 @@
 	export let tournament: Tournaments;
 	export let chosenId = -1;
 
+	let isSubmissionDisabled = true;
+
+	$: {
+		isSubmissionDisabled = !(title && startDateString && endDateString);
+	}
+
 	$: {
 		endDateString = startDateString;
 	}
@@ -63,6 +69,7 @@
 				name="title"
 				placeholder="Tournament title"
 				defaultValue={tournament.title}
+				bind:inputVal={title}
 				required={true}
 			/>
 		</label>
@@ -75,6 +82,7 @@
 				name="startDateString"
 				placeholder="Start date"
 				defaultValue={changeDateFormat(tournament.startDateString)}
+				bind:inputVal={startDateString}
 			/>
 		</label>
 
@@ -84,12 +92,13 @@
 				name="endDateString"
 				placeholder="End date"
 				defaultValue={changeDateFormat(tournament.endDateString)}
+				bind:inputVal={endDateString}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
-			<Button dark={false} type={'submit'}>Save</Button>
+			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Save</Button>
 		</div>
 	</div>
 </form>

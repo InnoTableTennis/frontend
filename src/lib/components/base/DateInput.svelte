@@ -2,11 +2,10 @@
 	export let name: string;
 	export let placeholder: string;
 	export let defaultValue = '';
+	export let inputVal = '';
 	export const reset = () => {
 		inputVal = defaultValue;
 	};
-
-	let inputVal: string;
 
 	$: {
 		inputVal = defaultValue;

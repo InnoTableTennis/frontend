@@ -6,7 +6,7 @@
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
 	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
-
+	import { AddMatchFormStore } from '$lib/formStores';
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
 	import NumberInput from './base/NumberInput.svelte';
@@ -27,6 +27,23 @@
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
 
+	let isSubmissionDisabled = true;
+
+	let firstPlayerName = $AddMatchFormStore.firstPlayerName;
+	let secondPlayerName = $AddMatchFormStore.secondPlayerName;
+	let tournamentTitle = $AddMatchFormStore.tournamentTitle;
+	let firstPlayerScore = $AddMatchFormStore.firstPlayerScore;
+	let secondPlayerScore = $AddMatchFormStore.secondPlayerScore;
+
+	$: {
+		isSubmissionDisabled = !(
+			firstPlayerName &&
+			secondPlayerName &&
+			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
+			tournamentTitle !== null
+		);
+	}
+
 	$: playerNames = players.map((player) => player.name);
 	$: {
 		tournamentTitles = tournaments.map((tournament) => tournament.title);
@@ -37,8 +54,6 @@
 		}
 	}
 
-	let firstPlayerName = match.firstPlayerName;
-	let secondPlayerName = match.secondPlayerName;
 	$: tournamentTitle = match.tournamentTitle;
 
 	let localDateString = '';
@@ -110,6 +125,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				defaultValue={match.firstPlayerName}
+				bind:inputVal={firstPlayerName}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -120,6 +136,7 @@
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
 				defaultValue={match.secondPlayerName}
+				bind:inputVal={secondPlayerName}
 			/>
 		</label>
 	</div>
@@ -130,6 +147,7 @@
 				name="firstPlayerScore"
 				placeholder="First score"
 				defaultValue={match.firstPlayerScore}
+				bind:inputVal={firstPlayerScore}
 			/>
 		</label>
 
@@ -139,6 +157,7 @@
 				name="secondPlayerScore"
 				placeholder="Second score"
 				defaultValue={match.secondPlayerScore}
+				bind:inputVal={secondPlayerScore}
 			/>
 		</label>
 	</div>
@@ -161,7 +180,7 @@
 	</div>
 	<div class="line-2-elems">
 		<div class="last-box full-width">
-			<Button dark={false} type={'submit'}>Save</Button>
+			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Save</Button>
 		</div>
 	</div>
 </form>

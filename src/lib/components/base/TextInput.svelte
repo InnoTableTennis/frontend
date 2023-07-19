@@ -3,18 +3,17 @@
 	export let placeholder: string;
 	export let defaultValue = '';
 	export let required = false;
+	export let firstInput = null as unknown as HTMLInputElement;
+	export let inputVal = '';
+
 	export const reset = () => {
 		inputVal = defaultValue;
 	};
 
-	let inputVal: string;
-
-	$: {
-		inputVal = defaultValue;
-	}
+	$: inputVal = defaultValue;
 </script>
 
-<input type="text" {name} {placeholder} bind:value={inputVal} {required} />
+<input type="text" bind:this={firstInput} {name} {placeholder} bind:value={inputVal} {required} />
 
 <style>
 	input {

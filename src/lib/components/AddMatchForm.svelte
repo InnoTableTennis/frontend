@@ -44,8 +44,7 @@
 		isSubmissionDisabled = !(
 			firstPlayerName &&
 			secondPlayerName &&
-			firstPlayerScore !== null &&
-			secondPlayerScore !== null &&
+			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
 			tournamentTitle !== null
 		);
 	}
@@ -168,7 +167,7 @@
 			<NumberInput
 				name="firstPlayerScore"
 				placeholder="First score"
-				defaultValue={firstPlayerScore}
+				bind:inputVal={firstPlayerScore}
 				bind:reset={inputResets[2]}
 			/>
 		</label>
@@ -178,7 +177,7 @@
 			<NumberInput
 				name="secondPlayerScore"
 				placeholder="Second score"
-				defaultValue={secondPlayerScore}
+				bind:inputVal={secondPlayerScore}
 				bind:reset={inputResets[3]}
 			/>
 		</label>
@@ -189,7 +188,7 @@
 			<DateInput
 				name="localDateString"
 				placeholder="Date"
-				bind:defaultValue={localDateString}
+				defaultValue={localDateString}
 				bind:reset={inputResets[4]}
 			/>
 		</label>

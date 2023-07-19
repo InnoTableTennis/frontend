@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DateInput from './base/DateInput.svelte';
 	// import { enhance } from '$app/forms';
 	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
@@ -10,6 +11,7 @@
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import TextInput from './base/TextInput.svelte';
 
 	let title = $AddTournamentFormStore.title;
 	let startDateString = $AddTournamentFormStore.startDateString;
@@ -71,36 +73,25 @@
 
 <form on:submit={addTournament} on:change={saveForm}>
 	<div class="column-1-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem1">
-			<input
+			<TextInput
 				name="title"
-				bind:value={title}
-				bind:this={firstInput}
-				required
-				autocomplete="off"
+				bind:inputVal={title}
+				required={true}
 				placeholder="Tournament title"
-				class="full-width"
+				bind:firstInput
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem2">
-			<input
-				type="date"
-				name="startDateString"
-				bind:value={startDateString}
-				placeholder="Start date"
-				class="full-width"
-			/>
+			<DateInput name="startDateString" defaultValue={startDateString} placeholder="Start date" />
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem3">
-			<input
-				type="date"
-				name="endDateString"
-				placeholder="End date"
-				bind:value={endDateString}
-				class="full-width"
-			/>
+			<DateInput defaultValue={endDateString} name="endDateString" placeholder="End date" />
 		</label>
 	</div>
 	<div class="line-2-elems">
@@ -146,20 +137,6 @@
 		align-items: end;
 	}
 
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--not-chosen-font-color);
-		background-color: var(--main-color);
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
 	.last-box {
 		grid-column: 2;
 	}

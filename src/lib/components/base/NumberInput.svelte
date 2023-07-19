@@ -4,11 +4,10 @@
 	export let defaultValue = 0;
 	export let minValue = 0;
 	export let maxValue = 10;
+	export let inputVal = 0;
 	export const reset = () => {
 		inputVal = defaultValue;
 	};
-
-	let inputVal: number;
 
 	$: inputVal = defaultValue;
 </script>
