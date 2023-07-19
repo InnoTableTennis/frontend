@@ -11,6 +11,9 @@
 </main>
 
 <style>
+	main {
+		max-width: 1440px;
+	}
 	header {
 		height: 4em;
 		background-color: transparent;

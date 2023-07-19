@@ -206,13 +206,6 @@
 		.wrapper-right {
 			display: none;
 		}
-		.arrow {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-		}
 		.back-btn {
 			width: 20%;
 			top: 1%;

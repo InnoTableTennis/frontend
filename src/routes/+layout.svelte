@@ -39,7 +39,6 @@
 <style>
 	main {
 		align-items: center;
-		max-width: 1440px;
 		margin: 0 auto;
 	}
 
