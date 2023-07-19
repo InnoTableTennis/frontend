@@ -2,6 +2,7 @@
 	export let name: string;
 	export let placeholder: string;
 	export let defaultValue = '';
+	export let required = false;
 	export const reset = () => {
 		inputVal = defaultValue;
 	};
@@ -13,7 +14,7 @@
 	}
 </script>
 
-<input type="date" {name} {placeholder} bind:value={inputVal} />
+<input type="text" {name} {placeholder} bind:value={inputVal} {required} />
 
 <style>
 	input {
@@ -27,7 +28,6 @@
 		background-color: var(--main-color);
 		transition: 0.1s;
 	}
-
 	input:focus {
 		outline: none;
 		color: var(--content-color);

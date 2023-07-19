@@ -168,7 +168,7 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0;
+		padding: 0 5px;
 		border: none;
 		width: 100%;
 		height: 1.3rem;
@@ -178,8 +178,22 @@
 		cursor: default;
 	}
 
+	.match-line:enabled:hover {
+		background-color: var(--secondary-bg-color);
+		border-radius: 3px;
+	}
+
 	.selected {
 		background-color: var(--secondary-color);
+		border-radius: 3px;
+	}
+
+	.selected .no-wrap {
+		color: var(--main-color);
+	}
+
+	.selected .score {
+		color: var(--main-color);
 	}
 
 	.score {
@@ -195,14 +209,9 @@
 		width: 1em;
 	}
 
-	.selected:hover {
-		background-color: var(--secondary-color);
-	}
-	.match-line:enabled:hover {
-		background-color: var(--secondary-bg-color);
-	}
-
 	.no-wrap {
+		display: flex;
+		align-items: center;
 		text-align: left;
 		white-space: nowrap;
 		overflow: hidden;

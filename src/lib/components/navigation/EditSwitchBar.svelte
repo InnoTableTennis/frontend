@@ -62,11 +62,16 @@
 		cursor: pointer;
 		font-size: var(--fontsize-medium1);
 		color: var(--content-color);
-		transition: 0.3s ease-in-out;
 	}
 
 	.selected {
 		background-color: var(--secondary-color);
 		border-radius: 20px;
+		transition: background-color 0.3s ease-in;
+	}
+
+	.selected button {
+		color: var(--main-color);
+		transition: color 0.3s ease-in;
 	}
 </style>
