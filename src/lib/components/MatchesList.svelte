@@ -75,70 +75,72 @@
 {#await requestNewPage() then}
 	{#if matches.length}
 		<Pagination {lastPageNumber} on:request={handleRequest}>
-			<section class="games-list">
-				<MatchHeader title={matches[0].tournamentTitle} isMain={true} {isLeader} />
-				<MatchHeader title={matches[0].localDateString} {isLeader} />
+			<div class="scroll">
+				<section class="games-list">
+					<MatchHeader title={matches[0].tournamentTitle} isMain={true} {isLeader} />
+					<MatchHeader title={matches[0].localDateString} {isLeader} />
 
-				{#each matches as match, i}
-					{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
-						<MatchHeader title={matches[i].tournamentTitle} isMain={true} {isLeader} />
-						<MatchHeader title={matches[i].localDateString} {isLeader} />
-					{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
-						<MatchHeader title={matches[i].localDateString} {isLeader} />
-					{/if}
-					<button
-						class="match-line"
-						class:selected={chosenId === match.id}
-						on:click|preventDefault={() => {
-							chosenId = match.id;
-							editData = match;
-						}}
-						disabled={!isChoosing || chosenId === match.id}
-					>
-						<div class="matches-grid">
-							<div class="no-wrap">
-								{match.firstPlayerName}
-								<span class="rating">
-									{#if match.firstPlayerRatingDelta}
-										({match.firstPlayerRatingBefore})
-										{#if match.firstPlayerRatingDelta > 0}
-											<span class="positive">+{match.firstPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.firstPlayerRatingDelta}</span>
+					{#each matches as match, i}
+						{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
+							<MatchHeader title={matches[i].tournamentTitle} isMain={true} {isLeader} />
+							<MatchHeader title={matches[i].localDateString} {isLeader} />
+						{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
+							<MatchHeader title={matches[i].localDateString} {isLeader} />
+						{/if}
+						<button
+							class="match-line"
+							class:selected={chosenId === match.id}
+							on:click|preventDefault={() => {
+								chosenId = match.id;
+								editData = match;
+							}}
+							disabled={!isChoosing || chosenId === match.id}
+						>
+							<div class="matches-grid">
+								<div class="no-wrap">
+									{match.firstPlayerName}
+									<span class="rating">
+										{#if match.firstPlayerRatingDelta}
+											({match.firstPlayerRatingBefore})
+											{#if match.firstPlayerRatingDelta > 0}
+												<span class="positive">+{match.firstPlayerRatingDelta}</span>
+											{:else}
+												<span class="negative">{match.firstPlayerRatingDelta}</span>
+											{/if}
 										{/if}
-									{/if}
-								</span>
-							</div>
-							<div class="no-wrap">
-								{match.secondPlayerName}
-								<span class="rating">
-									{#if match.secondPlayerRatingDelta}
-										({match.secondPlayerRatingBefore})
-										{#if match.secondPlayerRatingDelta > 0}
-											<span class="positive">+{match.secondPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.secondPlayerRatingDelta}</span>
+									</span>
+								</div>
+								<div class="no-wrap">
+									{match.secondPlayerName}
+									<span class="rating">
+										{#if match.secondPlayerRatingDelta}
+											({match.secondPlayerRatingBefore})
+											{#if match.secondPlayerRatingDelta > 0}
+												<span class="positive">+{match.secondPlayerRatingDelta}</span>
+											{:else}
+												<span class="negative">{match.secondPlayerRatingDelta}</span>
+											{/if}
 										{/if}
-									{/if}
-								</span>
+									</span>
+								</div>
+								<div class="score">
+									{match.firstPlayerScore}
+									:
+									{match.secondPlayerScore}
+								</div>
+								{#if isLeader}
+									<form on:submit|preventDefault={deleteMatch}>
+										<input type="hidden" name="id" value={match.id} />
+										<button type="submit" aria-label="Delete" class="delete-btn"
+											><DeleteIcon /></button
+										>
+									</form>
+								{/if}
 							</div>
-							<div class="score">
-								{match.firstPlayerScore}
-								:
-								{match.secondPlayerScore}
-							</div>
-							{#if isLeader}
-								<form on:submit|preventDefault={deleteMatch}>
-									<input type="hidden" name="id" value={match.id} />
-									<button type="submit" aria-label="Delete" class="delete-btn"
-										><DeleteIcon /></button
-									>
-								</form>
-							{/if}
-						</div>
-					</button>
-				{/each}
-			</section>
+						</button>
+					{/each}
+				</section>
+			</div>
 		</Pagination>
 	{:else}
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
@@ -152,9 +154,21 @@
 	}
 	.games-list {
 		max-width: 900px;
+		min-width: 700px;
+
 		height: 30rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
+		overflow-y: scroll;
+	}
+	.games-list::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll {
+		overflow-x: scroll;
 	}
 	.matches-grid {
 		display: grid;

@@ -88,21 +88,21 @@
 	</div>
 	<div class="line-2-elems">
 		<label>
+			<input type="text" placeholder="Min date" class="placeholder" />
 			<input
 				type="date"
 				name="minDateString"
 				bind:value={minDateString}
 				autocomplete="off"
-				placeholder="Min date"
 				class="full-width"
 			/>
 		</label>
 		<label>
+			<input type="text" placeholder="Max date" class="placeholder" />
 			<input
 				type="date"
 				name="maxDateString"
 				bind:value={maxDateString}
-				placeholder="Max date"
 				class="full-width"
 			/>
 		</label>
@@ -197,6 +197,15 @@
 		outline: none;
 		color: var(--content-color);
 		border-bottom: 5px solid var(--secondary-color);
+	}
+	.placeholder {
+		position: absolute;
+	}
+	input[type="date"] {
+		opacity: 0;
+	}
+	input[type="date"]:focus {
+		opacity: 1;
 	}
 	#sorting-order-descending {
 		display: flex;
