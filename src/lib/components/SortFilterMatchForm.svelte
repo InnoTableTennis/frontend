@@ -1,10 +1,9 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SortFilterMatchFormStore } from '$lib/stores';
+	import { SortFilterMatchFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { get } from 'svelte/store';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
 	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
@@ -13,11 +12,11 @@
 
 	const dispatch = createEventDispatcher();
 
-	let name = get(SortFilterMatchFormStore).name;
-	let score = get(SortFilterMatchFormStore).score;
-	let minDateString = get(SortFilterMatchFormStore).minDateString;
-	let maxDateString = get(SortFilterMatchFormStore).maxDateString;
-	let sortBy = 'date';
+	let name = $SortFilterMatchFormStore.name;
+	let score = $SortFilterMatchFormStore.score;
+	let minDateString = $SortFilterMatchFormStore.minDateString;
+	let maxDateString = $SortFilterMatchFormStore.maxDateString;
+	let sortBy: 'date' = 'date' as const;
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
@@ -30,14 +29,13 @@
 
 	const saveForm = function () {
 		score = score.replace(/\s/g, '');
-		const sortby: 'date' = 'date' as const;
 		SortFilterMatchFormStore.set({
 			name: name,
 			score: score,
 			minDateString: changeDateAnotherFormat(minDateString),
 			maxDateString: changeDateAnotherFormat(maxDateString),
 			descending: isDescending,
-			sortBy: sortby,
+			sortBy: sortBy,
 		});
 	};
 
@@ -153,7 +151,6 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;
 		font-size: var(--fontsize-medium1);
 		margin: 1.5em 0;
 		font-weight: var(--fontweight-1);
@@ -206,9 +203,7 @@
 		justify-content: end;
 	}
 	.sorting-order input {
-		position: fixed;
-		opacity: 0;
-		pointer-events: none;
+		display: none;
 	}
 	.last-box {
 		grid-column: 2;

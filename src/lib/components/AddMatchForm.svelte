@@ -2,8 +2,7 @@
 	// import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
-	import { get } from 'svelte/store';
-	import { AddMatchFormStore } from '$lib/stores';
+	import { AddMatchFormStore } from '$lib/formStores';
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
@@ -33,11 +32,11 @@
 		}
 	}
 
-	let firstPlayerName = get(AddMatchFormStore).firstPlayerName;
-	let secondPlayerName = get(AddMatchFormStore).secondPlayerName;
-	let tournamentTitle = get(AddMatchFormStore).tournamentTitle;
-	let firstPlayerScore = get(AddMatchFormStore).firstPlayerScore;
-	let secondPlayerScore = get(AddMatchFormStore).secondPlayerScore;
+	let firstPlayerName = $AddMatchFormStore.firstPlayerName;
+	let secondPlayerName = $AddMatchFormStore.secondPlayerName;
+	let tournamentTitle = $AddMatchFormStore.tournamentTitle;
+	let firstPlayerScore = $AddMatchFormStore.firstPlayerScore;
+	let secondPlayerScore = $AddMatchFormStore.secondPlayerScore;
 
 	let isSubmissionDisabled = true;
 

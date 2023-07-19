@@ -7,8 +7,7 @@
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
-	import { SortFilterMatchFormStore } from '$lib/stores';
-	import { get } from 'svelte/store';
+	import { SortFilterMatchFormStore } from '$lib/formStores';
 
 	const dispatch = createEventDispatcher();
 
@@ -29,11 +28,11 @@
 	};
 
 	async function requestNewPage() {
-		let name = get(SortFilterMatchFormStore).name;
-		let score = get(SortFilterMatchFormStore).score;
-		let minDateString = get(SortFilterMatchFormStore).minDateString;
-		let maxDateString = get(SortFilterMatchFormStore).maxDateString;
-		let descending = get(SortFilterMatchFormStore).descending;
+		let name = $SortFilterMatchFormStore.name;
+		let score = $SortFilterMatchFormStore.score;
+		let minDateString = $SortFilterMatchFormStore.minDateString;
+		let maxDateString = $SortFilterMatchFormStore.maxDateString;
+		let descending = $SortFilterMatchFormStore.descending;
 		await db
 			.getMatches(
 				descending,
@@ -68,7 +67,6 @@
 		await db.deleteMatch(data.get('id') as string).catch((error) => {
 			dispatch('error', error);
 		});
-		console.log(data);
 		requestNewPage();
 	};
 </script>
@@ -154,7 +152,8 @@
 	}
 	.games-list {
 		max-width: 900px;
-		margin: 3em auto;
+		height: 30rem;
+		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 	}
 	.matches-grid {
@@ -162,7 +161,7 @@
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 1rem;
+		margin-bottom: 0.65rem;
 		height: 1.1em;
 	}
 	.match-line {

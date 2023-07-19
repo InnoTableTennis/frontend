@@ -9,21 +9,22 @@
 	import { handleError } from '$lib/errorHandler';
 
 	let handleInsert: () => void;
-
+	let isEditing = false;
 	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isEditing = false;
 </script>
 
-{#if isLeader}
-	<div class="edit-mode">
-		<!-- <ToggleCheckboxButton 
-			bind:checked={isEditing} 
-			label={'Edit Mode'}
-		/> -->
-	</div>
-{/if}
+<div class="info">
+	{#if isLeader}
+		<div class="edit-mode">
+			<!-- <ToggleCheckboxButton 
+				bind:checked={isEditing} 
+				label={'Edit Mode'}
+			/> -->
+		</div>
+	{/if}
+</div>
 
-<div class="wrapper">
+<div class="form-list-layout">
 	{#if isEditing}
 		<div class="form">
 			<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
@@ -39,8 +40,7 @@
 </div>
 
 <style>
-	.wrapper {
-		height: 600px;
+	.form-list-layout {
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
@@ -51,7 +51,6 @@
 		margin-right: 2rem;
 	}
 	.players-list {
-		margin-right: 0;
 		max-width: 900px;
 	}
 	.edit-mode {
@@ -64,7 +63,7 @@
 			max-width: 500px;
 			margin: 0 auto;
 		}
-		.wrapper {
+		.form-list-layout {
 			display: block;
 		}
 		.players-list {

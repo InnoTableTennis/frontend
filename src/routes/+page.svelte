@@ -50,7 +50,7 @@
 	</div>
 {/if}
 
-<div class="wrapper">
+<div class="form-list-layout">
 	{#if isEditing}
 		{#await getFormData() then resp}
 			{#if mode === 'add'}
@@ -98,10 +98,8 @@
 	</div>
 </div>
 
-
 <style>
-	.wrapper {
-		height: 600px;
+	.form-list-layout {
 		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
@@ -116,8 +114,6 @@
 		margin-top: 2rem;
 	}
 	.matches-list {
-		margin-right: 0;
-		margin-left: auto;
 		max-width: 900px;
 	}
 
@@ -126,7 +122,7 @@
 			max-width: 500px;
 			margin: 0 auto;
 		}
-		.wrapper {
+		.form-list-layout {
 			display: block;
 		}
 		.matches-list {

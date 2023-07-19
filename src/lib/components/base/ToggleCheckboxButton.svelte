@@ -33,7 +33,6 @@
 
 	.toggle-switch {
 		display: inline-block;
-		/* background: var(--main-color); */
 		border: 4px solid var(--secondary-color);
 		border-radius: 2em;
 		width: 2.1em;

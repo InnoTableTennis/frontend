@@ -83,7 +83,7 @@
 	{#if isTop}
 		<div class="pages">
 			<button class="arrow" on:click={handleLeftClick}>
-				<LeftArrow />
+				<LeftArrow height={15} width={9} color={'white'} />
 			</button>
 
 			{#if !isSmallLeft}
@@ -93,7 +93,7 @@
 					on:click={handleClick}
 					value={firstPageNumber}>{firstPageNumber}</button
 				>
-				<span class="elipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
+				<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
 			{/if}
 			{#each visiblePages as visiblePage, i}
 				<button
@@ -104,7 +104,7 @@
 				>
 			{/each}
 			{#if !isSmallRight}
-				<span class="elipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
+				<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
 				<button
 					class="last number"
 					class:invisible={lastPageNumber - currentPageNumber < 2}
@@ -113,7 +113,7 @@
 				>
 			{/if}
 			<button class="arrow" on:click={handleRightClick}>
-				<RightArrow />
+				<RightArrow height={15} width={9} color={'white'} />
 			</button>
 		</div>
 		<div class="sizes">
@@ -132,7 +132,7 @@
 
 <style>
 	.sizes-label {
-		color: var(--content-color);
+		color: white;
 		margin-right: 0.8rem;
 	}
 	.container {
@@ -140,7 +140,7 @@
 		max-width: 900px;
 		height: 3rem;
 		margin: 0 auto;
-		margin-bottom: 3em;
+		/* margin-bottom: 3em; */
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -148,7 +148,7 @@
 		cursor: default;
 	}
 	.isTop {
-		margin-top: 3em;
+		margin-top: 2em;
 		margin-bottom: 0;
 		border-radius: 20px 20px 0 0;
 	}
@@ -156,7 +156,7 @@
 		border-radius: 0 0 20px 20px;
 	}
 	.number {
-		color: var(--content-color);
+		color: white;
 		outline: none;
 		border: none;
 		background: none;
@@ -165,7 +165,7 @@
 	}
 	.ellipses {
 		font-size: var(--fontsize-medium1);
-		color: var(--not-chosen-font-color);
+		color: white;
 		cursor: default;
 	}
 	.sizes .number {
@@ -202,7 +202,7 @@
 	}
 	.current {
 		background-color: var(--secondary-color);
-		color: var(--content-color);
+		color: white;
 	}
 	.number.current:hover {
 		box-shadow: none;

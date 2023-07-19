@@ -1,8 +1,7 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import { SortFilterPlayerFormStore } from '$lib/stores';
-	import { get } from 'svelte/store';
+	import { SortFilterPlayerFormStore } from '$lib/formStores';
 	import type { Players } from '$lib/types/types';
 
 	import { createEventDispatcher } from 'svelte';
@@ -24,13 +23,12 @@
 	};
 
 	async function requestNewPage() {
-		let sortBy = get(SortFilterPlayerFormStore).sortBy;
-		let descending = get(SortFilterPlayerFormStore).descending;
-		let name = get(SortFilterPlayerFormStore).name;
-		let alias = get(SortFilterPlayerFormStore).telegramAlias;
-		let minRating = get(SortFilterPlayerFormStore).minRating;
-		let maxRating = get(SortFilterPlayerFormStore).maxRating;
-		console.log(minRating, maxRating);
+		let sortBy = $SortFilterPlayerFormStore.sortBy;
+		let descending = $SortFilterPlayerFormStore.descending;
+		let name = $SortFilterPlayerFormStore.name;
+		let alias = $SortFilterPlayerFormStore.telegramAlias;
+		let minRating = $SortFilterPlayerFormStore.minRating;
+		let maxRating = $SortFilterPlayerFormStore.maxRating;
 		await db
 			.getPlayers(
 				sortBy,
@@ -129,7 +127,8 @@
 	}
 	.games-list {
 		max-width: 900px;
-		margin: 3em auto;
+		height: 30rem;
+		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 	}
 	.players-grid {
@@ -137,7 +136,7 @@
 		grid-template-columns: 1.8em 1fr 1fr 3.2em 3.3em 1em;
 		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 1rem;
+		margin-bottom: 0.65rem;
 		height: 1.1em;
 	}
 	.delete-btn {
@@ -159,14 +158,15 @@
 		display: grid;
 		grid-template-columns: 1.8em 1fr 1fr 3.8em 3.3em 0.5em;
 		gap: 1rem 1rem;
-		margin-bottom: 1.25rem;
+		padding-bottom: 1rem;
 	}
 
 	.table-header span {
-		color: var(--secondary-color);
+		color: var(--content-color);
+		font-size: var(--fontsize-large);
 	}
 	.position {
-		color: var(--secondary-color);
+		color: var(--content-color);
 		display: inline-block;
 		width: 100%;
 	}
@@ -178,6 +178,7 @@
 
 	.players-grid.not-leader,
 	.table-header.not-leader {
-		grid-template-columns: 1.8em 1fr 1fr 3.8em 3.4em;
+		grid-template-columns: 1.8em 1fr 1fr 6em 5em;
+		padding: 0;
 	}
 </style>

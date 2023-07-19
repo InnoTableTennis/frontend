@@ -1,7 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { get } from 'svelte/store';
-	import { SortFilterTournamentFormStore } from '$lib/stores';
+	import { SortFilterTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
@@ -13,12 +12,12 @@
 
 	const dispatch = createEventDispatcher();
 
-	let title = get(SortFilterTournamentFormStore).title;
-	let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
-	let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
-	let startDateString = get(SortFilterTournamentFormStore).startDateString;
-	let endDateString = get(SortFilterTournamentFormStore).endDateString;
-	let sortBy = 'date';
+	let title = $SortFilterTournamentFormStore.title;
+	let minParticipants = $SortFilterTournamentFormStore.minParticipants;
+	let maxParticipants = $SortFilterTournamentFormStore.maxParticipants;
+	let startDateString = $SortFilterTournamentFormStore.startDateString;
+	let endDateString = $SortFilterTournamentFormStore.endDateString;
+	let sortBy: 'date' | 'kf' | 'players' = 'date';
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
@@ -30,9 +29,6 @@
 	};
 
 	const saveForm = function () {
-		console.log(endDateString);
-		const sortby: 'date' | 'kf' | 'players' =
-			sortBy === 'date' ? 'date' : sortBy === 'kf' ? 'kf' : 'players';
 		SortFilterTournamentFormStore.set({
 			title: title,
 			minParticipants: minParticipants,
@@ -40,7 +36,7 @@
 			startDateString: changeDateAnotherFormat(startDateString),
 			endDateString: changeDateAnotherFormat(endDateString),
 			descending: isDescending,
-			sortBy: sortby,
+			sortBy: sortBy,
 		});
 	};
 
@@ -70,7 +66,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortTournament} on:change={saveForm}>
+<form on:submit={sortTournament} on:change={saveForm} class="filters">
 	<div class="column-1-elems">
 		<label>
 			<input
@@ -172,17 +168,18 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;
-		font-size: var(--fontsize-medium1);
-		margin: 1.5em 0;
-		font-weight: var(--fontweight-1);
+		font-size: var(--fontsize-large);
+		margin: 0.9em 0;
+		font-weight: var(--fontweight-2);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		margin: 0 auto 3em;
 		font-size: var(--fontsize-medium2);
+	}
+	.filters {
+		margin: 0 auto 3em;
 	}
 	.column-1-elems {
 		margin-top: 1rem;
@@ -192,11 +189,10 @@
 		align-items: end;
 	}
 	.line-2-elems {
-		margin-top: 1rem;
+		margin-top: 0.9rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.25rem;
-		align-items: end;
 	}
 	.column-3-elems {
 		margin-top: 1rem;
@@ -226,9 +222,7 @@
 		justify-content: end;
 	}
 	.sorting-order input {
-		position: fixed;
-		opacity: 0;
-		pointer-events: none;
+		display: none;
 	}
 	.last-box {
 		grid-column: 2;

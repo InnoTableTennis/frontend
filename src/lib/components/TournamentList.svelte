@@ -2,8 +2,7 @@
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import { SortFilterTournamentFormStore } from '$lib/stores';
-	import { get } from 'svelte/store';
+	import { SortFilterTournamentFormStore } from '$lib/formStores';
 	import type { Tournaments } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
@@ -26,13 +25,13 @@
 	};
 
 	async function requestNewPage() {
-		let title = get(SortFilterTournamentFormStore).title;
-		let minParticipants = get(SortFilterTournamentFormStore).minParticipants;
-		let maxParticipants = get(SortFilterTournamentFormStore).maxParticipants;
-		let startDateString = get(SortFilterTournamentFormStore).startDateString;
-		let endDateString = get(SortFilterTournamentFormStore).endDateString;
-		let sortBy = get(SortFilterTournamentFormStore).sortBy;
-		let descending = get(SortFilterTournamentFormStore).descending;
+		let title = $SortFilterTournamentFormStore.title;
+		let minParticipants = $SortFilterTournamentFormStore.minParticipants;
+		let maxParticipants = $SortFilterTournamentFormStore.maxParticipants;
+		let startDateString = $SortFilterTournamentFormStore.startDateString;
+		let endDateString = $SortFilterTournamentFormStore.endDateString;
+		let sortBy = $SortFilterTournamentFormStore.sortBy;
+		let descending = $SortFilterTournamentFormStore.descending;
 		await db
 			.getTournaments(
 				sortBy,
@@ -132,7 +131,8 @@
 <style>
 	.games-list {
 		max-width: 900px;
-		margin: 3em auto;
+		height: 30rem;
+		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 	}
 	.tournaments-grid {
@@ -140,7 +140,7 @@
 		grid-template-columns: 1fr 1fr 2.7em 4em 1em 1em;
 		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 1rem;
+		margin-bottom: 0.65rem;
 		height: 1.1em;
 	}
 	.delete-btn,
@@ -163,7 +163,11 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 3.7em 1em 3em 1em;
 		gap: 1rem 1rem;
-		margin-bottom: 1.25rem;
+		padding-bottom: 1rem;
+	}
+	.table-header span {
+		color: var(--content-color);
+		font-size: var(--fontsize-large);
 	}
 
 	.details {
@@ -173,10 +177,7 @@
 
 	.tournaments-grid.not-leader,
 	.table-header.not-leader {
-		grid-template-columns: 1fr 1fr 4.7em 3.7em;
-	}
-
-	.table-header span {
-		color: var(--secondary-color);
+		grid-template-columns: 1fr 1fr 6em 5.5em;
+		padding: 0;
 	}
 </style>

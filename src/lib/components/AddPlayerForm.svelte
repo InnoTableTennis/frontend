@@ -1,8 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
-	import { get } from 'svelte/store';
-	import { AddPlayerFormStore } from '$lib/stores';
+	import { AddPlayerFormStore } from '$lib/formStores';
 
 	import { createEventDispatcher, onMount } from 'svelte';
 
@@ -11,9 +10,9 @@
 	import * as db from '$lib/requests';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 
-	let name = get(AddPlayerFormStore).name;
-	let telegramAlias = get(AddPlayerFormStore).telegramAlias;
-	let initialRating = get(AddPlayerFormStore).initialRating;
+	let name = $AddPlayerFormStore.name;
+	let telegramAlias = $AddPlayerFormStore.telegramAlias;
+	let initialRating = $AddPlayerFormStore.initialRating;
 	let firstInput: HTMLInputElement;
 
 	let isSubmissionDisabled = true;

@@ -1,7 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { get } from 'svelte/store';
-	import { SortFilterPlayerFormStore } from '$lib/stores';
+	import { SortFilterPlayerFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
 	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
@@ -12,11 +11,11 @@
 
 	const dispatch = createEventDispatcher();
 
-	let name = get(SortFilterPlayerFormStore).name;
-	let telegramAlias = get(SortFilterPlayerFormStore).telegramAlias;
-	let minRating = get(SortFilterPlayerFormStore).minRating;
-	let maxRating = get(SortFilterPlayerFormStore).maxRating;
-	let sortBy = 'rating';
+	let name = $SortFilterPlayerFormStore.name;
+	let telegramAlias = $SortFilterPlayerFormStore.telegramAlias;
+	let minRating = $SortFilterPlayerFormStore.minRating;
+	let maxRating = $SortFilterPlayerFormStore.maxRating;
+	let sortBy: 'rating' | 'name' = 'rating';
 	let isDescending = true;
 	let firstInput: HTMLInputElement;
 
@@ -28,14 +27,13 @@
 	};
 
 	const saveForm = function () {
-		const sortby: 'name' | 'rating' = sortBy === 'name' ? 'name' : 'rating';
 		SortFilterPlayerFormStore.set({
 			name: name,
 			telegramAlias: telegramAlias,
 			minRating: minRating,
 			maxRating: maxRating,
 			descending: isDescending,
-			sortBy: sortby,
+			sortBy: sortBy,
 		});
 	};
 
@@ -64,7 +62,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortPlayer} on:change={saveForm}>
+<form on:submit={sortPlayer} on:change={saveForm} class="filters">
 	<div class="column-2-elems">
 		<label>
 			<input
@@ -156,17 +154,18 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;
-		font-size: var(--fontsize-medium1);
-		margin: 1.5em 0;
-		font-weight: var(--fontweight-1);
+		font-size: var(--fontsize-large);
+		margin: 0.9em 0;
+		font-weight: var(--fontweight-2);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		margin: 0 auto 3em;
 		font-size: var(--fontsize-medium2);
+	}
+	.filters {
+		margin: 0 auto 3em;
 	}
 	.column-2-elems {
 		margin-top: 1rem;
@@ -176,7 +175,7 @@
 		align-items: end;
 	}
 	.line-2-elems {
-		margin-top: 1rem;
+		margin-top: 0.9rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.25rem;
@@ -202,9 +201,7 @@
 		justify-content: end;
 	}
 	.sorting-order input {
-		position: fixed;
-		opacity: 0;
-		pointer-events: none;
+		display: none;
 	}
 	.last-box {
 		grid-column: 2;
