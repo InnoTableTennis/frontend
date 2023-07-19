@@ -118,7 +118,7 @@
 								<div class="no-wrap">{tournament.title}</div>
 								<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
 								<div class="no-wrap">{tournament.coefficient}</div>
-								<div class="no-wrap" style="text-align: right;">
+								<div style="text-align: right;">
 									{tournament.players}
 									<PlayersIcon />
 								</div>
