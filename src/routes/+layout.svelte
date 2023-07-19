@@ -7,7 +7,7 @@
 	import NavBar from '$lib/components/navigation/NavBar.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
-	import PopupCaller from "$lib/components/popup/PopupCaller.svelte";
+	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
 
 	let isLoaded = false;
 

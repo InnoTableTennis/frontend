@@ -8,7 +8,11 @@
 	function changeState() {
 		checked = checked ? false : true;
 		chosenId = -1;
-		mode = 'add';
+		if (checked) {
+			mode = 'add';
+		} else {
+			mode = '';
+		}
 		editData = {};
 	}
 </script>

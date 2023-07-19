@@ -90,7 +90,7 @@
 				max="1000"
 				name="rating"
 				placeholder="Rating"
-				bind:numberVal={initialRating}
+				defaultNumValue={initialRating}
 			/>
 		</label>
 	</div>

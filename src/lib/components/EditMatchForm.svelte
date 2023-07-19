@@ -10,6 +10,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
@@ -59,6 +60,8 @@
 	$: localDateString = selectedDate;
 
 	const editMatch = async (e: Event) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
+		if (!isConfirmed) return;
 		const data = new FormData(e.target as HTMLFormElement);
 		if (
 			!players.find((player) => player.name === firstPlayerName) ||

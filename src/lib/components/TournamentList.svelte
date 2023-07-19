@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { SortFilterTournamentFormStore } from '$lib/formStores';
@@ -9,7 +8,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import PlayersIcon from './icons/PlayersIcon.svelte';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
@@ -28,6 +27,7 @@
 	export let chosenId = -1;
 	export let isChoosing = false;
 	export let editData;
+	export let mode: string;
 
 	async function requestNewPage() {
 		let title = $SortFilterTournamentFormStore.title;
@@ -64,18 +64,14 @@
 		requestNewPage();
 	}
 
-	const deleteTournament = async (e: Event) => {
+	async function deleteTournament(id: string) {
 		let isConfirmed = await alertPopup('Are you sure that you want to delete this tournament?');
 		if (!isConfirmed) return;
-
-		const data = new FormData(e.target as HTMLFormElement);
-
-		await db.deleteTournament(data.get('id') as string).catch((error) => {
+		await db.deleteTournament(id as string).catch((error) => {
 			dispatch('error', error);
 		});
-
 		requestNewPage();
-	};
+	}
 
 	const finishTournament = async (e: Event) => {
 		let isConfirmed = await alertPopup(`Are you sure that you want to finish this tournament?`);
@@ -109,7 +105,11 @@
 						class:selected={chosenId === tournament.id}
 						on:click|preventDefault={() => {
 							chosenId = tournament.id;
-							editData = tournament;
+							if (mode === 'delete') {
+								deleteTournament(tournament.id.toString());
+							} else {
+								editData = tournament;
+							}
 						}}
 						disabled={!isChoosing || chosenId === tournament.id}
 					>
@@ -121,15 +121,11 @@
 								{tournament.players}
 								<PlayersIcon />
 							</div>
-							{#if isLeader}
-								<form on:submit|preventDefault={deleteTournament}>
-									<input type="hidden" name="id" value={tournament.id} />
-									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
-								</form>
+							{#if isLeader && mode === 'add'}
 								{#if !tournament.finished}
 									<form on:submit|preventDefault={finishTournament}>
 										<input type="hidden" name="id" value={tournament.id} />
-										<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
+										<button aria-label="Finish" class="finish-btn"><FinishIcon /></button>
 									</form>
 								{/if}
 							{/if}
@@ -187,7 +183,6 @@
 		border-radius: 3px;
 	}
 
-	.delete-btn,
 	.finish-btn {
 		background: none;
 		border: none;

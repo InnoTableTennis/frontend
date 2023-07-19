@@ -91,6 +91,7 @@
 			on:error={handleError}
 			bind:handleInsert
 			{isLeader}
+			bind:mode
 			bind:isChoosing
 			bind:chosenId
 			bind:editData

@@ -287,8 +287,6 @@ export async function editPlayer(
 	telegramAlias: string | null = null,
 	rating: number | null = null,
 ): Promise<void> {
-	console.log(id, name, telegramAlias, rating);
-
 	name = name.trim();
 
 	if (telegramAlias !== null) {

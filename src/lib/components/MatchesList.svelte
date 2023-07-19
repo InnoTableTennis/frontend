@@ -1,20 +1,20 @@
 <script lang="ts">
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import type { Matches } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
 	import { SortFilterMatchFormStore } from '$lib/formStores';
-	import { alertPopup } from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
 	export let isLeader = false;
 	export let chosenId = -1;
 	export let isChoosing = false;
+	export let mode: string;
 	export let editData;
 
 	let matches: Matches[] = [];
@@ -59,17 +59,14 @@
 		requestNewPage();
 	}
 
-	const deleteMatch = async (e: Event) => {
+	async function deleteMatch(id: string) {
 		let isConfirmed = await alertPopup('Are you sure that you want to delete this match?');
 		if (!isConfirmed) return;
-
-		const data = new FormData(e.target as HTMLFormElement);
-
-		await db.deleteMatch(data.get('id') as string).catch((error) => {
+		await db.deleteMatch(id as string).catch((error) => {
 			dispatch('error', error);
 		});
 		requestNewPage();
-	};
+	}
 </script>
 
 <!-- {@debug matches} -->
@@ -92,7 +89,11 @@
 						class:selected={chosenId === match.id}
 						on:click|preventDefault={() => {
 							chosenId = match.id;
-							editData = match;
+							if (mode === 'delete') {
+								deleteMatch(match.id.toString());
+							} else {
+								editData = match;
+							}
 						}}
 						disabled={!isChoosing || chosenId === match.id}
 					>
@@ -128,14 +129,6 @@
 								:
 								{match.secondPlayerScore}
 							</div>
-							{#if isLeader}
-								<form on:submit|preventDefault={deleteMatch}>
-									<input type="hidden" name="id" value={match.id} />
-									<button type="submit" aria-label="Delete" class="delete-btn"
-										><DeleteIcon /></button
-									>
-								</form>
-							{/if}
 						</div>
 					</button>
 				{/each}
@@ -199,15 +192,6 @@
 
 	.score {
 		white-space: nowrap;
-	}
-	.delete-btn {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		border: none;
-		height: 1em;
-		width: 1em;
 	}
 
 	.no-wrap {

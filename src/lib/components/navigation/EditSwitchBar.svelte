@@ -1,5 +1,5 @@
-<script>
-	export let mode = 'add';
+<script lang="ts">
+	export let mode: string;
 	export let chosenId;
 	export let editData;
 </script>
