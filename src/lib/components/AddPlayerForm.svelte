@@ -5,12 +5,12 @@
 
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
-
 	import * as db from '$lib/requests';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import TextInput from './base/TextInput.svelte';
-	import NumberInput from './base/NumberInput.svelte';
+	import TextInput from '$lib/components/base/TextInput.svelte';
+	import NumberInput from '$lib/components/base/NumberInput.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;

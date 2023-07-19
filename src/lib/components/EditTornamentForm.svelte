@@ -10,8 +10,8 @@
 	import * as db from '$lib/requests';
 	import { changeDateFormat } from '$lib/helper';
 	import type { Tournaments } from '$lib/types/types';
-	import DateInput from './base/DateInput.svelte';
-	import TextInput from './base/TextInput.svelte';
+	import DateInput from '$lib/components/base/DateInput.svelte';
+	import TextInput from '$lib/components/base/TextInput.svelte';
 
 	let title = $AddTournamentFormStore.title;
 	let startDateString = $AddTournamentFormStore.startDateString;

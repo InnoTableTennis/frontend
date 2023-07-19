@@ -8,8 +8,8 @@
 
 	import * as db from '$lib/requests';
 	import type { Players } from '$lib/types/types';
-	import TextInput from './base/TextInput.svelte';
-	import NumberInput from './base/NumberInput.svelte';
+	import TextInput from '$lib/components/base/TextInput.svelte';
+	import NumberInput from '$lib/components/base/NumberInput.svelte';
 
 	let name = $AddPlayerFormStore.name;
 	let telegramAlias = $AddPlayerFormStore.telegramAlias;

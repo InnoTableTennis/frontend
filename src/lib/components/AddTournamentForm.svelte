@@ -1,17 +1,15 @@
 <script lang="ts">
-	import DateInput from './base/DateInput.svelte';
 	// import { enhance } from '$app/forms';
 	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
-
 	import { createEventDispatcher, onMount } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import TextInput from './base/TextInput.svelte';
+	import TextInput from '$lib/components/base/TextInput.svelte';
+	import DateInput from '$lib/components/base/DateInput.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	let title = $AddTournamentFormStore.title;
 	let startDateString = $AddTournamentFormStore.startDateString;

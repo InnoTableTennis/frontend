@@ -9,8 +9,8 @@
 	import { AddMatchFormStore } from '$lib/formStores';
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
-	import NumberInput from './base/NumberInput.svelte';
-	import DateInput from './base/DateInput.svelte';
+	import NumberInput from '$lib/components/base/NumberInput.svelte';
+	import DateInput from '$lib/components/base/DateInput.svelte';
 
 	const dispatch = createEventDispatcher();
 

@@ -11,8 +11,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import NumberInput from './base/NumberInput.svelte';
-	import DateInput from './base/DateInput.svelte';
+	import NumberInput from '$lib/components/base/NumberInput.svelte';
+	import DateInput from '$lib/components/base/DateInput.svelte';
 
 	const dispatch = createEventDispatcher();
 
