@@ -5,12 +5,11 @@
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
-	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
+	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 	import { AddMatchFormStore } from '$lib/formStores';
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
-	import NumberInput from '$lib/components/base/NumberInput.svelte';
-	import DateInput from '$lib/components/base/DateInput.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -21,8 +20,6 @@
 
 	export let chosenId = -1;
 	let selectedDate = '';
-
-	$: selectedDate = changeDateFormat(match.localDateString);
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
@@ -58,6 +55,7 @@
 
 	let localDateString = '';
 
+	$: selectedDate = changeDateFormat(match.localDateString);
 	$: localDateString = selectedDate;
 
 	const editMatch = async (e: Event) => {
@@ -143,28 +141,35 @@
 	<div class="line-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
+			<InputTemplate
+				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
-				defaultValue={match.firstPlayerScore}
-				bind:inputVal={firstPlayerScore}
+				defaultNumValue={match.firstPlayerScore}
+				bind:numberVal={firstPlayerScore}
 			/>
 		</label>
 
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<NumberInput
+			<InputTemplate
+				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
-				defaultValue={match.secondPlayerScore}
-				bind:inputVal={secondPlayerScore}
+				defaultNumValue={match.secondPlayerScore}
+				bind:numberVal={secondPlayerScore}
 			/>
 		</label>
 	</div>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<DateInput name="localDateString" placeholder="Date" defaultValue={localDateString} />
+			<InputTemplate
+				type="date"
+				name="localDateString"
+				placeholder="Date"
+				defaultValue={localDateString}
+			/>
 		</label>
 
 		<!-- svelte-ignore a11y-label-has-associated-control -->
