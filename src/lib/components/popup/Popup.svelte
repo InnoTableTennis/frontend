@@ -53,12 +53,13 @@
         position: relative;
         background: var(--main-color);
         z-index: 1;
-        height: 20rem;
-        width: 30rem;
+        height: 15rem;
+        width: 25rem;
         text-align: center;
         border-radius: 30px;
-        transform: translateY(15rem);
         opacity: 1;
+        top: 50%;
+        transform: translateY(-50%);
     }
     .hidden {
         visibility: hidden;
@@ -115,7 +116,7 @@
     @media(max-width: 480px) {
         .overlay-button-block {
             display: block;
-            margin-bottom: 20%;
+            margin-bottom: 15%;
         }
         .overlay-button-yes {
             width: 60%;
