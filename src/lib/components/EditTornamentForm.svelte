@@ -1,6 +1,5 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { get } from 'svelte/store';
 	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 

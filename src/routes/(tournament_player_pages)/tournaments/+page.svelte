@@ -27,43 +27,43 @@
 	<div class="edit-mode">
 		<ToggleCheckboxButton
 			bind:checked={isEditing}
-				bind:chosenId
-				bind:editData
-				bind:mode
+			bind:chosenId
+			bind:editData
+			bind:mode
 			label={'Edit Mode'}
 		/>
 		<span />
 	</div>
 {/if}
 
-	{#if isEditing}
-		<div class="edit-switch-bar">
-			<EditSwitchBar bind:mode bind:chosenId bind:editData />
-		</div>
-	{/if}
+{#if isEditing}
+	<div class="edit-switch-bar">
+		<EditSwitchBar bind:mode bind:chosenId bind:editData />
+	</div>
+{/if}
 
 <div class="form-list-layout">
 	{#if isEditing}
-			{#if mode === 'add'}
+		{#if mode === 'add'}
+			<div class="form">
+				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+			</div>
+		{:else if mode === 'edit'}
+			{#if chosenId === -1}
+				Please choose a tournament to edit
+			{:else}
 				<div class="form">
-					<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+					<EditTornamentForm
+						on:error={handleError}
+						on:update={() => handleInsert()}
+						bind:tournament={editData}
+						bind:chosenId
+					/>
 				</div>
-			{:else if mode === 'edit'}
-				{#if chosenId === -1}
-					Please choose a tournament to edit
-				{:else}
-					<div class="form">
-						<EditTornamentForm
-							on:error={handleError}
-							on:update={() => handleInsert()}
-							bind:tournament={editData}
-							bind:chosenId
-						/>
-					</div>
-				{/if}
-			{:else if mode === 'delete'}
-				Please choose a tournament to delete
 			{/if}
+		{:else if mode === 'delete'}
+			Please choose a tournament to delete
+		{/if}
 	{:else}
 		<div class="form">
 			<SortFilterTournamentForm on:error={handleError} on:update={() => handleInsert()} />
@@ -71,13 +71,13 @@
 	{/if}
 	<div class="tournaments-list">
 		<TournamentList
-				on:error={handleError}
-				bind:handleInsert
-				{isLeader}
-				bind:isChoosing
-				bind:chosenId
-				bind:editData
-			/>
+			on:error={handleError}
+			bind:handleInsert
+			{isLeader}
+			bind:isChoosing
+			bind:chosenId
+			bind:editData
+		/>
 	</div>
 </div>
 
