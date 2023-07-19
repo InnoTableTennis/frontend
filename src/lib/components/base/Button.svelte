@@ -15,7 +15,7 @@
 		background-color: var(--secondary-color);
 		color: var(--main-color);
 		font-weight: var(--fontweight-2);
-		transition: 0.1s;
+		transition: box-shadow 0.1s;
 		width: 100%;
 		height: 100%;
 	}
