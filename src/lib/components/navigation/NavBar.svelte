@@ -76,7 +76,7 @@
 			width: 2rem;
 			right: 1rem;
 			top: 1rem;
-			position: absolute;
+			position: fixed;
 			z-index: 2;
 			display: flex;
 			flex-direction: column;
@@ -93,8 +93,8 @@
 		input[type='checkbox']:checked ~ .hamburger-lines {
 			transform: rotate(-90deg);
 		}
-		input[type='checkbox'] {
-			position: absolute;
+		input[type="checkbox"] {
+			position: fixed;
 			display: block;
 			border: none;
 			z-index: 3;

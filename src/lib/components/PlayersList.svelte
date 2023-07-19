@@ -8,6 +8,7 @@
 	const dispatch = createEventDispatcher();
 
 	import * as db from '$lib/requests';
+	import { alertPopup } from "$lib/popupHandler";
 
 	export let isLeader = false;
 	let players: Players[] = [];
@@ -51,7 +52,7 @@
 	}
 
 	const deletePlayer = async (e: Event) => {
-		let isConfirmed = confirm('Are you sure that you want to delete this player?');
+		let isConfirmed = await alertPopup('Are you sure that you want to delete this player?');
 		if (!isConfirmed) return;
 
 		const data = new FormData(e.target as HTMLFormElement);

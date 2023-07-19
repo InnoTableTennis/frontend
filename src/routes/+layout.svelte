@@ -6,6 +6,7 @@
 	import Errors from '$lib/components/error/Errors.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
+	import PopupCaller from "$lib/components/popup/PopupCaller.svelte";
 
 	let isLoaded = false;
 
@@ -30,6 +31,7 @@
 </svelte:head>
 
 {#if isLoaded}
+	<PopupCaller />
 	<slot />
 	<Errors />
 {/if}
