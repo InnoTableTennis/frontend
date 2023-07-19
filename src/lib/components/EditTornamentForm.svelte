@@ -1,7 +1,7 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
 	import { get } from 'svelte/store';
-	import { AddTournamentFormStore } from '$lib/stores';
+	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';
@@ -14,9 +14,9 @@
 	import DateInput from './base/DateInput.svelte';
 	import TextInput from './base/TextInput.svelte';
 
-	let title = get(AddTournamentFormStore).title;
-	let startDateString = get(AddTournamentFormStore).startDateString;
-	let endDateString = get(AddTournamentFormStore).endDateString;
+	let title = $AddTournamentFormStore.title;
+	let startDateString = $AddTournamentFormStore.startDateString;
+	let endDateString = $AddTournamentFormStore.endDateString;
 
 	export let tournament: Tournaments;
 	export let chosenId = -1;

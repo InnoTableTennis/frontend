@@ -40,43 +40,42 @@
 	{/if}
 </div>
 
-	<div class="form-list-layout">
-		{#if isEditing}
-			{#if mode === 'add'}
-				<div class="form">
-					<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
-				</div>
-			{:else if mode === 'edit'}
-				{#if chosenId === -1}
-					Please choose a player to edit
-				{:else}
-					<div class="form">
-						<EditPlayerForm
-							on:error={handleError}
-							on:update={() => handleInsert()}
-							bind:player={editData}
-							bind:chosenId
-						/>
-					</div>
-				{/if}
-			{:else if mode === 'delete'}
-				Please choose a player to delete
-			{/if}
-		{:else}
+<div class="form-list-layout">
+	{#if isEditing}
+		{#if mode === 'add'}
 			<div class="form">
-				<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
+		{:else if mode === 'edit'}
+			{#if chosenId === -1}
+				Please choose a player to edit
+			{:else}
+				<div class="form">
+					<EditPlayerForm
+						on:error={handleError}
+						on:update={() => handleInsert()}
+						bind:player={editData}
+						bind:chosenId
+					/>
+				</div>
+			{/if}
+		{:else if mode === 'delete'}
+			Please choose a player to delete
 		{/if}
-		<div class="players-list">
-			<PlayersList
-				on:error={handleError}
-				bind:handleInsert
-				{isLeader}
-				bind:isChoosing
-				bind:chosenId
-				bind:editData
-			/>
+	{:else}
+		<div class="form">
+			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
+	{/if}
+	<div class="players-list">
+		<PlayersList
+			on:error={handleError}
+			bind:handleInsert
+			{isLeader}
+			bind:isChoosing
+			bind:chosenId
+			bind:editData
+		/>
 	</div>
 </div>
 

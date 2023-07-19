@@ -45,9 +45,9 @@
 <div class="form-list-layout">
 	{#if isEditing}
 			{#if mode === 'add'}
-			<div class="form">
-				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
-			</div>
+				<div class="form">
+					<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+				</div>
 			{:else if mode === 'edit'}
 				{#if chosenId === -1}
 					Please choose a tournament to edit

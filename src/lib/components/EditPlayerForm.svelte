@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import { get } from 'svelte/store';
-	import { AddPlayerFormStore } from '$lib/stores';
+	import { AddPlayerFormStore } from '$lib/formStores';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -12,9 +11,9 @@
 	import TextInput from './base/TextInput.svelte';
 	import NumberInput from './base/NumberInput.svelte';
 
-	let name = get(AddPlayerFormStore).name;
-	let telegramAlias = get(AddPlayerFormStore).telegramAlias;
-	let initialRating = get(AddPlayerFormStore).initialRating;
+	let name = $AddPlayerFormStore.name;
+	let telegramAlias = $AddPlayerFormStore.telegramAlias;
+	let initialRating = $AddPlayerFormStore.initialRating;
 
 	export let player: Players;
 	export let chosenId = -1;
