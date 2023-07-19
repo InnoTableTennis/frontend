@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import type { Matches } from '$lib/types/types';
+	import type { Matches, Tournaments } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
@@ -15,7 +15,7 @@
 	export let chosenId = -1;
 	export let isChoosing = false;
 	export let mode: string;
-	export let editData;
+	export let editData : Matches;
 
 	let matches: Matches[] = [];
 
@@ -139,6 +139,8 @@
 		<p class="details">Oops! There is not a single entity satisfying the query</p>
 	{/if}
 {/await}
+
+
 
 <style>
 	.details {
