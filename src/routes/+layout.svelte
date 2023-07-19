@@ -30,24 +30,14 @@
 </svelte:head>
 
 {#if isLoaded}
-	<main>
-		<slot />
-	</main>
+	<slot />
 	<Errors />
 {/if}
 
 <style>
-	main {
-		align-items: center;
-		margin: 0 auto;
-	}
-
 	@media (max-width: 800px) {
 		* {
 			font-size: var(--fontsize-medium2);
-		}
-		main {
-			padding: 0 1em;
 		}
 	}
 </style>
