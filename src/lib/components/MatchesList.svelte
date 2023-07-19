@@ -73,9 +73,10 @@
 {#await requestNewPage() then}
 	{#if matches.length}
 		<Pagination {lastPageNumber} on:request={handleRequest}>
-			<section class="games-list">
-				<MatchHeader title={matches[0].tournamentTitle} isMain={true} {isLeader} />
-				<MatchHeader title={matches[0].localDateString} {isLeader} />
+			<div class="scroll">
+				<section class="games-list">
+					<MatchHeader title={matches[0].tournamentTitle} isMain={true} {isLeader} />
+					<MatchHeader title={matches[0].localDateString} {isLeader} />
 
 				{#each matches as match, i}
 					{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
@@ -146,9 +147,21 @@
 	}
 	.games-list {
 		max-width: 900px;
+		min-width: 700px;
+
 		height: 30rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
+		overflow-y: scroll;
+	}
+	.games-list::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll {
+		overflow-x: scroll;
 	}
 	.matches-grid {
 		display: grid;

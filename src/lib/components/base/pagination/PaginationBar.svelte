@@ -225,11 +225,18 @@
 		}
 	}
 	@media (max-width: 800px) {
-		.container {
-			border-radius: 40px 40px 0px 0px;
-			flex-direction: column;
-			padding: 1rem 0;
+		.isTop {
+			margin-bottom: 0;
+			padding: 0.5rem 0;
 			height: 6rem;
+			border-radius: 40px 40px 0 0;
+		}
+		.container {
+			flex-direction: column;
+		}
+		.isDown {
+			border-radius: 0 0 40px 40px;
+			height: 3rem;
 		}
 	}
 </style>

@@ -109,6 +109,7 @@
 		}
 		.players-list {
 			margin: 0 auto;
+			overflow-x: hidden;
 		}
 	}
 </style>

@@ -90,14 +90,15 @@
 {#await requestNewPage() then}
 	{#if tournaments.length}
 		<Pagination {lastPageNumber} on:request={handleRequest}>
-			<section class="games-list">
-				<div class="table-header" class:not-leader={!isLeader}>
-					<span>Title</span>
-					<span>Dates</span>
-					<span>Kf</span>
-					<span>Players</span>
-					<span />
-				</div>
+			<div class="scroll">
+				<section class="games-list">
+					<div class="table-header" class:not-leader={!isLeader}>
+						<span>Title</span>
+						<span>Dates</span>
+						<span>Kf</span>
+						<span>Players</span>
+						<span />
+					</div>
 
 				{#each tournaments as tournament}
 					<button
@@ -105,11 +106,7 @@
 						class:selected={chosenId === tournament.id}
 						on:click|preventDefault={() => {
 							chosenId = tournament.id;
-							if (mode === 'delete') {
-								deleteTournament(tournament.id.toString());
-							} else {
-								editData = tournament;
-							}
+							editData = tournament;
 						}}
 						disabled={!isChoosing || chosenId === tournament.id}
 					>
@@ -121,11 +118,15 @@
 								{tournament.players}
 								<PlayersIcon />
 							</div>
-							{#if isLeader && mode === 'add'}
+							{#if isLeader}
+								<form on:submit|preventDefault={deleteTournament}>
+									<input type="hidden" name="id" value={tournament.id} />
+									<button aria-label="Delete" class="delete-btn"><DeleteIcon /></button>
+								</form>
 								{#if !tournament.finished}
 									<form on:submit|preventDefault={finishTournament}>
 										<input type="hidden" name="id" value={tournament.id} />
-										<button aria-label="Finish" class="finish-btn"><FinishIcon /></button>
+										<button aria-label="Delete" class="finish-btn"><FinishIcon /></button>
 									</form>
 								{/if}
 							{/if}
@@ -142,9 +143,21 @@
 <style>
 	.games-list {
 		max-width: 900px;
+		min-width: 700px;
+
 		height: 30rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
+		overflow-y: scroll;
+	}
+	.games-list::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll {
+		overflow-x: scroll;
 	}
 	.tournaments-grid {
 		display: grid;
