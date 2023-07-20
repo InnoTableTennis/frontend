@@ -28,14 +28,14 @@
 
 	const saveForm = function () {
 		score = score.replace(/\s/g, '');
-		SortFilterMatchFormStore.set({
+		$SortFilterMatchFormStore = {
 			name: name,
 			score: score,
 			minDateString: changeDateAnotherFormat(minDateString),
 			maxDateString: changeDateAnotherFormat(maxDateString),
 			descending: isDescending,
 			sortBy: sortBy,
-		});
+		};
 	};
 
 	const resetForm = function () {

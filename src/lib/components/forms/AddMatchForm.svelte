@@ -80,13 +80,13 @@
 	};
 
 	const saveForm = function () {
-		AddMatchFormStore.set({
+		$AddMatchFormStore = {
 			firstPlayerName: firstPlayerName,
 			secondPlayerName: secondPlayerName,
 			tournamentTitle: tournamentTitle,
 			firstPlayerScore: firstPlayerScore,
 			secondPlayerScore: secondPlayerScore,
-		});
+		};
 	};
 
 	let inputResets = new Array(2);

@@ -1,14 +1,14 @@
 <script lang="ts">
-	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
+	import AddPlayerForm from '$lib/components/forms/AddPlayerForm.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
-	import SortFilterPlayerForm from '$lib/components/SortFilterPlayerForm.svelte';
+	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Players } from '$lib/types/types';
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import { handleError } from '$lib/errorHandler';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
-	import EditPlayerForm from '$lib/components/EditPlayerForm.svelte';
+	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
 
 	let handleInsert: () => void;
 	let editData: Players = {} as Players;

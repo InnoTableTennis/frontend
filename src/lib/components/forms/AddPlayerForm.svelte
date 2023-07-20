@@ -38,11 +38,11 @@
 	};
 
 	const saveForm = function () {
-		AddPlayerFormStore.set({
+		$AddPlayerFormStore = {
 			name: name,
 			telegramAlias: telegramAlias,
 			initialRating: initialRating,
-		});
+		};
 	};
 
 	function resetForm() {

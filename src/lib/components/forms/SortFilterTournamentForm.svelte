@@ -28,7 +28,7 @@
 	};
 
 	const saveForm = function () {
-		SortFilterTournamentFormStore.set({
+		$SortFilterTournamentFormStore = {
 			title: title,
 			minParticipants: minParticipants,
 			maxParticipants: maxParticipants,
@@ -36,7 +36,7 @@
 			endDateString: changeDateAnotherFormat(endDateString),
 			descending: isDescending,
 			sortBy: sortBy,
-		});
+		};
 	};
 
 	const resetForm = function () {

@@ -3,13 +3,13 @@
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
-	import AddMatchForm from '$lib/components/AddMatchForm.svelte';
+	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';
 	import MatchesList from '$lib/components/MatchesList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import SortFilterMatchForm from '$lib/components/SortFilterMatchForm.svelte';
+	import SortFilterMatchForm from '$lib/components/forms/SortFilterMatchForm.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
-	import EditMatchForm from '$lib/components/EditMatchForm.svelte';
+	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
 	import type { Matches } from '$lib/types/types';
 
 	let handleInsert: () => void;

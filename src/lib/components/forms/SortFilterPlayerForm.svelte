@@ -26,14 +26,14 @@
 	};
 
 	const saveForm = function () {
-		SortFilterPlayerFormStore.set({
+		$SortFilterPlayerFormStore = {
 			name: name,
 			telegramAlias: telegramAlias,
 			minRating: minRating,
 			maxRating: maxRating,
 			descending: isDescending,
 			sortBy: sortBy,
-		});
+		};
 	};
 
 	const resetForm = function () {

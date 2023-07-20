@@ -3,16 +3,16 @@
 	// import { enhance } from '$app/forms';
 	import { getRoles } from '$lib/token';
 
-	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
+	import AddTournamentForm from '$lib/components/forms/AddTournamentForm.svelte';
 	import TournamentList from '$lib/components/TournamentList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
-	import SortFilterTournamentForm from '$lib/components/SortFilterTournamentForm.svelte';
+	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';
 
 	import { userToken } from '$lib/stores';
 	import { handleError } from '$lib/errorHandler';
 	import type { Tournaments } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
-	import EditTornamentForm from '$lib/components/EditTornamentForm.svelte';
+	import EditTornamentForm from '$lib/components/forms/EditTornamentForm.svelte';
 
 	let handleInsert: () => void;
 	let editData: Tournaments = {} as Tournaments;
