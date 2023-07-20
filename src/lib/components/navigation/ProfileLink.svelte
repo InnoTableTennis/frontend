@@ -14,7 +14,6 @@
 
 	const logOut = () => {
 		localStorage.removeItem('token');
-		isMenuVisible = false;
 		userToken.set('');
 	};
 	const profileMenu = () => {
@@ -41,18 +40,10 @@
 		playerInfo = response;
 		console.log(response);
 	});
-
-	// const openProfilePage = async() => {
-	// 	let username: string = getUsername($userToken);
-	// 	let allPlayers: Players[] = await (db.getPlayers());
-	// 	console.log(allPlayers);
-	// 	// let user: Players =  allPlayers.filter((player: Players) => player.data.telegramAlias == username)
-	// 	// return user;
-	// }
 </script>
 
 <div class="profile-container">
-	{#if !getRoles($userToken).includes('USER') && !isMenuVisible}
+	{#if !getRoles($userToken).includes('USER')}
 		<div class="sign-in">
 			<a id="nav-link-matches" href="/login">Sign in</a>
 		</div>
@@ -148,14 +139,11 @@
 		min-height: 8rem;
 		height: fit-content;
 		flex-direction: column;
-		/* justify-content: center; */
-		/* align-items: center; */
 		padding: 0.5rem;
 	}
 	.upper-subcontainer {
 		display: flex;
 		flex-direction: row;
-		/* width: fit-content; */
 		min-height: 4rem;
 		height: fit-content;
 		align-items: center;
@@ -187,12 +175,9 @@
 	}
 	.name {
 		font-size: var(--fontsize-large);
-		/* color: var(--content-color); */
 		text-align: end;
 	}
 	.tag {
-		/* font-size: var(--fontsize-medium1); */
-		/* color: var(--content-color); */
 		margin: 0.5rem;
 	}
 	.open-profile-button {

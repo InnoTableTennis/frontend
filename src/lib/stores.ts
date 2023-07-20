@@ -22,3 +22,4 @@ export const errors: Writable<Error[]> = writable([]);
  * Stores the color-scheme value.
  */
 export const theme = writable((browser && localStorage.getItem('color-scheme')) ?? 'light');
+export const overlayText: Writable<string | null> = writable(null);

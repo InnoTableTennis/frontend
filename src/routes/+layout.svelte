@@ -6,6 +6,7 @@
 	import Errors from '$lib/components/error/Errors.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
+	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
 
 	let isLoaded = false;
 
@@ -30,25 +31,15 @@
 </svelte:head>
 
 {#if isLoaded}
-	<main>
-		<slot />
-	</main>
+	<PopupCaller />
+	<slot />
 	<Errors />
 {/if}
 
 <style>
-	main {
-		align-items: center;
-		max-width: 1440px;
-		margin: 0 auto;
-	}
-
 	@media (max-width: 800px) {
 		* {
 			font-size: var(--fontsize-medium2);
-		}
-		main {
-			padding: 0 1em;
 		}
 	}
 </style>

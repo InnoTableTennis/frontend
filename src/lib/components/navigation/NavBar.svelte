@@ -76,7 +76,7 @@
 			width: 2rem;
 			right: 1rem;
 			top: 1rem;
-			position: absolute;
+			position: fixed;
 			z-index: 2;
 			display: flex;
 			flex-direction: column;
@@ -94,7 +94,7 @@
 			transform: rotate(-90deg);
 		}
 		input[type='checkbox'] {
-			position: absolute;
+			position: fixed;
 			display: block;
 			border: none;
 			z-index: 3;

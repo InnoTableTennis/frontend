@@ -23,12 +23,12 @@
 	--fontsize-small: 0.6rem;
 
 	/* Font weights */
-	--fontweight-1: 600;
-	--fontweight-2: 500;
+	--fontweight-1: 700;
+	--fontweight-2: 400;
 
 	/* Font families */
 
-	--main-font: 'Poppins', sans-serif;
+	--main-font: 'Karla', sans-serif;
 }
 
 [color-scheme='light'] {
@@ -40,7 +40,8 @@
 }
 
 *,
-a {
+a,
+html {
 	font-family: var(--main-font);
 }
 
