@@ -82,7 +82,7 @@
 	{#if isTop}
 		<div class="pages">
 			<button class="arrow" on:click={handleLeftClick}>
-				<LeftArrow height={15} width={9} color={'white'} />
+				<LeftArrow height="0.9375rem" width="0.5625rem" color={'white'} />
 			</button>
 
 			{#if !isSmallLeft}
@@ -112,7 +112,7 @@
 				>
 			{/if}
 			<button class="arrow" on:click={handleRightClick}>
-				<RightArrow height={15} width={9} color={'white'} />
+				<RightArrow height="0.9375rem" width="0.5625rem" color={'white'} />
 			</button>
 		</div>
 		<div class="sizes">
