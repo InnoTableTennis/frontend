@@ -431,6 +431,7 @@ export async function getTournaments(
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data = await response.json();
+
 	return { data, totalPages };
 }
 

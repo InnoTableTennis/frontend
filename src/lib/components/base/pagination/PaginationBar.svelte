@@ -139,7 +139,6 @@
 		max-width: 900px;
 		height: 3rem;
 		margin: 0 auto;
-		/* margin-bottom: 3em; */
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
