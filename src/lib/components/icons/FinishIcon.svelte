@@ -10,3 +10,9 @@
 		fill={color}
 	/></svg
 >
+
+<style>
+	path {
+		fill: var(--secondary-color);
+	}
+</style>

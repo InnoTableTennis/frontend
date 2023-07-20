@@ -27,8 +27,8 @@
 	}
 
 	.dark {
-		background-color: var(--main-color);
-		color: var(--content-color);
+		background-color: var(--secondary-color);
+		color: var(--main-color);
 		font-weight: var(--fontweight-2);
 	}
 

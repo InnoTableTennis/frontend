@@ -4,7 +4,6 @@
 	import { beforeUpdate, onDestroy } from 'svelte';
 
 	import Errors from '$lib/components/error/Errors.svelte';
-	import NavBar from '$lib/components/navigation/NavBar.svelte';
 
 	import { loadedPage, userToken } from '$lib/stores';
 	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
@@ -31,36 +30,16 @@
 	<title>InnoTableTennis | {$page.data.title}</title>
 </svelte:head>
 
-<header>
-	<NavBar />
-</header>
-
 {#if isLoaded}
 	<PopupCaller />
-	<main>
-		<slot />
-	</main>
+	<slot />
 	<Errors />
 {/if}
 
 <style>
-	header {
-		height: 4em;
-		background-color: transparent;
-	}
-	main {
-		align-items: center;
-		max-width: 1440px;
-		margin: 0 auto;
-		padding: 0 2em;
-	}
-
 	@media (max-width: 800px) {
 		* {
 			font-size: var(--fontsize-medium2);
-		}
-		main {
-			padding: 0 1em;
 		}
 	}
 </style>

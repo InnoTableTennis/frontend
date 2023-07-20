@@ -3,6 +3,8 @@
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { userToken } from '$lib/stores';
+	import signin from '$lib/assets/signin.jpg';
+	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 	import * as db from '$lib/requests';
 
 	const dispatch = createEventDispatcher();
@@ -32,91 +34,201 @@
 	});
 </script>
 
-<div class="container">
-	<form on:submit={login}>
-		<h2>Sign in</h2>
+<button
+	class="back-btn"
+	on:click={() => {
+		window.history.back();
+	}}
+>
+	<div class="arrow">
+		<NewLeftArrow />
+	</div>
+	Back
+</button>
 
-		<label>
-			<!-- <span class="form-label">Telegram Alias</span> -->
-			<input
-				name="username"
-				bind:value={username}
-				required
-				autocomplete="off"
-				placeholder="@telegram_alias"
-				class="full-width"
-				bind:this={usernameInput}
-			/>
-		</label>
-		<label>
-			<!-- <span class="form-label">Password</span> -->
-			<input
-				type="password"
-				name="password"
-				bind:value={password}
-				required
-				autocomplete="off"
-				placeholder="Password"
-				class="full-width"
-			/>
-		</label>
-		<div class="button-container">
-			<Button dark={true} type={'submit'}>Sign In</Button>
+<div class="container">
+	<div class="row">
+		<div class="container">
+			<div class="wrapper-left">
+				<div class="column">
+					<form on:submit={login}>
+						<h2>Sign in</h2>
+						<label>
+							<input
+								name="username"
+								bind:value={username}
+								required
+								autocomplete="off"
+								placeholder="@Telegram alias"
+								class="full-width"
+								bind:this={usernameInput}
+							/>
+						</label>
+						<label>
+							<input
+								type="password"
+								name="password"
+								bind:value={password}
+								required
+								autocomplete="off"
+								placeholder="Password"
+								class="full-width"
+							/>
+						</label>
+						<div class="button-container">
+							<Button dark={true} type={'submit'}>Sign In</Button>
+						</div>
+						<a class="sp-link" href="/signup">I don`t have an account</a>
+					</form>
+				</div>
+			</div>
 		</div>
-		<p><a href="/signup">Sign Up</a> If you don't have an account yet!</p>
-	</form>
+		<div class="wrapper-right">
+			<div class="container">
+				<img class="backgroundImage" src={signin} alt="" />
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>
 	h2 {
-		font-size: var(--fontsize-large);
+		font-size: var(--fontsize-x-large);
 		margin-bottom: 0.5em;
-		text-align: center;
-		color: var(--main-color);
-	}
-
-	p {
-		font-size: var(--fontsize-medium1);
+		text-align: end;
+		align-self: start;
 		color: inherit;
 	}
-
 	form {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: var(--secondary-color);
-		color: var(--main-color);
-		max-width: 350px;
+		color: var(--content-color);
+		width: 100%;
+		height: 100%;
 		margin: 0 auto;
-		font-size: var(--fontsize-medium2);
-		padding: 1.5em;
-		border-radius: 30px;
+		font-size: var(--fontsize-medium1);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		gap: 1rem;
 	}
-
+	label {
+		align-self: flex-start;
+		width: 100%;
+	}
 	input {
+		background: var(--main-color);
 		box-sizing: border-box;
-		border: none;
-		padding: 0.8em 1em;
-		border-radius: 20px;
+		width: 100%;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: 0.2rem solid;
+		border-color: var(--secondary-bg-color);
+		padding: 0.8em 0;
 		transition: 0.1s;
 	}
 	input:focus {
-		outline: solid var(--secondary-color);
+		border-color: var(--secondary-color);
+		outline: none;
+	}
+
+	.row {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		height: 100%;
+	}
+	.sp-link {
+		padding-top: 1.5em;
+		color: var(--secondary-color);
+		text-align: center;
+		padding-bottom: 1rem;
+	}
+	.container {
+		color: var(--content-color);
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100vh;
+		align-content: center;
+		justify-content: center;
+	}
+	.wrapper-right {
+		display: flex;
+		width: 50vw;
+		height: 100%;
+		align-items: start;
+	}
+	.wrapper-left {
+		display: flex;
+		flex-direction: column;
+		padding: 4em;
+		box-sizing: border-box;
+		overflow-y: scroll;
+		width: 50vw;
+	}
+	.wrapper-left::-webkit-scrollbar {
+		display: none;
+	}
+	.wrapper-left {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.column {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		align-content: center;
+		justify-content: center;
 	}
 	.button-container {
 		width: 10rem;
+		align-self: flex-end;
 	}
-
-	@media (max-height: 500px) {
-		form {
-			margin: 7vh 0;
-			padding: 0.75em;
-			gap: 0.5rem;
+	.backgroundImage {
+		height: 100vh;
+		object-fit: cover;
+	}
+	.back-btn {
+		position: absolute;
+		left: 5%;
+		top: 5%;
+		width: 10rem;
+		color: var(--secondary-color);
+		font-size: 1.5em;
+		background-color: var(--main-color);
+		display: flex;
+		flex-direction: row;
+		border: 0;
+		text-decoration: underline;
+		justify-content: center;
+		align-items: center;
+	}
+	.arrow {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 1rem;
+		height: 1rem;
+	}
+	@media (max-width: 480px) {
+		.container {
+			height: 100vh;
+		}
+		.wrapper-right {
+			display: none;
+		}
+		.wrapper-left {
+			width: 100vw;
+		}
+		.back-btn {
+			width: 20%;
+			top: 1%;
+			left: 8%;
+		}
+	}
+	@media (max-width: 850px) {
+		.wrapper-left {
+			width: 100vw;
 		}
 	}
 </style>
