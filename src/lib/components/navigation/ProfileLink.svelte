@@ -37,7 +37,6 @@
 	let playerInfo: Players | undefined;
 	requestUserinfo().then((response) => {
 		playerInfo = response;
-		console.log(response);
 	});
 </script>
 
