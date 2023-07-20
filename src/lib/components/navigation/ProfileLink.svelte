@@ -10,7 +10,6 @@
 	import type { Players } from '$lib/types/types';
 
 	let isMenuVisible = false;
-	$: isMenuVisible;
 
 	const logOut = () => {
 		localStorage.removeItem('token');
