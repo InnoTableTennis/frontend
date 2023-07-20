@@ -105,7 +105,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-height: 100%;
+		height: 100vh;
 		align-content: center;
 		justify-content: center;
 	}
@@ -114,7 +114,9 @@
 		flex-direction: column;
 		padding: 3em 3em 3em 7em;
 		width: 80%;
-		height: 100%;
+		height: 100vh;
+		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 	.wrapper-left {
 		display: flex;
