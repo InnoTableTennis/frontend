@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let width = "1rem";
-	export let height = "1.625rem";
+	export let width = '1rem';
+	export let height = '1.625rem';
 	export let color = 'white';
 </script>
 

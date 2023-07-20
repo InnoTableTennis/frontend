@@ -132,7 +132,12 @@
 
 <form on:submit={sortTournament} on:change={saveForm}>
 	<div class="column-3-elems">
-		<RadioGroup group={sortBy} values={radioValues} labels={radioLabels} on:update={updateRadioGroupValue} />
+		<RadioGroup
+			group={sortBy}
+			values={radioValues}
+			labels={radioLabels}
+			on:update={updateRadioGroupValue}
+		/>
 	</div>
 	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">
