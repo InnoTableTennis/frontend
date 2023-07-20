@@ -15,7 +15,7 @@
 		localStorage.removeItem('token');
 		userToken.set('');
 	};
-	const profileMenu = () => {
+	const toggleProfileMenu = () => {
 		isMenuVisible = isMenuVisible ? false : true;
 	};
 
