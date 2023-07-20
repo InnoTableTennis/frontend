@@ -34,7 +34,7 @@
 		return players.find((user) => user.telegramAlias == getUsername($userToken));
 	};
 
-	let playerInfo: Players | undefined;
+	let playerInfo: Players | null = null;
 	requestUserinfo().then((response) => {
 		playerInfo = response;
 	});
