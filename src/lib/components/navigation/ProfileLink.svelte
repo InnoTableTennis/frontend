@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import ProfileIcon from '../icons/ProfileIcon.svelte';
+	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import { getUsername } from '$lib/token';
