@@ -7,7 +7,7 @@
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
-	import PlayersIcon from './icons/PlayersIcon.svelte';
+	import PlayersIcon from '$lib/components/icons/PlayersIcon.svelte';
 	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
@@ -121,7 +121,7 @@
 								</div>
 								<div class="no-wrap content">{tournament.coefficient}</div>
 								<div class="content" style="text-align: right;">
-									{tournament.players}
+									{tournament.playersAmount}
 									<PlayersIcon />
 								</div>
 								{#if isLeader && !tournament.finished && mode === 'add'}

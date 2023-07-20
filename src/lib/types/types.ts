@@ -39,7 +39,7 @@ export interface Tournaments {
 	endDateString: string;
 	finished: boolean;
 	id: number;
-	players: number;
+	playersAmount: number;
 	startDateString: string;
 	title: string;
 }
