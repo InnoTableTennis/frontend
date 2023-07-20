@@ -52,7 +52,7 @@
 		</div>
 	{:else}
 		<div class="profile-button-container">
-			<button class="profile-button" on:click={profileMenu}>
+			<button class="profile-button" on:click={toggleProfileMenu}>
 				<div class="profile-icon">
 					<ProfileIcon />
 				</div>
