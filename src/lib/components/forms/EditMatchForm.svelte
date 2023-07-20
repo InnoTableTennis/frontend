@@ -6,7 +6,6 @@
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import { AddMatchFormStore } from '$lib/formStores';
 	import { createEventDispatcher } from 'svelte';
 	import type { Matches, Players, Tournaments } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
@@ -27,11 +26,11 @@
 
 	let isSubmissionDisabled = true;
 
-	let firstPlayerName = $AddMatchFormStore.firstPlayerName;
-	let secondPlayerName = $AddMatchFormStore.secondPlayerName;
-	let tournamentTitle = $AddMatchFormStore.tournamentTitle;
-	let firstPlayerScore = $AddMatchFormStore.firstPlayerScore;
-	let secondPlayerScore = $AddMatchFormStore.secondPlayerScore;
+	let firstPlayerName = '';
+	let secondPlayerName = '';
+	let tournamentTitle = '';
+	let firstPlayerScore = 0;
+	let secondPlayerScore = 0;
 
 	$: {
 		isSubmissionDisabled = !(

@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let width = 16;
-	export let height = 26;
+	export let width = "1rem";
+	export let height = "1.625rem";
 	export let color = 'white';
 </script>
 
@@ -10,9 +10,3 @@
 		fill={color}
 	/>
 </svg>
-
-<style>
-	path {
-		fill: var(--secondary-color);
-	}
-</style>

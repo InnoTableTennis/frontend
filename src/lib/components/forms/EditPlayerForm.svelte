@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import { AddPlayerFormStore } from '$lib/formStores';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -12,9 +11,7 @@
 	import { countNameWords } from '$lib/helper';
 	import { alertPopup } from '$lib/popupHandler';
 
-	let name = $AddPlayerFormStore.name;
-	let telegramAlias = $AddPlayerFormStore.telegramAlias;
-	let initialRating = $AddPlayerFormStore.initialRating;
+	let name = '';
 
 	export let player: Players;
 	export let chosenId = -1;
@@ -45,19 +42,11 @@
 		player = {} as Players;
 		chosenId = -1;
 	};
-
-	const saveForm = function () {
-		$AddPlayerFormStore = {
-			name: name,
-			telegramAlias: telegramAlias,
-			initialRating: initialRating,
-		};
-	};
 </script>
 
 <h2>Edit Player</h2>
 
-<form on:submit={editPlayer} on:change={saveForm}>
+<form on:submit={editPlayer}>
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->

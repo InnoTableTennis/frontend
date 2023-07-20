@@ -1,6 +1,5 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';
@@ -13,9 +12,9 @@
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { alertPopup } from '$lib/popupHandler';
 
-	let title = $AddTournamentFormStore.title;
-	let startDateString = $AddTournamentFormStore.startDateString;
-	let endDateString = $AddTournamentFormStore.endDateString;
+	let title = '';
+	let startDateString = '';
+	let endDateString = '';
 
 	export let tournament: Tournaments;
 	export let chosenId = -1;
@@ -51,19 +50,11 @@
 		tournament = {} as Tournaments;
 		chosenId = -1;
 	};
-
-	const saveForm = function () {
-		$AddTournamentFormStore = {
-			title: title,
-			startDateString: startDateString,
-			endDateString: endDateString,
-		};
-	};
 </script>
 
 <h2>Edit Tournament</h2>
 
-<form on:submit={editTournament} on:change={saveForm}>
+<form on:submit={editTournament}>
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
