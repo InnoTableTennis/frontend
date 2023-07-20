@@ -2,10 +2,9 @@
 	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
 	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
 
-	export let defaultVal = true;
-	export let value = false;
+	export let value = true;
 
-	$: value = defaultVal;
+	$: value = true;
 </script>
 
 <div class="line-2-elems">

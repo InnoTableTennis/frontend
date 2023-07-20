@@ -120,7 +120,7 @@
 	<div class="column-2-elems">
 		<RadioGroup group={sortBy} values={radioValues} labels={radioLabels} on:update={updateValue} />
 	</div>
-	<OrderButton bind:value={isDescending} bind:defaultVal={isDescending} />
+	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">
 		<div class="last-box margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>
