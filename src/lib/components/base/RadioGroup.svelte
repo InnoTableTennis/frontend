@@ -29,7 +29,7 @@
 	}
 	.radio + label {
 		position: relative;
-		padding: 0 0 0 2em;
+		padding: 0 0 0 2rem;
 		cursor: pointer;
 	}
 	.radio + label:before {
@@ -37,10 +37,10 @@
 		position: absolute;
 		top: 0;
 		left: 0.3rem;
-		width: 0.9em;
-		height: 0.9em;
+		width: 0.9rem;
+		height: 0.9rem;
 		border: 2px solid var(--content-color);
-		border-radius: 2em;
+		border-radius: 2rem;
 		background: var(--main-color);
 	}
 	.radio + label:after {
@@ -48,9 +48,9 @@
 		position: absolute;
 		top: 0.3rem;
 		left: 0.6rem;
-		width: 0.5em;
-		height: 0.5em;
-		border-radius: 2em;
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 2rem;
 		background: var(--content-color);
 		opacity: 0;
 		transition: 0.2s;

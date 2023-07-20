@@ -1,74 +1,76 @@
 <script lang="ts">
-	import AddPlayerForm from '$lib/components/AddPlayerForm.svelte';
-	import PlayersList from '$lib/components/PlayersList.svelte';
-	import SortFilterPlayerForm from '$lib/components/SortFilterPlayerForm.svelte';
-	import type { Players } from '$lib/types/types';
-	import { userToken } from '$lib/stores';
+	// import { fly, slide } from 'svelte/transition';
+	// import { enhance } from '$app/forms';
 	import { getRoles } from '$lib/token';
-	import { handleError } from '$lib/errorHandler';
+
+	import AddTournamentForm from '$lib/components/AddTournamentForm.svelte';
+	import TournamentList from '$lib/components/TournamentList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
+	import SortFilterTournamentForm from '$lib/components/SortFilterTournamentForm.svelte';
+
+	import { userToken } from '$lib/stores';
+	import { handleError } from '$lib/errorHandler';
+	import type { Tournaments } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
-	import EditPlayerForm from '$lib/components/EditPlayerForm.svelte';
+	import EditTornamentForm from '$lib/components/EditTornamentForm.svelte';
 
 	let handleInsert: () => void;
-	let editData: Players = {} as Players;
+	let editData: Tournaments = {} as Tournaments;
 	let isEditing = false;
 	let chosenId = -1;
-	let mode = 'add';
+	let mode = '';
 	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 </script>
 
-<div class="info">
-	{#if isLeader}
-		<div class="edit-mode">
-			<ToggleCheckboxButton
-				bind:checked={isEditing}
-				bind:chosenId
-				bind:editData
-				bind:mode
-				label={'Edit Mode'}
-			/>
-			<span />
-		</div>
-	{/if}
+{#if isLeader}
+	<div class="edit-mode">
+		<ToggleCheckboxButton
+			bind:checked={isEditing}
+			bind:chosenId
+			bind:editData
+			bind:mode
+			label={'Edit Mode'}
+		/>
+		<span />
+	</div>
+{/if}
 
-	{#if isEditing}
-		<div class="edit-switch-bar">
-			<EditSwitchBar bind:mode bind:chosenId bind:editData />
-		</div>
-	{/if}
-</div>
+{#if isEditing}
+	<div class="edit-switch-bar">
+		<EditSwitchBar bind:mode bind:chosenId bind:editData />
+	</div>
+{/if}
 
 <div class="form-list-layout">
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
-				Please choose a player to edit
+				Please choose a tournament to edit
 			{:else}
 				<div class="form">
-					<EditPlayerForm
+					<EditTornamentForm
 						on:error={handleError}
 						on:update={() => handleInsert()}
-						bind:player={editData}
+						bind:tournament={editData}
 						bind:chosenId
 					/>
 				</div>
 			{/if}
 		{:else if mode === 'delete'}
-			Please choose a player to delete
+			Please choose a tournament to delete
 		{/if}
 	{:else}
 		<div class="form">
-			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+			<SortFilterTournamentForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
-	<div class="players-list">
-		<PlayersList
+	<div class="tournaments-list">
+		<TournamentList
 			on:error={handleError}
 			bind:handleInsert
 			{isLeader}
@@ -91,7 +93,7 @@
 		max-width: 350px;
 		margin-right: 2rem;
 	}
-	.players-list {
+	.tournaments-list {
 		max-width: 900px;
 	}
 	.edit-mode {
@@ -106,10 +108,10 @@
 		}
 		.form-list-layout {
 			display: block;
+			margin: 0;
 		}
-		.players-list {
+		.tournaments-list {
 			margin: 0 auto;
-			overflow-x: hidden;
 		}
 	}
 </style>
