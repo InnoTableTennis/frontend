@@ -73,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-				<button class="full-screen-button" on:click={profileMenu} />
+				<button class="full-screen-button" on:click={toggleProfileMenu} />
 			{/if}
 		</div>
 	{/if}
