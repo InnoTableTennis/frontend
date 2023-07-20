@@ -115,10 +115,12 @@
 							disabled={!isChoosing || chosenId === tournament.id}
 						>
 							<div class="tournaments-grid" class:not-leader={!isLeader}>
-								<div class="no-wrap">{tournament.title}</div>
-								<div class="no-wrap">{tournament.startDateString}-{tournament.endDateString}</div>
-								<div class="no-wrap">{tournament.coefficient}</div>
-								<div class="no-wrap" style="text-align: right;">
+								<div class="no-wrap content">{tournament.title}</div>
+								<div class="no-wrap content">
+									{tournament.startDateString}-{tournament.endDateString}
+								</div>
+								<div class="no-wrap content">{tournament.coefficient}</div>
+								<div class="content" style="text-align: right;">
 									{tournament.players}
 									<PlayersIcon />
 								</div>
@@ -144,7 +146,7 @@
 		max-width: 900px;
 		min-width: 700px;
 
-		height: 30rem;
+		height: 30.5rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 		overflow-y: scroll;
@@ -160,22 +162,21 @@
 	}
 	.tournaments-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr 3.5em 3em 1em 1em;
-		gap: 1rem 1.5rem;
+		grid-template-columns: 1fr 1fr 6.5rem 3rem 1rem;
+		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 0.65rem;
-		height: 1.1em;
+		height: 1.1rem;
 	}
 
 	.tournament-line {
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0 5px;
+		padding: 0;
 		border: none;
 		width: 100%;
 		height: 1.3rem;
-		margin-bottom: 0.6rem;
+		margin-bottom: 0.4rem;
 	}
 	.tournament-line:disabled {
 		cursor: default;
@@ -201,8 +202,8 @@
 		cursor: pointer;
 		padding: 0;
 		border: none;
-		height: 1em;
-		width: 1em;
+		height: 1rem;
+		width: 1rem;
 	}
 	.no-wrap {
 		display: flex;
@@ -212,16 +213,18 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-
+	.content {
+		font-size: var(--fontsize-medium1);
+	}
 	.table-header {
 		display: grid;
-		grid-template-columns: 1fr 1fr 3.7em 1em 3em 1em;
+		grid-template-columns: 1fr 1fr 6.5rem 5rem;
 		gap: 1rem 1rem;
-		padding-bottom: 1rem;
 	}
 	.table-header span {
 		color: var(--content-color);
 		font-size: var(--fontsize-large);
+		font-weight: var(--fontweight-1);
 	}
 
 	.details {
@@ -231,7 +234,7 @@
 
 	.tournaments-grid.not-leader,
 	.table-header.not-leader {
-		grid-template-columns: 1fr 1fr 6em 5.5em;
+		grid-template-columns: 1fr 1fr 6.5rem 5rem;
 		padding: 0;
 	}
 </style>

@@ -2,12 +2,12 @@
 	// import { enhance } from '$app/forms';
 	import { SortFilterPlayerFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
-	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
-	import AscendingIcon from '$lib/components/icons/AscendingIcon.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
+	import OrderButton from '$lib/components/base/OrderButton.svelte';
 
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -17,7 +17,6 @@
 	let maxRating = $SortFilterPlayerFormStore.maxRating;
 	let sortBy: 'rating' | 'name' = 'rating';
 	let isDescending = true;
-	let firstInput: HTMLInputElement;
 
 	let radioValues = ['rating', 'name'];
 	let radioLabels = ['Sort by rating', 'Sort by name'];
@@ -51,10 +50,6 @@
 		sortBy = event.detail.value;
 		saveForm();
 	}
-
-	onMount(() => {
-		firstInput.focus();
-	});
 </script>
 
 <div class="line-2-elems">
@@ -64,54 +59,56 @@
 
 <form on:submit={sortPlayer} on:change={saveForm} class="filters">
 	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
+				type="text"
 				name="name"
-				bind:value={name}
-				bind:this={firstInput}
-				autocomplete="off"
+				isFirst={true}
+				bind:stringVal={name}
+				bind:defaultValue={name}
 				placeholder="Search by name"
-				class="full-width"
 			/>
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
+				type="text"
 				name="telegramAlias"
-				bind:value={telegramAlias}
-				autocomplete="off"
+				bind:stringVal={telegramAlias}
+				bind:defaultValue={telegramAlias}
 				placeholder="Search by alias"
-				class="full-width"
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
 				type="number"
 				min="0"
 				max="1000"
 				name="minRating"
-				bind:value={minRating}
-				autocomplete="off"
+				bind:numberVal={minRating}
+				bind:defaultNumValue={minRating}
 				placeholder="Min rating"
-				class="full-width"
 			/>
 		</label>
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<input
+			<InputTemplate
 				type="number"
 				min="0"
 				max="1000"
 				name="maxRating"
-				bind:value={maxRating}
-				autocomplete="off"
+				bind:numberVal={maxRating}
+				bind:defaultNumValue={maxRating}
 				placeholder="Max rating"
-				class="full-width"
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<div class="last-box full-width margin-top">
+		<div class="last-box margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
@@ -123,30 +120,9 @@
 	<div class="column-2-elems">
 		<RadioGroup group={sortBy} values={radioValues} labels={radioLabels} on:update={updateValue} />
 	</div>
+	<OrderButton bind:value={isDescending} bind:defaultVal={isDescending} />
 	<div class="line-2-elems">
-		<label class="sorting-order" id="sorting-order-descending">
-			<input
-				type="radio"
-				id="descending"
-				name="sorting-order"
-				bind:group={isDescending}
-				value={true}
-			/>
-			<DescendingIcon disabled={!isDescending} />
-		</label>
-		<label class="sorting-order">
-			<input
-				type="radio"
-				id="ascending"
-				name="sorting-order"
-				bind:group={isDescending}
-				value={false}
-			/>
-			<AscendingIcon disabled={isDescending} />
-		</label>
-	</div>
-	<div class="line-2-elems">
-		<div class="last-box full-width margin-top">
+		<div class="last-box margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>
 		</div>
 	</div>
@@ -156,58 +132,33 @@
 	h2 {
 		font-size: var(--fontsize-large);
 		margin: 0.9em 0;
-		font-weight: var(--fontweight-2);
+		font-weight: var(--fontweight-1);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		font-size: var(--fontsize-medium2);
+		font-size: var(--fontsize-medium1);
 	}
 	.filters {
-		margin: 0 auto 3em;
+		margin: 0 auto 1em;
 	}
 	.column-2-elems {
 		margin-top: 1rem;
 		display: grid;
 		grid-template-columns: repeat(1, 1fr);
-		gap: 1.25rem;
+		gap: 1rem;
 		align-items: end;
 	}
 	.line-2-elems {
 		margin-top: 0.9rem;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
+		gap: 1rem 0.44rem;
 		align-items: end;
-	}
-
-	input {
-		box-sizing: border-box;
-		border: none;
-		border-bottom: 5px solid var(--secondary-bg-color);
-		padding: 0.8em 0;
-		color: var(--not-chosen-font-color);
-		background-color: var(--main-color);
-		transition: 0.2s linear;
-	}
-	input:focus {
-		outline: none;
-		color: var(--content-color);
-		border-bottom: 5px solid var(--secondary-color);
-	}
-	#sorting-order-descending {
-		display: flex;
-		justify-content: end;
-	}
-	.sorting-order input {
-		display: none;
 	}
 	.last-box {
 		grid-column: 2;
-	}
-	.full-width {
-		width: 100%;
 	}
 
 	.margin-top {

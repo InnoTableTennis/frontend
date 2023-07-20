@@ -114,12 +114,14 @@
 						>
 							<div class="players-grid" class:not-leader={!isLeader}>
 								<div>
-									<span class="position">{(currentPageNumber - 1) * currentPageSize + i + 1}</span>
+									<span class="position bold"
+										>{(currentPageNumber - 1) * currentPageSize + i + 1}</span
+									>
 								</div>
-								<div class="no-wrap">{player.name}</div>
+								<div class="no-wrap bold">{player.name}</div>
 								<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
 								<div class="no-wrap">{player.numberOfWins}/{player.numberOfLosses}</div>
-								<div class="rating">{player.rating}</div>
+								<div class="rating bold">{player.rating}</div>
 							</div>
 						</button>
 					{/each}
@@ -140,7 +142,7 @@
 		max-width: 900px;
 		min-width: 700px;
 
-		height: 30rem;
+		height: 30.5rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 		overflow-y: scroll;
@@ -156,22 +158,22 @@
 	}
 	.players-grid {
 		display: grid;
-		grid-template-columns: 1.8em 1fr 1fr 5.2em 3.3em 1em;
+		grid-template-columns: 1.8rem 1fr 1fr 6.2rem 4.8rem;
 		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 0.65rem;
-		height: 1.1em;
+		font-size: var(--fontsize-medium1);
+		height: 1.25rem;
 	}
 
 	.player-line {
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0 5px;
+		padding: 0;
 		border: none;
 		width: 100%;
 		height: 1.3rem;
-		margin-bottom: 0.6rem;
+		margin-bottom: 0.4rem;
 	}
 	.player-line:disabled {
 		cursor: default;
@@ -206,9 +208,9 @@
 
 	.table-header {
 		display: grid;
-		grid-template-columns: 1.8em 1fr 1fr 3.8em 4.3em 0.5em;
+		grid-template-columns: 1.8rem 1fr 1fr 6.2rem 4.8rem;
+		font-weight: var(--fontweight-1);
 		gap: 1rem 1rem;
-		padding-bottom: 1rem;
 	}
 
 	.table-header span {
@@ -218,6 +220,7 @@
 	.position {
 		color: var(--content-color);
 		display: inline-block;
+		text-align: left;
 		width: 100%;
 	}
 	.rating {
@@ -225,10 +228,12 @@
 		text-align: right;
 		width: 100%;
 	}
+	.bold {
+		font-weight: var(--fontweight-1);
+	}
 
 	.players-grid.not-leader,
 	.table-header.not-leader {
-		grid-template-columns: 1.8em 1fr 1fr 6em 5em;
-		padding: 0;
+		grid-template-columns: 1.8rem 1fr 1fr 6rem 4.6rem;
 	}
 </style>

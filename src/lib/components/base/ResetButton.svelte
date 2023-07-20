@@ -8,6 +8,7 @@
 <style>
 	button {
 		color: var(--secondary-color);
+		font-size: var(--fontsize-medium1);
 		width: max-content;
 		margin: 1.5em 0 1.5em auto;
 		text-decoration: underline;

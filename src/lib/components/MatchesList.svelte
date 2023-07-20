@@ -75,15 +75,21 @@
 		<Pagination {lastPageNumber} on:request={handleRequest}>
 			<div class="scroll">
 				<section class="games-list">
-					<MatchHeader title={matches[0].tournamentTitle} isMain={true} {isLeader} />
-					<MatchHeader title={matches[0].localDateString} {isLeader} />
+					<div class="table-header" class:not-leader={!isLeader}>
+						<span>First Player</span>
+						<span>Second Player</span>
+						<span>Score</span>
+						<span />
+					</div>
+					<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
+					<MatchHeader title={matches[0].localDateString} />
 
 					{#each matches as match, i}
 						{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
-							<MatchHeader title={matches[i].tournamentTitle} isMain={true} {isLeader} />
-							<MatchHeader title={matches[i].localDateString} {isLeader} />
+							<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
+							<MatchHeader title={matches[i].localDateString} />
 						{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
-							<MatchHeader title={matches[i].localDateString} {isLeader} />
+							<MatchHeader title={matches[i].localDateString} />
 						{/if}
 						<button
 							class="match-line"
@@ -99,7 +105,7 @@
 							disabled={!isChoosing || chosenId === match.id}
 						>
 							<div class="matches-grid">
-								<div class="no-wrap">
+								<div class="no-wrap content">
 									{match.firstPlayerName}
 									<span class="rating">
 										{#if match.firstPlayerRatingDelta}
@@ -112,7 +118,7 @@
 										{/if}
 									</span>
 								</div>
-								<div class="no-wrap">
+								<div class="no-wrap content">
 									{match.secondPlayerName}
 									<span class="rating">
 										{#if match.secondPlayerRatingDelta}
@@ -125,7 +131,7 @@
 										{/if}
 									</span>
 								</div>
-								<div class="score">
+								<div class="score content">
 									{match.firstPlayerScore}
 									:
 									{match.secondPlayerScore}
@@ -150,7 +156,7 @@
 		max-width: 900px;
 		min-width: 700px;
 
-		height: 30rem;
+		height: 30.5rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
 		overflow-y: scroll;
@@ -169,18 +175,17 @@
 		grid-template-columns: 1fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		color: var(--content-color);
-		margin-bottom: 0.65rem;
 		height: 1.1em;
 	}
 	.match-line {
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0 5px;
+		padding: 0;
 		border: none;
 		width: 100%;
 		height: 1.3rem;
-		margin-bottom: 0.6rem;
+		margin-bottom: 0.2rem;
 	}
 	.match-line:disabled {
 		cursor: default;
@@ -216,6 +221,20 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	.content {
+		font-size: var(--fontsize-medium1);
+	}
+	.table-header {
+		display: grid;
+		grid-template-columns: 1fr 1fr 4rem;
+		gap: 1rem 1rem;
+	}
+	.table-header span {
+		color: var(--content-color);
+		font-size: var(--fontsize-large);
+		font-weight: var(--fontweight-1);
+	}
+
 	.rating .positive {
 		color: var(--rating-positive-color);
 	}
