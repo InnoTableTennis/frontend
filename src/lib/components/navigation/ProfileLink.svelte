@@ -36,7 +36,7 @@
 
 	let playerInfo: Players | null = null;
 	requestUserinfo().then((response) => {
-		playerInfo = response;
+		playerInfo = response as Players;
 	});
 </script>
 
