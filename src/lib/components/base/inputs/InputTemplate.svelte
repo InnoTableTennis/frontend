@@ -78,7 +78,6 @@
 		color: var(--not-chosen-font-color);
 		background-color: var(--main-color);
 		font-size: var(--fontsize-medium1);
-		/* outline: none; */
 	}
 	input {
 		width: 100%;
