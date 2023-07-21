@@ -150,7 +150,7 @@
 			border-bottom: 2px solid var(--content-color);
 		}
 		.nav-links li {
-			margin: 0.15rem;
+			margin: 0.15em;
 		}
 	}
 </style>
