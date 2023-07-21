@@ -23,8 +23,8 @@
 
 	@media (max-width: 800px) {
 		button {
-		padding: 0.5em 0.5rem;
-	}
+			padding: 0.5em 0.5rem;
+		}
 	}
 
 	button:hover {
