@@ -165,7 +165,6 @@
 		width: 1rem;
 		height: 1rem;
 	}
-
 	@media (max-width: 840px) {
 		.row {
 			font-size: small;
@@ -176,7 +175,7 @@
 		.wrapper-right {
 			width: 100vw;
 		}
-		.wrapper-left{
+		.wrapper-left {
 			display: none;
 		}
 	}

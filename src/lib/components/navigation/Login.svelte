@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { userToken } from '$lib/stores';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
@@ -12,8 +11,6 @@
 
 	let username = '';
 	let password = '';
-
-	let usernameInput: HTMLInputElement;
 
 	const login = async (e: Event) => {
 		e.preventDefault();
@@ -201,7 +198,7 @@
 		.wrapper-left {
 			width: 100vw;
 		}
-		.wrapper-right{
+		.wrapper-right {
 			display: none;
 		}
 	}
