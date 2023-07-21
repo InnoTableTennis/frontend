@@ -11,9 +11,8 @@
 
 <style>
 	div.errors-container {
-		position: absolute;
+		position: fixed;
 		bottom: 2em;
-		/* width: 20em; */
 		display: flex;
 		flex-direction: column-reverse;
 		gap: 0.5rem;

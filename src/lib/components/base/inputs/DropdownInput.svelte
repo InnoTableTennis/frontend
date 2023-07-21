@@ -21,7 +21,8 @@
 	let isVisible = false;
 	let selectedIndex = -1;
 	let unorderedList: HTMLUListElement;
-	let inputVal = '';
+
+	export let inputVal = '';
 
 	let input: HTMLInputElement;
 
@@ -147,7 +148,7 @@
 	ul {
 		position: absolute;
 		width: 100%;
-		background-color: var(--main-color);
+		background-color: var(--secondary-bg-color);
 		list-style-type: none;
 		margin: 0;
 		padding: 0;
@@ -166,7 +167,7 @@
 		background-color: var(--not-chosen-font-color);
 	}
 	li:focus {
-		background-color: #728cd4;
+		background-color: var(--secondary-color);
 	}
 	div,
 	input {
@@ -180,12 +181,17 @@
 
 	input {
 		box-sizing: border-box;
-		border: 1px solid var(--secondary-color);
-		padding: 0.8em 1em;
-		border-radius: 10px;
-		transition: 0.1s;
+		border: none;
+		border-bottom: 5px solid var(--secondary-bg-color);
+		padding: 0.5em 0;
+		color: var(--not-chosen-font-color);
+		background-color: var(--main-color);
+		font-size: var(--fontsize-medium1);
+		transition: 0.2s linear;
 	}
 	input:focus {
-		outline: solid var(--secondary-color);
+		outline: none;
+		color: var(--content-color);
+		border-bottom: 5px solid var(--secondary-color);
 	}
 </style>

@@ -12,9 +12,10 @@
 
 <style>
 	main {
-		max-width: 1440px;
 		align-items: center;
+		max-width: 1440px;
 		margin: 0 auto;
+		padding: 0 2em;
 	}
 	header {
 		height: 4em;

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-	import ToggleTheme from '../ToggleTheme.svelte';
+
+	import { isLeader } from '$lib/stores';
+	import ToggleTheme from '$lib/components/ToggleTheme.svelte'
 </script>
 
 <nav>
@@ -11,8 +13,12 @@
 		<div class="line line3" />
 	</div>
 	<div class="nav-container">
+
 		<ToggleTheme />
 		<ul class="nav-links">
+			{#if $isLeader}
+			<li><a href="/admin">Admin panel</a></li>
+			{/if}
 			<li><a href="/bracket">Bracket</a></li>
 			<li><a href="/">Matches</a></li>
 			<li><a href="/tournaments">Tournaments</a></li>
@@ -47,13 +53,17 @@
 		display: flex;
 	}
 	.nav-links li {
+		white-space: nowrap;
 		text-decoration: none;
-		margin-left: 1em;
-		margin-right: 1em;
+		margin-left: 1.5em;
+		margin-right: 1.5em;
 		height: 100%;
-		width: 100%;
 		line-height: 4em;
 	}
+	/* .nav-links li:first-child {
+		margin-left: 0em;
+	} */
+
 	.nav-links li a {
 		text-decoration: none;
 		display: flex;
@@ -67,9 +77,19 @@
 		border-bottom: 2px solid var(--content-color);
 	}
 
-	/* .active {*/
-	/*	 border-bottom: 2px solid var(--content-color);*/
-	/*}*/
+	@media (min-width: 480px) and (max-width: 800px) {
+		.nav-links li {
+			text-decoration: none;
+			margin-left: 0.7rem;
+			margin-right: 0.7rem;
+			height: 100%;
+			line-height: 4em;
+		}
+		nav {
+		padding: 0 1rem;
+		}
+
+	}
 
 	@media (max-width: 480px) {
 		.hamburger-lines {
@@ -95,6 +115,7 @@
 			transform: rotate(-90deg);
 		}
 		input[type='checkbox'] {
+
 			position: fixed;
 			display: block;
 			border: none;
