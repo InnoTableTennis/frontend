@@ -2,7 +2,7 @@
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { SortFilterTournamentFormStore } from '$lib/formStores';
-	import type { Tournaments } from '$lib/types/types';
+	import type { Tournament } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
@@ -13,7 +13,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let isLeader = false;
-	let tournaments: Tournaments[] = [];
+	let tournaments: Tournament[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;
@@ -26,7 +26,7 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData: Tournaments;
+	export let editData: Tournament;
 	export let mode: string;
 
 	async function requestNewPage() {

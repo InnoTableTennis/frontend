@@ -10,10 +10,10 @@
 	import SortFilterMatchForm from '$lib/components/forms/SortFilterMatchForm.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
-	import type { Matches } from '$lib/types/types';
+	import type { Match } from '$lib/types/types';
 
 	let handleInsert: () => void;
-	let editData: Matches = {} as Matches;
+	let editData: Match = {} as Match;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'add';
@@ -90,7 +90,6 @@
 		<MatchesList
 			on:error={handleError}
 			bind:handleInsert
-			{isLeader}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

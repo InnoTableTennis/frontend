@@ -7,16 +7,16 @@
 	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { Matches, Players, Tournaments } from '$lib/types/types';
+	import type { Match, Player, Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
-	export let players: Players[];
-	export let tournaments: Tournaments[];
+	export let players: Player[];
+	export let tournaments: Tournament[];
 
-	export let match: Matches;
+	export let match: Match;
 
 	export let chosenId = -1;
 	let selectedDate = '';
@@ -86,7 +86,7 @@
 					dispatch('error', error);
 				});
 		}
-		match = {} as Matches;
+		match = {} as Match;
 		chosenId = -1;
 	};
 

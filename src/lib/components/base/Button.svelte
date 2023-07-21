@@ -21,6 +21,12 @@
 		height: 100%;
 	}
 
+	@media (max-width: 800px) {
+		button {
+		padding: 0.5em 0.5rem;
+	}
+	}
+
 	button:hover {
 		box-shadow: 0px 4px 4px 2px var(--not-chosen-font-color);
 		cursor: pointer;

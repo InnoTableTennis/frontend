@@ -7,7 +7,7 @@
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
-	import type { Players } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 
 	let isMenuVisible = false;
 
@@ -22,7 +22,7 @@
 	const dispatch = createEventDispatcher();
 
 	const requestUserinfo = async () => {
-		let players: Players[] = [];
+		let players: Player[] = [];
 		await db
 			.getPlayers()
 			.then((result) => {
@@ -34,9 +34,9 @@
 		return players.find((user) => user.telegramAlias == getUsername($userToken));
 	};
 
-	let playerInfo: Players | null = null;
+	let playerInfo: Player | null = null;
 	requestUserinfo().then((response) => {
-		playerInfo = response as Players;
+		playerInfo = response as Player;
 	});
 </script>
 
@@ -84,11 +84,12 @@
 		display: flex;
 		gap: 1.5em;
 		height: 3rem;
+		height: 100%;
 		align-items: center;
+		white-space: nowrap;
 	}
 	.sign-in {
-		margin-left: 1em;
-		margin-right: 1em;
+		width: 7rem;
 		height: 100%;
 		width: 7rem;
 	}
@@ -231,15 +232,12 @@
 			border-bottom: 2px solid var(--content-color);
 		}
 	}
-	@media (max-width: 800px) {
+	@media (max-width: 800px) and (min-width: 480px) {
 		.profile-container {
-			gap: 0.5em;
+			gap: 0.5rem;
 		}
 		.sign-in {
 			margin-top: 0.078125rem;
-		}
-		.profile-menu-container {
-			transform: translate(-90%, -1%);
 		}
 	}
 	@media (max-width: 480px) {

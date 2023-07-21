@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { SortFilterPlayerFormStore } from '$lib/formStores';
-	import type { Players } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -11,7 +11,7 @@
 	import { alertPopup } from '$lib/popupHandler';
 
 	export let isLeader = false;
-	let players: Players[] = [];
+	let players: Player[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;
@@ -19,7 +19,7 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let editData: Players;
+	export let editData: Player;
 	export let mode: string;
 
 	export const handleInsert = () => {
@@ -60,10 +60,6 @@
 		requestNewPage();
 	}
 
-	// onMount(() => {
-	// 	requestNewPage();
-	// });
-
 	function getAlias(alias: string) {
 		if (alias) {
 			return '@' + alias;
@@ -80,8 +76,6 @@
 		requestNewPage();
 	}
 </script>
-
-<!-- {@debug matches} -->
 
 {#await requestNewPage() then}
 	{#if players.length}

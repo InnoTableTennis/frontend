@@ -5,7 +5,7 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
-import type { Players, Matches, Tournaments } from '$lib/types/types';
+import type { Player, Match, Tournament } from '$lib/types/types';
 
 /**
  * This file contains functions for making API requests.
@@ -17,9 +17,8 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverAPI: string = dev ? 'http://10.90.138.217:8080' : '';
-
-console.log(serverAPI);
+const serverAPI: string = dev ? 'http://10.90.138.217:8080/api' : '/api';
+const serverAUTH: string = dev ? 'http://10.90.138.217:8080/auth' : '/auth';
 
 /**
  * Retrieves matches from the API.
@@ -42,10 +41,10 @@ export async function getMatches(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: Matches[];
+	data: Match[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/api/matches';
+	let url: string = serverAPI + '/matches';
 	if (descending != null) {
 		url += '?descending=' + descending;
 		if (name) url += '&hasPlayerWith=' + name;
@@ -88,14 +87,14 @@ export async function createMatch(
 	secondPlayerScore: number,
 	tournamentTitle: string,
 	localDateString: string | null = null,
-): Promise<Matches> {
+): Promise<Match> {
 	if (localDateString !== null) {
 		localDateString = new Date(localDateString).toLocaleDateString('ru');
 	} else {
 		localDateString = new Date().toLocaleDateString('ru');
 	}
 
-	const response: Response = await fetch(serverAPI + '/api/matches', {
+	const response: Response = await fetch(serverAPI + '/matches', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -157,7 +156,7 @@ export async function editMatch(
  * @param matchID - The ID of the match.
  */
 export async function deleteMatch(matchID: string): Promise<void> {
-	const response: Response = await fetch(serverAPI + '/api/matches/' + matchID, {
+	const response: Response = await fetch(serverAPI + '/matches/' + matchID, {
 		method: 'DELETE',
 		headers: {
 			Authorization: 'Bearer ' + token,
@@ -189,10 +188,10 @@ export async function getPlayers(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: Players[];
+	data: Player[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/api/players';
+	let url: string = serverAPI + '/players';
 	if (sortBy) {
 		url += '?sortBy=' + sortBy;
 		if (descending != null) url += '&descending=' + descending;
@@ -230,7 +229,7 @@ export async function createPlayer(
 	name: string,
 	telegramAlias: string | null = null,
 	rating: number | null = null,
-): Promise<Players> {
+): Promise<Player> {
 	name = name.trim();
 
 	if (telegramAlias !== null) {
@@ -255,7 +254,7 @@ export async function createPlayer(
 
 	name = titleCase(name);
 
-	const response: Response = await fetch(serverAPI + '/api/players', {
+	const response: Response = await fetch(serverAPI + '/players', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -333,7 +332,7 @@ export async function editPlayer(
  * @param playerID - The ID of the player.
  */
 export async function deletePlayer(playerID: string): Promise<void> {
-	const response: Response = await fetch(serverAPI + '/api/players/' + playerID, {
+	const response: Response = await fetch(serverAPI + '/players/' + playerID, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -359,7 +358,7 @@ export async function authenticate(username: string, password: string): Promise<
 		}
 	}
 
-	const response: Response = await fetch(serverAPI + '/auth/authenticate', {
+	const response: Response = await fetch(serverAUTH + '/authenticate', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -404,10 +403,10 @@ export async function getTournaments(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: Tournaments[];
+	data: Tournament[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/api/tournaments';
+	let url: string = serverAPI + '/tournaments';
 	if (sortBy) {
 		url += '?sortBy=' + sortBy;
 		if (descending != null) url += '&descending=' + descending;
@@ -446,11 +445,11 @@ export async function createTournament(
 	title: string,
 	startDateString: string,
 	endDateString: string,
-): Promise<Tournaments> {
+): Promise<Tournament> {
 	startDateString = new Date(startDateString).toLocaleDateString('ru');
 	endDateString = new Date(endDateString).toLocaleDateString('ru');
 
-	const response: Response = await fetch(serverAPI + '/api/tournaments', {
+	const response: Response = await fetch(serverAPI + '/tournaments', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -500,7 +499,7 @@ export async function editTournament(
  * @param tournamentID - The ID of the tournament.
  */
 export async function deleteTournament(tournamentID: string): Promise<void> {
-	const response: Response = await fetch(serverAPI + '/api/tournaments/' + tournamentID, {
+	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID, {
 		method: 'DELETE',
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -515,7 +514,7 @@ export async function deleteTournament(tournamentID: string): Promise<void> {
  * @param tournamentID - The ID of the tournament.
  */
 export async function finishTournament(tournamentID: string): Promise<void> {
-	const response: Response = await fetch(serverAPI + '/api/tournaments/' + tournamentID, {
+	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID, {
 		method: 'PATCH',
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -529,7 +528,7 @@ export async function getStatistics(
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
-	data: Tournaments[];
+	data: Tournament[];
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/api/tournaments';
@@ -550,4 +549,99 @@ export async function getStatistics(
 
 	const data = await response.json();
 	return { data, totalPages };
+}
+
+
+/**
+ * Retrieves leaders list from the API.
+ * @returns The leaders data.
+ */
+export async function getLeaders(): Promise<{
+	data: Player[];
+}> {
+	const url: string = serverAPI + '/leaders';
+	
+	const response: Response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	const data = await response.json();
+
+	return { data };
+}
+
+/**
+ * Promotes player to leaders through their telegram alias.
+ * @param telegramAlias - The Telegram alias of the player.
+ * @returns Data of the promoted leader.
+ */
+export async function promoteLeader(
+	telegramAlias: string,
+): Promise<Player> {
+	
+	if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);	
+
+	const response: Response = await fetch(serverAPI + '/leaders', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			telegramAlias,
+		}),
+	});
+
+	await handleModifyErrors(response, token);
+
+	const data = await response.json();	
+
+	return data;
+}
+
+/**
+ * Demote leader to .
+ * @param leaderId - The ID of the leader.
+ */
+export async function demoteLeader(leaderId: string): Promise<void> {
+	const response: Response = await fetch(serverAPI + '/leaders/' + leaderId, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleModifyErrors(response, token);
+}
+
+
+/**
+ * Broadcasts message to all other players via telegram bot.
+ * @param message - message to broadcast.
+ */
+export async function broadcastMessage(
+	message: string,
+): Promise<void> {
+	
+	// TODO: get the api link
+	console.log('Broadcasting...', message);
+	
+	// const response: Response = await fetch(serverAPI + '/leaders', {
+	// 	method: 'POST',
+	// 	headers: {
+	// 		Accept: 'application/json',
+	// 		'Content-Type': 'application/json',
+	// 		Authorization: 'Bearer ' + token,
+	// 	},
+	// 	body: JSON.stringify({
+	// 		message,
+	// 	}),
+	// });
+
+	// await handleModifyErrors(response, token);
 }

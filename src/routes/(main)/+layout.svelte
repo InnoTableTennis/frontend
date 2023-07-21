@@ -1,6 +1,5 @@
 <script lang="ts">
 	import NavBar from '$lib/components/navigation/NavBar.svelte';
-	import { userToken } from '$lib/stores';
 </script>
 
 <header>
@@ -8,11 +7,7 @@
 </header>
 
 <main>
-	{#if $userToken}
-		<slot />
-	{:else}
-		<p class="details">Oops! That page doesn't exist or it is private</p>
-	{/if}
+	<slot />
 </main>
 
 <style>

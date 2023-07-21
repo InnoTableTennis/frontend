@@ -1,23 +1,23 @@
 <script lang="ts">
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import type { Matches } from '$lib/types/types';
+	import type { Match } from '$lib/types/types';
 
 	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
+	import { isLeader } from '$lib/stores';
 	import { SortFilterMatchFormStore } from '$lib/formStores';
 	import { alertPopup } from '$lib/popupHandler';
 
 	const dispatch = createEventDispatcher();
 
-	export let isLeader = false;
 	export let chosenId = -1;
 	export let isChoosing = false;
 	export let mode: string;
-	export let editData: Matches;
+	export let editData: Match;
 
-	let matches: Matches[] = [];
+	let matches: Match[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;
@@ -75,7 +75,7 @@
 		<Pagination {lastPageNumber} on:request={handleRequest}>
 			<div class="scroll">
 				<section class="games-list">
-					<div class="table-header" class:not-leader={!isLeader}>
+					<div class="table-header" class:not-leader={!$isLeader}>
 						<span>First Player</span>
 						<span>Second Player</span>
 						<span>Score</span>

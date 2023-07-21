@@ -2,7 +2,7 @@
 	import AddPlayerForm from '$lib/components/forms/AddPlayerForm.svelte';
 	import PlayersList from '$lib/components/PlayersList.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
-	import type { Players } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import { handleError } from '$lib/errorHandler';
@@ -11,7 +11,7 @@
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
 
 	let handleInsert: () => void;
-	let editData: Players = {} as Players;
+	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'add';
