@@ -29,7 +29,7 @@
 	onMount(() => {
 		if (isFirst) input.focus();
 	});
-
+	
 	$: isEmpty = stringVal == '' ? true : false;
 </script>
 

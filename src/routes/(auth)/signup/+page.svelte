@@ -138,6 +138,7 @@
 		width: 100%;
 		height: 100%;
 		align-content: center;
+		justify-content: center;
 	}
 	.backgroundImage {
 		height: 100vh;
@@ -145,7 +146,7 @@
 	}
 	.back-btn {
 		position: absolute;
-		left: 85%;
+		right: 5%;
 		top: 3%;
 		color: var(--secondary-color);
 		font-size: 1.5em;
@@ -165,12 +166,18 @@
 		height: 1rem;
 	}
 
-	@media (max-width: 850px) {
+	@media (max-width: 840px) {
 		.row {
 			font-size: small;
 		}
 		p {
 			font-size: small;
+		}
+		.wrapper-right {
+			width: 100vw;
+		}
+		.wrapper-left{
+			display: none;
 		}
 	}
 
