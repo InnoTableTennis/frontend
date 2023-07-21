@@ -37,8 +37,7 @@
 		white-space: nowrap;
 	}
 	.sign-in {
-		margin-left: 1rem;
-		margin-right: 1rem;
+		width: 7rem;
 		height: 100%;
 		width: 7rem;
 	}
@@ -46,6 +45,7 @@
 		width: 100%;
 	}
 	.log-out {
+		width: 7rem;
 		margin-left: 1rem;
 	}
 	.profile-container a {
@@ -62,7 +62,7 @@
 			border-bottom: 2px solid var(--content-color);
 		}
 	}
-	@media (max-width: 800px) {
+	@media (max-width: 800px) and (min-width: 480px) {
 		.profile-container {
 			gap: 0.5rem;
 		}
@@ -76,9 +76,7 @@
 		height: 100%;
 		width: 5rem;
 	}
-	/* .sign-up {
-		width: 4rem;
-	} */
+
 	}
 	@media (max-width: 480px) {
 		.profile-container {
@@ -91,5 +89,9 @@
 		.sign-up {
 			height: 3rem;
 		}
+		.log-out {
+			height: 3rem;
+		margin-left: 0rem;
+	}
 	}
 </style>

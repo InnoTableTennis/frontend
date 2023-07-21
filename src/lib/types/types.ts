@@ -9,7 +9,7 @@ export interface DecodedJWT {
 	sub: string;
 }
 
-export interface Players {
+export interface Player {
 	id: number;
 	name: string;
 	numberOfGames: number;
@@ -20,7 +20,7 @@ export interface Players {
 	winRate: number;
 }
 
-export interface Matches {
+export interface Match {
 	firstPlayerScore: number;
 	secondPlayerScore: number;
 	firstPlayerName: string;
@@ -34,7 +34,7 @@ export interface Matches {
 	tournamentTitle: string;
 }
 
-export interface Tournaments {
+export interface Tournament {
 	coefficient: number;
 	endDateString: string;
 	finished: boolean;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import type { Players } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -10,7 +10,7 @@
 	import * as db from '$lib/requests';
 
 	export let isLeader = false;
-	let players: Players[] = [];
+	let players: Player[] = [];
 
 	let lastPageNumber: number;
 	let currentPageNumber = 1;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
+	import { isLeader } from '$lib/stores';
 </script>
 
 <nav>
@@ -11,7 +12,9 @@
 	</div>
 	<div class="nav-container">
 		<ul class="nav-links">
+			{#if $isLeader}
 			<li><a href="/admin">Admin panel</a></li>
+			{/if}
 			<li><a href="/">Matches</a></li>
 			<li><a href="/tournaments">Tournaments</a></li>
 			<li><a href="/players">Players</a></li>
@@ -69,7 +72,7 @@
 		border-bottom: 2px solid var(--content-color);
 	}
 
-	@media (max-width: 800px) {
+	@media (min-width: 480px) and (max-width: 800px) {
 		.nav-links li {
 			text-decoration: none;
 			margin-left: 0.7rem;

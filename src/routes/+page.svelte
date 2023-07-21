@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
+	import { isLeader } from '$lib/stores';
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/AddMatchForm.svelte';
@@ -9,8 +8,6 @@
 	import { handleError } from '$lib/errorHandler';
 
 	let handleInsert: () => void;
-
-	$: isLeader = getRoles($userToken).includes('LEADER');
 
 	async function getFormData() {
 		const playersPromise = db.getPlayers(1, 1000000);
@@ -24,7 +21,7 @@
 	}
 </script>
 
-{#if isLeader}
+{#if $isLeader}
 	{#await getFormData() then resp}
 		<AddMatchForm
 			players={resp.players}
@@ -37,4 +34,4 @@
 	{/await}
 {/if}
 
-<MatchesList on:error={handleError} {isLeader} bind:handleInsert />
+<MatchesList on:error={handleError} bind:handleInsert />

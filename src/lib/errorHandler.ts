@@ -65,8 +65,13 @@ function checkExpiration(response: Response, token: string): void {
 	}
 }
 
-export function handleError(event: CustomEvent) {
-	errors.update((errors) => [...errors, event.detail]);
+export function handleError(event: CustomEvent | Error) {
+	if (event instanceof Error) {
+		errors.update((errors) => [...errors, event]);
+	} else if (event instanceof CustomEvent) {
+		errors.update((errors) => [...errors, event.detail]);
+	}
+	
 	setTimeout(() => {
 		errors.update((errors) => errors.slice(0, errors.length - 1));
 	}, 5000);

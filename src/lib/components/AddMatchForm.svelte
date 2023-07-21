@@ -8,12 +8,12 @@
 	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
-	import type { Players, Tournaments } from '$lib/types/types';
+	import type { Player, Tournament } from '$lib/types/types';
 
 	const dispatch = createEventDispatcher();
 
-	export let players: Players[];
-	export let tournaments: Tournaments[];
+	export let players: Player[];
+	export let tournaments: Tournament[];
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
