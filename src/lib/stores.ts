@@ -1,6 +1,6 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import type { Error } from './types/types';
+import type { Error } from '$lib/types/types';
 import { browser } from '$app/environment';
 
 /**

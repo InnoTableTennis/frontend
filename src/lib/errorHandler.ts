@@ -1,6 +1,5 @@
 import { getExpirationDate, getRoles } from '$lib/token';
 import { errors, userToken } from '$lib/stores';
-import type { Error } from './types/types';
 
 /**
  * This file contains error handling functions for handling API response errors.
@@ -66,7 +65,40 @@ function checkExpiration(response: Response, token: string): void {
 }
 
 export function handleError(event: CustomEvent) {
-	console.log('hi');
+	if (event.detail.status === 422) {
+		if (
+			event.detail.message ===
+			'Validation failed. Constraints: Score is not specified in format x:x'
+		) {
+			event.detail.message =
+				'Score is not specified in format number:number. Please rewrite score format!';
+		} else if (
+			event.detail.message ===
+			'Validation failed. Constraints: The match date must be within the tournament`s start and end dates'
+		) {
+			event.detail.message = 'The match date must be within the tournament`s start and end dates';
+		} else if (
+			event.detail.message ===
+			'Validation failed. Constraints: No tournament with such title was found or it is finished'
+		) {
+			event.detail.message = 'No tournament with such title was found or it is finished';
+		} else if (
+			event.detail.message ===
+			'Validation failed. Constraints: Scores of match players must be different'
+		) {
+			event.detail.message = 'Scores of match players must be different';
+		} else if (
+			event.detail.message ===
+			'Validation failed. Constraints: Players` names in match must be different'
+		) {
+			event.detail.message = 'Players` names in match must be different';
+		} else if (
+			event.detail.message ===
+			'Validation failed. The following errors occurred: Date must be in format dd.MM.yyyy'
+		) {
+			event.detail.message = 'Date must be in format dd.mm.yyyy';
+		}
+	}
 	errors.update((errors) => [...errors, event.detail]);
 	console.log('Im there');
 	setTimeout(() => {

@@ -2,13 +2,16 @@
 	// import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
+	import { AddMatchFormStore } from '$lib/formStores';
 
 	import * as db from '$lib/requests';
 	import { convertDateToStringDash } from '$lib/helper';
-	import DropdownInput from '$lib/components/base/DropdownInput.svelte';
+	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import type { Players, Tournaments } from '$lib/types/types';
+	import ResetButton from '$lib/components/base/ResetButton.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -28,19 +31,19 @@
 		}
 	}
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
+	let firstPlayerName = $AddMatchFormStore.firstPlayerName;
+	let secondPlayerName = $AddMatchFormStore.secondPlayerName;
+	let tournamentTitle = $AddMatchFormStore.tournamentTitle;
+	let firstPlayerScore = $AddMatchFormStore.firstPlayerScore;
+	let secondPlayerScore = $AddMatchFormStore.secondPlayerScore;
+
 	let isSubmissionDisabled = true;
 
 	$: {
 		isSubmissionDisabled = !(
 			firstPlayerName &&
 			secondPlayerName &&
-			firstPlayerScore !== null &&
-			secondPlayerScore !== null &&
+			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
 			tournamentTitle !== null
 		);
 	}
@@ -76,25 +79,42 @@
 		}
 	};
 
-	let dropdownResets = new Array(2);
+	const saveForm = function () {
+		$AddMatchFormStore = {
+			firstPlayerName: firstPlayerName,
+			secondPlayerName: secondPlayerName,
+			tournamentTitle: tournamentTitle,
+			firstPlayerScore: firstPlayerScore,
+			secondPlayerScore: secondPlayerScore,
+		};
+	};
+
+	let inputResets = new Array(2);
 
 	function resetForm() {
+		firstPlayerName = '';
+		secondPlayerName = '';
+		tournamentTitle = '';
 		firstPlayerScore = 0;
 		secondPlayerScore = 0;
-		dropdownResets.forEach((reset) => {
+		inputResets.forEach((reset) => {
 			reset();
 		});
+		saveForm();
 	}
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
+		saveForm();
 	}
 	function handleSelectSecondPlayerName(event: CustomEvent) {
 		secondPlayerName = event.detail;
+		saveForm();
 	}
 	function handleSelectTournament(event: CustomEvent) {
 		tournamentTitle = event.detail;
 		changeDateByTournamentTitle(tournamentTitle);
+		saveForm();
 	}
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
@@ -109,83 +129,83 @@
 	}
 </script>
 
-<h2>Add Match</h2>
+<div class="header-line">
+	<h2>Add Match</h2>
+	<ResetButton onClick={resetForm} label="Reset" />
+</div>
 
-<form on:submit={addMatch}>
-	<div class="line-2-elems">
+<form on:submit={addMatch} on:change={saveForm}>
+	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">First Player Name</span>
 			<DropdownInput
 				name="firstPlayerName"
-				placeholder="First Player"
+				placeholder="First player"
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				isFirstInput={true}
-				bind:reset={dropdownResets[0]}
+				defaultValue={firstPlayerName}
+				bind:reset={inputResets[0]}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">Second Player Name</span>
 			<DropdownInput
 				name="secondPlayerName"
-				placeholder="Second Player"
+				placeholder="Second player"
 				options={playerNames}
+				defaultValue={secondPlayerName}
 				on:select={handleSelectSecondPlayerName}
-				bind:reset={dropdownResets[1]}
+				bind:reset={inputResets[1]}
 			/>
 		</label>
 	</div>
-	<div class="line-4-elems">
-		<label>
-			<span class="form-label">First Player Score</span>
-			<input
-				type="number"
-				min="0"
-				max="10"
-				name="firstPlayerScore"
-				bind:value={firstPlayerScore}
-				required
-				class="text-center full-width"
-				placeholder="0"
-			/>
-		</label>
-		<label>
-			<span class="form-label">Second Player Score</span>
-			<input
-				type="number"
-				min="0"
-				max="10"
-				name="secondPlayerScore"
-				bind:value={secondPlayerScore}
-				class="text-center full-width"
-				required
-				placeholder="0"
-			/>
-		</label>
-		<label>
-			<span class="form-label">Date</span>
-			<input
-				type="date"
-				name="localDateString"
-				bind:value={localDateString}
-				class="text-center full-width"
-			/>
-		</label>
+	<div class="line-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-			<span class="form-label">Tournament</span>
+			<InputTemplate
+				type="number"
+				name="firstPlayerScore"
+				placeholder="First score"
+				bind:numberVal={firstPlayerScore}
+			/>
+		</label>
+
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label>
+			<InputTemplate
+				type="number"
+				name="secondPlayerScore"
+				placeholder="Second score"
+				bind:numberVal={secondPlayerScore}
+			/>
+		</label>
+	</div>
+	<div class="column-2-elems">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label>
+			<InputTemplate
+				type="date"
+				name="localDateString"
+				placeholder="Date"
+				defaultValue={localDateString}
+				bind:stringVal={localDateString}
+			/>
+		</label>
+
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+
+		<label>
 			<DropdownInput
 				name="tournamentTitle"
 				placeholder="Tournament"
-				defaultValue={latestTournamentTitle}
+				defaultValue={tournamentTitle}
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
 			/>
 		</label>
 	</div>
-	<div class="line-4-elems">
+	<div class="line-2-elems">
 		<div class="last-box full-width">
 			<Button dark={false} disabled={isSubmissionDisabled} type={'submit'}>Add match</Button>
 		</div>
@@ -194,65 +214,44 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;
-		font-size: var(--fontsize-medium1);
-		margin: 1.5em 0;
+		font-size: var(--fontsize-large);
+		margin: 0.9em 0;
 		font-weight: var(--fontweight-1);
 		color: var(--title-color);
 	}
 
 	form {
 		max-width: 800px;
-		margin: 0 auto 3em;
-		font-size: var(--fontsize-medium2);
+		font-size: var(--fontsize-medium1);
 	}
-	.line-2-elems {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
-		align-items: end;
-	}
-	.line-4-elems {
+	.column-2-elems {
 		margin-top: 1rem;
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 1.25rem;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 1rem;
 		align-items: end;
 	}
-	.text-center {
-		text-align: center;
+	.line-2-elems {
+		margin-top: 1rem;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1rem;
+		align-items: end;
+	}
+	.header-line {
+		display: flex;
 	}
 
-	input {
-		box-sizing: border-box;
-		border: 1px solid var(--secondary-color);
-		padding: 0.8em 1em;
-		border-radius: 10px;
-		transition: 0.1s;
-	}
-	input:focus {
-		outline: solid var(--secondary-color);
-	}
-	input:disabled {
-		background-color: var(--not-chosen-font-color);
-		color: var(--secondary-bg-color);
-		box-shadow: none;
-		cursor: default;
-	}
 	.last-box {
-		grid-column: 4;
+		grid-column: 2;
 		margin-top: 1.5em;
 	}
 	.full-width {
 		width: 100%;
 	}
-	.form-label {
-		display: inline-block;
-		margin-bottom: 0.25em;
-	}
 
 	@media (max-width: 800px) {
-		.line-4-elems {
+		.line-2-elems {
 			grid-template-columns: repeat(2, 1fr);
 		}
 		.last-box {

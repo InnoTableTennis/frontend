@@ -11,9 +11,10 @@
 		border-radius: 10px;
 		outline: none;
 		border: 0;
-		padding: 0.8em 1em;
+		padding: 0.62em 1em;
 		background-color: var(--secondary-color);
 		color: var(--main-color);
+		font-size: var(--fontsize-medium1);
 		font-weight: var(--fontweight-2);
 		transition: box-shadow 0.1s;
 		width: 100%;
