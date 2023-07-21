@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { isLeader } from '$lib/stores';
+	import { userToken } from '$lib/stores';
+	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';
@@ -12,11 +13,11 @@
 	import type { Match } from '$lib/types/types';
 
 	let handleInsert: () => void;
-
 	let editData: Match = {} as Match;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'add';
+	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 
 	async function getFormData() {
@@ -30,7 +31,7 @@
 	}
 </script>
 
-{#if $isLeader}
+{#if isLeader}
 	<div class="edit-mode">
 		<ToggleCheckboxButton
 			bind:checked={isEditing}
@@ -97,4 +98,35 @@
 	</div>
 </div>
 
-<MatchesList on:error={handleError} bind:handleInsert />
+<style>
+	.form-list-layout {
+		display: grid;
+		grid-auto-flow: column;
+		align-items: center;
+		grid-template-columns: 1fr 2fr;
+	}
+	.form {
+		max-width: 350px;
+		margin-right: 2rem;
+	}
+	.edit-mode {
+		text-align: right;
+		margin-top: 2rem;
+	}
+	.matches-list {
+		max-width: 900px;
+	}
+
+	@media (max-width: 1100px) {
+		.form {
+			max-width: 500px;
+			margin: 0 auto;
+		}
+		.form-list-layout {
+			display: block;
+		}
+		.matches-list {
+			margin: 0 auto;
+		}
+	}
+</style>

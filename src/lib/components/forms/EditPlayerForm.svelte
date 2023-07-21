@@ -6,14 +6,14 @@
 	const dispatch = createEventDispatcher();
 
 	import * as db from '$lib/requests';
-	import type { Players } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { countNameWords } from '$lib/helper';
 	import { alertPopup } from '$lib/popupHandler';
 
 	let name = '';
 
-	export let player: Players;
+	export let player: Player;
 	export let chosenId = -1;
 
 	let isSubmissionDisabled = true;
@@ -39,7 +39,7 @@
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		player = {} as Players;
+		player = {} as Player;
 		chosenId = -1;
 	};
 </script>

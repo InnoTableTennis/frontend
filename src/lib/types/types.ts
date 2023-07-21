@@ -1,5 +1,6 @@
 export interface Error {
 	message: string;
+	status: number;
 }
 
 export interface DecodedJWT {

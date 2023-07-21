@@ -9,14 +9,14 @@
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	import { createEventDispatcher } from 'svelte';
-	import type { Players, Tournaments } from '$lib/types/types';
+	import type { Player, Tournament } from '$lib/types/types';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
-	export let players: Players[];
-	export let tournaments: Tournaments[];
+	export let players: Player[];
+	export let tournaments: Tournament[];
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';

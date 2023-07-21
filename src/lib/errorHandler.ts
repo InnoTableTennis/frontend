@@ -1,5 +1,6 @@
 import { getExpirationDate, getRoles } from '$lib/token';
 import { errors, userToken } from '$lib/stores';
+import type {Error} from '$lib/types/types'
 
 /**
  * This file contains error handling functions for handling API response errors.
@@ -65,9 +66,9 @@ function checkExpiration(response: Response, token: string): void {
 }
 
 export function handleError(event: CustomEvent | Error) {
-	let error : Error | null = null;
+	let error = {} as Error;
 	if (event instanceof Error) {
-		error = event
+		error = event as Error
 	} else if (event instanceof CustomEvent) {
 		error = event.detail
 	}

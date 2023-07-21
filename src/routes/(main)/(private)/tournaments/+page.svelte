@@ -10,12 +10,12 @@
 
 	import { userToken } from '$lib/stores';
 	import { handleError } from '$lib/errorHandler';
-	import type { Tournaments } from '$lib/types/types';
+	import type { Tournament } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditTornamentForm from '$lib/components/forms/EditTornamentForm.svelte';
 
 	let handleInsert: () => void;
-	let editData: Tournaments = {} as Tournaments;
+	let editData: Tournament = {} as Tournament;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = '';
