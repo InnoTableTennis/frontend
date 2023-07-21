@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
+
 	import { isLeader } from '$lib/stores';
+	import ToggleTheme from '$lib/components/ToggleTheme.svelte'
 </script>
 
 <nav>
@@ -11,6 +13,8 @@
 		<div class="line line3" />
 	</div>
 	<div class="nav-container">
+
+		<ToggleTheme />
 		<ul class="nav-links">
 			{#if $isLeader}
 			<li><a href="/admin">Admin panel</a></li>
@@ -95,7 +99,7 @@
 			width: 2rem;
 			right: 1rem;
 			top: 1rem;
-			position: absolute;
+			position: fixed;
 			z-index: 2;
 			display: flex;
 			flex-direction: column;
@@ -113,7 +117,8 @@
 			transform: rotate(-90deg);
 		}
 		input[type='checkbox'] {
-			position: absolute;
+
+			position: fixed;
 			display: block;
 			border: none;
 			z-index: 3;

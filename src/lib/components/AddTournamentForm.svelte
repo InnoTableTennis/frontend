@@ -25,10 +25,8 @@
 	$: {
 		endDateString = startDateString;
 	}
-
 	const addTournament = async (e: Event) => {
 		const data = new FormData(e.target as HTMLFormElement);
-
 		db.createTournament(
 			data.get('title') as string,
 			data.get('startDateString') as string,

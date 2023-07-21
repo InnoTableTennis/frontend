@@ -356,6 +356,33 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
+export async function getStatistics(
+	pageNumber: number | null = null,
+	pageSize: number | null = null,
+): Promise<{
+	data: Tournament[];
+	totalPages: number;
+}> {
+	let url: string = serverAPI + '/api/tournaments';
+	if (pageNumber) {
+		url += '?page=' + pageNumber;
+		if (pageSize) url += '&size=' + pageSize;
+	}
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
+
+	const data = await response.json();
+	return { data, totalPages };
+}
+
 
 /**
  * Retrieves leaders list from the API.

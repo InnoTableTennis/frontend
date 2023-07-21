@@ -48,7 +48,7 @@
 	}
 	.not-main {
 		font-size: var(--fontsize-medium2);
-		color: var(--tertiary-color);
+		color: var(--not-chosen-font-color);
 	}
 	.main {
 		margin-top: 3em;

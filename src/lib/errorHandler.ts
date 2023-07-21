@@ -71,7 +71,6 @@ export function handleError(event: CustomEvent | Error) {
 	} else if (event instanceof CustomEvent) {
 		errors.update((errors) => [...errors, event.detail]);
 	}
-	
 	setTimeout(() => {
 		errors.update((errors) => errors.slice(0, errors.length - 1));
 	}, 5000);
