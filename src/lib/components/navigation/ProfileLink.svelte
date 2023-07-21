@@ -83,7 +83,6 @@
 	.profile-container {
 		display: flex;
 		gap: 1.5rem;
-		/* min-width: 10px; */
 		height: 100%;
 		align-items: center;
 		white-space: nowrap;
