@@ -22,11 +22,22 @@ const serverAUTH: string = dev ? 'http://10.90.138.217:8080/auth' : '/auth';
 
 /**
  * Retrieves matches from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param name - The string that player has in their name in match.
+ * @param score - The score of the match.
+ * @param startDateString - The start date of showed matches.
+ * @param endDateString - The end date of showed matches.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The matches data and total number of pages.
  */
 export async function getMatches(
+	descending: boolean | null = null,
+	name: string | null = null,
+	score: string | null = null,
+	minDateString: string | null = null,
+	maxDateString: string | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -34,8 +45,13 @@ export async function getMatches(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/matches';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	if (descending != null) {
+		url += '?descending=' + descending;
+		if (name) url += '&hasPlayerWith=' + name;
+		if (minDateString) url += '&startDate=' + minDateString;
+		if (maxDateString) url += '&endDate=' + maxDateString;
+		if (score) url += '&score=' + score;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 
@@ -101,6 +117,40 @@ export async function createMatch(
 	return data;
 }
 
+export async function editMatch(
+	id: string,
+	firstPlayerName: string,
+	secondPlayerName: string,
+	firstPlayerScore: number,
+	secondPlayerScore: number,
+	tournamentTitle: string,
+	localDateString: string | null = null,
+): Promise<void> {
+	if (localDateString !== null) {
+		localDateString = new Date(localDateString).toLocaleDateString('ru');
+	} else {
+		localDateString = new Date().toLocaleDateString('ru');
+	}
+
+	const response: Response = await fetch(serverAPI + '/api/matches/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			firstPlayerScore,
+			secondPlayerScore,
+			tournamentTitle,
+			firstPlayerName,
+			secondPlayerName,
+			localDateString,
+		}),
+	});
+	await handleModifyErrors(response, token);
+}
+
 /**
  * Deletes a match.
  * @param matchID - The ID of the match.
@@ -118,11 +168,23 @@ export async function deleteMatch(matchID: string): Promise<void> {
 
 /**
  * Retrieves players from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param name - The string that players has in their name.
+ * @param alias - The string that players has in their alias.
+ * @param minRating - The minimum rating of showed players.
+ * @param maxRating - The maximum rating of showed players.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The players data and total number of pages.
  */
 export async function getPlayers(
+	sortBy: 'name' | 'rating' = 'rating',
+	descending: boolean | null = null,
+	name: string | null = null,
+	alias: string | null = null,
+	minRating: number | null = null,
+	maxRating: number | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -130,8 +192,14 @@ export async function getPlayers(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/players';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	if (sortBy) {
+		url += '?sortBy=' + sortBy;
+		if (descending != null) url += '&descending=' + descending;
+		if (alias) url += '&aliasHas=' + alias;
+		if (name) url += '&nameHas=' + name;
+		if (minRating != null && !isNaN(minRating)) url += '&minRating=' + minRating;
+		if (maxRating != null && !isNaN(maxRating)) url += '&maxRating=' + maxRating;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 
@@ -207,6 +275,59 @@ export async function createPlayer(
 }
 
 /**
+ * Creates a new player.
+ * @param name - The name of the player.
+ * @param telegramAlias - The Telegram alias of the player.
+ * @param rating - The rating of the player.
+ */
+export async function editPlayer(
+	id: string,
+	name: string,
+	telegramAlias: string | null = null,
+	rating: number | null = null,
+): Promise<void> {
+	name = name.trim();
+
+	if (telegramAlias !== null) {
+		telegramAlias = telegramAlias.trim();
+		if (telegramAlias === '') telegramAlias = null;
+	}
+
+	if (telegramAlias !== null) {
+		if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);
+		if (!/^[A-Za-z0-9_]*$/.test(telegramAlias)) {
+			throw new Error('telegram alias must consist only of latin alphabet letters and digits! ');
+		}
+	}
+
+	if (!/^[A-Za-z ().]*$/.test(name)) {
+		throw new Error('name must consist only of latin alphabet letters!');
+	}
+
+	if (name.split(' ').length < 2) {
+		throw new Error('Name must consist of at least two parts!');
+	}
+
+	name = titleCase(name);
+
+	const response: Response = await fetch(serverAPI + '/api/players/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			name,
+			telegramAlias,
+			rating,
+		}),
+	});
+
+	await handleModifyErrors(response, token);
+}
+
+/**
  * Deletes a player.
  * @param playerID - The ID of the player.
  */
@@ -260,11 +381,25 @@ export async function authenticate(username: string, password: string): Promise<
 
 /**
  * Retrieves tournaments from the API.
+ * @param sortBy - The sorting type either by name or by rating.
+ * @param descending - The sorting order.
+ * @param title - The string that tournaments has in their title.
+ * @param minParticipants - The minimum number of players in tournament.
+ * @param maxParticipants - The maximum number of players in tournament.
+ * @param startDateString - The start date of showed tournaments.
+ * @param endDateString - The end date of showed tournaments.
  * @param pageNumber - The page number.
  * @param pageSize - The page size.
  * @returns The tournaments data and total number of pages.
  */
 export async function getTournaments(
+	sortBy: 'date' | 'kf' | 'players' = 'date',
+	descending: boolean | null = null,
+	title: string | null = null,
+	minParticipants: number | null = null,
+	maxParticipants: number | null = null,
+	startDateString: string | null = null,
+	endDateString: string | null = null,
 	pageNumber: number | null = null,
 	pageSize: number | null = null,
 ): Promise<{
@@ -272,8 +407,15 @@ export async function getTournaments(
 	totalPages: number;
 }> {
 	let url: string = serverAPI + '/tournaments';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
+	if (sortBy) {
+		url += '?sortBy=' + sortBy;
+		if (descending != null) url += '&descending=' + descending;
+		if (title) url += '&titleHas=' + title;
+		if (startDateString) url += '&minEndDate=' + startDateString;
+		if (endDateString) url += '&maxEndDate=' + endDateString;
+		if (minParticipants != null && !isNaN(minParticipants)) url += '&minPlayers=' + minParticipants;
+		if (maxParticipants != null && !isNaN(maxParticipants)) url += '&maxPlayers=' + maxParticipants;
+		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
 	}
 
@@ -288,6 +430,7 @@ export async function getTournaments(
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data = await response.json();
+
 	return { data, totalPages };
 }
 
@@ -324,6 +467,31 @@ export async function createTournament(
 
 	const data = await response.json();
 	return data;
+}
+
+export async function editTournament(
+	id: string,
+	title: string,
+	startDateString: string,
+	endDateString: string,
+): Promise<void> {
+	startDateString = new Date(startDateString).toLocaleDateString('ru');
+	endDateString = new Date(endDateString).toLocaleDateString('ru');
+
+	const response: Response = await fetch(serverAPI + '/api/tournaments/' + id, {
+		method: 'PUT',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			title,
+			startDateString,
+			endDateString,
+		}),
+	});
+	await handleModifyErrors(response, token);
 }
 
 /**

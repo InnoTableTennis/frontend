@@ -39,6 +39,7 @@ export interface Tournament {
 	endDateString: string;
 	finished: boolean;
 	id: number;
+	players: number;
 	startDateString: string;
 	title: string;
 }

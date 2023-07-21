@@ -1,6 +1,6 @@
 import type { Writable } from 'svelte/store';
 import { derived, writable } from 'svelte/store';
-import type { Error } from '$lib/types/types';
+import type { Error } from './types/types';
 import { browser } from '$app/environment';
 import { getRoles } from '$lib/token';
 
