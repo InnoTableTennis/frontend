@@ -88,9 +88,6 @@
 		padding: 0 1rem;
 		}
 
-		/* .nav-links li:first-child {
-			margin-left: 0rem;
-		} */
 	}
 
 	@media (max-width: 480px) {
