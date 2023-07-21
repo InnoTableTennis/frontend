@@ -620,20 +620,17 @@ export async function demoteLeader(leaderId: string): Promise<void> {
  * @param message - message to broadcast.
  */
 export async function broadcastMessage(message: string): Promise<void> {
-	// TODO: get the api link
-	console.log('Broadcasting...', message);
+	const response: Response = await fetch(serverAPI + '/telegram', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			message,
+		}),
+	});
 
-	// const response: Response = await fetch(serverAPI + '/leaders', {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		Accept: 'application/json',
-	// 		'Content-Type': 'application/json',
-	// 		Authorization: 'Bearer ' + token,
-	// 	},
-	// 	body: JSON.stringify({
-	// 		message,
-	// 	}),
-	// });
-
-	// await handleModifyErrors(response, token);
+	await handleModifyErrors(response, token);
 }

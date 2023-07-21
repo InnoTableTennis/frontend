@@ -23,8 +23,6 @@
 			.catch((error) => {
 				handleError(error);
 			});
-
-		requestLeadersList();
 	};
 
 	const promoteLeader = async (telegramAlias: string) => {
