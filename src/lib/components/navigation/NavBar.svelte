@@ -13,6 +13,7 @@
 	<div class="nav-container">
 		<ToggleTheme />
 		<ul class="nav-links">
+			<li><a href="/bracket">Bracket</a></li>
 			<li><a href="/">Matches</a></li>
 			<li><a href="/tournaments">Tournaments</a></li>
 			<li><a href="/players">Players</a></li>
