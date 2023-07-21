@@ -78,7 +78,7 @@
 						<div class="button-container">
 							<Button dark={true} type={'submit'}>Sign In</Button>
 						</div>
-						<a class="sp-link" href="/signup">I don`t have an account</a>
+						<a class="sp-link" href="/signup">I don't have an account</a>
 					</form>
 				</div>
 			</div>

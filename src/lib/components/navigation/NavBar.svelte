@@ -59,9 +59,9 @@
 		height: 100%;
 		line-height: 4em;
 	}
-	.nav-links li:first-child {
+	/* .nav-links li:first-child {
 		margin-left: 0em;
-	}
+	} */
 
 	.nav-links li a {
 		text-decoration: none;
@@ -88,9 +88,9 @@
 		padding: 0 1rem;
 		}
 
-		.nav-links li:first-child {
+		/* .nav-links li:first-child {
 			margin-left: 0rem;
-		}
+		} */
 	}
 
 	@media (max-width: 480px) {
