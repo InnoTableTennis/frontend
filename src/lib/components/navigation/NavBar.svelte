@@ -2,7 +2,7 @@
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
 
 	import { isLeader } from '$lib/stores';
-	import ToggleTheme from '$lib/components/ToggleTheme.svelte'
+	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
 </script>
 
 <nav>
@@ -13,11 +13,10 @@
 		<div class="line line3" />
 	</div>
 	<div class="nav-container">
-
 		<ToggleTheme />
 		<ul class="nav-links">
 			{#if $isLeader}
-			<li><a href="/admin">Admin panel</a></li>
+				<li><a href="/admin">Admin panel</a></li>
 			{/if}
 			<li><a href="/bracket">Bracket</a></li>
 			<li><a href="/">Matches</a></li>
@@ -86,9 +85,8 @@
 			line-height: 4em;
 		}
 		nav {
-		padding: 0 1rem;
+			padding: 0 1rem;
 		}
-
 	}
 
 	@media (max-width: 480px) {
@@ -115,7 +113,6 @@
 			transform: rotate(-90deg);
 		}
 		input[type='checkbox'] {
-
 			position: fixed;
 			display: block;
 			border: none;
