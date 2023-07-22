@@ -45,32 +45,39 @@
 		return true;
 	};
 	const sortPlayers = (players: Player[]) => {
-		let firstLayer = [players[0], emptyPlayer];
+		let firstLayer: number[] = [1, -1];
 		let id = 2,
 			len = players.length;
 		while (id <= len) {
 			if (isPowerOfTwo(id - 1) && id > 2) {
-				let tmp: Player[] = [];
+				let tmp: number[] = [];
 				for (let i = 0; i < firstLayer.length; i++) {
 					tmp.push(firstLayer[i]);
-					tmp.push(emptyPlayer);
+					tmp.push(-1);
 				}
 				firstLayer = [...tmp];
 			}
 			let idx = 0,
 				mxValue = -1;
-			let bestPlayer = players[id - 1];
 			for (let i = 0; i < firstLayer.length; i += 2) {
-				if (firstLayer[i + 1].name === '' && firstLayer[i].rating > mxValue) {
-					mxValue = firstLayer[i].rating;
+				if (firstLayer[i + 1] == -1 && firstLayer[i] > mxValue) {
+					mxValue = firstLayer[i];
 					idx = i + 1;
 				}
 			}
-			firstLayer[idx] = { ...bestPlayer };
+			firstLayer[idx] = id;
 			id++;
 		}
-
-		return firstLayer;
+		const ret: Player[] = [];
+		for (let i=0;i<firstLayer.length;i++){
+			if (firstLayer[i]===-1){
+				ret.push(emptyPlayer);
+			}
+			else {
+				ret.push(players[firstLayer[i]-1]);
+			}
+		}
+		return ret;
 	};
 
 	function createMatch(firstPlayer: Player, secondPlayer: Player): Match {
