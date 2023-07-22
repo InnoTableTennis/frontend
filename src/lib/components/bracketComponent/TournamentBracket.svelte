@@ -7,12 +7,15 @@
 	import { alertPopup } from '$lib/popupHandler';
 	import { isLeader } from '$lib/stores';
 	import { alertInputPopup } from '$lib/inputPopupHandler';
+	
 	interface bracketData {
 		playersAmount: number;
 		rounds: Match[][];
+		winner: string;
+		matchesNetwork: Map<Match, Match>;
+		inProgressMatches: Match[],
+		finishedMatches: Match[]
 	}
-
-	let matchesNetwork = new Map<Match, Match>();
 
 	let emptyPlayer = {
 		id: 0,
@@ -25,9 +28,13 @@
 		winRate: 0,
 	} as Player;
 
-	//  rounds [ first round:[1match:{}, 2match{}, 3match{}...], second round:[], third round:[] ]
-
-	export let data: bracketData = { playersAmount: 0, rounds: [] } as bracketData;
+	export let data: bracketData = { 
+		playersAmount: 0, 
+		rounds: [],
+		finishedMatches: [],
+		inProgressMatches: [],
+		matchesNetwork: new Map<Match, Match>(), 
+		winner: ""} as bracketData;
 	export let playersList: Player[] = [];
 
 	const isPowerOfTwo = (x: number) => {
@@ -114,7 +121,7 @@
 		let nextMatch: Match = createMatch(emptyPlayer, emptyPlayer);
 		let updateMatch = false;
 
-		matchesNetwork.set(matchesList[0], nextMatch);
+		data.matchesNetwork.set(matchesList[0], nextMatch);
 		data.rounds[round + 1].push(nextMatch);
 		for (let i = 1; i < matchesList.length; i++) {
 			if (updateMatch) {
@@ -122,17 +129,18 @@
 				data.rounds[round + 1].push(nextMatch);
 			}
 			updateMatch = !updateMatch;
-			matchesNetwork.set(matchesList[i], nextMatch);
+			data.matchesNetwork.set(matchesList[i], nextMatch);
 		}
+		data=data;
 	}
 
 	function isFirstWinner(initMatch: Match, nextMatch: Match) {
-		let keys = Array.from(matchesNetwork.keys());
+		let keys = Array.from(data.matchesNetwork.keys());
 
 		let initIndex = 0;
 		let neighbourIndex = 0;
 		for (let i = 0; i < keys.length; i++) {
-			let currentValue = matchesNetwork.get(keys[i]);
+			let currentValue = data.matchesNetwork.get(keys[i]);
 			if (currentValue === nextMatch) {
 				if (keys[i] === initMatch) {
 					initIndex = i;
@@ -148,7 +156,7 @@
 	async function handleMatchStart(match: Match) {
 		let isConfirmed = await alertPopup('Are you sure that you want to start this match?');
 		if (!isConfirmed) return;
-		inProgressMatches = [...inProgressMatches, match];
+		data.inProgressMatches = [...data.inProgressMatches, match];
 	}
 
 	function setWinner(match: Match): void {
@@ -157,7 +165,7 @@
 				? match.firstPlayerName
 				: match.secondPlayerName;
 
-		let matchToUpdate = matchesNetwork.get(match);
+		let matchToUpdate = data.matchesNetwork.get(match);
 
 		if (winner !== match.firstPlayerName && winner !== match.secondPlayerName) {
 			console.log('Bad winner name');
@@ -170,38 +178,39 @@
 			} else {
 				matchToUpdate.secondPlayerName = winner;
 			}
+			data = data;
 		}
 
-		data = data;
+		else {
+			data.winner = winner;
+			console.log(data);
+		}
+		
 	}
 
 	async function handleMatchEnd(match: Match) {
-		let data = await alertInputPopup(
+		let scores = await alertInputPopup(
 			'Please input the results of the match',
 			match.firstPlayerName,
 			match.secondPlayerName,
 		);
-		match.firstPlayerScore = Number(data[0]);
-		match.secondPlayerScore = Number(data[1]);
+		match.firstPlayerScore = Number(scores[0]);
+		match.secondPlayerScore = Number(scores[1]);
 
-		inProgressMatches.splice(inProgressMatches.indexOf(match), 1);
+		data.inProgressMatches.splice(data.inProgressMatches.indexOf(match), 1);
 
 		setWinner(match);
-
-		finishedMatches = [...finishedMatches, match];
-		inProgressMatches = inProgressMatches;
+		
+		data.finishedMatches = [...data.finishedMatches, match];
+		data.inProgressMatches = data.inProgressMatches;
 	}
 
-	let inProgressMatches: Match[] = [];
-	let finishedMatches: Match[] = [];
 
 	let localDateString = convertDateToStringDash(new Date());
 	let tournamentTitle = 'test';
 
 	let roundCounter = 0;
 	let roundAmount = Math.ceil(Math.log2(playersList.length));
-
-	let winner = '';
 
 	if (data.playersAmount === 0) {
 		data.playersAmount = playersList.length;
@@ -226,17 +235,17 @@
 						</div>
 
 						{#if $isLeader}
-							{#if match.firstPlayerName !== '' && match.secondPlayerName !== '' && !finishedMatches.includes(match)}
+							{#if match.firstPlayerName !== '' && match.secondPlayerName !== '' && !data.finishedMatches.includes(match)}
 								<button
 									on:click={() => {
-										if (!inProgressMatches.includes(match)) {
+										if (!data.inProgressMatches.includes(match)) {
 											handleMatchStart(match);
 										} else {
 											handleMatchEnd(match);
 										}
 									}}
 								>
-									{#if inProgressMatches.includes(match)}
+									{#if data.inProgressMatches.includes(match)}
 										<Dot />
 									{:else}
 										<Play />
@@ -245,7 +254,7 @@
 							{/if}
 						{/if}
 
-						{#if finishedMatches.includes(match)}
+						{#if data.finishedMatches.includes(match)}
 							<div class="scores-wrapper">
 								{match.firstPlayerScore} :
 								{match.secondPlayerScore}
@@ -257,7 +266,7 @@
 		{/each}
 		<ul>
 			<li>
-				<p>{winner}</p>
+				<p>{data.winner}</p>
 			</li>
 		</ul>
 	</div>
@@ -312,7 +321,6 @@
 		overflow-y: scroll;
 		max-width: 900px;
 		min-width: 700px;
-
 		height: 30.5rem;
 		margin-top: 1rem;
 		font-size: var(--fontsize-medium1);
@@ -329,11 +337,10 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1rem;
-		height: 40%;
+		height: 2rem;
 	}
 
 	p {
-		height: 100%;
 		text-align: center;
 		width: 100%;
 		border-bottom: 2px solid var(--secondary-bg-color);
