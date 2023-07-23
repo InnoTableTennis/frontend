@@ -125,10 +125,8 @@
     async function handleWaiting(firstName: string, secondName: string) {
         let results: number[] | null= (await alertInputPopup("Write the score:", firstName, secondName));
         let finishedPlayerResults = [] as string[][];
-        if (results) {
+        if (results && results[0] != results[1]) {
             finishedPlayerResults = [[firstName, results[0].toString()], [secondName, results[1].toString()]];
-        }
-        if(finishedPlayerResults) {
             const first = findPlayerNumber(finishedPlayerResults[0][0]);
             const second = findPlayerNumber(finishedPlayerResults[1][0]);
             const firstScore = finishedPlayerResults[0][1];

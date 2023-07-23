@@ -15,7 +15,7 @@
 </script>
 
 <form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
-    <button class="overlay-background" type="submit"></button>
+    <button class="overlay-background" type="button"></button>
     <div class="overlay-content">
         <div class="overlay-head">
             <div class="circle">!</div>
