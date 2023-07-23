@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { Player } from '$lib/types/types';
-    import {createEventDispatcher} from "svelte";
     import {alertInputPopup} from "$lib/inputPopupHandler";
-    const dispatch = createEventDispatcher();
     export let data = [] as Player[];
     let order: number[][][];
     let tour: number[] = new Array(data.length);
