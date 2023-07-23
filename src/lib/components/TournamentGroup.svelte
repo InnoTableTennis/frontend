@@ -208,7 +208,7 @@
                     <td class="name-cell">{row.name}</td>
                     {#each Array(tour.length + 2) as cell, index(index)}
                         {#if index < tour.length}
-                            {#if index === rowIndex}
+                            {#if index === rowIndex && cell === cell}
                                 <td class="useless-cell">
                                     <div class="useless-cell-background"></div>
                                 </td>
