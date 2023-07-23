@@ -17,7 +17,8 @@
 	export let currentPageSize = sizes[0];
 	export let lastPageNumber = 100;
 
-	$: isSmall = lastPageNumber - firstPageNumber < 3;
+	$: isSmallLeft = currentPageNumber - firstPageNumber < 2;
+	$: isSmallRight = lastPageNumber - currentPageNumber < 2;
 
 	$: currentPageNumber = currentPageNumber < lastPageNumber ? currentPageNumber : lastPageNumber;
 
@@ -77,75 +78,83 @@
 	}
 </script>
 
-<div class="container" class:isTop>
-	<div class="pages">
-		<button class="arrow" on:click={handleLeftClick}>
-			<LeftArrow />
-		</button>
+<div class="container" class:isTop class:isDown={!isTop}>
+	{#if isTop}
+		<div class="pages">
+			<button class="arrow" on:click={handleLeftClick}>
+				<LeftArrow height="0.9375rem" width="0.5625rem" color={'white'} />
+			</button>
 
-		{#if !isSmall}
-			<button
-				class="first number"
-				class:invisible={currentPageNumber - firstPageNumber < 2}
-				on:click={handleClick}
-				value={firstPageNumber}>{firstPageNumber}</button
-			>
-			<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
-		{/if}
-		{#each visiblePages as visiblePage, i}
-			<button
-				class="number"
-				class:current={currentPageIndex == i}
-				on:click={handleClick}
-				value={visiblePage}>{visiblePage}</button
-			>
-		{/each}
-		{#if !isSmall}
-			<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
-			<button
-				class="last number"
-				class:invisible={lastPageNumber - currentPageNumber < 2}
-				on:click={handleClick}
-				value={lastPageNumber}>{lastPageNumber}</button
-			>
-		{/if}
-		<button class="arrow" on:click={handleRightClick}>
-			<RightArrow />
-		</button>
-	</div>
-	<div class="sizes">
-		<span class="sizes-label">Show by</span>
-		{#each sizes as size}
-			<button
-				class="number"
-				class:current={size === currentPageSize}
-				on:click={handleSizeClick}
-				value={size}>{size}</button
-			>
-		{/each}
-	</div>
+			{#if !isSmallLeft}
+				<button
+					class="first number"
+					class:invisible={currentPageNumber - firstPageNumber < 2}
+					on:click={handleClick}
+					value={firstPageNumber}>{firstPageNumber}</button
+				>
+				<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
+			{/if}
+			{#each visiblePages as visiblePage, i}
+				<button
+					class="number"
+					class:current={currentPageIndex == i}
+					on:click={handleClick}
+					value={visiblePage}>{visiblePage}</button
+				>
+			{/each}
+			{#if !isSmallRight}
+				<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
+				<button
+					class="last number"
+					class:invisible={lastPageNumber - currentPageNumber < 2}
+					on:click={handleClick}
+					value={lastPageNumber}>{lastPageNumber}</button
+				>
+			{/if}
+			<button class="arrow" on:click={handleRightClick}>
+				<RightArrow height="0.9375rem" width="0.5625rem" color={'white'} />
+			</button>
+		</div>
+		<div class="sizes">
+			<span class="sizes-label">Show by</span>
+			{#each sizes as size}
+				<button
+					class="number"
+					class:current={size === currentPageSize}
+					on:click={handleSizeClick}
+					value={size}>{size}</button
+				>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
 	.sizes-label {
-		color: var(--secondary-color);
+		color: white;
 		margin-right: 0.8rem;
 	}
 	.container {
-		max-width: 800px;
+		padding: 0 2.8em;
+		max-width: 900px;
+		height: 3rem;
 		margin: 0 auto;
-		margin-bottom: 3em;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		background-color: var(--secondary-bg-color);
 		cursor: default;
 	}
 	.isTop {
-		margin-top: 3em;
+		margin-top: 2em;
 		margin-bottom: 0;
+		border-radius: 20px 20px 0 0;
+	}
+	.isDown {
+		border-radius: 0 0 20px 20px;
 	}
 	.number {
-		color: var(--secondary-color);
+		color: white;
 		outline: none;
 		border: none;
 		background: none;
@@ -154,7 +163,7 @@
 	}
 	.ellipses {
 		font-size: var(--fontsize-medium1);
-		color: var(--secondary-color);
+		color: white;
 		cursor: default;
 	}
 	.sizes .number {
@@ -174,8 +183,8 @@
 	.arrow,
 	.number {
 		font-size: var(--fontsize-medium1);
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 2.6rem;
+		height: 2.6rem;
 	}
 	.number:hover {
 		/* box-shadow: 0px 4px 4px 2px rgba(105, 105, 105, 0.7); */
@@ -191,7 +200,7 @@
 	}
 	.current {
 		background-color: var(--secondary-color);
-		color: var(--main-color);
+		color: white;
 	}
 	.number.current:hover {
 		box-shadow: none;
@@ -208,10 +217,24 @@
 		gap: 0.3rem;
 	}
 
+	@media (max-width: 1160px) {
+		.isTop {
+			padding: 0 1.5em;
+		}
+	}
 	@media (max-width: 800px) {
+		.isTop {
+			margin-bottom: 0;
+			padding: 0.5rem 0;
+			height: 6rem;
+			border-radius: 40px 40px 0 0;
+		}
 		.container {
 			flex-direction: column;
-			gap: 1rem;
+		}
+		.isDown {
+			border-radius: 0 0 40px 40px;
+			height: 3rem;
 		}
 	}
 </style>
