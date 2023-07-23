@@ -1,8 +1,64 @@
 <script lang="ts">
 	import TournamentBracket from '$lib/components/bracketComponent/TournamentBracket.svelte';
+	import { handleError } from '$lib/errorHandler';
 	import type { Player } from '$lib/types/types';
 
 	let players: Player[] = [
+		{
+			id: 1,
+			name: 'AbdelRagman Abounegmweo',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 1000,
+			telegramAlias: '',
+			winRate: 10,
+		},
+
+		{
+			id: 2,
+			name: 'Nikita Boris',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 900,
+			telegramAlias: '',
+			winRate: 10,
+		},
+
+		{
+			id: 3,
+			name: 'Nur Islamov',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 105,
+			telegramAlias: '',
+			winRate: 10,
+		},
+
+		{
+			id: 4,
+			name: 'Nail Min',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 105,
+			telegramAlias: '',
+			winRate: 10,
+		},
+
+		{
+			id: 5,
+			name: 'Mikhail K',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 105,
+			telegramAlias: '',
+			winRate: 10,
+		},
+
 		{
 			id: 1,
 			name: 'Mikhail Kalinin',
@@ -16,7 +72,7 @@
 
 		{
 			id: 2,
-			name: 'Nikita Borisov',
+			name: 'Nikita Boris',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -27,7 +83,7 @@
 
 		{
 			id: 3,
-			name: 'Nur Islam',
+			name: 'Nur Islamov',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -38,7 +94,7 @@
 
 		{
 			id: 4,
-			name: 'John Doe',
+			name: 'Nail Min',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -49,7 +105,7 @@
 
 		{
 			id: 5,
-			name: 'Jane Doe',
+			name: 'Mikhail K',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -57,128 +113,113 @@
 			telegramAlias: '',
 			winRate: 10,
 		},
-
-		{
-			id: 6,
-			name: 'Robert Paulson',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
-		{
-			id: 7,
-			name: 'Ma Long',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
-		{
-			id: 8,
-			name: 'Petya Ivanov',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
-		// {
-		// 	id: 9,
-		// 	name: 'Senya Polyakov',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 10,
-		// 	name: 'Ron Philips',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 11,
-		// 	name: 'Richard Test',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 12,
-		// 	name: 'Bob Brown',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 13,
-		// 	name: 'Garry Kim',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 14,
-		// 	name: 'Lena Osetrova',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 15,
-		// 	name: 'Peter Home',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
-
-		// {
-		// 	id: 16,
-		// 	name: 'Alexandr Rybov',
-		// 	numberOfGames: 5,
-		// 	numberOfLosses: 2,
-		// 	numberOfWins: 3,
-		// 	rating: 105,
-		// 	telegramAlias: '',
-		// 	winRate: 10,
-		// },
 	];
+
+	let data = {
+		playersAmount: 8,
+		rounds: [[1, 2, 3], [4, 5], [6]],
+		allMatches: [
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 0,
+				firstPlayerName: 'Mikhail Kalinin',
+				secondPlayerName: '',
+				localDateString: '2023-07-23',
+				id: 0,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 0,
+				secondPlayerRatingBefore: 0,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 3,
+				secondPlayerScore: 0,
+				firstPlayerName: 'Nail Min',
+				secondPlayerName: 'Mikhail K',
+				localDateString: '23.07.2023',
+				id: 45,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 1000,
+				secondPlayerRatingBefore: 300,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 3,
+				firstPlayerName: 'Nikita Boris',
+				secondPlayerName: 'Nikita Borisov',
+				localDateString: '23.07.2023',
+				id: 47,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 994,
+				secondPlayerRatingBefore: 150,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 2,
+				firstPlayerName: 'Nur Islamov',
+				secondPlayerName: 'Test Name',
+				localDateString: '23.07.2023',
+				id: 46,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 105,
+				secondPlayerRatingBefore: 104,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 0,
+				firstPlayerName: 'Mikhail Kalinin',
+				secondPlayerName: 'Nail Min',
+				localDateString: '2023-07-23',
+				id: 0,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 0,
+				secondPlayerRatingBefore: 0,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 0,
+				firstPlayerName: 'Nikita Borisov',
+				secondPlayerName: 'Test Name',
+				localDateString: '2023-07-23',
+				id: 0,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 0,
+				secondPlayerRatingBefore: 0,
+				tournamentTitle: 'BracketTournament1',
+			},
+			{
+				firstPlayerScore: 0,
+				secondPlayerScore: 0,
+				firstPlayerName: '',
+				secondPlayerName: '',
+				localDateString: '2023-07-23',
+				id: 0,
+				firstPlayerRatingDelta: 0,
+				secondPlayerRatingDelta: 0,
+				firstPlayerRatingBefore: 0,
+				secondPlayerRatingBefore: 0,
+				tournamentTitle: 'BracketTournament1',
+			},
+		],
+		inProgressMatches: [4],
+		finishedMatches: [1, 3, 2],
+		matchesNetwork: { '0': '4', '1': '4', '2': '5', '3': '5', '4': '6', '5': '6' },
+		winner: '',
+	};
 </script>
 
-<TournamentBracket playersList={players} />
+<TournamentBracket
+	on:error={handleError}
+	playersList={players}
+	tournamentTitle="BracketTournament1"
+/>

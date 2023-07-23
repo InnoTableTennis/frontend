@@ -1,20 +1,36 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
-	import type { Match, Player } from '$lib/types/types';
 	import * as db from '$lib/requests';
+	import type { Match, Player } from '$lib/types/types';
 	import { Play, Dot } from 'lucide-svelte';
 	import { convertDateToStringDash } from '$lib/helper';
 	import { alertPopup } from '$lib/popupHandler';
 	import { isLeader } from '$lib/stores';
 	import { alertInputPopup } from '$lib/inputPopupHandler';
-	
+	import { TSMap } from 'typescript-map';
+	import { isEmpty } from 'lodash-es';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+	// interface to store data
 	interface bracketData {
 		playersAmount: number;
-		rounds: Match[][];
+		rounds: number[][];
 		winner: string;
-		matchesNetwork: Map<Match, Match>;
-		inProgressMatches: Match[],
-		finishedMatches: Match[]
+		matchesNetwork: TSMap<string, string>;
+		inProgressMatches: number[];
+		finishedMatches: number[];
+		allMatches: Match[];
+	}
+
+	// interface to store input data from export
+	interface inputData {
+		matchesNetwork: object;
+		playersAmount: number;
+		rounds: number[][];
+		winner: string;
+		inProgressMatches: number[];
+		finishedMatches: number[];
+		allMatches: Match[];
 	}
 
 	let emptyPlayer = {
@@ -28,15 +44,6 @@
 		winRate: 0,
 	} as Player;
 
-	export let data: bracketData = { 
-		playersAmount: 0, 
-		rounds: [],
-		finishedMatches: [],
-		inProgressMatches: [],
-		matchesNetwork: new Map<Match, Match>(), 
-		winner: ""} as bracketData;
-	export let playersList: Player[] = [];
-
 	const isPowerOfTwo = (x: number) => {
 		while (x > 1) {
 			if (x % 2) return false;
@@ -44,6 +51,8 @@
 		}
 		return true;
 	};
+
+	// function to sort players for the first round
 	const sortPlayers = (players: Player[]) => {
 		let firstLayer: number[] = [1, -1];
 		let id = 2,
@@ -69,19 +78,20 @@
 			id++;
 		}
 		const ret: Player[] = [];
-		for (let i=0;i<firstLayer.length;i++){
-			if (firstLayer[i]===-1){
+		for (let i = 0; i < firstLayer.length; i++) {
+			if (firstLayer[i] === -1) {
 				ret.push(emptyPlayer);
-			}
-			else {
-				ret.push(players[firstLayer[i]-1]);
+			} else {
+				ret.push(players[firstLayer[i] - 1]);
 			}
 		}
 		return ret;
 	};
 
+	// function to create raw matches
 	function createMatch(firstPlayer: Player, secondPlayer: Player): Match {
-		return {
+		let localDateString = convertDateToStringDash(new Date());
+		let newMatch = {
 			firstPlayerScore: 0,
 			secondPlayerScore: 0,
 			firstPlayerName: firstPlayer.name,
@@ -94,62 +104,98 @@
 			secondPlayerRatingBefore: 0,
 			tournamentTitle: tournamentTitle,
 		};
+		return newMatch;
 	}
 
-	function generateFirstRound(): void {
-		const roundMatches: Match[] = [];
-		let changePlaces = false;
-		for (let i = 0; i < playersList.length / 2; i++) {
+	// fucntion to add finished matches to database
+	async function addMatchToDB(matchIdx: number) {
+		let matchToAdd = data.allMatches[matchIdx];
+		let localDateString = convertDateToStringDash(new Date());
+		let createdMatch = await db.createMatch(
+			matchToAdd.firstPlayerName,
+			matchToAdd.secondPlayerName,
+			matchToAdd.firstPlayerScore,
+			matchToAdd.secondPlayerScore,
+			matchToAdd.tournamentTitle,
+			localDateString,
+		);
+
+		console.log(matchToAdd, createdMatch);
+
+		data.allMatches[matchIdx] = createdMatch;
+	}
+
+	// function to create layout for empty bracket
+	function createLayout(): void {
+		// create matches for first round from list of players
+		for (let i = 0; i < playersList.length - 1; i += 2) {
 			let firstPlayer = playersList[i];
-			let secondPlayer = playersList[playersList.length - i - 1];
+			let secondPlayer = playersList[i + 1];
 
-			if (changePlaces) {
-				[firstPlayer, secondPlayer] = [secondPlayer, firstPlayer];
-			}
-			changePlaces = !changePlaces;
+			data.allMatches.push(createMatch(firstPlayer, secondPlayer));
+			data.rounds[0].push(data.allMatches.length - 1);
+		}
 
-			if (!secondPlayer) {
-				data.rounds[1].push(createMatch(firstPlayer, emptyPlayer));
-			} else {
-				roundMatches.push(createMatch(firstPlayer, secondPlayer));
+		// connect first round with second round
+		arrangeMatches(data.rounds[0], 0);
+
+		// // forward the players to the second round for those who do not have an opponent
+		for (let i = 0; i < data.rounds[0].length; i++) {
+			if (
+				data.allMatches[data.rounds[0][i]].firstPlayerName === '' ||
+				data.allMatches[data.rounds[0][i]].secondPlayerName === ''
+			) {
+				// data.allMatches.splice(data.rounds[0][i] , 1);
+				setWinner(data.rounds[0][i]);
 			}
 		}
-		data.rounds[0] = roundMatches;
-	}
-
-	function createLayout(): void {
-		generateFirstRound();
-		for (let i = 0; i < roundAmount - 1; i++) {
+		// set up connection for the rest of the matches
+		for (let i = 1; i < roundAmount - 1; i++) {
 			arrangeMatches(data.rounds[i], i);
 		}
 	}
 
-	function arrangeMatches(matchesList: Match[], round: number): void {
-		let nextMatch: Match = createMatch(emptyPlayer, emptyPlayer);
+	// function to set up connections between matches
+	function arrangeMatches(matchesList: number[], round: number): void {
+		let nextMatch: Match = {} as Match;
+
 		let updateMatch = false;
 
-		data.matchesNetwork.set(matchesList[0], nextMatch);
-		data.rounds[round + 1].push(nextMatch);
+		// create new match
+		nextMatch = createMatch(emptyPlayer, emptyPlayer);
+		data.allMatches.push(nextMatch);
+
+		// push the new match to the next round
+		data.rounds[round + 1].push(data.allMatches.length - 1);
+
+		// set up connection between the initial match and the future one
+		data.matchesNetwork.set(matchesList[0].toString(), (data.allMatches.length - 1).toString());
+
 		for (let i = 1; i < matchesList.length; i++) {
+			// check if a new next match should be created
 			if (updateMatch) {
 				nextMatch = createMatch(emptyPlayer, emptyPlayer);
-				data.rounds[round + 1].push(nextMatch);
+				data.allMatches.push(nextMatch);
+				data.rounds[round + 1].push(data.allMatches.length - 1);
 			}
+			// update the flag
 			updateMatch = !updateMatch;
-			data.matchesNetwork.set(matchesList[i], nextMatch);
+
+			data.matchesNetwork.set(matchesList[i].toString(), (data.allMatches.length - 1).toString());
 		}
-		data=data;
 	}
 
-	function isFirstWinner(initMatch: Match, nextMatch: Match) {
+	// function to check if the winner of a match should go as first player to the future match
+	function isFirstWinner(initMatch: number, nextMatch: number) {
 		let keys = Array.from(data.matchesNetwork.keys());
 
 		let initIndex = 0;
 		let neighbourIndex = 0;
+
 		for (let i = 0; i < keys.length; i++) {
-			let currentValue = data.matchesNetwork.get(keys[i]);
-			if (currentValue === nextMatch) {
-				if (keys[i] === initMatch) {
+			let currentMatch = Number(data.matchesNetwork.get(keys[i]));
+			if (currentMatch === nextMatch) {
+				if (keys[i] === initMatch.toString()) {
 					initIndex = i;
 				} else {
 					neighbourIndex = i;
@@ -160,113 +206,196 @@
 		return initIndex < neighbourIndex;
 	}
 
-	async function handleMatchStart(match: Match) {
+	// function to mark the match as being in progress
+	async function handleMatchStart(matchIdx: number) {
 		let isConfirmed = await alertPopup('Are you sure that you want to start this match?');
 		if (!isConfirmed) return;
-		data.inProgressMatches = [...data.inProgressMatches, match];
+
+		data.inProgressMatches = [...data.inProgressMatches, matchIdx];
 	}
 
-	function setWinner(match: Match): void {
-		let winner =
-			match.firstPlayerScore > match.secondPlayerScore
-				? match.firstPlayerName
-				: match.secondPlayerName;
+	// function to set a winner of the match
+	// and forward the name of the winner to the next one
+	function setWinner(matchIdx: number): void {
+		let winner = '';
 
-		let matchToUpdate = data.matchesNetwork.get(match);
+		// if the player plays with empty player, forward him to the next match
+		if (data.allMatches[matchIdx].firstPlayerName === '') {
+			winner = data.allMatches[matchIdx].secondPlayerName;
+		} else if (data.allMatches[matchIdx].secondPlayerName === '') {
+			winner = data.allMatches[matchIdx].firstPlayerName;
+		} else {
+			// check the scores and set the winner
+			winner =
+				data.allMatches[matchIdx].firstPlayerScore > data.allMatches[matchIdx].secondPlayerScore
+					? data.allMatches[matchIdx].firstPlayerName
+					: data.allMatches[matchIdx].secondPlayerName;
+		}
 
-		if (winner !== match.firstPlayerName && winner !== match.secondPlayerName) {
-			console.log('Bad winner name');
+		// get the future match
+		let matchToUpdate = Number(data.matchesNetwork.get(matchIdx.toString()));
+
+		// if there is no next match, set the winner of the final
+		if (matchToUpdate) {
+			if (isFirstWinner(matchIdx, matchToUpdate)) {
+				data.allMatches[matchToUpdate].firstPlayerName = winner;
+			} else {
+				data.allMatches[matchToUpdate].secondPlayerName = winner;
+			}
+		} else {
+			data.winner = winner;
+		}
+	}
+
+	async function handleMatchEdit(matchIdx: number) {
+		let nextMatchIdx = Number(data.matchesNetwork.get(matchIdx.toString()));
+		if (data.inProgressMatches.includes(nextMatchIdx)) {
+			dispatch('error', 'The next match is in progress, cannot edit');
+			return;
+		} else if (data.finishedMatches.includes(nextMatchIdx)) {
+			dispatch('error', 'The next match is finished, cannot edit');
 			return;
 		}
 
-		if (matchToUpdate) {
-			if (isFirstWinner(match, matchToUpdate)) {
-				matchToUpdate.firstPlayerName = winner;
-			} else {
-				matchToUpdate.secondPlayerName = winner;
-			}
-			data = data;
-		}
+		let scores = await alertInputPopup(
+			'Please input the new results of the match',
+			data.allMatches[matchIdx].firstPlayerName,
+			data.allMatches[matchIdx].secondPlayerName,
+		);
 
-		else {
-			data.winner = winner;
-			console.log(data);
-		}
-		
+		let matchToEdit = data.allMatches[matchIdx];
+
+		matchToEdit.firstPlayerScore = Number(scores[0]);
+		matchToEdit.secondPlayerScore = Number(scores[1]);
+
+		setWinner(matchIdx);
+
+		db.editMatch(
+			matchToEdit.id.toString(),
+			matchToEdit.firstPlayerName,
+			matchToEdit.secondPlayerName,
+			matchToEdit.firstPlayerScore,
+			matchToEdit.secondPlayerScore,
+			matchToEdit.tournamentTitle,
+			matchToEdit.localDateString,
+		);
 	}
 
-	async function handleMatchEnd(match: Match) {
+	// function to finish the match
+	async function handleMatchEnd(matchIdx: number) {
+		// show the form in a popup
 		let scores = await alertInputPopup(
 			'Please input the results of the match',
-			match.firstPlayerName,
-			match.secondPlayerName,
+			data.allMatches[matchIdx].firstPlayerName,
+			data.allMatches[matchIdx].secondPlayerName,
 		);
-		match.firstPlayerScore = Number(scores[0]);
-		match.secondPlayerScore = Number(scores[1]);
+		// set the scores
+		data.allMatches[matchIdx].firstPlayerScore = Number(scores[0]);
+		data.allMatches[matchIdx].secondPlayerScore = Number(scores[1]);
 
-		data.inProgressMatches.splice(data.inProgressMatches.indexOf(match), 1);
+		// delete the match from in prgress matches
+		data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
 
-		setWinner(match);
-		
-		data.finishedMatches = [...data.finishedMatches, match];
+		// set the winner of the match
+		setWinner(matchIdx);
+
+		data.finishedMatches = [...data.finishedMatches, matchIdx];
 		data.inProgressMatches = data.inProgressMatches;
+		data = data;
+		addMatchToDB(matchIdx);
 	}
 
+	function isFirstRound(round: number[]) {
+		if (round.length !== data.rounds[0].length) {
+			return false;
+		}
+		for (let i = 0; i < data.rounds[0].length; i++) {
+			if (data.rounds[0][i] !== round[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-	let localDateString = convertDateToStringDash(new Date());
-	let tournamentTitle = 'test';
+	function isHidden(round: number[], matchIdx: number) {
+		return (
+			(data.allMatches[matchIdx].firstPlayerName === '' ||
+				data.allMatches[matchIdx].secondPlayerName === '') &&
+			isFirstRound(round)
+		);
+	}
 
-	let roundCounter = 0;
-	let roundAmount = Math.ceil(Math.log2(playersList.length));
+	export let playersList: Player[] = [];
+	export let bracketJSON: inputData = {} as inputData;
+	export let tournamentTitle: string;
 
-	if (data.playersAmount === 0) {
+	let data: bracketData = {
+		playersAmount: 0,
+		rounds: [],
+		allMatches: [],
+		inProgressMatches: [],
+		finishedMatches: [],
+		matchesNetwork: new TSMap(),
+		winner: '',
+	};
+
+	playersList = sortPlayers(playersList);
+	let roundAmount = 0;
+
+	if (isEmpty(bracketJSON)) {
+		roundAmount = Math.ceil(Math.log2(playersList.length));
 		data.playersAmount = playersList.length;
-
 		for (let i = 0; i < roundAmount; i++) {
 			data.rounds.push([]);
 		}
+		createLayout();
+	} else {
+		data.allMatches = bracketJSON.allMatches;
+		data.playersAmount = bracketJSON.playersAmount;
+		data.rounds = bracketJSON.rounds;
+		data.finishedMatches = bracketJSON.finishedMatches;
+		data.inProgressMatches = bracketJSON.inProgressMatches;
+		data.matchesNetwork = new TSMap<string, string>().fromJSON(bracketJSON.matchesNetwork);
+		data.winner = bracketJSON.winner;
 	}
-
-	createLayout();
 </script>
 
 <div class="bracket-wrapper">
 	<div class="bracket">
 		{#each data.rounds as round}
 			<ul>
-				{#each round as match}
-					<li>
+				{#each round as matchIdx}
+					<li class:deleted={isHidden(round, matchIdx)}>
 						<div class="names-wrapper">
-							<p>{match.firstPlayerName}</p>
-							<p>{match.secondPlayerName}</p>
+							<p>{data.allMatches[matchIdx].firstPlayerName}</p>
+							<p>{data.allMatches[matchIdx].secondPlayerName}</p>
 						</div>
 
-						{#if $isLeader}
-							{#if match.firstPlayerName !== '' && match.secondPlayerName !== '' && !data.finishedMatches.includes(match)}
-								<button
-									on:click={() => {
-										if (!data.inProgressMatches.includes(match)) {
-											handleMatchStart(match);
-										} else {
-											handleMatchEnd(match);
-										}
-									}}
-								>
-									{#if data.inProgressMatches.includes(match)}
-										<Dot />
-									{:else}
-										<Play />
-									{/if}
-								</button>
+						<button
+							class:hidden={data.allMatches[matchIdx].firstPlayerName === '' ||
+								data.allMatches[matchIdx].secondPlayerName === ''}
+							disabled={!$isLeader}
+							on:click={() => {
+								if (data.inProgressMatches.includes(matchIdx)) {
+									handleMatchEnd(matchIdx);
+								} else if (data.finishedMatches.includes(matchIdx)) {
+									handleMatchEdit(matchIdx);
+								} else {
+									handleMatchStart(matchIdx);
+								}
+							}}
+						>
+							{#if data.inProgressMatches.includes(matchIdx)}
+								<Dot />
+							{:else if data.finishedMatches.includes(matchIdx)}
+								<div class="scores-wrapper">
+									{data.allMatches[matchIdx].firstPlayerScore}:{data.allMatches[matchIdx]
+										.secondPlayerScore}
+								</div>
+							{:else}
+								<Play />
 							{/if}
-						{/if}
-
-						{#if data.finishedMatches.includes(match)}
-							<div class="scores-wrapper">
-								{match.firstPlayerScore} :
-								{match.secondPlayerScore}
-							</div>
-						{/if}
+						</button>
 					</li>
 				{/each}
 			</ul>
@@ -280,47 +409,90 @@
 </div>
 
 <style>
+	.hidden {
+		visibility: hidden;
+	}
+
+	.deleted {
+		display: none;
+	}
+
 	button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		padding: 0;
+		padding: 2px;
 		font-weight: inherit;
-		background: none;
+		font-size: var(--fontsize-medium1);
 		border: none;
 		box-shadow: none;
 		overflow: hidden;
 		border-radius: 5px;
 		background-color: var(--secondary-bg-color);
+		color: var(--content-color);
 		cursor: pointer;
+		height: 1.5rem;
+	}
+
+	.scores-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 2px;
+		font-weight: inherit;
+		font-size: var(--fontsize-medium1);
+		border: none;
+		box-shadow: none;
+		overflow: hidden;
+		border-radius: 5px;
+		background-color: var(--secondary-bg-color);
+		color: var(--content-color);
+		cursor: pointer;
+		height: 1.5rem;
 	}
 
 	.bracket {
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
-		gap: 1rem;
+		height: 90%;
+		width: 100%;
 	}
 
 	ul {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: space-around;
+		height: 100%;
+		width: 100%;
 		flex-grow: 1;
-		list-style: none;
-		gap: 2rem;
 	}
 
 	ul li {
+		width: 90%;
+		margin: auto;
+		max-height: 50px;
+		height: 100%;
 		display: flex;
 		flex-direction: row;
-		position: relative;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 1rem;
+	}
+
+	.names-wrapper {
+		min-width: 80%;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		text-align: center;
-		gap: 2rem;
-		flex-grow: 0.5;
-		height: 3rem;
+		height: 2rem;
+		gap: 1rem;
+	}
+
+	p {
+		min-width: 15rem;
+		min-height: 1rem;
+		border-bottom: 2px solid var(--secondary-bg-color);
 	}
 
 	.bracket-wrapper {
@@ -335,21 +507,5 @@
 
 	.bracket-wrapper::-webkit-scrollbar {
 		display: none;
-	}
-
-	.names-wrapper {
-		width: 70%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 1rem;
-		height: 2rem;
-	}
-
-	p {
-		text-align: center;
-		width: 100%;
-		border-bottom: 2px solid var(--secondary-bg-color);
 	}
 </style>
