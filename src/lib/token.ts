@@ -21,6 +21,16 @@ export function getRoles(token: string): string[] {
 	return roles;
 }
 
+export function getUsername(token: string): string {
+	let username: string;
+	try {
+		username = (<DecodedJWT>jwt_decode(token)).sub;
+	} catch (error) {
+		username = '';
+	}
+	return username;
+}
+
 /**
  * Retrieves the expiration date from a token.
  *
