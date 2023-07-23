@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { Players } from '$lib/types/types';
+    import type { Player } from '$lib/types/types';
     import {createEventDispatcher} from "svelte";
     const dispatch = createEventDispatcher();
-    export let data = [] as Players[];
-    export let finishedPlayerResults = null as string[][];
+    export let data = [] as Player[];
+    export let finishedPlayerResults = [] as string[][];
     let order: number[][][];
     let tour: number[] = new Array(data.length);
     let tablePlaying: boolean[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(false));
@@ -87,7 +87,7 @@
             finalPlaces[placesTribune[i]] = i;
         }
     }
-    const findTable = (num) => {
+    const findTable = (num: number) => {
         if (num >= tour.length || tour[num] >= data.length - 1 + data.length % 2) {
             return -2;
         }
@@ -98,7 +98,7 @@
         }
         return -1;
     }
-    const checkTable = (row, column) => {
+    const checkTable = (row: number, column: number) => {
         if (tour[row] >= order[0].length || tour[column] >= order[0].length || tour[row] != tour[column]) {
             return false;
         }
@@ -118,7 +118,7 @@
         }
         return findTable(row) == findTable(column);
     }
-    const matchFinished = (row, column) => {
+    const matchFinished = (row: number, column: number) => {
         if (checkTable(row, column)) {
             tour[row]++;
             tour[column]++;
@@ -129,18 +129,18 @@
     }
     const waitingForMatchResult = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
-        dispatch('waiting', [data[row].name, data[column].name] as null | undefined);
+        dispatch('waiting', [data[row].name, data[column].name] as any);
     }
     const waitingForMatchResultImmediately = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
         tablePlaying[row][column] = tablePlaying[column][row] = true;
-        dispatch('waiting', [data[row].name, data[column].name] as null | undefined);
+        dispatch('waiting', [data[row].name, data[column].name] as any);
     }
-    const matchStarted = (event: MouseEvent, row, column) => {
+    const matchStarted = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
         tablePlaying[row][column] = tablePlaying[column][row] = true;
     }
-    const findPlayerNumber = (name) => {
+    const findPlayerNumber = (name: string) => {
         for (let i = 0; i < data.length; i++) {
             if (data[i].name == name) {
                 return i;
@@ -158,7 +158,7 @@
         }
         return true;
     }
-    const countPoints = (row) => {
+    const countPoints = (row: number) => {
         sumPoints[row] = 0;
         for (let i = 0; i < data.length; i++) {
             sumPoints[row] += tablePoints[row][i];

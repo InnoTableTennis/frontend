@@ -9,7 +9,7 @@
     const buttonPressed = (e: Event) => {
         e.preventDefault();
         let data = new FormData(e.target as HTMLFormElement);
-        if (data.get('firstScore') > 0 ||  data.get('secondScore') > 0) {
+        if (Number(data.get('firstScore')) > 0 ||  Number(data.get('secondScore')) > 0) {
             $outputOverlayText = [Number(data.get('firstScore')), Number(data.get('secondScore'))];
         }
         $inputOverlayText = null;
