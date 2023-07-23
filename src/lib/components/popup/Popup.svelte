@@ -3,7 +3,8 @@
     import { fade } from 'svelte/transition';
     import {overlayText} from "$lib/stores";
     export let popupText: string;
-    const buttonPressed = () => {
+    const buttonPressed = (e: Event) => {
+        e.preventDefault();
         $overlayText = null;
     };
 </script>

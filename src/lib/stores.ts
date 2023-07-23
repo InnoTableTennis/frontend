@@ -23,4 +23,5 @@ export const errors: Writable<Error[]> = writable([]);
  */
 export const theme = writable((browser && localStorage.getItem('color-scheme')) ?? 'light');
 export const overlayText: Writable<string | null> = writable(null);
-
+export const inputOverlayText: Writable<string[] | null> = writable(null);
+export const outputOverlayText: Writable<number[] | null> = writable(null);
