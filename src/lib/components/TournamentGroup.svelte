@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { Player } from '$lib/types/types';
     import {createEventDispatcher} from "svelte";
+    import {alertInputPopup} from "$lib/inputPopupHandler";
     const dispatch = createEventDispatcher();
     export let data = [] as Player[];
-    export let finishedPlayerResults = [] as string[][];
     let order: number[][][];
     let tour: number[] = new Array(data.length);
     let tablePlaying: boolean[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(false));
@@ -103,9 +103,6 @@
             return false;
         }
         if (findTable(row) == findTable(column) && order[findTable(row)][tour[row]].includes(column + 1) && (tableResults[row][column] || tableResults[column][row])) {
-            console.log(row, column);
-            console.log(tour[row], tour[column]);
-            console.log(findTable(row), findTable(column));
             tour[row]++;
             tour[column]++;
             if (findTable(row) == -1) {
@@ -127,14 +124,43 @@
             }
         }
     }
+    async function handleWaiting(firstName: string, secondName: string) {
+        let results: number[] | null= (await alertInputPopup("Write the score:", firstName, secondName));
+        let finishedPlayerResults = [] as string[][];
+        if (results) {
+            finishedPlayerResults = [[firstName, results[0].toString()], [secondName, results[1].toString()]];
+        }
+        if(finishedPlayerResults) {
+            const first = findPlayerNumber(finishedPlayerResults[0][0]);
+            const second = findPlayerNumber(finishedPlayerResults[1][0]);
+            const firstScore = finishedPlayerResults[0][1];
+            const secondScore = finishedPlayerResults[1][1];
+            if (first != -1 && second != -1 && (tableResults[first][second] || tablePlaying[first][second])) {
+                tablePoints[first][second] = firstScore > secondScore ? 2 : 1;
+                tablePoints[second][first] = secondScore > firstScore ? 2 : 1;
+                tableResults[first][second] = Number(firstScore);
+                tableResults[second][first] =  Number(secondScore);
+                countPoints(first);
+                countPoints(second);
+                if (tablePlaying[first][second]) {
+                    tablePlaying[first][second] = false;
+                    tablePlaying[second][first] = false;
+                    matchFinished(first, second);
+                }
+                if (allMatchesPlayed()) {
+                    generatePlaces();
+                }
+            }
+        }
+    }
     const waitingForMatchResult = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
-        dispatch('waiting', [data[row].name, data[column].name] as any);
+        handleWaiting(data[row].name, data[column].name);
     }
     const waitingForMatchResultImmediately = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
         tablePlaying[row][column] = tablePlaying[column][row] = true;
-        dispatch('waiting', [data[row].name, data[column].name] as any);
+        handleWaiting(data[row].name, data[column].name);
     }
     const matchStarted = (event: MouseEvent, row: number, column: number) => {
         event.preventDefault();
@@ -164,28 +190,6 @@
             sumPoints[row] += tablePoints[row][i];
         }
         return sumPoints[row];
-    }
-    $: if(finishedPlayerResults) {
-        const first = findPlayerNumber(finishedPlayerResults[0][0]);
-        const second = findPlayerNumber(finishedPlayerResults[1][0]);
-        const firstScore = finishedPlayerResults[0][1];
-        const secondScore = finishedPlayerResults[1][1];
-        if (first != -1 && second != -1 && (tableResults[first][second] || tablePlaying[first][second])) {
-            tablePoints[first][second] = firstScore > secondScore ? 2 : 1;
-            tablePoints[second][first] = secondScore > firstScore ? 2 : 1;
-            tableResults[first][second] = Number(firstScore);
-            tableResults[second][first] =  Number(secondScore);
-            countPoints(first);
-            countPoints(second);
-            if (tablePlaying[first][second]) {
-                tablePlaying[first][second] = false;
-                tablePlaying[second][first] = false;
-                matchFinished(first, second);
-            }
-            if (allMatchesPlayed()) {
-                generatePlaces();
-            }
-        }
     }
     generateOrder();
     generateTour();
