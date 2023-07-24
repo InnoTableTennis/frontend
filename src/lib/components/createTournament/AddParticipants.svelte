@@ -1,13 +1,14 @@
 <script lang="ts">
 	import * as db from '$lib/requests';
-	import type { Player, Tournament, TournamentState } from '$lib/types/types.js';
+	import type { Player, Tournament } from '$lib/types/types.js';
+	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsList from '$lib/components/lists/ParticipantsCreateList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let tournament: Tournament;
-	export let stage;
+	export let stage: TournamentStage;
 	export let numberParticipants = 0;
 	export let participants: Player[] = [];
 
@@ -23,14 +24,12 @@
 	}
 
 	async function addParticipants(state: TournamentState) {
-		// console.log(state, tournament.id);
 		await db.updateTournament(tournament.id, state).catch((error) => {
 			dispatch('error', error);
 		});
 	}
 
 	const nextStage = function () {
-		console.log(tournament.state);
 		state = {
 			participants: tournament.state.participants,
 			firstStage: null,

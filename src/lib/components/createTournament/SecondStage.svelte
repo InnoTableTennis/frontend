@@ -2,31 +2,12 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import { stringifyNumber } from '$lib/helper';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
-	export let stage;
+	export let stage: TournamentStage;
 	export let numberFinals = 0;
-	// export let finals: Player[][] = [];
-	export let games = [
-		'Bogdankov M. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Abdukhamidov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-	];
 
 	let finals: number[][] = [];
-	let completed = false;
 	let chosenId = 0;
 
 	const changeNumberFinals = function () {
@@ -46,29 +27,17 @@
 {#await countGroups() then}
 	<h1>Second stage</h1>
 
-	<div class="menu-layout">
-		<div class="next-games">
-			<h2>Next games</h2>
-			<div class="games-block">
-				{#each games as game}
-					<div class="game-line" class:disabled={completed}>
-						{game}
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="settings">
-			<h2>Settings</h2>
-			<span class="setting-line">
-				Finals - {numberFinals}
-				<button on:click={() => changeNumberFinals()} class="restart-button">
-					<RestartIcon />
-				</button>
-			</span>
-			<span class="setting-line">Finish the tournament</span>
-			<div class="finish-button">
-				<Button type="button" on:click={() => finish()}>Finish</Button>
-			</div>
+	<div class="settings">
+		<h2>Settings</h2>
+		<span class="setting-line">
+			Finals - {numberFinals}
+			<button on:click={() => changeNumberFinals()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">Finish the tournament</span>
+		<div class="finish-button">
+			<Button type="button" on:click={() => finish()}>Finish</Button>
 		</div>
 	</div>
 
@@ -92,12 +61,11 @@
 {/await}
 
 <style>
-	.menu-layout {
+	.settings {
 		padding: 1.2rem 0;
 		border-top: 1px solid var(--not-chosen-font-color);
 		border-bottom: 1px solid var(--not-chosen-font-color);
-		display: grid;
-		grid-template-columns: 1fr 1fr;
+		text-align: center;
 	}
 	.finals {
 		margin-top: 1.2rem;
@@ -108,24 +76,11 @@
 	.finals::-webkit-scrollbar {
 		display: none;
 	}
-	.games-block {
-		max-height: 10.25rem;
-		overflow-y: scroll;
-	}
-	.games-block::-webkit-scrollbar {
-		display: none;
-	}
 	.setting-line {
 		margin-top: 1rem;
 		display: flex;
 		align-items: center;
-	}
-	.game-line {
-		margin-bottom: 0.6rem;
-		display: flex;
-		align-items: center;
-		font-size: var(--fontsize-medium2);
-		color: var(--content-color);
+		justify-content: center;
 	}
 	.restart-button {
 		background: none;
@@ -141,9 +96,6 @@
 		height: 2.75rem;
 		margin: auto;
 		margin-top: 2rem;
-	}
-	.disabled {
-		color: var(--not-chosen-font-color);
 	}
 	.final-button {
 		background: none;
@@ -175,9 +127,6 @@
 	}
 
 	@media (max-width: 1100px) {
-		.menu-layout {
-			display: block;
-		}
 		.settings {
 			margin-top: 1rem;
 		}

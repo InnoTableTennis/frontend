@@ -1,16 +1,7 @@
 <script lang="ts">
 	import type { Player } from '$lib/types/types';
 
-	let player = {
-		id: 0,
-		name: 'Not identified',
-		numberOfGames: 0,
-		numberOfLosses: 0,
-		numberOfWins: 0,
-		rating: 0,
-		telegramAlias: '',
-		winRate: 0,
-	} as Player;
+	let player = {} as Player;
 
 	export let numberOfGames: number;
 	export let places: Player[] = [player, player, player];

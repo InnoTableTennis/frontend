@@ -4,14 +4,15 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
-	import type { Player, Tournament, TournamentState } from '$lib/types/types';
+	import type { Player, Tournament } from '$lib/types/types';
+	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
 	export let tournament: Tournament;
-	export let stage;
+	export let stage: TournamentStage;
 	export let participants: Player[] = [];
+	export let numberGroups = 0;
 
 	let groups: Player[][] = [] as Player[][];
-	let numberGroups = 0;
 	const dispatch = createEventDispatcher();
 
 	const makeGroups = function () {

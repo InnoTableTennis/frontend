@@ -9,21 +9,14 @@
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types.js';
+	import type { TournamentStage } from '$lib/types/tournamentTypes.js';
 	import SecondStage from '$lib/components/createTournament/SecondStage.svelte';
 
 	export let data;
 
 	const dispatch = createEventDispatcher();
 
-	let stage:
-		| 'create'
-		| 'addParticipants'
-		| 'numberGroups'
-		| 'groups'
-		| 'continue'
-		| 'numberFinals'
-		| 'finalsDistribution'
-		| 'secondStage' = 'create';
+	let stage: TournamentStage = 'create';
 	let tournament: Tournament = {} as Tournament;
 	let participants: Player[] = [];
 	let numberParticipants = 0;
@@ -49,7 +42,7 @@
 	{:else if stage == 'addParticipants'}
 		<AddParticipants bind:tournament bind:stage bind:numberParticipants bind:participants />
 	{:else if stage == 'numberGroups'}
-		<NumberGroups bind:tournament bind:participants bind:stage />
+		<NumberGroups bind:tournament bind:participants bind:stage bind:numberGroups />
 	{:else if stage == 'groups'}
 		<Groups bind:tournament bind:numberGroups bind:numberParticipants bind:stage />
 	{:else if stage == 'continue'}

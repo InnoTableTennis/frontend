@@ -1,17 +1,10 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import type { Tournament } from '$lib/types/types';
 
 	export let tournament: Tournament;
-	export let stage:
-		| 'create'
-		| 'addParticipants'
-		| 'numberGroups'
-		| 'groups'
-		| 'continue'
-		| 'numberFinals'
-		| 'finalsDistribution'
-		| 'secondStage';
+	export let stage: TournamentStage;
 
 	const nextStage = function () {
 		stage = 'addParticipants';
@@ -23,7 +16,7 @@
 		<h1>{tournament.title}</h1>
 		<p>{tournament.startDateString} - {tournament.endDateString}</p>
 		<div class="button">
-			<Button on:click={() => nextStage()}>Create tournament</Button>
+			<Button on:click={nextStage}>Create tournament</Button>
 		</div>
 	</div>
 </div>

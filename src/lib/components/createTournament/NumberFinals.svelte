@@ -2,9 +2,10 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
-	export let stage;
+	export let stage: TournamentStage;
 
 	const nextStage = function () {
 		stage = 'finalsDistribution';

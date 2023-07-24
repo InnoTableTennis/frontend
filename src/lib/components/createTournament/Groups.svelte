@@ -1,17 +1,14 @@
 <script lang="ts">
 	import type { Tournament } from '$lib/types/types';
-	// import { onMount } from 'svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
-	import TournamentGroup from '../tournamentConstructor/TournamentGroup.svelte';
+	import TournamentGroup from '$lib/components/tournamentConstructor/TournamentGroup.svelte';
 
 	export let tournament: Tournament;
-	// export let groups: Player[][] = [] as Player[][];
 	export let numberParticipants = 0;
 	export let numberGroups = 0;
-	export let stage;
-
-	// let groups: Player[][] = [] as Player[][];
+	export let stage: TournamentStage;
 
 	const changeParticipants = function () {
 		stage = 'addParticipants';

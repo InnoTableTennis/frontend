@@ -2,11 +2,12 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import FinalsDistributor from '$lib/components/createTournament/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
 	export let numberGroups = 0;
 	export let numberParticipants = 0;
-	export let stage;
+	export let stage: TournamentStage;
 
 	function back() {
 		stage = 'numberFinals';

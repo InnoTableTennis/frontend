@@ -1,3 +1,5 @@
+import type { TournamentState } from '$lib/types/tournamentTypes';
+
 export interface Error {
 	message: string;
 	status: number;
@@ -46,30 +48,3 @@ export interface Tournament {
 	matches: Match[];
 	state: TournamentState;
 }
-
-export interface Group {
-	type: 'Group';
-	tournamentTitle: string;
-	players: Player[];
-	matches: Match[];
-}
-
-export interface SingleEliminationBracket {
-	type: 'SingleEliminationBracket';
-	matchesNetwork: object;
-	playersAmount: number;
-	rounds: number[][];
-	winner: string;
-	inProgressMatches: number[];
-	finishedMatches: number[];
-	allMatches: Match[];
-}
-
-export type Final = Group | SingleEliminationBracket;
-
-export interface TournamentState {
-	participants: Player[];
-	firstStage: Group[] | null;
-	secondStage: Final[] | null;
-}
-//TO DO groups not null

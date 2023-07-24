@@ -5,8 +5,8 @@
 	import TournamentInfoPanel from '$lib/components/TournamentInfoPanel.svelte';
 	import ParticipantsViewTournamentList from '$lib/components/lists/ParticipantsList.svelte';
 	import SortParticipantsTournamentForm from '$lib/components/forms/SortFilterParticipantsForm.svelte';
-	import MatchesList from './lists/MatchesList.svelte';
-	import TournamentFilterMatchForm from './forms/TournamentFilterMatchForm.svelte';
+	import MatchesList from '$lib/components/lists/MatchesList.svelte';
+	import TournamentFilterMatchForm from '$lib/components/forms/TournamentFilterMatchForm.svelte';
 
 	let handleInsert: () => void;
 
