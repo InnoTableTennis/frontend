@@ -6,6 +6,7 @@
 
 	export let stage: TournamentStage;
 	export let numberFinals = 0;
+	export let games : string[] = [];
 
 	let finals: number[][] = [];
 	let chosenId = 0;
