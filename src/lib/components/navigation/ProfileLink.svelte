@@ -9,6 +9,7 @@
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 	import type { Player } from '$lib/types/types';
+	import { base } from '$app/paths';
 
 	let isMenuVisible = false;
 
@@ -36,7 +37,7 @@
 			});
 		return players.find((user) => user.telegramAlias == getUsername($userToken));
 	};
-	let linkToProfile = '/players/';
+	let linkToProfile = `${base}/players/`;
 
 	onMount(() => {
 		requestUserinfo().then((response) => {
@@ -46,48 +47,46 @@
 	});
 </script>
 
-{#if playerInfo}
-	<div class="profile-container">
-		{#if !getRoles($userToken).includes('USER')}
-			<div class="sign-in">
-				<a id="nav-link-matches" href="/login">Sign in</a>
-			</div>
-			<div class="sign-up">
-				<a href="/signup">
-					<Button>Sign Up</Button>
-				</a>
-			</div>
-		{:else}
-			<div class="profile-button-container">
-				<button class="profile-button" on:click={toggleProfileMenu}>
-					<div class="profile-icon">
-						<ProfileIcon />
-					</div>
-				</button>
-				{#if isMenuVisible}
-					<div class="profile-menu-container">
-						<div class="profile-menu-wrapper">
-							<div class="upper-subcontainer">
-								<div class="name-tag">
-									<div class="name">{playerInfo?.name}</div>
-									<div class="tag">@{playerInfo?.telegramAlias}</div>
-								</div>
-								<div class="space-for-icon" />
+<div class="profile-container">
+	{#if !getRoles($userToken).includes('USER')}
+		<div class="sign-in">
+			<a id="nav-link-matches" href="{base}/login">Sign in</a>
+		</div>
+		<div class="sign-up">
+			<a href="{base}/signup">
+				<Button>Sign Up</Button>
+			</a>
+		</div>
+	{:else}
+		<div class="profile-button-container">
+			<button class="profile-button" on:click={toggleProfileMenu}>
+				<div class="profile-icon">
+					<ProfileIcon />
+				</div>
+			</button>
+			{#if isMenuVisible}
+				<div class="profile-menu-container">
+					<div class="profile-menu-wrapper">
+						<div class="upper-subcontainer">
+							<div class="name-tag">
+								<div class="name">{playerInfo?.name}</div>
+								<div class="tag">@{playerInfo?.telegramAlias}</div>
 							</div>
-							<div class="lower-subcontainer">
-								<a href={linkToProfile}>
-									<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
-								</a>
-								<button class="log-out-button" on:click={logOut}>Log Out</button>
-							</div>
+							<div class="space-for-icon" />
+						</div>
+						<div class="lower-subcontainer">
+							<a href={linkToProfile}>
+								<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
+							</a>
+							<button class="log-out-button" on:click={logOut}>Log Out</button>
 						</div>
 					</div>
-					<button class="full-screen-button" on:click={toggleProfileMenu} />
-				{/if}
-			</div>
-		{/if}
-	</div>
-{/if}
+				</div>
+				<button class="full-screen-button" on:click={toggleProfileMenu} />
+			{/if}
+		</div>
+	{/if}
+</div>
 
 <style>
 	.profile-container {

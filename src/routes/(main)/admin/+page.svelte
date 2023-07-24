@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import { handleError } from '$lib/errorHandler';
+	import { alertPopup } from '$lib/popupHandler';
 
 	import * as db from '$lib/requests';
 	import type { Player } from '$lib/types/types';
@@ -12,7 +14,7 @@
 	let leaderToPromote = '';
 
 	const broadcastMessage = async (message: string) => {
-		const isConfirmed = confirm(`Are you sure that you want to broadcast this message?`);
+		const isConfirmed = await alertPopup(`Are you sure that you want to broadcast this message?`);
 		if (!isConfirmed) return;
 
 		await db
@@ -23,12 +25,10 @@
 			.catch((error) => {
 				handleError(error);
 			});
-
-		requestLeadersList();
 	};
 
 	const promoteLeader = async (telegramAlias: string) => {
-		const isConfirmed = confirm(
+		const isConfirmed = await alertPopup(
 			`Are you sure that you want to promote @${telegramAlias} to leaders?`,
 		);
 		if (!isConfirmed) return;
@@ -48,7 +48,7 @@
 	};
 
 	const demoteLeader = async (leader: Player) => {
-		const isConfirmed = confirm(`Are you sure that you want to demote leader ${leader.name}?`);
+		const isConfirmed = await alertPopup(`Are you sure that you want to demote leader ${leader.name}?`);
 		if (!isConfirmed) return;
 
 		await db.demoteLeader(String(leader.id)).catch((error) => {
@@ -90,7 +90,13 @@
 		<div class="form-holder">
 			<h4>Add new admin</h4>
 			<form class="add-admin">
-				<input placeholder="Enter alias" bind:value={leaderToPromote} />
+				<InputTemplate
+				type="text"
+				name="alias"
+				placeholder="Enter alias"
+				required={true}
+				bind:stringVal={leaderToPromote}
+			/>
 				<div>
 					<Button
 						type="submit"
@@ -107,11 +113,15 @@
 		<p class="broadcast-description">
 			Here you can write the message that bot will send to all players
 		</p>
-		<textarea
-			class="scrollable"
+		<div class='textarea-container'>
+			<InputTemplate
+			type="textarea"
+			name="message"
 			placeholder="Write here the message"
-			bind:value={telegramMessage}
-		/>
+			required={true}
+			bind:stringVal={telegramMessage}
+			/>
+		</div>
 		<div class="send-message">
 			<div />
 			<Button on:click={() => broadcastMessage(telegramMessage)}>Send</Button>
@@ -160,22 +170,12 @@
 		height: 30rem;
 	}
 
-	.side-wrapper.right textarea {
-		overflow-y: scroll;
+	.side-wrapper.right .textarea-container {
 		margin-bottom: 0.75rem;
-		border-radius: 20px;
-		resize: none;
-		box-sizing: border-box;
-		border: 3px solid var(--tertiary-color);
-		padding: 0.75em;
 	}
 
 	.side-wrapper.right .broadcast-description {
 		margin-bottom: 1.5rem;
-	}
-
-	.scrollable {
-		overflow-y: scroll;
 	}
 
 	.leaders-row {

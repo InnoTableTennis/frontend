@@ -24,7 +24,7 @@
 	$: stringVal = defaultValue;
 	$: numberVal = defaultNumValue;
 
-	let input: HTMLInputElement;
+	let input: HTMLInputElement | HTMLTextAreaElement;
 
 	onMount(() => {
 		if (isFirst) input.focus();
@@ -46,6 +46,8 @@
 	/>
 {:else if type === 'text'}
 	<input type="text" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
+{:else if type === 'textarea'}
+	<textarea {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
 {:else if type === 'date'}
 	<div class="date-container">
 		<input type="text" {placeholder} />
@@ -63,6 +65,20 @@
 {/if}
 
 <style>
+
+	textarea {
+		overflow-y: scroll;
+		border-radius: 20px;
+		resize: none;
+		box-sizing: border-box;
+		border: 3px solid var(--secondary-bg-color);
+		padding: 0.75em;
+		width: 100%;
+		height: 100%;
+		color: var(--not-chosen-font-color);
+		background-color: var(--main-color);
+		font-size: var(--fontsize-medium1);
+	}
 	input {
 		width: 100%;
 		height: 100%;
@@ -80,7 +96,13 @@
 		color: var(--content-color);
 		border-bottom: 5px solid var(--secondary-color);
 	}
-	input:disabled {
+
+	textarea:focus {
+		outline: none;
+		color: var(--content-color);
+	}
+
+	input:disabled, textarea:disabled {
 		background-color: var(--secondary-bg-color);
 		color: var(--not-chosen-font-color);
 		box-shadow: none;

@@ -3,6 +3,7 @@
 
 	import { isLeader } from '$lib/stores';
 	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
+	import { base } from '$app/paths';
 </script>
 
 <nav>
@@ -16,11 +17,11 @@
 		<ToggleTheme />
 		<ul class="nav-links">
 			{#if $isLeader}
-				<li><a href="/admin">Admin panel</a></li>
+				<li><a href="{base}/admin">Admin panel</a></li>
 			{/if}
-			<li><a href="/">Matches</a></li>
-			<li><a href="/tournaments">Tournaments</a></li>
-			<li><a href="/players">Players</a></li>
+			<li><a href="{base}/">Matches</a></li>
+			<li><a href="{base}/tournaments">Tournaments</a></li>
+			<li><a href="{base}/players">Players</a></li>
 		</ul>
 		<ProfileLink />
 	</div>
