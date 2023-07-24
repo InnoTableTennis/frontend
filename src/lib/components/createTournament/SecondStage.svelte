@@ -5,25 +5,7 @@
 
 	export let stage;
 	export let numberFinals = 0;
-	// export let finals: Player[][] = [];
-	export let games = [
-		'Bogdankov M. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Abdukhamidov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-	];
+	export let games : string[] = [];
 
 	let finals: number[][] = [];
 	let completed = false;
