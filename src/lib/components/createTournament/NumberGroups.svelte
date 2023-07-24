@@ -40,7 +40,7 @@
 				tournamentTitle: tournament.title,
 				players: [],
 				matches: [],
-				id: i+1,
+				id: i,
 			};
 		}
 		for (let i = 0; i < tournament.state.participants.length; i++) {

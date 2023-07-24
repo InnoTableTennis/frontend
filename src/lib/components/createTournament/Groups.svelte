@@ -1,13 +1,14 @@
 <script lang="ts">
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
-	import type { Tournament } from '$lib/types/types';
+	import type {Player, Tournament} from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import TournamentGroup from '../tournamentConstructor/TournamentGroup.svelte';
 
 	export let stage;
 	export let id: number;
+	export let finals: Player[][];
 
 	const dispatch = createEventDispatcher();
 	
@@ -22,7 +23,11 @@
 				tournament = result.data;
 				numberParticipants = tournament.state.participants.length;
 				numberGroups = tournament.state.firstStage?.length;
-				console.log(tournament);
+				if (!finals && tournament.state.firstStage && tournament.state.firstStage.length) {
+					let groupAmount = tournament.state.firstStage.length;
+					let maxPlayersAmount = Math.ceil(tournament.state.participants.length / groupAmount);
+					finals = new Array(maxPlayersAmount).fill(null).map(() => new Array(groupAmount).fill(null));
+				}
 			})
 			.catch((error) => {
 				dispatch('error', error);
@@ -38,6 +43,22 @@
 	const nextStage = function () {
 		stage = 'continue';
 	};
+	async function updateTournament(e: CustomEvent) {
+		let newGroup = e.detail;
+		if (tournament.state.firstStage) {
+			tournament.state.firstStage[e.detail] = newGroup;
+		}
+		await db.updateTournament(id, tournament.state).catch((error) => {
+			dispatch('error', error);
+		});
+		await requestTournament();
+	}
+	async function updatePlaces(e: CustomEvent, id:number) {
+		let players = e.detail;
+		for (let i = 0; i < players.length; i++) {
+			finals[i][id] = players[i];
+		}
+	}
 </script>
 
 {#await requestTournament() then}
@@ -66,7 +87,7 @@
 			{#if tournament.state}
 				{#if tournament.state.firstStage}
 					{#each tournament.state.firstStage as group}
-						<TournamentGroup groupInfo={group}>Group {group.id}</TournamentGroup>
+						<TournamentGroup groupInfo={group}  on:update={updateTournament} on:finalize={(event) => {updatePlaces(event, group.id)}}>Group {group.id + 1}</TournamentGroup>
 					{/each}
 				{/if}
 			{/if}
