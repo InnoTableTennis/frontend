@@ -1,5 +1,5 @@
-import {inputOverlayText, outputOverlayText} from "$lib/stores";
-import {get} from "svelte/store";
+import { inputOverlayText, outputOverlayText } from '$lib/stores';
+import { get } from 'svelte/store';
 async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
 	return new Promise<T>((resolve) => {
 		const element = document.querySelector(selector) as T;
@@ -47,10 +47,10 @@ async function waitForClick() {
 	const background: HTMLButtonElement = await waitFor('.overlay-background');
 	return await Promise.race([
 		waitForBackgroundTriggered(background, 'click'),
-		waitForAnswer(inputPopup, 'submit')
+		waitForAnswer(inputPopup, 'submit'),
 	]);
 }
-export async function alertInputPopup (message: string, firstName: string, secondName: string)  {
+export async function alertInputPopup(message: string, firstName: string, secondName: string) {
 	inputOverlayText.set([message, firstName, secondName]);
 	return await waitForClick();
 }

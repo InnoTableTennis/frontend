@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from "$lib/components/base/Button.svelte";
+	import Button from '$lib/components/base/Button.svelte';
 	import { fade } from 'svelte/transition';
-	import {inputOverlayText, outputOverlayText} from "$lib/stores";
-	import InputTemplate from "$lib/components/base/inputs/InputTemplate.svelte";
+	import { inputOverlayText, outputOverlayText } from '$lib/stores';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	export let popupText: string;
 	export let firstPlayer: string;
 	export let secondPlayer: string;
@@ -15,7 +15,7 @@
 </script>
 
 <form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
-	<button class="overlay-background" type="button"></button>
+	<button class="overlay-background" type="button" />
 	<div class="overlay-content">
 		<div class="overlay-head">
 			<div class="circle">!</div>
@@ -25,17 +25,25 @@
 			<div class="player-block">
 				<p>{firstPlayer}</p>
 				<div class="input">
-					<InputTemplate type={"number"} name={"firstScore"} defaultNumValue={0} placeholder={"First Score"}></InputTemplate>
+					<InputTemplate
+						type={'number'}
+						name={'firstScore'}
+						defaultNumValue={0}
+						placeholder={'First Score'}
+					/>
 				</div>
-
 			</div>
 			<div class="player-block">
 				<p>{secondPlayer}</p>
 				<div class="input">
-					<InputTemplate type={"number"} name={"secondScore"} defaultNumValue={0} placeholder={"Second Score"}></InputTemplate>
+					<InputTemplate
+						type={'number'}
+						name={'secondScore'}
+						defaultNumValue={0}
+						placeholder={'Second Score'}
+					/>
 				</div>
 			</div>
-
 		</div>
 		<div class="overlay-button-block">
 			<div class="overlay-button">
@@ -86,7 +94,7 @@
 		background-color: var(--secondary-color);
 		border-top-left-radius: 30px;
 		border-top-right-radius: 30px;
-		align-items:  center;
+		align-items: center;
 		justify-content: center;
 	}
 	.circle {
@@ -136,7 +144,7 @@
 		width: 80%;
 		margin: 0.5rem auto;
 	}
-	@media(max-width: 800px) {
+	@media (max-width: 800px) {
 		.overlay-content {
 			height: 50%;
 			width: 60%;
@@ -145,7 +153,7 @@
 			width: 40%;
 		}
 	}
-	@media(max-width: 480px) {
+	@media (max-width: 480px) {
 		.overlay-content {
 			padding: 0;
 			height: 30rem;

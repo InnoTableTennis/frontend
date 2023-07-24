@@ -1,16 +1,8 @@
 <script lang="ts">
 	import TournamentBracket from '$lib/components/bracketComponent/TournamentBracket.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import type { Match, Player } from '$lib/types/types';
-	interface inputData {
-		matchesNetwork: object;
-		playersAmount: number;
-		rounds: number[][];
-		winner: string;
-		inProgressMatches: number[];
-		finishedMatches: number[];
-		allMatches: Match[];
-	}
+	import type { readData } from '$lib/types/bracketTypes';
+	import type { Player, Tournament } from '$lib/types/types';
 
 	let players: Player[] = [
 		{
@@ -124,24 +116,41 @@
 		},
 	];
 
-	let data: inputData | null = null;
-	function updateData(event : CustomEvent) {
+	let data: readData = {
+		init: true,
+		type: 'SingleEliminationBracket',
+		playersList: players,
+	} as readData;
+
+	let data2: readData = {
+		init: true,
+		type: 'SingleEliminationBracket',
+		playersList: players,
+	} as readData;
+
+	function updateData(event: CustomEvent) {
+		data2 = event.detail;
+	}
+
+	function updateData2(event: CustomEvent) {
 		data = event.detail;
 	}
 
+	function printLeaderBoard(event: CustomEvent) {
+		console.log(event.detail);
+	}
 
+	let tournament = {
+		title: 'test',
+		finished: false,
+	} as Tournament;
 </script>
 
 <TournamentBracket
+	on:finalize={printLeaderBoard}
 	on:update={updateData}
 	on:error={handleError}
-	playersList={players}
-	tournamentTitle="BracketTournament1"
+	{data}
+	{tournament}
 />
-
-<TournamentBracket
-	on:update={updateData}
-	on:error={handleError}
-	bracketJSON={data}
-	tournamentTitle="BracketTournament1"
-/>
+<TournamentBracket on:update={updateData2} on:error={handleError} data={data2} {tournament} />

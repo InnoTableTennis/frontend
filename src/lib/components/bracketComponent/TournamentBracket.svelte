@@ -1,38 +1,16 @@
 <script lang="ts">
 	import * as db from '$lib/requests';
-	import type { Match, Player } from '$lib/types/types';
+	import type { Match, Player, Tournament } from '$lib/types/types';
 	import { Play, Dot } from 'lucide-svelte';
 	import { convertDateToStringDash } from '$lib/helper';
 	import { alertPopup } from '$lib/popupHandler';
 	import { isLeader } from '$lib/stores';
 	import { alertInputPopup } from '$lib/inputPopupHandler';
 	import { TSMap } from 'typescript-map';
-	import { isEmpty } from 'lodash-es';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import type { readData } from '$lib/types/bracketTypes';
 
 	const dispatch = createEventDispatcher();
-	// interface to store data
-	interface bracketData {
-		playersAmount: number;
-		rounds: number[][];
-		winner: string;
-		matchesNetwork: TSMap<string, string>;
-		inProgressMatches: number[];
-		finishedMatches: number[];
-		allMatches: Match[];
-	}
-
-	// interface to store input data from export
-	interface inputData {
-		// type: "SingleElmiminationBracket";
-		matchesNetwork: object;
-		playersAmount: number;
-		rounds: number[][];
-		winner: string;
-		inProgressMatches: number[];
-		finishedMatches: number[];
-		allMatches: Match[];
-	}
 
 	let emptyPlayer = {
 		id: 0,
@@ -103,7 +81,7 @@
 			secondPlayerRatingDelta: 0,
 			firstPlayerRatingBefore: 0,
 			secondPlayerRatingBefore: 0,
-			tournamentTitle: tournamentTitle,
+			tournamentTitle: tournament.title,
 		};
 		return newMatch;
 	}
@@ -120,18 +98,16 @@
 			matchToAdd.tournamentTitle,
 			localDateString,
 		);
-
-		console.log(matchToAdd, createdMatch);
-
 		data.allMatches[matchIdx] = createdMatch;
+		dispatch('update', data);
 	}
 
 	// function to create layout for empty bracket
 	function createLayout(): void {
 		// create matches for first round from list of players
-		for (let i = 0; i < playersList.length - 1; i += 2) {
-			let firstPlayer = playersList[i];
-			let secondPlayer = playersList[i + 1];
+		for (let i = 0; i < data.playersList.length - 1; i += 2) {
+			let firstPlayer = data.playersList[i];
+			let secondPlayer = data.playersList[i + 1];
 
 			data.allMatches.push(createMatch(firstPlayer, secondPlayer));
 			data.rounds[0].push(data.allMatches.length - 1);
@@ -213,6 +189,16 @@
 		if (!isConfirmed) return;
 
 		data.inProgressMatches = [...data.inProgressMatches, matchIdx];
+		dispatch('update', data);
+	}
+
+	function findPlayer(name: string): Player {
+		for (let i = 0; i < data.playersList.length; i++) {
+			if (data.playersList[i].name === name) {
+				return data.playersList[i];
+			}
+		}
+		return {} as Player;
 	}
 
 	// function to set a winner of the match
@@ -226,11 +212,16 @@
 		} else if (data.allMatches[matchIdx].secondPlayerName === '') {
 			winner = data.allMatches[matchIdx].firstPlayerName;
 		} else {
-			// check the scores and set the winner
-			winner =
+			// check the scores and set the winner and loser
+			if (
 				data.allMatches[matchIdx].firstPlayerScore > data.allMatches[matchIdx].secondPlayerScore
-					? data.allMatches[matchIdx].firstPlayerName
-					: data.allMatches[matchIdx].secondPlayerName;
+			) {
+				winner = data.allMatches[matchIdx].firstPlayerName;
+				data.leaderBoard.push(findPlayer(data.allMatches[matchIdx].secondPlayerName));
+			} else {
+				data.leaderBoard.push(findPlayer(data.allMatches[matchIdx].firstPlayerName));
+				winner = data.allMatches[matchIdx].secondPlayerName;
+			}
 		}
 
 		// get the future match
@@ -245,7 +236,10 @@
 			}
 		} else {
 			data.winner = winner;
+			data.leaderBoard.push(findPlayer(winner));
+			dispatch('finalize', data.leaderBoard);
 		}
+		dispatch('update', data);
 	}
 
 	async function handleMatchEdit(matchIdx: number) {
@@ -266,20 +260,23 @@
 
 		let matchToEdit = data.allMatches[matchIdx];
 
-		matchToEdit.firstPlayerScore = Number(scores[0]);
-		matchToEdit.secondPlayerScore = Number(scores[1]);
+		if (scores) {
+			matchToEdit.firstPlayerScore = Number(scores[0]);
+			matchToEdit.secondPlayerScore = Number(scores[1]);
 
-		setWinner(matchIdx);
+			setWinner(matchIdx);
 
-		db.editMatch(
-			matchToEdit.id.toString(),
-			matchToEdit.firstPlayerName,
-			matchToEdit.secondPlayerName,
-			matchToEdit.firstPlayerScore,
-			matchToEdit.secondPlayerScore,
-			matchToEdit.tournamentTitle,
-			matchToEdit.localDateString,
-		);
+			db.editMatch(
+				matchToEdit.id.toString(),
+				matchToEdit.firstPlayerName,
+				matchToEdit.secondPlayerName,
+				matchToEdit.firstPlayerScore,
+				matchToEdit.secondPlayerScore,
+				matchToEdit.tournamentTitle,
+				matchToEdit.localDateString,
+			);
+			dispatch('update', data);
+		}
 	}
 
 	// function to finish the match
@@ -290,20 +287,28 @@
 			data.allMatches[matchIdx].firstPlayerName,
 			data.allMatches[matchIdx].secondPlayerName,
 		);
-		// set the scores
-		data.allMatches[matchIdx].firstPlayerScore = Number(scores[0]);
-		data.allMatches[matchIdx].secondPlayerScore = Number(scores[1]);
 
-		// delete the match from in prgress matches
-		data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
+		if (scores) {
+			if (scores[0] == 0 && scores[1] === 0) {
+				dispatch('error', 'Cannot set both scores to zero!');
+				return;
+			}
+			// set the scores
+			data.allMatches[matchIdx].firstPlayerScore = Number(scores[0]);
+			data.allMatches[matchIdx].secondPlayerScore = Number(scores[1]);
 
-		// set the winner of the match
-		setWinner(matchIdx);
+			// delete the match from in prgress matches
+			data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
 
-		data.finishedMatches = [...data.finishedMatches, matchIdx];
-		data.inProgressMatches = data.inProgressMatches;
-		data = data;
-		addMatchToDB(matchIdx);
+			// set the winner of the match
+			setWinner(matchIdx);
+
+			data.finishedMatches = [...data.finishedMatches, matchIdx];
+			data.inProgressMatches = data.inProgressMatches;
+
+			addMatchToDB(matchIdx);
+			dispatch('update', data);
+		}
 	}
 
 	function isFirstRound(round: number[]) {
@@ -326,68 +331,39 @@
 		);
 	}
 
-	export let playersList: Player[] = [];
-	export let bracketJSON: inputData | null = null;
-	export let tournamentTitle: string;
+	export let tournament: Tournament;
 
-	
-	
-	let data: bracketData = {
-		// type: "SingleEliminationBracket",
-		playersAmount: 0,
-		rounds: [],
-		allMatches: [],
-		inProgressMatches: [],
-		finishedMatches: [],
-		matchesNetwork: new TSMap(),
-		winner: '',
-	};
+	export let data: readData;
 
-	function read() {
-		if (bracketJSON) {
-			data.allMatches = bracketJSON.allMatches;
-			data.playersAmount = bracketJSON.playersAmount;
-			data.rounds = bracketJSON.rounds;
-			data.finishedMatches = bracketJSON.finishedMatches;
-			data.inProgressMatches = bracketJSON.inProgressMatches;
-			data.matchesNetwork = new TSMap<string, string>().fromJSON(bracketJSON.matchesNetwork);
-			data.winner = bracketJSON.winner;
-		}
+	if (data.allMatches === undefined) {
+		data.leaderBoard = [];
+		data.allMatches = [];
+		data.finishedMatches = [];
+		data.inProgressMatches = [];
+		data.matchesNetwork = new TSMap<string, string>();
+		data.rounds = [];
+		data.winner = '';
 	}
 
 	function build() {
-		if (bracketJSON && !isEmpty(bracketJSON)) {
-		read();
-	}
-		else if (playersList && playersList.length !== 0) {
-			playersList = sortPlayers(playersList);
-			roundAmount = Math.ceil(Math.log2(playersList.length));
-			data.playersAmount = playersList.length;
-			for (let i = 0; i < roundAmount; i++) {
-				data.rounds.push([]);
-			}
-			createLayout();
-			
-	}
+		data.playersList = sortPlayers(data.playersList);
+		data.init = false;
+		roundAmount = Math.ceil(Math.log2(data.playersList.length));
+		for (let i = 0; i < roundAmount; i++) {
+			data.rounds.push([]);
+		}
+		createLayout();
+		dispatch('update', data);
 	}
 
-	$: {data = data;
-		dispatch("update", data as inputData)
-	
-	} 
-
-	$: {
-		bracketJSON = bracketJSON;
-		read();
-	}
-	
-	
 	let roundAmount = 0;
 
-	build();
-
+	onMount(() => {
+		if (data.init) {
+			build();
+		}
+	});
 </script>
-
 
 <div class="bracket-wrapper">
 	<div class="bracket">
@@ -401,7 +377,8 @@
 						</div>
 
 						<button
-							class:hidden={data.allMatches[matchIdx].firstPlayerName === '' ||
+							class:hidden={tournament.finished ||
+								data.allMatches[matchIdx].firstPlayerName === '' ||
 								data.allMatches[matchIdx].secondPlayerName === '' ||
 								(!$isLeader &&
 									data.allMatches[matchIdx].firstPlayerScore === 0 &&
