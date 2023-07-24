@@ -178,8 +178,13 @@
             editMatch(matchID[row][column].toString(), data[row].name, data[column].name, first, second, groupInfo.tournamentTitle);
             for (let changedMatch of groupInfo.matches) {
                 if (changedMatch.id == matchID[row][column]) {
-                    changedMatch.firstPlayerScore = first;
-                    changedMatch.secondPlayerScore = second;
+                    if (findPlayerNumber(changedMatch.firstPlayerName) == row) {
+                        changedMatch.firstPlayerScore = first;
+                        changedMatch.secondPlayerScore = second;
+                    } else {
+                        changedMatch.firstPlayerScore = second;
+                        changedMatch.secondPlayerScore = first;
+                    }
                     break;
                 }
             }
