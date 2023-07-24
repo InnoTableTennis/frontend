@@ -4,7 +4,7 @@
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';
-	import MatchesList from '$lib/components/MatchesList.svelte';
+	import MatchesList from '$lib/components/lists/MatchesList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import { handleError } from '$lib/errorHandler';
 	import SortFilterMatchForm from '$lib/components/forms/SortFilterMatchForm.svelte';

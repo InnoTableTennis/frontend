@@ -8,6 +8,7 @@
 	let currentPageNumber: number;
 	let currentPageSize: number;
 	export let lastPageNumber = 100;
+	export let isTopHidden = false;
 
 	function requestNewPage() {
 		dispatch('request', { currentPageNumber: currentPageNumber, currentPageSize: currentPageSize });
@@ -18,6 +19,7 @@
 	bind:currentPageNumber
 	bind:currentPageSize
 	on:click={requestNewPage}
+	{isTopHidden}
 	{lastPageNumber}
 />
 <slot />

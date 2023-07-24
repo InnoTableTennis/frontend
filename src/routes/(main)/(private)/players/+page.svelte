@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AddPlayerForm from '$lib/components/forms/AddPlayerForm.svelte';
-	import PlayersList from '$lib/components/PlayersList.svelte';
+	import PlayersList from '$lib/components/lists/PlayersList.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Player } from '$lib/types/types';
 	import { userToken } from '$lib/stores';

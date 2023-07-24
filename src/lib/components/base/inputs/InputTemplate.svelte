@@ -16,6 +16,8 @@
 	export let stringVal = '';
 	export let numberVal: number | string = 0;
 
+	export let textAlignCenter = false;
+
 	export const reset = () => {
 		stringVal = defaultValue;
 		numberVal = defaultNumValue;
@@ -43,6 +45,7 @@
 		{placeholder}
 		{required}
 		bind:this={input}
+		class:text-center={textAlignCenter}
 	/>
 {:else if type === 'text'}
 	<input type="text" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
@@ -60,6 +63,7 @@
 			bind:this={input}
 			class="date"
 			class:isEmpty
+			class:text-center={textAlignCenter}
 		/>
 	</div>
 {/if}
@@ -120,5 +124,8 @@
 	}
 	.date:focus {
 		opacity: 1;
+	}
+	.text-center {
+		text-align: center;
 	}
 </style>

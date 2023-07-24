@@ -6,6 +6,7 @@ import { dev } from '$app/environment';
 import { userToken } from '$lib/stores';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
+import type { TournamentState } from '$lib/types/tournamentTypes';
 
 /**
  * This file contains functions for making API requests.
@@ -435,6 +436,57 @@ export async function getTournaments(
 	const data = await response.json();
 
 	return { data, totalPages };
+}
+
+/**
+ * Retrieves tournament from the API.
+ * @param id - The id of the tournament that you want to get.
+ * @returns The tournament data.
+ */
+export async function getTournament(id: number | null = null): Promise<{
+	data: Tournament;
+}> {
+	let url: string = serverAPI + '/tournaments';
+	if (id) {
+		url += '/' + id;
+	}
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	let data = await response.json();
+	data = data.data;
+	data.state = JSON.parse(data.state);
+
+	return { data };
+}
+
+/**
+ * Updates state of the tournament.
+ * @param tournamentID - The ID of the tournament.
+ */
+export async function updateTournament(
+	tournamentID: number,
+	state: TournamentState | null,
+): Promise<void> {
+	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID + '/state', {
+		method: 'PATCH',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+		body: JSON.stringify({
+			state: JSON.stringify(state),
+		}),
+	});
+
+	await handleModifyErrors(response, token);
 }
 
 /**

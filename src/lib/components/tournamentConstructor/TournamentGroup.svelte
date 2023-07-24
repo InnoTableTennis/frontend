@@ -1,4 +1,9 @@
 <script lang="ts">
+	import type { Match, Player } from '$lib/types/types';
+	import { alertInputPopup } from '$lib/inputPopupHandler';
+	import { createMatch, editMatch } from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
+	import type { Group } from '$lib/types/tournamentTypes';
 	import type { Group, Match, Player } from '$lib/types/types';
 	import { alertInputPopup } from '$lib/inputPopupHandler';
 	import { createMatch, editMatch } from '$lib/requests';
