@@ -120,7 +120,6 @@
                 finalPlayers[i] = data[placesTribune[i]];
             }
             dispatch("finalize", finalPlayers);
-            dispatch("update", groupInfo.matches);
         }
     }
     const findTable = (num: number) => {
