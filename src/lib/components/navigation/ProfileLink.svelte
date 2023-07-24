@@ -2,6 +2,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
+	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { getUsername } from '$lib/token';
 	import { userToken } from '$lib/stores';
@@ -19,6 +20,8 @@
 		isMenuVisible = isMenuVisible ? false : true;
 	};
 
+	let playerInfo: Player | null = null;
+
 	const dispatch = createEventDispatcher();
 
 	const requestUserinfo = async () => {
@@ -33,51 +36,58 @@
 			});
 		return players.find((user) => user.telegramAlias == getUsername($userToken));
 	};
+	let linkToProfile = '/players/';
 
-	let playerInfo: Player | null = null;
-	requestUserinfo().then((response) => {
-		playerInfo = response as Player;
+	onMount(() => {
+		requestUserinfo().then((response) => {
+			playerInfo = response as Player;
+			linkToProfile += playerInfo.id;
+		});
 	});
 </script>
 
-<div class="profile-container">
-	{#if !getRoles($userToken).includes('USER')}
-		<div class="sign-in">
-			<a id="nav-link-matches" href="/login">Sign in</a>
-		</div>
-		<div class="sign-up">
-			<a href="/signup">
-				<Button>Sign Up</Button>
-			</a>
-		</div>
-	{:else}
-		<div class="profile-button-container">
-			<button class="profile-button" on:click={toggleProfileMenu}>
-				<div class="profile-icon">
-					<ProfileIcon />
-				</div>
-			</button>
-			{#if isMenuVisible}
-				<div class="profile-menu-container">
-					<div class="profile-menu-wrapper">
-						<div class="upper-subcontainer">
-							<div class="name-tag">
-								<div class="name">{playerInfo?.name}</div>
-								<div class="tag">@{playerInfo?.telegramAlias}</div>
+{#if playerInfo}
+	<div class="profile-container">
+		{#if !getRoles($userToken).includes('USER')}
+			<div class="sign-in">
+				<a id="nav-link-matches" href="/login">Sign in</a>
+			</div>
+			<div class="sign-up">
+				<a href="/signup">
+					<Button>Sign Up</Button>
+				</a>
+			</div>
+		{:else}
+			<div class="profile-button-container">
+				<button class="profile-button" on:click={toggleProfileMenu}>
+					<div class="profile-icon">
+						<ProfileIcon />
+					</div>
+				</button>
+				{#if isMenuVisible}
+					<div class="profile-menu-container">
+						<div class="profile-menu-wrapper">
+							<div class="upper-subcontainer">
+								<div class="name-tag">
+									<div class="name">{playerInfo?.name}</div>
+									<div class="tag">@{playerInfo?.telegramAlias}</div>
+								</div>
+								<div class="space-for-icon" />
 							</div>
-							<div class="space-for-icon" />
-						</div>
-						<div class="lower-subcontainer">
-							<button class="open-profile-button">Profile</button>
-							<button class="log-out-button" on:click={logOut}>Log Out</button>
+							<div class="lower-subcontainer">
+								<a href={linkToProfile}>
+									<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
+								</a>
+								<button class="log-out-button" on:click={logOut}>Log Out</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<button class="full-screen-button" on:click={toggleProfileMenu} />
-			{/if}
-		</div>
-	{/if}
-</div>
+					<button class="full-screen-button" on:click={toggleProfileMenu} />
+				{/if}
+			</div>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.profile-container {
@@ -203,6 +213,11 @@
 		color: var(--content-color);
 		font-weight: var(--fontweight-2);
 		transition: 0.1s;
+		width: 100%;
+		height: 2rem;
+		margin: 0.25rem;
+	}
+	.lower-subcontainer a {
 		width: 100%;
 		height: 2rem;
 		margin: 0.25rem;

@@ -5,7 +5,14 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
-import type { Player, Match, Tournament } from '$lib/types/types';
+import type {
+	Player,
+	Match,
+	Tournament,
+	Stats,
+	RatingHistoryItem,
+	ProfileInfo,
+} from '$lib/types/types';
 
 /**
  * This file contains functions for making API requests.
@@ -524,33 +531,6 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getStatistics(
-	pageNumber: number | null = null,
-	pageSize: number | null = null,
-): Promise<{
-	data: Tournament[];
-	totalPages: number;
-}> {
-	let url: string = serverAPI + '/api/tournaments';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
-		if (pageSize) url += '&size=' + pageSize;
-	}
-
-	const response: Response = await fetch(url, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
-
-	await handleGetErrors(response, token);
-
-	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
-
-	const data = await response.json();
-	return { data, totalPages };
-}
-
 /**
  * Retrieves leaders list from the API.
  * @returns The leaders data.
@@ -636,4 +616,64 @@ export async function broadcastMessage(message: string): Promise<void> {
 	// });
 
 	// await handleModifyErrors(response, token);
+}
+
+/**
+ * Retrieves player id.
+ * @returns player statistics.
+ */
+
+export async function getStatistics(playerID: number | null = null): Promise<{
+	data: Stats;
+}> {
+	const url: string = serverAPI + '/players/' + playerID + '/stats';
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	const data = await response.json();
+	return { data };
+}
+
+export async function getRatingHistory(playerID: number | null = null): Promise<{
+	data: RatingHistoryItem[];
+}> {
+	const url: string = serverAPI + '/rating_history/' + playerID;
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	const data = await response.json();
+
+	return { data };
+}
+
+export async function getProfileInfo(playerID: number | null = null): Promise<{
+	data: ProfileInfo;
+}> {
+	const url: string = serverAPI + '/players/' + playerID;
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+
+	const data = await response.json();
+
+	return { data };
 }

@@ -101,6 +101,12 @@
 			justify-content: space-between;
 			transition: all 0.5s ease-in-out;
 		}
+		.hamburger-lines {
+			padding: 0.3rem;
+			border-radius: 5px;
+			background-color: var(--main-color);
+			opacity: 0.8;
+		}
 		.hamburger-lines .line {
 			display: block;
 			height: 4px;
@@ -112,6 +118,7 @@
 			transform: rotate(-90deg);
 		}
 		input[type='checkbox'] {
+			background-color: var(--main-color);
 			position: fixed;
 			display: block;
 			border: none;
