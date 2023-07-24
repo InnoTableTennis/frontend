@@ -1,35 +1,58 @@
 <script lang="ts">
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import FinalsDistributor from '$lib/components/createTournament/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
+	import type { Tournament } from '$lib/types/types';
 
 	export let numberFinals = 0;
-	export let numberGroups = 0;
-	export let numberParticipants = 0;
+	export let id: number;
 	export let stage;
+
+	const dispatch = createEventDispatcher();
+	
+	let numberGroups: number | undefined;
+	let numberParticipants: number;
+	let tournament: Tournament = {} as Tournament;
+
+	async function requestTournament() {
+		await db
+			.getTournament(id)
+			.then((result) => {
+				tournament = result.data;
+				numberGroups = tournament.state.firstStage?.length;
+				numberParticipants = tournament.state.participants.length;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+	}
 
 	function back() {
 		stage = 'numberFinals';
 	}
 </script>
 
-<BackArrowButton action={back} />
+{#await requestTournament() then}
+	<BackArrowButton action={back} />
 
-<div class="content">
-	<h1>How many finals do you want?</h1>
-	<div class="numberFinals">
-		{numberFinals}
-	</div>
-	<div class="distribution">
-		<h1>Distribute places between finals</h1>
-		<div class="distributor">
-			<FinalsDistributor bind:numberGroups bind:numberParticipants bind:numberFinals />
+	<div class="content">
+		<h1>How many finals do you want?</h1>
+		<div class="numberFinals">
+			{numberFinals}
 		</div>
-		<div class="button">
-			<Button type="button" on:click={() => (stage = 'secondStage')}>Confirm</Button>
+		<div class="distribution">
+			<h1>Distribute places between finals</h1>
+			<div class="distributor">
+				<FinalsDistributor bind:numberGroups bind:numberParticipants bind:numberFinals />
+			</div>
+			<div class="button">
+				<Button type="button" on:click={() => (stage = 'secondStage')}>Confirm</Button>
+			</div>
 		</div>
 	</div>
-</div>
+{/await}
 
 <style>
 	.content {
