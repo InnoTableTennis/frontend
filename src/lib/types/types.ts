@@ -52,6 +52,7 @@ export interface Group {
 	tournamentTitle: string;
 	players: Player[];
 	matches: Match[];
+	id: number;
 }
 
 export interface SingleEliminationBracket {

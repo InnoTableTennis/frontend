@@ -1,24 +1,34 @@
 <script lang="ts">
-	import type { Player } from '$lib/types/types';
-	import { onMount } from 'svelte';
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
+	import type { Tournament } from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
+	import TournamentGroup from '../tournamentConstructor/TournamentGroup.svelte';
 
-	export let groups: Player[][] = [] as Player[][];
-	export let participants: Player[] = [];
-	export let numberParticipants = 0;
-	export let numberGroups = 0;
 	export let stage;
+	export let id: number;
 
-	const makeGroups = function () {
-		groups = [];
-		for (let i = 0; i < numberGroups; i++) {
-			groups.push([]);
-		}
-		for (let i = 0; i < numberParticipants; i++) {
-			groups[i % numberGroups] = [...groups[i % numberGroups], participants[i]];
-		}
-	};
+	const dispatch = createEventDispatcher();
+	
+	let numberParticipants = 0;
+	let numberGroups: number | undefined = 0;
+	let tournament: Tournament = {} as Tournament;
+
+	async function requestTournament() {
+		await db
+			.getTournament(id)
+			.then((result) => {
+				tournament = result.data;
+				numberParticipants = tournament.state.participants.length;
+				numberGroups = tournament.state.firstStage?.length;
+				console.log(tournament);
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+	}
+	
 	const changeParticipants = function () {
 		stage = 'addParticipants';
 	};
@@ -28,37 +38,41 @@
 	const nextStage = function () {
 		stage = 'continue';
 	};
-
-	onMount(() => {
-		makeGroups();
-	});
 </script>
 
-<div class="groups-layout">
-	<div class="form">
-		<h1>Next games</h1>
-		<h1>Settings</h1>
-		<span class="setting-line">
-			Participants - {numberParticipants}
-			<button on:click={() => changeParticipants()} class="restart-button">
-				<RestartIcon />
-			</button>
-		</span>
-		<span class="setting-line">
-			Groups - {numberGroups}
-			<button on:click={() => changeNumberGroups()} class="restart-button">
-				<RestartIcon />
-			</button>
-		</span>
-		<span class="setting-line">Finish the group stage of the tournament</span>
-		<div class="finish-button">
-			<Button type="button" on:click={() => nextStage()}>Finish</Button>
+{#await requestTournament() then}
+	<div class="groups-layout">
+		<div class="form">
+			<h1>Next games</h1>
+			<h1>Settings</h1>
+			<span class="setting-line">
+				Participants - {numberParticipants}
+				<button on:click={() => changeParticipants()} class="restart-button">
+					<RestartIcon />
+				</button>
+			</span>
+			<span class="setting-line">
+				Groups - {numberGroups}
+				<button on:click={() => changeNumberGroups()} class="restart-button">
+					<RestartIcon />
+				</button>
+			</span>
+			<span class="setting-line">Finish the group stage of the tournament</span>
+			<div class="finish-button">
+				<Button type="button" on:click={() => nextStage()}>Finish</Button>
+			</div>
+		</div>
+		<div class="tables">
+			{#if tournament.state}
+				{#if tournament.state.firstStage}
+					{#each tournament.state.firstStage as group}
+						<TournamentGroup groupInfo={group}>Group {group.id}</TournamentGroup>
+					{/each}
+				{/if}
+			{/if}
 		</div>
 	</div>
-	<div class="tables">
-		<span>hello</span>
-	</div>
-</div>
+{/await}
 
 <style>
 	.groups-layout {
@@ -69,11 +83,9 @@
 	}
 	.form {
 		max-width: 35rem;
-		background-color: aqua;
 	}
 	.tables {
 		max-width: 90rem;
-		background-color: aquamarine;
 	}
 	h1 {
 		font-size: var(--fontsize-large);

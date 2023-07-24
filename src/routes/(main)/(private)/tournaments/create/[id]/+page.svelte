@@ -16,7 +16,7 @@
 	const dispatch = createEventDispatcher();
 
 	let stage:
-		| 'create'
+		'create'
 		| 'addParticipants'
 		| 'numberGroups'
 		| 'groups'
@@ -24,16 +24,15 @@
 		| 'numberFinals'
 		| 'finalsDistribution'
 		| 'secondStage' = 'create';
+	let id: number;
 	let tournament: Tournament = {} as Tournament;
-	let participants: Player[] = [];
-	let groups: Player[][] = [];
 	// let finals: Player[][];
 	let numberParticipants = 0;
 	let numberGroups = 1;
 	let numberFinals = 1;
 
 	async function requestTournament() {
-		let id = Number(data.id);
+		id = Number(data.id);
 		await db
 			.getTournament(id)
 			.then((result) => {
@@ -47,13 +46,13 @@
 
 {#await requestTournament() then}
 	{#if stage === 'create'}
-		<CreateTournament {tournament} bind:stage />
+		<CreateTournament bind:id bind:stage />
 	{:else if stage == 'addParticipants'}
-		<AddParticipants bind:id={tournament.id} bind:stage bind:numberParticipants bind:participants />
+		<AddParticipants bind:id={tournament.id} bind:stage />
 	{:else if stage == 'numberGroups'}
-		<NumberGroups bind:numberGroups bind:stage />
+		<NumberGroups bind:id={tournament.id} bind:stage />
 	{:else if stage == 'groups'}
-		<Groups bind:numberGroups bind:numberParticipants bind:groups bind:participants bind:stage />
+		<Groups bind:id={tournament.id} bind:stage />
 	{:else if stage == 'continue'}
 		<Continue bind:stage />
 	{:else if stage == 'numberFinals'}

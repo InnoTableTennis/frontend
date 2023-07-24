@@ -5,7 +5,7 @@
     import {createEventDispatcher} from "svelte";
 
     const dispatch = createEventDispatcher();
-    export let groupInfo: Group = {type: "Group", tournamentTitle: "Group", players: [], matches: []};
+    export let groupInfo: Group = {type: "Group", tournamentTitle: "Tournament", players: [], matches: [], id: 0};
     let data = [] as Player[];
     if (groupInfo.players && groupInfo.players.length > 0) {
         data = groupInfo.players;
@@ -189,7 +189,7 @@
                 }
             }
         }
-        let newGroup: Group = {type: groupInfo.type, tournamentTitle: groupInfo.tournamentTitle, players: data, matches: groupInfo.matches};
+        let newGroup: Group = {type: groupInfo.type, tournamentTitle: groupInfo.tournamentTitle, players: data, matches: groupInfo.matches, id: groupInfo.id};
         dispatch("update", newGroup);
     }
     async function handleWaiting(firstName: string, secondName: string) {

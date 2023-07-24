@@ -1,32 +1,43 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import type { Tournament } from '$lib/types/types';
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
 
-	export let tournament: Tournament;
-	export let stage:
-		| 'create'
-		| 'addParticipants'
-		| 'numberGroups'
-		| 'groups'
-		| 'continue'
-		| 'numberFinals'
-		| 'finalsDistribution'
-		| 'secondStage';
+	export let id: number;
+	export let stage;
+
+	const dispatch = createEventDispatcher();
+	
+	let tournament: Tournament = {} as Tournament;
 
 	const nextStage = function () {
 		stage = 'addParticipants';
 	};
+
+	async function requestTournament() {
+		await db
+			.getTournament(id)
+			.then((result) => {
+				tournament = result.data;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+	}
 </script>
 
-<div class="center">
-	<div class="content">
-		<h1>{tournament.title}</h1>
-		<p>{tournament.startDateString} - {tournament.endDateString}</p>
-		<div class="button">
-			<Button on:click={() => nextStage()}>Create tournament</Button>
+{#await requestTournament() then}
+	<div class="center">
+		<div class="content">
+			<h1>{tournament.title}</h1>
+			<p>{tournament.startDateString} - {tournament.endDateString}</p>
+			<div class="button">
+				<Button on:click={() => nextStage()}>Create tournament</Button>
+			</div>
 		</div>
 	</div>
-</div>
+{/await}
 
 <style>
 	.center {
