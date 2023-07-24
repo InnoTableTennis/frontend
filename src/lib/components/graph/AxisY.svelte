@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type * as d3 from 'd3';
-	// import data from "$lib/components/graph/data/data.js";
 
 	export let width: number;
 	export let yScale: d3.ScaleLinear<number, number>;
