@@ -40,6 +40,7 @@
 	let isSubmissionDisabled = true;
 
 	$: {
+		// check the form to be filled
 		isSubmissionDisabled = !(
 			firstPlayerName &&
 			secondPlayerName &&
