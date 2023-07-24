@@ -1,26 +1,24 @@
 <script lang="ts">
-	import Button from "$lib/components/base/Button.svelte";
-	import InputTemplate from "$lib/components/base/inputs/InputTemplate.svelte";
-	import BackArrowButton from "$lib/components/base/BackArrowButton.svelte";
+	import Button from '$lib/components/base/Button.svelte';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 
-    export let numberFinals = 0;
-    export let stage;
+	export let numberFinals = 0;
+	export let stage;
 
 	const nextStage = function () {
 		stage = 'finalsDistribution';
 	};
 	function back() {
-        stage='continue';
+		stage = 'continue';
 	}
 </script>
 
-<BackArrowButton
-    action={back}
-/>
+<BackArrowButton action={back} />
 
 <div class="center">
-    <div class="content">
-        <h1>How many finals do you want?</h1>
+	<div class="content">
+		<h1>How many finals do you want?</h1>
 		<form on:submit={nextStage}>
 			<div class="input">
 				<InputTemplate
@@ -35,16 +33,14 @@
 				/>
 			</div>
 			<div class="button">
-				<Button type='submit'>
-					Confirm
-				</Button>
+				<Button type="submit">Confirm</Button>
 			</div>
 		</form>
-    </div>
+	</div>
 </div>
 
 <style>
-    .center {
+	.center {
 		display: flex;
 		height: 90vh;
 	}
@@ -59,15 +55,15 @@
 		margin-top: 2rem;
 		width: 9rem;
 	}
-    .input {
-        margin: auto;
-        margin-top: 1.5rem;
-        max-width: 4rem;
-    }
+	.input {
+		margin: auto;
+		margin-top: 1.5rem;
+		max-width: 4rem;
+	}
 
 	h1 {
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
-        letter-spacing: 0.09375rem;
-    }
+		letter-spacing: 0.09375rem;
+	}
 </style>

@@ -6,41 +6,41 @@
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	export let player: Player;
-    export let players: Player[];
-    export let participants: Player[] = [];
-    export let numberParticipants = 0;
+	export let players: Player[];
+	export let participants: Player[] = [];
+	export let numberParticipants = 0;
 
 	let name = $AddPlayerFormStore.name;
-    $: playerNames = players.map((player) => player.name);
+	$: playerNames = players.map((player) => player.name);
 
 	function resetForm() {
 		name = '';
 	}
 
-    function handleSelectPlayerName(event: CustomEvent) {
+	function handleSelectPlayerName(event: CustomEvent) {
 		name = event.detail;
 	}
 
-    function addParticipant() {
-        for (let i = 0; i < players.length; i++) {
-            if (players[i].name === name) {
-                if (!participants.includes(players[i])) {
-                    participants = [...participants, players[i]];
-                    numberParticipants++;
-                }
-            }
-        }
-    }
+	function addParticipant() {
+		for (let i = 0; i < players.length; i++) {
+			if (players[i].name === name) {
+				if (!participants.includes(players[i])) {
+					participants = [...participants, players[i]];
+					numberParticipants++;
+				}
+			}
+		}
+	}
 
 	function removeParticipant() {
-        for (let i = 0; i < participants.length; i++) {
-            if (participants[i].name === name) {
+		for (let i = 0; i < participants.length; i++) {
+			if (participants[i].name === name) {
 				participants.splice(i, 1);
 				participants = participants;
 				numberParticipants--;
-            }
-        }
-    }
+			}
+		}
+	}
 </script>
 
 <div class="header-line">
@@ -52,19 +52,19 @@
 	<div class="input">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
-            <DropdownInput
+			<DropdownInput
 				name="name"
 				placeholder="Player's name"
 				options={playerNames}
 				on:select={handleSelectPlayerName}
-                isFirstInput={true}
+				isFirstInput={true}
 				defaultValue={player.name}
 				bind:inputVal={name}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<Button on:click={() => removeParticipant()}>Remove</Button>	
+		<Button on:click={() => removeParticipant()}>Remove</Button>
 		<Button on:click={() => addParticipant()}>Add</Button>
 	</div>
 </form>

@@ -2,7 +2,29 @@
  * This file contains helper functions for manipulating strings and dates.
  */
 
-const special = ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'one hundredth'];
+const special = [
+	'zeroth',
+	'first',
+	'second',
+	'third',
+	'fourth',
+	'fifth',
+	'sixth',
+	'seventh',
+	'eighth',
+	'ninth',
+	'tenth',
+	'eleventh',
+	'twelfth',
+	'thirteenth',
+	'fourteenth',
+	'fifteenth',
+	'sixteenth',
+	'seventeenth',
+	'eighteenth',
+	'nineteenth',
+	'one hundredth',
+];
 const deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
 
 /**
@@ -12,9 +34,9 @@ const deca = ['twent', 'thirt', 'fort', 'fift', 'sixt', 'sevent', 'eight', 'nine
  */
 export function stringifyNumber(number: number): string {
 	if (number < 20) return special[number];
-	if (number === 100) return special[20]
-	if (number%10 === 0) return deca[Math.floor(number/10)-2] + 'ieth';
-	return deca[Math.floor(number/10)-2] + 'y-' + special[number%10];
+	if (number === 100) return special[20];
+	if (number % 10 === 0) return deca[Math.floor(number / 10) - 2] + 'ieth';
+	return deca[Math.floor(number / 10) - 2] + 'y-' + special[number % 10];
 }
 
 /**

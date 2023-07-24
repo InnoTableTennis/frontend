@@ -94,7 +94,8 @@
 						on:click={handleClick}
 						value={firstPageNumber}>{firstPageNumber}</button
 					>
-					<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
+					<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span
+					>
 				{/if}
 				{#each visiblePages as visiblePage, i}
 					<button

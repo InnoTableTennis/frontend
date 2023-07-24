@@ -20,7 +20,7 @@
 	let chosenId = -1;
 	let mode = '';
 	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isChoosing = (mode === 'edit' || mode === 'delete' || mode === 'create' || mode === 'view');
+	$: isChoosing = mode === 'edit' || mode === 'delete' || mode === 'create' || mode === 'view';
 	$: if (!isEditing) {
 		mode = isLeader ? 'create' : 'view';
 	}

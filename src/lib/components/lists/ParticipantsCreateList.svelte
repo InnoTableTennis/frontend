@@ -5,10 +5,10 @@
 	export let participant: Player;
 	export let participants: Player[];
 
-	$: participants.sort(function(player1, player2) {
+	$: participants.sort(function (player1, player2) {
 		if (player1.rating < player2.rating) {
 			return 1;
-		} else if(player1.rating === player2.rating){
+		} else if (player1.rating === player2.rating) {
 			return 0;
 		} else {
 			return -1;
@@ -22,7 +22,6 @@
 		return '-';
 	}
 </script>
-
 
 <Pagination isTopHidden={true}>
 	<div class="scroll">
@@ -45,9 +44,7 @@
 				>
 					<div class="players-grid">
 						<div>
-							<span class="position bold"
-								>{i+1}</span
-							>
+							<span class="position bold">{i + 1}</span>
 						</div>
 						<div class="no-wrap bold">{player.name}</div>
 						<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
@@ -58,8 +55,6 @@
 		</section>
 	</div>
 </Pagination>
-
-
 
 <style>
 	.games-list {

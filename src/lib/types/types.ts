@@ -48,21 +48,21 @@ export interface Tournament {
 }
 
 export interface Group {
-	type: "Group";
+	type: 'Group';
 	tournamentTitle: string;
 	players: Player[];
 	matches: Match[];
 }
 
 export interface SingleEliminationBracket {
-    type: "SingleEliminationBracket";
-    matchesNetwork: object;
-    playersAmount: number;
-    rounds: number[][];
-    winner: string;
-    inProgressMatches: number[];
-    finishedMatches: number[];
-    allMatches: Match[];
+	type: 'SingleEliminationBracket';
+	matchesNetwork: object;
+	playersAmount: number;
+	rounds: number[][];
+	winner: string;
+	inProgressMatches: number[];
+	finishedMatches: number[];
+	allMatches: Match[];
 }
 
 export type Final = Group | SingleEliminationBracket;

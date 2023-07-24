@@ -16,7 +16,6 @@
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
-
 	export const handleInsert = () => {
 		currentPageNumber = 1;
 		requestNewPage();
@@ -79,17 +78,17 @@
 					</div>
 
 					{#each players as player, i}
-                        <div class="players-grid" class:not-leader={!isLeader}>
-                            <div>
-                                <span class="position bold"
-                                    >{(currentPageNumber - 1) * currentPageSize + i + 1}</span
-                                >
-                            </div>
-                            <div class="no-wrap bold">{player.name}</div>
-                            <div class="no-wrap">{getAlias(player.telegramAlias)}</div>
-                            <div class="no-wrap">{player.numberOfGames}</div>
-                            <div class="rating bold">{player.rating}</div>
-                        </div>
+						<div class="players-grid" class:not-leader={!isLeader}>
+							<div>
+								<span class="position bold"
+									>{(currentPageNumber - 1) * currentPageSize + i + 1}</span
+								>
+							</div>
+							<div class="no-wrap bold">{player.name}</div>
+							<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
+							<div class="no-wrap">{player.numberOfGames}</div>
+							<div class="rating bold">{player.rating}</div>
+						</div>
 					{/each}
 				</section>
 			</div></Pagination

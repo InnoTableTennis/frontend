@@ -12,9 +12,7 @@
 	let leaderToPromote = '';
 
 	const broadcastMessage = async (message: string) => {
-		const isConfirmed = confirm(
-			`Are you sure that you want to broadcast this message?`,
-		);
+		const isConfirmed = confirm(`Are you sure that you want to broadcast this message?`);
 		if (!isConfirmed) return;
 
 		await db
@@ -22,7 +20,7 @@
 			.then(() => {
 				telegramMessage = '';
 			})
-			.catch((error) => {								
+			.catch((error) => {
 				handleError(error);
 			});
 
@@ -42,7 +40,7 @@
 			.then(() => {
 				leaderToPromote = '';
 			})
-			.catch((error) => {								
+			.catch((error) => {
 				handleError(error);
 			});
 
@@ -106,16 +104,18 @@
 	</div>
 	<div class="side-wrapper right">
 		<h3>Bot Message</h3>
-		<p class='broadcast-description'>Here you can write the message that bot will send to all players</p>
-			<textarea
+		<p class="broadcast-description">
+			Here you can write the message that bot will send to all players
+		</p>
+		<textarea
 			class="scrollable"
 			placeholder="Write here the message"
 			bind:value={telegramMessage}
-			/>
-			<div class="send-message">
-				<div />
-				<Button on:click={() => broadcastMessage(telegramMessage)}>Send</Button>
-			</div>
+		/>
+		<div class="send-message">
+			<div />
+			<Button on:click={() => broadcastMessage(telegramMessage)}>Send</Button>
+		</div>
 	</div>
 </div>
 

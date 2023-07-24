@@ -1,20 +1,20 @@
 <script lang="ts">
-	import NewLeftArrow from "$lib/components/icons/NewLeftArrow.svelte";
+	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 
-    export let action: () => void;
+	export let action: () => void;
 </script>
 
 <button class="back-btn" on:click={action}>
-    <div class="arrow">
-        <NewLeftArrow />
-    </div>
-    Back
+	<div class="arrow">
+		<NewLeftArrow />
+	</div>
+	Back
 </button>
 
 <style>
-    .back-btn {
+	.back-btn {
 		position: absolute;
-        cursor: pointer;
+		cursor: pointer;
 		left: 5%;
 		top: 10%;
 		width: 10rem;

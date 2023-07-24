@@ -15,12 +15,13 @@
 	let telegramAlias = $SortFilterPlayerFormStore.telegramAlias;
 	let minRating = $SortFilterPlayerFormStore.minRating;
 	let maxRating = $SortFilterPlayerFormStore.maxRating;
-	let sortBy: 'rating' | 'delta' | 'delta' = 'rating';
+	let sortBy: 'rating' | 'name' = 'rating';
 	let isDescending = true;
 
 	let radioValues = ['place', 'delta', 'rating'];
 	let radioLabels = ['Sort by place', 'Sort by delta', 'Sort by rating'];
 
+	// TO DO: make new type for sort by
 	const sortPlayer = () => {
 		dispatch('update');
 	};
@@ -41,7 +42,7 @@
 		telegramAlias = '';
 		minRating = '';
 		maxRating = '';
-		sortBy = 'place';
+		sortBy = 'rating';
 		isDescending = true;
 		saveForm();
 	};

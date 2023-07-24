@@ -439,9 +439,7 @@ export async function getTournaments(
  * @param id - The id of the tournament that you want to get.
  * @returns The tournament data.
  */
-export async function getTournament(
-	id: number | null = null,
-): Promise<{
+export async function getTournament(id: number | null = null): Promise<{
 	data: Tournament;
 }> {
 	let url: string = serverAPI + '/tournaments';
@@ -480,7 +478,7 @@ export async function updateTournament(
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({
-			state: JSON.stringify(state )
+			state: JSON.stringify(state),
 		}),
 	});
 
@@ -604,7 +602,6 @@ export async function getStatistics(
 	return { data, totalPages };
 }
 
-
 /**
  * Retrieves leaders list from the API.
  * @returns The leaders data.
@@ -613,7 +610,7 @@ export async function getLeaders(): Promise<{
 	data: Player[];
 }> {
 	const url: string = serverAPI + '/leaders';
-	
+
 	const response: Response = await fetch(url, {
 		headers: {
 			Authorization: `Bearer ${token}`,
@@ -632,11 +629,8 @@ export async function getLeaders(): Promise<{
  * @param telegramAlias - The Telegram alias of the player.
  * @returns Data of the promoted leader.
  */
-export async function promoteLeader(
-	telegramAlias: string,
-): Promise<Player> {
-	
-	if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);	
+export async function promoteLeader(telegramAlias: string): Promise<Player> {
+	if (telegramAlias[0] == '@') telegramAlias = telegramAlias.slice(1);
 
 	const response: Response = await fetch(serverAPI + '/leaders', {
 		method: 'POST',
@@ -652,7 +646,7 @@ export async function promoteLeader(
 
 	await handleModifyErrors(response, token);
 
-	const data = await response.json();	
+	const data = await response.json();
 
 	return data;
 }
@@ -672,18 +666,14 @@ export async function demoteLeader(leaderId: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-
 /**
  * Broadcasts message to all other players via telegram bot.
  * @param message - message to broadcast.
  */
-export async function broadcastMessage(
-	message: string,
-): Promise<void> {
-	
+export async function broadcastMessage(message: string): Promise<void> {
 	// TODO: get the api link
 	console.log('Broadcasting...', message);
-	
+
 	// const response: Response = await fetch(serverAPI + '/leaders', {
 	// 	method: 'POST',
 	// 	headers: {

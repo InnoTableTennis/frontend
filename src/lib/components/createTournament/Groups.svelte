@@ -1,109 +1,107 @@
 <script lang="ts">
-	import type { Player } from "$lib/types/types";
-	import { onMount } from "svelte";
-	import Button from "$lib/components/base/Button.svelte";
-	import RestartIcon from "$lib/components/icons/RestartIcon.svelte";
+	import type { Player } from '$lib/types/types';
+	import { onMount } from 'svelte';
+	import Button from '$lib/components/base/Button.svelte';
+	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 
-    export let groups: Player[][] = [] as Player[][];
-    export let participants: Player[] = [];
-    export let numberParticipants = 0;
-    export let numberGroups = 0;
-    export let stage;
+	export let groups: Player[][] = [] as Player[][];
+	export let participants: Player[] = [];
+	export let numberParticipants = 0;
+	export let numberGroups = 0;
+	export let stage;
 
-    const makeGroups = function () {
-        groups = [];
-        for (let i = 0; i < numberGroups; i++) {
-            groups.push([]);
-        }
-        for (let i = 0; i < numberParticipants; i++) {
-            groups[i%numberGroups] = [...groups[i%numberGroups], participants[i]];
-        }
-    }
-    const changeParticipants = function () {
+	const makeGroups = function () {
+		groups = [];
+		for (let i = 0; i < numberGroups; i++) {
+			groups.push([]);
+		}
+		for (let i = 0; i < numberParticipants; i++) {
+			groups[i % numberGroups] = [...groups[i % numberGroups], participants[i]];
+		}
+	};
+	const changeParticipants = function () {
 		stage = 'addParticipants';
 	};
-    const changeNumberGroups = function () {
+	const changeNumberGroups = function () {
 		stage = 'numberGroups';
 	};
-    const nextStage = function () {
+	const nextStage = function () {
 		stage = 'continue';
 	};
 
-    onMount(() => {
+	onMount(() => {
 		makeGroups();
 	});
 </script>
 
 <div class="groups-layout">
-    <div class="form">
-        <h1>Next games</h1>
-        <h1>Settings</h1>
-        <span class="setting-line">
-            Participants - {numberParticipants}
-            <button on:click={() => changeParticipants()} class="restart-button">
-                <RestartIcon />
-            </button> 
-        </span>
-        <span class="setting-line">
-            Groups - {numberGroups}
-            <button on:click={() => changeNumberGroups()} class="restart-button">
-                <RestartIcon />
-            </button> 
-        </span>
-        <span class="setting-line">Finish the group stage of the tournament</span>
-        <div class="finish-button">
-            <Button type='button' on:click={() => nextStage()}>
-                Finish
-            </Button>
-        </div>
-    </div>
-    <div class="tables">
-        <span>hello</span>
-    </div>
+	<div class="form">
+		<h1>Next games</h1>
+		<h1>Settings</h1>
+		<span class="setting-line">
+			Participants - {numberParticipants}
+			<button on:click={() => changeParticipants()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">
+			Groups - {numberGroups}
+			<button on:click={() => changeNumberGroups()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">Finish the group stage of the tournament</span>
+		<div class="finish-button">
+			<Button type="button" on:click={() => nextStage()}>Finish</Button>
+		</div>
+	</div>
+	<div class="tables">
+		<span>hello</span>
+	</div>
 </div>
 
 <style>
-    .groups-layout {
-        display: grid;
+	.groups-layout {
+		display: grid;
 		grid-auto-flow: column;
 		align-items: center;
-        grid-template-columns: 1fr 1.5fr;
-    }
-    .form {
-        max-width: 35rem;
-        background-color: aqua;
-    }
-    .tables {
-        max-width: 90rem;
-        background-color: aquamarine;
-    }
-    h1 {
+		grid-template-columns: 1fr 1.5fr;
+	}
+	.form {
+		max-width: 35rem;
+		background-color: aqua;
+	}
+	.tables {
+		max-width: 90rem;
+		background-color: aquamarine;
+	}
+	h1 {
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
 		letter-spacing: 0.09375rem;
 	}
-    .setting-line {
-        margin-top: 1rem;
-        display: flex;
-        align-items: center;
-    }
-    .restart-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-left: 1rem;
-        padding: 0;
-        height: 1.1rem;
-        width: 1.1rem;
-    }
-    .finish-button {
-        width: 9rem;
+	.setting-line {
+		margin-top: 1rem;
+		display: flex;
+		align-items: center;
+	}
+	.restart-button {
+		background: none;
+		border: none;
+		cursor: pointer;
+		margin-left: 1rem;
+		padding: 0;
+		height: 1.1rem;
+		width: 1.1rem;
+	}
+	.finish-button {
+		width: 9rem;
 		height: 2.75rem;
 		margin: auto;
 		margin-top: 2rem;
-    }
+	}
 
-    @media (max-width: 1100px) {
+	@media (max-width: 1100px) {
 		.groups-layout {
 			display: block;
 		}
@@ -111,7 +109,7 @@
 			max-width: 500px;
 			margin: 0 auto;
 		}
-        .tables {
+		.tables {
 			margin: 0 auto;
 		}
 	}

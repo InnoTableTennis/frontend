@@ -1,38 +1,31 @@
 <script lang="ts">
-    import * as db from '$lib/requests';
-	import type { Player, TournamentState } from "$lib/types/types.js";
-   	import Button from "$lib/components/base/Button.svelte";
-	import AddParticipantForm from "$lib/components/forms/AddParticipantForm.svelte";
-	import ParticipantsList from "$lib/components/lists/ParticipantsCreateList.svelte";
+	import * as db from '$lib/requests';
+	import type { Player, TournamentState } from '$lib/types/types.js';
+	import Button from '$lib/components/base/Button.svelte';
+	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
+	import ParticipantsList from '$lib/components/lists/ParticipantsCreateList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let id: number;
-    export let stage;
-    export let numberParticipants = 0;
-    export let participants: Player[] = [];
-    
-    let participant: Player = {} as Player;
+	export let stage;
+	export let numberParticipants = 0;
+	export let participants: Player[] = [];
+
+	let participant: Player = {} as Player;
 	let state: TournamentState | null = null;
 
 	const dispatch = createEventDispatcher();
 
-    async function getFormData() {
+	async function getFormData() {
 		const playersPromise = db.getPlayers('name', false, '', '', null, null, 1, 1000000);
-		const [playersResponse] = await Promise.all([
-			playersPromise
-		]);
+		const [playersResponse] = await Promise.all([playersPromise]);
 		return { players: playersResponse.data };
 	}
 
 	async function addParticipantsGroups() {
-		await db
-			.updateTournament(
-				id,
-				state
-			)
-			.catch((error) => {
-				dispatch('error', error);
-			});
+		await db.updateTournament(id, state).catch((error) => {
+			dispatch('error', error);
+		});
 	}
 
 	const nextStage = function () {
@@ -40,9 +33,9 @@
 			participants: participants,
 			firstStage: null,
 			secondStage: null,
-		}
+		};
 		addParticipantsGroups();
-		stage = 'numberGroups'; 
+		stage = 'numberGroups';
 	};
 </script>
 
@@ -57,16 +50,11 @@
 			/>
 		</div>
 		<div class="participants-list">
-			<ParticipantsList
-				bind:participant
-				bind:participants
-			/>
+			<ParticipantsList bind:participant bind:participants />
 			<div class="line-2-elems">
 				<span>{numberParticipants} participants in total</span>
 				<div class="button">
-					<Button on:click={() => nextStage()}>
-						Continue
-					</Button>
+					<Button on:click={() => nextStage()}>Continue</Button>
 				</div>
 			</div>
 		</div>
@@ -74,7 +62,7 @@
 {/await}
 
 <style>
-    .form-list-layout {
+	.form-list-layout {
 		display: grid;
 		align-items: center;
 		grid-template-columns: 1fr 2fr;
@@ -86,21 +74,20 @@
 	.participants-list {
 		max-width: 900px;
 	}
-    .line-2-elems {
+	.line-2-elems {
 		margin-top: 1rem;
-        margin-left: auto;
-        width: 30rem;        
+		margin-left: auto;
+		width: 30rem;
 		display: grid;
 		grid-template-columns: 1.5fr 1fr;
 		gap: 1rem;
 	}
 
-    span {
-        margin: auto;
-        font-weight: 500;
-        font-size: var(--fontsize-large);
-    }
-	
+	span {
+		margin: auto;
+		font-weight: 500;
+		font-size: var(--fontsize-large);
+	}
 
 	@media (max-width: 1100px) {
 		.form-list-layout {

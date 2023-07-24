@@ -48,7 +48,15 @@
 		class:text-center={textAlignCenter}
 	/>
 {:else if type === 'text'}
-	<input type="text" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} class:text-center={textAlignCenter} />
+	<input
+		type="text"
+		{name}
+		bind:value={stringVal}
+		{placeholder}
+		{required}
+		bind:this={input}
+		class:text-center={textAlignCenter}
+	/>
 {:else if type === 'date'}
 	<div class="date-container">
 		<input type="text" {placeholder} />

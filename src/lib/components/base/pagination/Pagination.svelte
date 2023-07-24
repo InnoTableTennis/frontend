@@ -19,7 +19,7 @@
 	bind:currentPageNumber
 	bind:currentPageSize
 	on:click={requestNewPage}
-	isTopHidden={isTopHidden}
+	{isTopHidden}
 	{lastPageNumber}
 />
 <slot />
