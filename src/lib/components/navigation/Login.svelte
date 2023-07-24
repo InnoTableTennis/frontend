@@ -1,18 +1,17 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { userToken } from '$lib/stores';
+	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import signin from '$lib/assets/signin.jpg';
 	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 	import * as db from '$lib/requests';
+	import { base } from '$app/paths';
 
 	const dispatch = createEventDispatcher();
 
 	let username = '';
 	let password = '';
-
-	let usernameInput: HTMLInputElement;
 
 	const login = async (e: Event) => {
 		e.preventDefault();
@@ -28,10 +27,6 @@
 				dispatch('error', { error });
 			});
 	};
-
-	onMount(() => {
-		usernameInput.focus();
-	});
 </script>
 
 <button
@@ -53,32 +48,26 @@
 				<div class="column">
 					<form on:submit={login}>
 						<h2>Sign in</h2>
-						<label>
-							<input
-								name="username"
-								bind:value={username}
-								required
-								autocomplete="off"
-								placeholder="@Telegram alias"
-								class="full-width"
-								bind:this={usernameInput}
-							/>
-						</label>
-						<label>
-							<input
-								type="password"
-								name="password"
-								bind:value={password}
-								required
-								autocomplete="off"
-								placeholder="Password"
-								class="full-width"
-							/>
-						</label>
+						<InputTemplate
+							type="text"
+							name="username"
+							bind:stringVal={username}
+							placeholder="@Telegram alias"
+							required={true}
+							isFirst={true}
+						/>
+						<InputTemplate
+							type="text"
+							name="password"
+							bind:stringVal={password}
+							placeholder="password"
+							required={true}
+							isFirst={false}
+						/>
 						<div class="button-container">
 							<Button dark={true} type={'submit'}>Sign In</Button>
 						</div>
-						<a class="sp-link" href="/signup">I don't have an account</a>
+						<a class="sp-link" href="{base}/signup">I don't have an account</a>
 					</form>
 				</div>
 			</div>
@@ -109,26 +98,6 @@
 		flex-direction: column;
 		gap: 1rem;
 	}
-	label {
-		align-self: flex-start;
-		width: 100%;
-	}
-	input {
-		background: var(--main-color);
-		box-sizing: border-box;
-		width: 100%;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom: 0.2rem solid;
-		border-color: var(--secondary-bg-color);
-		padding: 0.8em 0;
-		transition: 0.1s;
-	}
-	input:focus {
-		border-color: var(--secondary-color);
-		outline: none;
-	}
 
 	.row {
 		display: flex;
@@ -154,7 +123,7 @@
 	.wrapper-right {
 		display: flex;
 		width: 50vw;
-		height: 100%;
+		height: 100vh;
 		align-items: start;
 	}
 	.wrapper-left {
@@ -229,6 +198,9 @@
 	@media (max-width: 850px) {
 		.wrapper-left {
 			width: 100vw;
+		}
+		.wrapper-right {
+			display: none;
 		}
 	}
 </style>

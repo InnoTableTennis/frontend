@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import signup from '$lib/assets/signup.jpg';
 	import NewRightArrow from '$lib/components/icons/NewRightArrow.svelte';
 </script>
@@ -35,7 +36,7 @@
 							rel="noreferrer">club</a
 						>
 						leaders to add yourself to the players' list. Check the
-						<a class="link" href="/">matches section</a> to confirm if you're already added.
+						<a class="link" href="{base}/">matches section</a> to confirm if you're already added.
 					</p>
 					<div class="index">02</div>
 					<p>
@@ -48,10 +49,10 @@
 					</p>
 					<div class="index">03</div>
 					<p>
-						<a class="link" href="/login">Log in</a> to the website using your password to access the
+						<a class="link" href="{base}/login">Log in</a> to the website using your password to access the
 						services.
 					</p>
-					<a class="sp-link" href="/login">Already have an account</a>
+					<a class="sp-link" href="{base}/login">Already have an account</a>
 				</div>
 			</div>
 		</div>
@@ -138,6 +139,7 @@
 		width: 100%;
 		height: 100%;
 		align-content: center;
+		justify-content: center;
 	}
 	.backgroundImage {
 		height: 100vh;
@@ -145,7 +147,7 @@
 	}
 	.back-btn {
 		position: absolute;
-		left: 85%;
+		right: 5%;
 		top: 3%;
 		color: var(--secondary-color);
 		font-size: 1.5em;
@@ -164,13 +166,18 @@
 		width: 1rem;
 		height: 1rem;
 	}
-
-	@media (max-width: 850px) {
+	@media (max-width: 840px) {
 		.row {
 			font-size: small;
 		}
 		p {
 			font-size: small;
+		}
+		.wrapper-right {
+			width: 100vw;
+		}
+		.wrapper-left {
+			display: none;
 		}
 	}
 

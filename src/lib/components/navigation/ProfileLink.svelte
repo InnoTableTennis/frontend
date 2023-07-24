@@ -8,6 +8,7 @@
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 	import type { Player } from '$lib/types/types';
+	import { base } from '$app/paths';
 
 	let isMenuVisible = false;
 
@@ -43,10 +44,10 @@
 <div class="profile-container">
 	{#if !getRoles($userToken).includes('USER')}
 		<div class="sign-in">
-			<a id="nav-link-matches" href="/login">Sign in</a>
+			<a id="nav-link-matches" href="{base}/login">Sign in</a>
 		</div>
 		<div class="sign-up">
-			<a href="/signup">
+			<a href="{base}/signup">
 				<Button>Sign Up</Button>
 			</a>
 		</div>
@@ -84,12 +85,9 @@
 		display: flex;
 		gap: 1.5em;
 		height: 3rem;
-		height: 100%;
 		align-items: center;
-		white-space: nowrap;
 	}
 	.sign-in {
-		width: 7rem;
 		height: 100%;
 		width: 7rem;
 	}
@@ -106,7 +104,7 @@
 		color: var(--content-color);
 	}
 	.profile-button {
-		z-index: 10;
+		z-index: 3;
 		background: var(--main-color);
 		border: 0;
 	}
@@ -115,7 +113,7 @@
 		height: 3rem;
 	}
 	.profile-menu-container {
-		z-index: 3;
+		z-index: 2;
 		top: 0;
 		right: 0;
 		display: flex;
@@ -158,7 +156,6 @@
 		flex-direction: column;
 		align-items: flex-end;
 		min-width: 70%;
-		width: fit-content;
 		width: fit-content;
 	}
 	.space-for-icon {
@@ -217,13 +214,12 @@
 		cursor: pointer;
 	}
 	.full-screen-button {
-		z-index: 2;
+		z-index: 1;
 		background: none;
 		border: none;
 		position: absolute;
 		right: 0;
 		top: 0;
-		transform: translate(5%, 0%);
 		height: 100vh;
 		width: 100vw;
 	}
@@ -238,6 +234,9 @@
 		}
 		.sign-in {
 			margin-top: 0.078125rem;
+		}
+		.profile-menu-container {
+			transform: translate(-99%, -4%);
 		}
 	}
 	@media (max-width: 480px) {

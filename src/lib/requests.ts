@@ -17,8 +17,9 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverAPI: string = dev ? 'http://10.90.138.217:8080/api' : '/api';
-const serverAUTH: string = dev ? 'http://10.90.138.217:8080/auth' : '/auth';
+const serverPath = dev ? 'http://10.90.138.217:8080' : 'http://e516-109-187-223-174.ngrok-free.app';
+const serverAPI: string = serverPath + '/api';
+const serverAUTH: string = serverPath + '/auth';
 
 /**
  * Retrieves matches from the API.
@@ -132,7 +133,7 @@ export async function editMatch(
 		localDateString = new Date().toLocaleDateString('ru');
 	}
 
-	const response: Response = await fetch(serverAPI + '/api/matches/' + id, {
+	const response: Response = await fetch(serverAPI + '/matches/' + id, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',
@@ -310,7 +311,7 @@ export async function editPlayer(
 
 	name = titleCase(name);
 
-	const response: Response = await fetch(serverAPI + '/api/players/' + id, {
+	const response: Response = await fetch(serverAPI + '/players/' + id, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',
@@ -529,7 +530,7 @@ export async function editTournament(
 	startDateString = new Date(startDateString).toLocaleDateString('ru');
 	endDateString = new Date(endDateString).toLocaleDateString('ru');
 
-	const response: Response = await fetch(serverAPI + '/api/tournaments/' + id, {
+	const response: Response = await fetch(serverAPI + '/tournaments/' + id, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',
@@ -582,7 +583,7 @@ export async function getStatistics(
 	data: Tournament[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/api/tournaments';
+	let url: string = serverAPI + '/tournaments';
 	if (pageNumber) {
 		url += '?page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
@@ -671,20 +672,17 @@ export async function demoteLeader(leaderId: string): Promise<void> {
  * @param message - message to broadcast.
  */
 export async function broadcastMessage(message: string): Promise<void> {
-	// TODO: get the api link
-	console.log('Broadcasting...', message);
+	const response: Response = await fetch(serverAPI + '/telegram', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: 'Bearer ' + token,
+		},
+		body: JSON.stringify({
+			message,
+		}),
+	});
 
-	// const response: Response = await fetch(serverAPI + '/leaders', {
-	// 	method: 'POST',
-	// 	headers: {
-	// 		Accept: 'application/json',
-	// 		'Content-Type': 'application/json',
-	// 		Authorization: 'Bearer ' + token,
-	// 	},
-	// 	body: JSON.stringify({
-	// 		message,
-	// 	}),
-	// });
-
-	// await handleModifyErrors(response, token);
+	await handleModifyErrors(response, token);
 }
