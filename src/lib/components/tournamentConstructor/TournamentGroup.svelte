@@ -194,7 +194,7 @@
                 tablePoints[second][first] = secondScore > firstScore ? 2 : 1;
                 countPoints(first);
                 countPoints(second);
-                setMatch(first, second, Number(firstScore), Number(secondScore));
+                await setMatch(first, second, Number(firstScore), Number(secondScore));
                 tableResults[first][second] = Number(firstScore);
                 tableResults[second][first] =  Number(secondScore);
                 if (tablePlaying[first][second]) {
