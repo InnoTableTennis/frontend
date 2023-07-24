@@ -17,7 +17,7 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev ? 'http://10.90.138.217:8080' : 'http://e516-109-187-223-174.ngrok-free.app';
+const serverPath = dev ? 'http://10.90.138.217:8080' : 'https://7ba5-109-187-223-174.ngrok-free.app';
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 
