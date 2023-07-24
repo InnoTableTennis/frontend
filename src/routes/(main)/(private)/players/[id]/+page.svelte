@@ -28,6 +28,17 @@
 	};
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Explore your table tennis statistics at InnoTableTennis Club. View the number of tournaments played, win/loss records, rating history, graphs, and a complete list of all your played games. Track your progress and achievements in the club."
+	/>
+	<meta
+		name="keywords"
+		content="profile statistics, table tennis, InnoTableTennis Club, rating history, win/loss records, played games, progress tracking"
+	/>
+</svelte:head>
+
 {#await requestProfileData() then}
 	<div class="container">
 		<div class="banner">

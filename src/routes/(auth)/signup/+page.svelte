@@ -4,6 +4,18 @@
 	import NewRightArrow from '$lib/components/icons/NewRightArrow.svelte';
 </script>
 
+<svelte:head>
+	<title>Sign up</title>
+	<meta
+		name="description"
+		content="Join InnoTableTennis Club and get added to the players' list. Obtain your password via the Telegram bot after adding your Telegram alias. Log in with your password to access exclusive services and features. Already have an account? Log in and enjoy the thrill of table tennis at Innopolis University."
+	/>
+	<meta
+		name="keywords"
+		content="sign up, join club, table tennis, Innopolis, Inno, University, InnoTableTennis, Innopolis University, players' list, exclusive services, Telegram bot"
+	/>
+</svelte:head>
+
 <button
 	class="back-btn"
 	on:click={() => {
