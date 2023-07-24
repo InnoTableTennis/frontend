@@ -1,16 +1,16 @@
 <script lang="ts">
-	import AddParticipants from '$lib/components/createTournament/AddParticipants.svelte';
-	import Continue from '$lib/components/createTournament/Continue.svelte';
-	import CreateTournament from '$lib/components/createTournament/CreateTournament.svelte';
-	import FinalsDistribution from '$lib/components/createTournament/FinalsDistribution.svelte';
-	import Groups from '$lib/components/createTournament/Groups.svelte';
-	import NumberGroups from '$lib/components/createTournament/NumberGroups.svelte';
-	import NumberFinals from '$lib/components/createTournament/NumberFinals.svelte';
+	import AddParticipants from '$lib/components/tournament/tournamentConstructor/AddParticipants.svelte';
+	import Continue from '$lib/components/tournament/tournamentConstructor/Continue.svelte';
+	import CreateTournament from '$lib/components/tournament/tournamentConstructor/CreateTournament.svelte';
+	import FinalsDistribution from '$lib/components/tournament/tournamentConstructor/FinalsDistribution.svelte';
+	import Groups from '$lib/components/tournament/tournamentConstructor/Groups.svelte';
+	import NumberGroups from '$lib/components/tournament/tournamentConstructor/NumberGroups.svelte';
+	import NumberFinals from '$lib/components/tournament/tournamentConstructor/NumberFinals.svelte';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
-	import type { Player, Tournament } from '$lib/types/types.js';
-	import type { TournamentStage } from '$lib/types/tournamentTypes.js';
-	import SecondStage from '$lib/components/createTournament/SecondStage.svelte';
+	import type { Player, Tournament } from '$lib/types/types';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
 
 	export let data;
 
