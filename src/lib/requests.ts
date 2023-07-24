@@ -630,9 +630,7 @@ export async function broadcastMessage(message: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getProfileData(playerID: number | null = null): Promise<{
-	data: ProfileData;
-}> {
+export async function getProfileData(playerID: number | null = null): Promise<ProfileData> {
 	const url: string = serverAPI + '/players/' + playerID;
 
 	console.log('data');
@@ -650,7 +648,7 @@ export async function getProfileData(playerID: number | null = null): Promise<{
 
 	const resp = await response.json();
 
-	const data = resp.data || ({} as ProfileData);
+	const data = resp.data as ProfileData;
 
 	return data;
 }
