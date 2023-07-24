@@ -6,6 +6,7 @@
 	import signin from '$lib/assets/signin.jpg';
 	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 	import * as db from '$lib/requests';
+	import { base } from '$app/paths';
 
 	const dispatch = createEventDispatcher();
 
@@ -66,7 +67,7 @@
 						<div class="button-container">
 							<Button dark={true} type={'submit'}>Sign In</Button>
 						</div>
-						<a class="sp-link" href="/signup">I don't have an account</a>
+						<a class="sp-link" href="{base}/signup">I don't have an account</a>
 					</form>
 				</div>
 			</div>
