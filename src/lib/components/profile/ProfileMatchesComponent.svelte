@@ -9,7 +9,7 @@
 <div class="matches-comp-wrapper">
 	<div class="form-list-layout">
 		<div class="form">
-			<ProfileSortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+			<ProfileSortFilterMatchForm on:error={handleError} on:update={handleInsert} />
 		</div>
 		<div class="matches-list">
 			<ProfileMatchesList on:error={handleError} bind:handleInsert />
