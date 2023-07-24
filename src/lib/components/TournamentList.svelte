@@ -121,7 +121,7 @@
 								</div>
 								<div class="no-wrap content">{tournament.coefficient}</div>
 								<div class="content" style="text-align: right;">
-									{tournament.players}
+									{tournament.numberOfPlayers}
 									<PlayersIcon />
 								</div>
 								{#if isLeader && !tournament.finished && mode === 'add'}
