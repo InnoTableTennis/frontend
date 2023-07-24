@@ -1,24 +1,18 @@
 <script lang="ts">
-	import type { Player } from '$lib/types/types';
-	import { onMount } from 'svelte';
+	import type { Tournament } from '$lib/types/types';
+	// import { onMount } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
+	import TournamentGroup from '../tournamentConstructor/TournamentGroup.svelte';
 
-	export let groups: Player[][] = [] as Player[][];
-	export let participants: Player[] = [];
+	export let tournament: Tournament;
+	// export let groups: Player[][] = [] as Player[][];
 	export let numberParticipants = 0;
 	export let numberGroups = 0;
 	export let stage;
 
-	const makeGroups = function () {
-		groups = [];
-		for (let i = 0; i < numberGroups; i++) {
-			groups.push([]);
-		}
-		for (let i = 0; i < numberParticipants; i++) {
-			groups[i % numberGroups] = [...groups[i % numberGroups], participants[i]];
-		}
-	};
+	// let groups: Player[][] = [] as Player[][];
+
 	const changeParticipants = function () {
 		stage = 'addParticipants';
 	};
@@ -28,13 +22,16 @@
 	const nextStage = function () {
 		stage = 'continue';
 	};
-
-	onMount(() => {
-		makeGroups();
-	});
 </script>
 
 <div class="groups-layout">
+	{#if tournament.state}
+		{#if tournament.state.firstStage}
+			{#each tournament.state.firstStage as group}
+				<TournamentGroup groupInfo={group} />
+			{/each}
+		{/if}
+	{/if}
 	<div class="form">
 		<h1>Next games</h1>
 		<h1>Settings</h1>

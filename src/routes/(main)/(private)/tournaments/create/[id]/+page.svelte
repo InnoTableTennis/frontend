@@ -26,8 +26,6 @@
 		| 'secondStage' = 'create';
 	let tournament: Tournament = {} as Tournament;
 	let participants: Player[] = [];
-	let groups: Player[][] = [];
-	// let finals: Player[][];
 	let numberParticipants = 0;
 	let numberGroups = 1;
 	let numberFinals = 1;
@@ -49,11 +47,11 @@
 	{#if stage === 'create'}
 		<CreateTournament {tournament} bind:stage />
 	{:else if stage == 'addParticipants'}
-		<AddParticipants bind:id={tournament.id} bind:stage bind:numberParticipants bind:participants />
+		<AddParticipants bind:tournament bind:stage bind:numberParticipants bind:participants />
 	{:else if stage == 'numberGroups'}
-		<NumberGroups bind:numberGroups bind:stage />
+		<NumberGroups bind:tournament bind:participants bind:stage />
 	{:else if stage == 'groups'}
-		<Groups bind:numberGroups bind:numberParticipants bind:groups bind:participants bind:stage />
+		<Groups bind:tournament bind:numberGroups bind:numberParticipants bind:stage />
 	{:else if stage == 'continue'}
 		<Continue bind:stage />
 	{:else if stage == 'numberFinals'}

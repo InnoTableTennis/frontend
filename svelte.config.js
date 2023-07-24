@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 const dev = process.argv.includes('dev');
@@ -23,8 +23,8 @@ const config = {
 			strict: true,
 		}),
 		paths: {
-			base: dev ? '' : process.env.BASE_PATH
-		  },
+			base: dev ? '' : process.env.BASE_PATH,
+		},
 	},
 };
 

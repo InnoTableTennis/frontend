@@ -1,12 +1,43 @@
 <script lang="ts">
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
+	import type { Player, Tournament, TournamentState } from '$lib/types/types';
 
-	export let numberGroups = 0;
+	export let tournament: Tournament;
 	export let stage;
+	export let participants: Player[] = [];
+
+	let groups: Player[][] = [] as Player[][];
+	let numberGroups = 0;
+	const dispatch = createEventDispatcher();
+
+	const makeGroups = function () {
+		groups = [];
+		for (let i = 0; i < numberGroups; i++) {
+			groups.push([]);
+		}
+		for (let i = 0; i < tournament.numberOfPlayers; i++) {
+			groups[i % numberGroups] = [...groups[i % numberGroups], participants[i]];
+		}
+	};
+
+	async function addGroups(state: TournamentState) {
+		await db.updateTournament(tournament.id, state).catch((error) => {
+			dispatch('error', error);
+		});
+	}
 
 	const nextStage = function () {
+		makeGroups();
+		tournament.state = {
+			participants: tournament.state.participants,
+			firstStage: null,
+			secondStage: null,
+		};
+		addGroups(tournament.state);
 		stage = 'groups';
 	};
 	function back() {
