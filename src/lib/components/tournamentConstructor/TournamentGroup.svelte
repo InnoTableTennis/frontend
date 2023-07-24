@@ -18,6 +18,14 @@
     let finalPlaces: number[] = new Array(data.length).fill(-1);
     let matchID: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
     let tableResults: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+    const findPlayerNumber = (name: string) => {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].name == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
     if (groupInfo.matches && groupInfo.matches.length > 0) {
         for (let a of groupInfo.matches) {
             let first = findPlayerNumber(a.firstPlayerName);
@@ -213,14 +221,7 @@
         event.preventDefault();
         tablePlaying[row][column] = tablePlaying[column][row] = true;
     }
-    const findPlayerNumber = (name: string) => {
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].name == name) {
-                return i;
-            }
-        }
-        return -1;
-    }
+
     const allMatchesPlayed = () => {
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data.length; j++) {
