@@ -12,6 +12,7 @@
 		players: [],
 		matches: [],
 	};
+	
 	let data = [] as Player[];
 	if (groupInfo.players && groupInfo.players.length > 0) {
 		data = groupInfo.players;
