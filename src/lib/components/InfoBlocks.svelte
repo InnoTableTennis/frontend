@@ -29,11 +29,7 @@
 	};
 
 	const toggleStats = () => {
-		if (statsBlockStatus) {
-			statsBlockStatus = false;
-		} else {
-			statsBlockStatus = true;
-		}
+		statsBlockStatus = !statsBlockStatus;
 	};
 </script>
 
