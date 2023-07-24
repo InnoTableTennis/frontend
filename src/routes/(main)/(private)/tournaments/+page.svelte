@@ -4,7 +4,7 @@
 	import { getRoles } from '$lib/token';
 
 	import AddTournamentForm from '$lib/components/forms/AddTournamentForm.svelte';
-	import TournamentList from '$lib/components/TournamentList.svelte';
+	import TournamentList from '$lib/components/lists/TournamentList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';
 
@@ -20,7 +20,10 @@
 	let chosenId = -1;
 	let mode = '';
 	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
+	$: isChoosing = (mode === 'edit' || mode === 'delete' || mode === 'create' || mode === 'view');
+	$: if (!isEditing) {
+		mode = isLeader ? 'create' : 'view';
+	}
 </script>
 
 {#if isLeader}

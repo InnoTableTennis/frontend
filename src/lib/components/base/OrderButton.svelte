@@ -24,7 +24,6 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.88rem;
-		align-items: end;
 	}
 	input {
 		box-sizing: border-box;

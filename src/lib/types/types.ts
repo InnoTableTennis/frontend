@@ -40,7 +40,36 @@ export interface Tournament {
 	endDateString: string;
 	finished: boolean;
 	id: number;
-	players: number;
+	numberOfPlayers: number;
 	startDateString: string;
 	title: string;
+	matches: Match[];
+	state: TournamentState;
 }
+
+export interface Group {
+	type: "Group";
+	tournamentTitle: string;
+	players: Player[];
+	matches: Match[];
+}
+
+export interface SingleEliminationBracket {
+    type: "SingleEliminationBracket";
+    matchesNetwork: object;
+    playersAmount: number;
+    rounds: number[][];
+    winner: string;
+    inProgressMatches: number[];
+    finishedMatches: number[];
+    allMatches: Match[];
+}
+
+export type Final = Group | SingleEliminationBracket;
+
+export interface TournamentState {
+	participants: Player[];
+	firstStage: Group[] | null;
+	secondStage: Final[] | null;
+}
+//TO DO groups not null
