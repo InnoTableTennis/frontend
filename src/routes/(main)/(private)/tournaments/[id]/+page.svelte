@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import * as db from '$lib/requests';
 	import type { Tournament } from '$lib/types/types.js';
-	import ViewTournament from '$lib/components/ViewTournament.svelte';
+	import ViewTournament from '$lib/components/tournament/ViewTournament.svelte';
 
 	export let data;
 

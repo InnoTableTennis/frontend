@@ -3,7 +3,7 @@
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
-	import TournamentGroup from '$lib/components/tournamentConstructor/TournamentGroup.svelte';
+	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 
 	export let tournament: Tournament;
 	export let numberParticipants = 0;

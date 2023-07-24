@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import FinalsDistributor from '$lib/components/createTournament/FinalsDistributor.svelte';
+	import FinalsDistributor from '$lib/components/tournament/tournamentConstructor/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
