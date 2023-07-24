@@ -8,6 +8,7 @@
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 	import type { Player } from '$lib/types/types';
+	import { base } from '$app/paths';
 
 	let isMenuVisible = false;
 
@@ -43,10 +44,10 @@
 <div class="profile-container">
 	{#if !getRoles($userToken).includes('USER')}
 		<div class="sign-in">
-			<a id="nav-link-matches" href="/login">Sign in</a>
+			<a id="nav-link-matches" href="{base}/login">Sign in</a>
 		</div>
 		<div class="sign-up">
-			<a href="/signup">
+			<a href="{base}/signup">
 				<Button>Sign Up</Button>
 			</a>
 		</div>

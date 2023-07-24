@@ -29,6 +29,7 @@ jobs:
       - name: build
         env:
           BASE_PATH: '/frontend'
+          BACKEND_PATH: 'https://tabletennis.innopolis.university'
         run: |
           npm run build
           touch build/.nojekyll

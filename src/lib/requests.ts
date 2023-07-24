@@ -17,7 +17,7 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev ? 'http://10.90.138.217:8080' : 'https://tabletennis.innopolis.university';
+const serverPath = dev ? 'http://10.90.138.217:8080' : process.env.BACKEND_PATH || '';
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 
