@@ -16,6 +16,8 @@
 	export let stringVal = '';
 	export let numberVal: number | string = 0;
 
+	export let textAlignCenter = false;
+
 	export const reset = () => {
 		stringVal = defaultValue;
 		numberVal = defaultNumValue;
@@ -43,6 +45,7 @@
 		{placeholder}
 		{required}
 		bind:this={input}
+		class:text-center={textAlignCenter}
 	/>
 {:else if type === 'text'}
 	<input type="text" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
@@ -60,12 +63,12 @@
 			bind:this={input}
 			class="date"
 			class:isEmpty
+			class:text-center={textAlignCenter}
 		/>
 	</div>
 {/if}
 
 <style>
-
 	textarea {
 		overflow-y: scroll;
 		border-radius: 20px;
@@ -102,7 +105,8 @@
 		color: var(--content-color);
 	}
 
-	input:disabled, textarea:disabled {
+	input:disabled,
+	textarea:disabled {
 		background-color: var(--secondary-bg-color);
 		color: var(--not-chosen-font-color);
 		box-shadow: none;
@@ -120,5 +124,8 @@
 	}
 	.date:focus {
 		opacity: 1;
+	}
+	.text-center {
+		text-align: center;
 	}
 </style>

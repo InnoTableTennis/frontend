@@ -16,6 +16,7 @@
 	export let currentPageNumber = firstPageNumber;
 	export let currentPageSize = sizes[0];
 	export let lastPageNumber = 100;
+	export let isTopHidden = false;
 
 	$: isSmallLeft = currentPageNumber - firstPageNumber < 2;
 	$: isSmallRight = lastPageNumber - currentPageNumber < 2;
@@ -78,54 +79,57 @@
 	}
 </script>
 
-<div class="container" class:isTop class:isDown={!isTop}>
+<div class="container" class:isTop class:isBottom={!isTop}>
 	{#if isTop}
-		<div class="pages">
-			<button class="arrow" on:click={handleLeftClick}>
-				<LeftArrow height="0.9375rem" width="0.5625rem" color={'white'} />
-			</button>
+		{#if !isTopHidden}
+			<div class="pages">
+				<button class="arrow" on:click={handleLeftClick}>
+					<LeftArrow height="0.9375rem" width="0.5625rem" color={'white'} />
+				</button>
 
-			{#if !isSmallLeft}
-				<button
-					class="first number"
-					class:invisible={currentPageNumber - firstPageNumber < 2}
-					on:click={handleClick}
-					value={firstPageNumber}>{firstPageNumber}</button
-				>
-				<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span>
-			{/if}
-			{#each visiblePages as visiblePage, i}
-				<button
-					class="number"
-					class:current={currentPageIndex == i}
-					on:click={handleClick}
-					value={visiblePage}>{visiblePage}</button
-				>
-			{/each}
-			{#if !isSmallRight}
-				<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
-				<button
-					class="last number"
-					class:invisible={lastPageNumber - currentPageNumber < 2}
-					on:click={handleClick}
-					value={lastPageNumber}>{lastPageNumber}</button
-				>
-			{/if}
-			<button class="arrow" on:click={handleRightClick}>
-				<RightArrow height="0.9375rem" width="0.5625rem" color={'white'} />
-			</button>
-		</div>
-		<div class="sizes">
-			<span class="sizes-label">Show by</span>
-			{#each sizes as size}
-				<button
-					class="number"
-					class:current={size === currentPageSize}
-					on:click={handleSizeClick}
-					value={size}>{size}</button
-				>
-			{/each}
-		</div>
+				{#if !isSmallLeft}
+					<button
+						class="first number"
+						class:invisible={currentPageNumber - firstPageNumber < 2}
+						on:click={handleClick}
+						value={firstPageNumber}>{firstPageNumber}</button
+					>
+					<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span
+					>
+				{/if}
+				{#each visiblePages as visiblePage, i}
+					<button
+						class="number"
+						class:current={currentPageIndex == i}
+						on:click={handleClick}
+						value={visiblePage}>{visiblePage}</button
+					>
+				{/each}
+				{#if !isSmallRight}
+					<span class="ellipses" class:invisible={lastPageNumber - currentPageNumber < 2}>...</span>
+					<button
+						class="last number"
+						class:invisible={lastPageNumber - currentPageNumber < 2}
+						on:click={handleClick}
+						value={lastPageNumber}>{lastPageNumber}</button
+					>
+				{/if}
+				<button class="arrow" on:click={handleRightClick}>
+					<RightArrow height="0.9375rem" width="0.5625rem" color={'white'} />
+				</button>
+			</div>
+			<div class="sizes">
+				<span class="sizes-label">Show by</span>
+				{#each sizes as size}
+					<button
+						class="number"
+						class:current={size === currentPageSize}
+						on:click={handleSizeClick}
+						value={size}>{size}</button
+					>
+				{/each}
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -150,7 +154,7 @@
 		margin-bottom: 0;
 		border-radius: 20px 20px 0 0;
 	}
-	.isDown {
+	.isBottom {
 		border-radius: 0 0 20px 20px;
 	}
 	.number {
@@ -232,7 +236,7 @@
 		.container {
 			flex-direction: column;
 		}
-		.isDown {
+		.isBottom {
 			border-radius: 0 0 40px 40px;
 			height: 3rem;
 		}
