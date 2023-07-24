@@ -39,14 +39,6 @@
 	/>
 	<link rel="canonical" href="https://tabletennis.innopolis.university/" />
 	<meta name="robots" content="index, follow" />
-	<meta property="og:title" content="InnoTableTennis | Profile" />
-	<meta
-		property="og:description"
-		content="Explore your table tennis statistics at InnoTableTennis Club. View the number of tournaments played, win/loss records, rating history, graphs, and a complete list of all your played games. Track your progress and achievements in the club."
-	/>
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://tabletennis.innopolis.university" />
-	<meta property="og:image" content="https://tabletennis.innopolis.university/favicon.png" />
 </svelte:head>
 
 {#if isLoaded}
