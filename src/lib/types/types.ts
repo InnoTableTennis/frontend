@@ -44,3 +44,10 @@ export interface Tournament {
 	startDateString: string;
 	title: string;
 }
+
+export interface Group {
+	type: "Group";
+	tournamentTitle: string;
+	players: Player[];
+	matches: Match[];
+}

@@ -132,7 +132,7 @@ export async function editMatch(
 		localDateString = new Date().toLocaleDateString('ru');
 	}
 
-	const response: Response = await fetch(serverAPI + '/api/matches/' + id, {
+	const response: Response = await fetch(serverAPI + '/matches/' + id, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',

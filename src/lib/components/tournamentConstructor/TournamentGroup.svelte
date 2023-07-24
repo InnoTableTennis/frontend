@@ -1,14 +1,32 @@
 <script lang="ts">
-    import type { Player } from '$lib/types/types';
+    import type {Group, Match, Player} from '$lib/types/types';
     import {alertInputPopup} from "$lib/inputPopupHandler";
-    export let data = [] as Player[];
+    import {createMatch, editMatch} from "$lib/requests";
+    import {createEventDispatcher} from "svelte";
+
+    const dispatch = createEventDispatcher();
+    export let groupInfo: Group = {type: "Group", tournamentTitle: "Group", players: [], matches: []};
+    let data = [] as Player[];
+    if (groupInfo.players && groupInfo.players.length > 0) {
+        data = groupInfo.players;
+    }
     let order: number[][][];
     let tour: number[] = new Array(data.length);
     let tablePlaying: boolean[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(false));
-    let tableResults: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
     let tablePoints: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
     let sumPoints: number[] = new Array(data.length).fill(0);
-    let finalPlaces: number[] = Array.from(Array(data.length).keys());
+    let finalPlaces: number[] = new Array(data.length).fill(-1);
+    let matchID: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+    let tableResults: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+    if (groupInfo.matches && groupInfo.matches.length > 0) {
+        for (let a of groupInfo.matches) {
+            let first = findPlayerNumber(a.firstPlayerName);
+            let second = findPlayerNumber(a.secondPlayerName);
+            tableResults[first][second] = a.firstPlayerScore;
+            tableResults[second][first] = a.secondPlayerScore;
+            matchID[first][second] = matchID[second][first] = a.id;
+        }
+    }
     const generateOrder = () => {
         let orderN = data.length;
         let orderM = orderN - 1 + orderN % 2;
@@ -81,8 +99,19 @@
         for (let i = data.length - 1; i >= data.length - temp.length; i--) {
             placesTribune[i] = temp[data.length - i - 1];
         }
+        let changed = false;
         for (let i = 0; i < data.length; i++) {
-            finalPlaces[placesTribune[i]] = i;
+            if (finalPlaces[placesTribune[i]] != i) {
+                finalPlaces[placesTribune[i]] = i;
+                changed = true;
+            }
+        }
+        if (changed) {
+            let finalPlayers: Player[] = new Array(data.length);
+            for (let i = 0; i < data.length; i++) {
+                finalPlayers[i] = data[placesTribune[i]];
+            }
+            dispatch("finalize", finalPlayers);
         }
     }
     const findTable = (num: number) => {
@@ -113,6 +142,11 @@
         }
         return findTable(row) == findTable(column);
     }
+    const setMatchID = (currentMatch: Match) => {
+        const first = findPlayerNumber(currentMatch.firstPlayerName);
+        const second = findPlayerNumber(currentMatch.secondPlayerName);
+        matchID[first][second] = matchID[second][first] = currentMatch.id;
+    }
     const matchFinished = (row: number, column: number) => {
         if (checkTable(row, column)) {
             tour[row]++;
@@ -121,6 +155,22 @@
                 return;
             }
         }
+    }
+    async function setMatch (row: number, column: number, first: number, second: number) {
+        if (!tableResults[row][column] && !tableResults[column][row]) {
+            await createMatch(data[row].name, data[column].name, first, second, groupInfo.tournamentTitle).then(setMatchID);
+        } else {
+            await editMatch(matchID[row][column].toString(), data[row].name, data[column].name, first, second, groupInfo.tournamentTitle);
+        }
+        let newMatch = {} as Match;
+        newMatch.firstPlayerName = data[row].name;
+        newMatch.secondPlayerName = data[column].name;
+        newMatch.firstPlayerScore = first;
+        newMatch.secondPlayerScore = second;
+        newMatch.id = matchID[row][column];
+        groupInfo.matches.push(newMatch);
+        let newGroup: Group = {type: groupInfo.type, tournamentTitle: groupInfo.tournamentTitle, players: data, matches: groupInfo.matches};
+        dispatch("update", newGroup);
     }
     async function handleWaiting(firstName: string, secondName: string) {
         let results: number[] | null= (await alertInputPopup("Write the score:", firstName, secondName));
@@ -131,13 +181,14 @@
             const second = findPlayerNumber(finishedPlayerResults[1][0]);
             const firstScore = finishedPlayerResults[0][1];
             const secondScore = finishedPlayerResults[1][1];
-            if (first != -1 && second != -1 && (tableResults[first][second] || tablePlaying[first][second])) {
+            if (first != -1 && second != -1) {
                 tablePoints[first][second] = firstScore > secondScore ? 2 : 1;
                 tablePoints[second][first] = secondScore > firstScore ? 2 : 1;
-                tableResults[first][second] = Number(firstScore);
-                tableResults[second][first] =  Number(secondScore);
                 countPoints(first);
                 countPoints(second);
+                setMatch(first, second, Number(firstScore), Number(secondScore));
+                tableResults[first][second] = Number(firstScore);
+                tableResults[second][first] =  Number(secondScore);
                 if (tablePlaying[first][second]) {
                     tablePlaying[first][second] = false;
                     tablePlaying[second][first] = false;
@@ -187,8 +238,50 @@
         }
         return sumPoints[row];
     }
+    const generatePoints = () => {
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data.length; j++) {
+                if (tableResults[i][j] > tableResults[j][i]) {
+                    tablePoints[i][j] = 2;
+                }
+                if (tableResults[i][j] < tableResults[j][i]) {
+                    tablePoints[i][j] = 1;
+                }
+            }
+        }
+        for (let i = 0; i < data.length; i++) {
+            countPoints(i);
+        }
+    }
     generateOrder();
     generateTour();
+    $: if(groupInfo) {
+        data = [] as Player[];
+        if (groupInfo.players && groupInfo.players.length > 0) {
+            data = groupInfo.players;
+        }
+        tableResults = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+        if (groupInfo.matches && groupInfo.matches.length > 0) {
+            for (let a of groupInfo.matches) {
+                let first = findPlayerNumber(a.firstPlayerName);
+                let second = findPlayerNumber(a.secondPlayerName);
+                tableResults[first][second] = a.firstPlayerScore;
+                tableResults[second][first] = a.secondPlayerScore;
+                matchID[first][second] = matchID[second][first] = a.id;
+            }
+        }
+        tour = new Array(data.length);
+        tablePlaying = new Array(data.length).fill(null).map(() => new Array(data.length).fill(false));
+        tablePoints = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+        sumPoints = new Array(data.length).fill(0);
+        finalPlaces = new Array(data.length).fill(-1);
+        generateOrder();
+        generateTour();
+        generatePoints();
+        if (allMatchesPlayed()) {
+            generatePlaces();
+        }
+    }
 </script>
 
 {#if data.length > 0}
