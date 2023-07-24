@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createMatch, editMatch } from '$lib/requests';
 	import type { Group } from '$lib/types/tournamentTypes';
-	import type { Group, Match, Player } from '$lib/types/types';
+	import type { Match, Player } from '$lib/types/types';
 	import { alertInputPopup } from '$lib/inputPopupHandler';
 	import { createEventDispatcher } from 'svelte';
 
