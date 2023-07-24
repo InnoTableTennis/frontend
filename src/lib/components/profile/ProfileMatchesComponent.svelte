@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { handleError } from '$lib/errorHandler';
 	import ProfileSortFilterMatchForm from '$lib/components/profile/ProfileSortFilterMatchForm.svelte';
-	import ProfileMatchesList from './ProfileMatchesList.svelte';
+	import ProfileMatchesList from '$lib/components/profile/ProfileMatchesList.svelte';
 
 	let handleInsert: () => void;
 </script>
