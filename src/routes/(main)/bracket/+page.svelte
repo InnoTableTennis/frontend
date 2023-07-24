@@ -1,7 +1,16 @@
 <script lang="ts">
 	import TournamentBracket from '$lib/components/bracketComponent/TournamentBracket.svelte';
 	import { handleError } from '$lib/errorHandler';
-	import type { Player } from '$lib/types/types';
+	import type { Match, Player } from '$lib/types/types';
+	interface inputData {
+		matchesNetwork: object;
+		playersAmount: number;
+		rounds: number[][];
+		winner: string;
+		inProgressMatches: number[];
+		finishedMatches: number[];
+		allMatches: Match[];
+	}
 
 	let players: Player[] = [
 		{
@@ -115,111 +124,24 @@
 		},
 	];
 
-	let data = {
-		playersAmount: 8,
-		rounds: [[1, 2, 3], [4, 5], [6]],
-		allMatches: [
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 0,
-				firstPlayerName: 'Mikhail Kalinin',
-				secondPlayerName: '',
-				localDateString: '2023-07-23',
-				id: 0,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 0,
-				secondPlayerRatingBefore: 0,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 3,
-				secondPlayerScore: 0,
-				firstPlayerName: 'Nail Min',
-				secondPlayerName: 'Mikhail K',
-				localDateString: '23.07.2023',
-				id: 45,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 1000,
-				secondPlayerRatingBefore: 300,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 3,
-				firstPlayerName: 'Nikita Boris',
-				secondPlayerName: 'Nikita Borisov',
-				localDateString: '23.07.2023',
-				id: 47,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 994,
-				secondPlayerRatingBefore: 150,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 2,
-				firstPlayerName: 'Nur Islamov',
-				secondPlayerName: 'Test Name',
-				localDateString: '23.07.2023',
-				id: 46,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 105,
-				secondPlayerRatingBefore: 104,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 0,
-				firstPlayerName: 'Mikhail Kalinin',
-				secondPlayerName: 'Nail Min',
-				localDateString: '2023-07-23',
-				id: 0,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 0,
-				secondPlayerRatingBefore: 0,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 0,
-				firstPlayerName: 'Nikita Borisov',
-				secondPlayerName: 'Test Name',
-				localDateString: '2023-07-23',
-				id: 0,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 0,
-				secondPlayerRatingBefore: 0,
-				tournamentTitle: 'BracketTournament1',
-			},
-			{
-				firstPlayerScore: 0,
-				secondPlayerScore: 0,
-				firstPlayerName: '',
-				secondPlayerName: '',
-				localDateString: '2023-07-23',
-				id: 0,
-				firstPlayerRatingDelta: 0,
-				secondPlayerRatingDelta: 0,
-				firstPlayerRatingBefore: 0,
-				secondPlayerRatingBefore: 0,
-				tournamentTitle: 'BracketTournament1',
-			},
-		],
-		inProgressMatches: [4],
-		finishedMatches: [1, 3, 2],
-		matchesNetwork: { '0': '4', '1': '4', '2': '5', '3': '5', '4': '6', '5': '6' },
-		winner: '',
-	};
+	let data: inputData | null = null;
+	function updateData(event : CustomEvent) {
+		data = event.detail;
+	}
+
+
 </script>
 
 <TournamentBracket
+	on:update={updateData}
 	on:error={handleError}
 	playersList={players}
+	tournamentTitle="BracketTournament1"
+/>
+
+<TournamentBracket
+	on:update={updateData}
+	on:error={handleError}
+	bracketJSON={data}
 	tournamentTitle="BracketTournament1"
 />

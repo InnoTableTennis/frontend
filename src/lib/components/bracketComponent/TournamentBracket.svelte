@@ -24,6 +24,7 @@
 
 	// interface to store input data from export
 	interface inputData {
+		// type: "SingleElmiminationBracket";
 		matchesNetwork: object;
 		playersAmount: number;
 		rounds: number[][];
@@ -326,10 +327,13 @@
 	}
 
 	export let playersList: Player[] = [];
-	export let bracketJSON: inputData = {} as inputData;
+	export let bracketJSON: inputData | null = null;
 	export let tournamentTitle: string;
 
+	
+	
 	let data: bracketData = {
+		// type: "SingleEliminationBracket",
 		playersAmount: 0,
 		rounds: [],
 		allMatches: [],
@@ -339,26 +343,51 @@
 		winner: '',
 	};
 
-	playersList = sortPlayers(playersList);
+	function read() {
+		if (bracketJSON) {
+			data.allMatches = bracketJSON.allMatches;
+			data.playersAmount = bracketJSON.playersAmount;
+			data.rounds = bracketJSON.rounds;
+			data.finishedMatches = bracketJSON.finishedMatches;
+			data.inProgressMatches = bracketJSON.inProgressMatches;
+			data.matchesNetwork = new TSMap<string, string>().fromJSON(bracketJSON.matchesNetwork);
+			data.winner = bracketJSON.winner;
+		}
+	}
+
+	function build() {
+		if (bracketJSON && !isEmpty(bracketJSON)) {
+		read();
+	}
+		else if (playersList && playersList.length !== 0) {
+			playersList = sortPlayers(playersList);
+			roundAmount = Math.ceil(Math.log2(playersList.length));
+			data.playersAmount = playersList.length;
+			for (let i = 0; i < roundAmount; i++) {
+				data.rounds.push([]);
+			}
+			createLayout();
+			
+	}
+	}
+
+	$: {data = data;
+		dispatch("update", data as inputData)
+	
+	} 
+
+	$: {
+		bracketJSON = bracketJSON;
+		read();
+	}
+	
+	
 	let roundAmount = 0;
 
-	if (isEmpty(bracketJSON)) {
-		roundAmount = Math.ceil(Math.log2(playersList.length));
-		data.playersAmount = playersList.length;
-		for (let i = 0; i < roundAmount; i++) {
-			data.rounds.push([]);
-		}
-		createLayout();
-	} else {
-		data.allMatches = bracketJSON.allMatches;
-		data.playersAmount = bracketJSON.playersAmount;
-		data.rounds = bracketJSON.rounds;
-		data.finishedMatches = bracketJSON.finishedMatches;
-		data.inProgressMatches = bracketJSON.inProgressMatches;
-		data.matchesNetwork = new TSMap<string, string>().fromJSON(bracketJSON.matchesNetwork);
-		data.winner = bracketJSON.winner;
-	}
+	build();
+
 </script>
+
 
 <div class="bracket-wrapper">
 	<div class="bracket">
