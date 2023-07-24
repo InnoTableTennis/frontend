@@ -48,7 +48,9 @@
 	};
 
 	const demoteLeader = async (leader: Player) => {
-		const isConfirmed = await alertPopup(`Are you sure that you want to demote leader ${leader.name}?`);
+		const isConfirmed = await alertPopup(
+			`Are you sure that you want to demote leader ${leader.name}?`,
+		);
 		if (!isConfirmed) return;
 
 		await db.demoteLeader(String(leader.id)).catch((error) => {
@@ -91,12 +93,12 @@
 			<h4>Add new admin</h4>
 			<form class="add-admin">
 				<InputTemplate
-				type="text"
-				name="alias"
-				placeholder="Enter alias"
-				required={true}
-				bind:stringVal={leaderToPromote}
-			/>
+					type="text"
+					name="alias"
+					placeholder="Enter alias"
+					required={true}
+					bind:stringVal={leaderToPromote}
+				/>
 				<div>
 					<Button
 						type="submit"
@@ -113,13 +115,13 @@
 		<p class="broadcast-description">
 			Here you can write the message that bot will send to all players
 		</p>
-		<div class='textarea-container'>
+		<div class="textarea-container">
 			<InputTemplate
-			type="textarea"
-			name="message"
-			placeholder="Write here the message"
-			required={true}
-			bind:stringVal={telegramMessage}
+				type="textarea"
+				name="message"
+				placeholder="Write here the message"
+				required={true}
+				bind:stringVal={telegramMessage}
 			/>
 		</div>
 		<div class="send-message">

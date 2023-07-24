@@ -5,14 +5,9 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
-import type {
-	Player,
-	Match,
-	Tournament,
-	Stats,
-	RatingHistoryItem,
-	ProfileInfo,
-} from '$lib/types/types';
+import type { Player, Match, Tournament } from '$lib/types/types';
+
+import type { Stats, ProfileData } from '$lib/types/profileTypes';
 
 /**
  * This file contains functions for making API requests.
@@ -635,38 +630,27 @@ export async function broadcastMessage(message: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getRatingHistory(playerID: number | null = null): Promise<{
-	data: RatingHistoryItem[];
-  }> {
-	const url: string = serverAPI + '/rating_history/' + playerID;
-  
-	const response: Response = await fetch(url, {
-	  headers: {
-		Authorization: `Bearer ${token}`,
-	  },
-	});
-  
-	await handleGetErrors(response, token);
-  
-	const data = await response.json();
-  
-	return { data };
-  }
-  
-  export async function getProfileInfo(playerID: number | null = null): Promise<{
-	data: ProfileInfo;
-  }> {
+export async function getProfileData(playerID: number | null = null): Promise<{
+	data: ProfileData;
+}> {
 	const url: string = serverAPI + '/players/' + playerID;
-  
+
+	console.log('data');
+
 	const response: Response = await fetch(url, {
-	  headers: {
-		Authorization: `Bearer ${token}`,
-	  },
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
 	});
-  
+
 	await handleGetErrors(response, token);
-  
-	const data = await response.json();
-  
-	return { data };
-  }
+	console.log('data');
+
+	const resp = await response.json();
+
+	const data = resp.data || ({} as ProfileData);
+
+	return data;
+}

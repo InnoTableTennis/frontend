@@ -4,9 +4,9 @@
 	import AxisX from '$lib/components/graph/AxisX.svelte';
 	import AxisY from '$lib/components/graph/AxisY.svelte';
 	import Tooltip from '$lib/components/graph/Tooltip.svelte';
-	import type { RatingHistoryItemTest } from '$lib/types/types';
+	import type { RatingHistoryItem } from '$lib/types/profileTypes';
 
-	export let Data: RatingHistoryItemTest[];
+	export let Data: RatingHistoryItem[];
 
 	const margin = { top: 10, right: 20, left: 0, bottom: 20 };
 

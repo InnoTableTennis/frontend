@@ -233,7 +233,7 @@
 		position: absolute;
 		right: 0;
 		top: 0;
-		height: 100vh;
+		height: 99vh;
 		width: 100vw;
 	}
 	@media (min-width: 480px) {

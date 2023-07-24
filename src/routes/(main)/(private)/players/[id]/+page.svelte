@@ -3,7 +3,7 @@
 	import InfoBlocks from '$lib/components/InfoBlocks.svelte';
 	import ProfileMatchesComponent from '$lib/components/profile/ProfileMatchesComponent.svelte';
 	import RatingGraph from '$lib/components/graph/RatingGraph.svelte';
-	import type { ProfileData, ProfileInfo, RatingHistoryItemTest } from '$lib/types/types.js';
+	import type { ProfileData, RatingHistoryItem } from '$lib/types/profileTypes.js';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 
@@ -13,31 +13,28 @@
 
 	const playerID: number = +data.id;
 
-	let profileInfo: ProfileInfo;
 	let profileData: ProfileData;
-	let graphInfo: RatingHistoryItemTest[];
-	const requestProfileInfo = async () => {
+	let graphInfo: RatingHistoryItem[];
+	const requestProfileData = async () => {
 		await db
-			.getProfileInfo(playerID)
+			.getProfileData(playerID)
 			.then((result) => {
-				profileInfo = result.data;
-				profileData = profileInfo.data;
+				profileData = result;
 				graphInfo = profileData.graph;
 			})
 			.catch((error) => {
 				dispatch('error', error);
 			});
-		return profileInfo;
 	};
 </script>
 
-{#await requestProfileInfo() then}
+{#await requestProfileData() then}
 	<div class="container">
 		<div class="banner">
 			<div class="row">
 				<div class="profile-info">
 					<div class="name">
-						{profileInfo?.data.name}
+						{profileData?.name || ''}
 					</div>
 				</div>
 				<img class="image-container" src={profileImage} alt="Problem with downloading" />

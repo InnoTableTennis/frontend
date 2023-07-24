@@ -1,12 +1,12 @@
 <script lang="ts">
-    import Button from "$lib/components/base/Button.svelte";
-    import { fade } from 'svelte/transition';
-    import {overlayText} from "$lib/stores";
-    export let popupText: string;
-    const buttonPressed = (e: Event) => {
-        e.preventDefault();
-        $overlayText = null;
-    };
+	import Button from '$lib/components/base/Button.svelte';
+	import { fade } from 'svelte/transition';
+	import { overlayText } from '$lib/stores';
+	export let popupText: string;
+	const buttonPressed = (e: Event) => {
+		e.preventDefault();
+		$overlayText = null;
+	};
 </script>
 
 <form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
