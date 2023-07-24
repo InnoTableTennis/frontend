@@ -1,3 +1,5 @@
+import type { TournamentState } from '$lib/types/tournamentTypes';
+
 export interface Error {
 	message: string;
 	status: number;
@@ -40,14 +42,9 @@ export interface Tournament {
 	endDateString: string;
 	finished: boolean;
 	id: number;
-	players: number;
+	numberOfPlayers: number;
 	startDateString: string;
 	title: string;
-}
-
-export interface Group {
-	type: 'Group';
-	tournamentTitle: string;
-	players: Player[];
 	matches: Match[];
+	state: TournamentState;
 }

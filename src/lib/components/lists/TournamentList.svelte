@@ -9,6 +9,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import PlayersIcon from '$lib/components/icons/PlayersIcon.svelte';
 	import { alertPopup } from '$lib/popupHandler';
+	import { goto } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
 
@@ -108,6 +109,10 @@
 								chosenId = tournament.id;
 								if (mode === 'delete') {
 									deleteTournament(tournament.id.toString());
+								} else if (mode === 'create' && tournament.finished === false) {
+									goto(`/tournaments/create/${tournament.id}`);
+								} else if ((mode === 'create' && tournament.finished === true) || mode === 'view') {
+									goto(`/tournaments/view/${tournament.id}`);
 								} else {
 									editData = tournament;
 								}
@@ -121,7 +126,7 @@
 								</div>
 								<div class="no-wrap content">{tournament.coefficient}</div>
 								<div class="content" style="text-align: right;">
-									{tournament.players}
+									{tournament.numberOfPlayers}
 									<PlayersIcon />
 								</div>
 								{#if isLeader && !tournament.finished && mode === 'add'}

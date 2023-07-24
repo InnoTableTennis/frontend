@@ -14,8 +14,10 @@
 
 	export let chosenId = -1;
 	export let isChoosing = false;
-	export let mode: string;
-	export let editData: Match;
+	export let mode = 'add';
+	export let editData: Match = {} as Match;
+	export let title = '';
+	export let oneTournament = true;
 
 	let matches: Match[] = [];
 
@@ -81,63 +83,117 @@
 						<span>Score</span>
 						<span />
 					</div>
-					<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
-					<MatchHeader title={matches[0].localDateString} />
+					{#if oneTournament}
+						<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
+						<MatchHeader title={matches[0].localDateString} />
+					{/if}
 
 					{#each matches as match, i}
-						{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
-							<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
-							<MatchHeader title={matches[i].localDateString} />
-						{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
-							<MatchHeader title={matches[i].localDateString} />
+						{#if !oneTournament}
+							{#if title === matches[i].tournamentTitle}
+								<button
+									class="match-line"
+									class:selected={chosenId === match.id}
+									on:click|preventDefault={() => {
+										chosenId = match.id;
+										if (mode === 'delete') {
+											deleteMatch(match.id.toString());
+										} else {
+											editData = match;
+										}
+									}}
+									disabled={!isChoosing || chosenId === match.id}
+								>
+									<div class="matches-grid">
+										<div class="no-wrap content">
+											{match.firstPlayerName}
+											<span class="rating">
+												{#if match.firstPlayerRatingDelta}
+													({match.firstPlayerRatingBefore})
+													{#if match.firstPlayerRatingDelta > 0}
+														<span class="positive">+{match.firstPlayerRatingDelta}</span>
+													{:else}
+														<span class="negative">{match.firstPlayerRatingDelta}</span>
+													{/if}
+												{/if}
+											</span>
+										</div>
+										<div class="no-wrap content">
+											{match.secondPlayerName}
+											<span class="rating">
+												{#if match.secondPlayerRatingDelta}
+													({match.secondPlayerRatingBefore})
+													{#if match.secondPlayerRatingDelta > 0}
+														<span class="positive">+{match.secondPlayerRatingDelta}</span>
+													{:else}
+														<span class="negative">{match.secondPlayerRatingDelta}</span>
+													{/if}
+												{/if}
+											</span>
+										</div>
+										<div class="score content">
+											{match.firstPlayerScore}
+											:
+											{match.secondPlayerScore}
+										</div>
+									</div>
+								</button>
+							{/if}
+						{:else}
+							{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
+								<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
+								<MatchHeader title={matches[i].localDateString} />
+							{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
+								<MatchHeader title={matches[i].localDateString} />
+							{/if}
+							<button
+								class="match-line"
+								class:selected={chosenId === match.id}
+								on:click|preventDefault={() => {
+									chosenId = match.id;
+									if (mode === 'delete') {
+										deleteMatch(match.id.toString());
+									} else {
+										editData = match;
+									}
+								}}
+								disabled={!isChoosing || chosenId === match.id}
+							>
+								<div class="matches-grid">
+									<div class="no-wrap content">
+										{match.firstPlayerName}
+										<span class="rating">
+											{#if match.firstPlayerRatingDelta}
+												({match.firstPlayerRatingBefore})
+												{#if match.firstPlayerRatingDelta > 0}
+													<span class="positive">+{match.firstPlayerRatingDelta}</span>
+												{:else}
+													<span class="negative">{match.firstPlayerRatingDelta}</span>
+												{/if}
+											{/if}
+										</span>
+									</div>
+									<div class="no-wrap content">
+										{match.secondPlayerName}
+										<span class="rating">
+											{#if match.secondPlayerRatingDelta}
+												({match.secondPlayerRatingBefore})
+												{#if match.secondPlayerRatingDelta > 0}
+													<span class="positive">+{match.secondPlayerRatingDelta}</span>
+												{:else}
+													<span class="negative">{match.secondPlayerRatingDelta}</span>
+												{/if}
+											{/if}
+										</span>
+									</div>
+									<div class="score content">
+										{match.firstPlayerScore}
+										:
+										{match.secondPlayerScore}
+									</div>
+								</div>
+							</button>
 						{/if}
-						<button
-							class="match-line"
-							class:selected={chosenId === match.id}
-							on:click|preventDefault={() => {
-								chosenId = match.id;
-								if (mode === 'delete') {
-									deleteMatch(match.id.toString());
-								} else {
-									editData = match;
-								}
-							}}
-							disabled={!isChoosing || chosenId === match.id}
-						>
-							<div class="matches-grid">
-								<div class="no-wrap content">
-									{match.firstPlayerName}
-									<span class="rating">
-										{#if match.firstPlayerRatingDelta}
-											({match.firstPlayerRatingBefore})
-											{#if match.firstPlayerRatingDelta > 0}
-												<span class="positive">+{match.firstPlayerRatingDelta}</span>
-											{:else}
-												<span class="negative">{match.firstPlayerRatingDelta}</span>
-											{/if}
-										{/if}
-									</span>
-								</div>
-								<div class="no-wrap content">
-									{match.secondPlayerName}
-									<span class="rating">
-										{#if match.secondPlayerRatingDelta}
-											({match.secondPlayerRatingBefore})
-											{#if match.secondPlayerRatingDelta > 0}
-												<span class="positive">+{match.secondPlayerRatingDelta}</span>
-											{:else}
-												<span class="negative">{match.secondPlayerRatingDelta}</span>
-											{/if}
-										{/if}
-									</span>
-								</div>
-								<div class="score content">
-									{match.firstPlayerScore}
-									:
-									{match.secondPlayerScore}
-								</div>
-							</div>
-						</button>
 					{/each}
 				</section>
 			</div></Pagination
