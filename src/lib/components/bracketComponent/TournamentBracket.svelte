@@ -365,7 +365,7 @@
 		{#each data.rounds as round}
 			<ul>
 				{#each round as matchIdx}
-					<li class:deleted={isHidden(round, matchIdx)}>
+					<li class:hidden={isHidden(round, matchIdx)}>
 						<div class="names-wrapper">
 							<p>{data.allMatches[matchIdx].firstPlayerName}</p>
 							<p>{data.allMatches[matchIdx].secondPlayerName}</p>
@@ -373,7 +373,10 @@
 
 						<button
 							class:hidden={data.allMatches[matchIdx].firstPlayerName === '' ||
-								data.allMatches[matchIdx].secondPlayerName === ''}
+								data.allMatches[matchIdx].secondPlayerName === '' ||
+								(!$isLeader &&
+									data.allMatches[matchIdx].firstPlayerScore === 0 &&
+									data.allMatches[matchIdx].secondPlayerScore === 0)}
 							disabled={!$isLeader}
 							on:click={() => {
 								if (data.inProgressMatches.includes(matchIdx)) {
@@ -385,14 +388,14 @@
 								}
 							}}
 						>
-							{#if data.inProgressMatches.includes(matchIdx)}
+							{#if data.inProgressMatches.includes(matchIdx) && $isLeader}
 								<Dot />
 							{:else if data.finishedMatches.includes(matchIdx)}
 								<div class="scores-wrapper">
 									{data.allMatches[matchIdx].firstPlayerScore}:{data.allMatches[matchIdx]
 										.secondPlayerScore}
 								</div>
-							{:else}
+							{:else if $isLeader}
 								<Play />
 							{/if}
 						</button>
@@ -411,10 +414,6 @@
 <style>
 	.hidden {
 		visibility: hidden;
-	}
-
-	.deleted {
-		display: none;
 	}
 
 	button {
