@@ -167,16 +167,23 @@
     async function setMatch (row: number, column: number, first: number, second: number) {
         if (!tableResults[row][column] && !tableResults[column][row]) {
             await createMatch(data[row].name, data[column].name, first, second, groupInfo.tournamentTitle).then(setMatchID);
+            let newMatch = {} as Match;
+            newMatch.firstPlayerName = data[row].name;
+            newMatch.secondPlayerName = data[column].name;
+            newMatch.firstPlayerScore = first;
+            newMatch.secondPlayerScore = second;
+            newMatch.id = matchID[row][column];
+            groupInfo.matches.push(newMatch);
         } else {
-            await editMatch(matchID[row][column].toString(), data[row].name, data[column].name, first, second, groupInfo.tournamentTitle);
+            editMatch(matchID[row][column].toString(), data[row].name, data[column].name, first, second, groupInfo.tournamentTitle);
+            for (let changedMatch of groupInfo.matches) {
+                if (changedMatch.id == matchID[row][column]) {
+                    changedMatch.firstPlayerScore = first;
+                    changedMatch.secondPlayerScore = second;
+                    break;
+                }
+            }
         }
-        let newMatch = {} as Match;
-        newMatch.firstPlayerName = data[row].name;
-        newMatch.secondPlayerName = data[column].name;
-        newMatch.firstPlayerScore = first;
-        newMatch.secondPlayerScore = second;
-        newMatch.id = matchID[row][column];
-        groupInfo.matches.push(newMatch);
         let newGroup: Group = {type: groupInfo.type, tournamentTitle: groupInfo.tournamentTitle, players: data, matches: groupInfo.matches};
         dispatch("update", newGroup);
     }
