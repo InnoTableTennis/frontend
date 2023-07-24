@@ -46,7 +46,7 @@ export interface Tournament {
 }
 
 export interface Group {
-	type: "Group";
+	type: 'Group';
 	tournamentTitle: string;
 	players: Player[];
 	matches: Match[];

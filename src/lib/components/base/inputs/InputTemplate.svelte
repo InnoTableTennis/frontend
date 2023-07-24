@@ -65,7 +65,6 @@
 {/if}
 
 <style>
-
 	textarea {
 		overflow-y: scroll;
 		border-radius: 20px;
@@ -102,7 +101,8 @@
 		color: var(--content-color);
 	}
 
-	input:disabled, textarea:disabled {
+	input:disabled,
+	textarea:disabled {
 		background-color: var(--secondary-bg-color);
 		color: var(--not-chosen-font-color);
 		box-shadow: none;

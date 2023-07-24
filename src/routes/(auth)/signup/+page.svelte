@@ -49,8 +49,8 @@
 					</p>
 					<div class="index">03</div>
 					<p>
-						<a class="link" href="{base}/login">Log in</a> to the website using your password to access the
-						services.
+						<a class="link" href="{base}/login">Log in</a> to the website using your password to access
+						the services.
 					</p>
 					<a class="sp-link" href="{base}/login">Already have an account</a>
 				</div>
