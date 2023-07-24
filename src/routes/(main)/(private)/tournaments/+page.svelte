@@ -26,6 +26,17 @@
 	}
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Explore all table tennis tournaments at InnoTableTennis Club. Check the date coefficients, number of participants, and use filters and sorting options to find the tournaments that interest you the most. Stay updated with our exciting tournament events."
+	/>
+	<meta
+		name="keywords"
+		content="table tennis tournaments, InnoTableTennis Club, date coefficients, number of participants, tournament filters, tournament sorting, exciting events"
+	/>
+</svelte:head>
+
 {#if isLeader}
 	<div class="edit-mode">
 		<ToggleCheckboxButton

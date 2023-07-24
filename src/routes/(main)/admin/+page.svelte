@@ -72,6 +72,17 @@
 	}
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Manage admins and send messages to the InnoTableTennis group channel with the Admin Panel at InnoTableTennis Club. Grant administrative privileges and stay connected with the club community."
+	/>
+	<meta
+		name="keywords"
+		content="admin panel, InnoTableTennis Club, manage admins, group channel messages, administrative privileges, club community"
+	/>
+</svelte:head>
+
 <h2>Admin panel</h2>
 
 <div class="wrapper">

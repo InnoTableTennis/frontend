@@ -36,6 +36,17 @@
 	}
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Create and manage table tennis tournaments with the Tournament Constructor at InnoTableTennis Club. Set up participants, organize games in groups, and progress to the finals with the easy-to-use constructor tool."
+	/>
+	<meta
+		name="keywords"
+		content="tournament constructor, InnoTableTennis Club, create tournaments, manage tournaments, group games, tournament net, table tennis"
+	/>
+</svelte:head>
+
 {#await requestTournament() then}
 	{#if stage === 'create'}
 		<CreateTournament {tournament} bind:stage />
