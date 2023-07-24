@@ -261,8 +261,6 @@
             countPoints(i);
         }
     }
-    generateOrder();
-    generateTour();
     $: if(groupInfo) {
         data = [] as Player[];
         if (groupInfo.players && groupInfo.players.length > 0) {
