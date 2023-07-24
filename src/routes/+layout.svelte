@@ -45,8 +45,8 @@
 		content="Explore your table tennis statistics at InnoTableTennis Club. View the number of tournaments played, win/loss records, rating history, graphs, and a complete list of all your played games. Track your progress and achievements in the club."
 	/>
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://tabletennis.innopolis.university/players" />
-	<meta property="og:image" content="%sveltekit.assets%/favicon.png" />
+	<meta property="og:url" content="https://tabletennis.innopolis.university" />
+	<meta property="og:image" content="https://tabletennis.innopolis.university/favicon.png" />
 </svelte:head>
 
 {#if isLoaded}
