@@ -1,122 +1,75 @@
 <script lang="ts">
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
-	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import type { Match } from '$lib/types/types';
+	import ProfilePagination from '$lib/components/profile/ProfilePagination.svelte';
+	import type { ProfileMatch } from '$lib/types/profileTypes';
 
-	import * as db from '$lib/requests';
-
-	import { createEventDispatcher } from 'svelte';
+	// import { createEventDispatcher } from 'svelte';
 	import { isLeader } from '$lib/stores';
-	import { SortFilterMatchFormStore } from '$lib/formStores';
+	// import { SortFilterProfileMatchFormStore } from '$lib/formStores';
 
-	const dispatch = createEventDispatcher();
+	// const dispatch = createEventDispatcher();
 
-	let matches: Match[] = [];
+	export let dataMatches: ProfileMatch[];
 
-	let lastPageNumber: number;
-	let currentPageNumber = 1;
-	let currentPageSize = 10;
-
-	export const handleInsert = () => {
-		currentPageNumber = 1;
-		requestNewPage();
-	};
-
-	async function requestNewPage() {
-		let name = $SortFilterMatchFormStore.name;
-		let score = $SortFilterMatchFormStore.score;
-		let minDateString = $SortFilterMatchFormStore.minDateString;
-		let maxDateString = $SortFilterMatchFormStore.maxDateString;
-		let descending = $SortFilterMatchFormStore.descending;
-		await db
-			.getMatches(
-				descending,
-				name,
-				score,
-				minDateString,
-				maxDateString,
-				currentPageNumber,
-				currentPageSize,
-			)
-			.then((result) => {
-				matches = result.data;
-				lastPageNumber = result.totalPages;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
-
-	function handleRequest(event: CustomEvent) {
-		currentPageNumber = event.detail.currentPageNumber;
-		currentPageSize = event.detail.currentPageSize;
-		requestNewPage();
-	}
+	// $: console.log($SortFilterProfileMatchFormStore)
+	// $: if($SortFilterProfileMatchFormStore.name != "") {
+	// 		dataMatches = dataMatches.filter(elem => {
+	// 			elem.opponentName == $SortFilterProfileMatchFormStore.name
+	// 		})
+	// 	}
 </script>
 
 <!-- {@debug matches} -->
-{#await requestNewPage() then}
-	{#if matches.length}
-		<Pagination {lastPageNumber} on:request={handleRequest}>
-			<div class="scroll">
-				<section class="games-list">
-					<div class="table-header" class:not-leader={!$isLeader}>
-						<span>First Player</span>
-						<span>Second Player</span>
-						<span>Score</span>
-						<span />
-					</div>
-					<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
-					<MatchHeader title={matches[0].localDateString} />
 
-					{#each matches as match, i}
-						{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
-							<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
-							<MatchHeader title={matches[i].localDateString} />
-						{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
-							<MatchHeader title={matches[i].localDateString} />
-						{/if}
-						<div class="matches-grid">
-							<div class="no-wrap content">
-								{match.firstPlayerName}
-								<span class="rating">
-									{#if match.firstPlayerRatingDelta}
-										({match.firstPlayerRatingBefore})
-										{#if match.firstPlayerRatingDelta > 0}
-											<span class="positive">+{match.firstPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.firstPlayerRatingDelta}</span>
-										{/if}
-									{/if}
-								</span>
-							</div>
-							<div class="no-wrap content">
-								{match.secondPlayerName}
-								<span class="rating">
-									{#if match.secondPlayerRatingDelta}
-										({match.secondPlayerRatingBefore})
-										{#if match.secondPlayerRatingDelta > 0}
-											<span class="positive">+{match.secondPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.secondPlayerRatingDelta}</span>
-										{/if}
-									{/if}
-								</span>
-							</div>
-							<div class="score content">
-								{match.firstPlayerScore}
-								:
-								{match.secondPlayerScore}
-							</div>
+{#if dataMatches.length}
+	<ProfilePagination>
+		<div class="scroll">
+			<section class="games-list">
+				<div class="table-header" class:not-leader={!$isLeader}>
+					<span>Opponent</span>
+					<span>Rating</span>
+					<span>Score</span>
+					<span />
+				</div>
+				<MatchHeader title={dataMatches[0].tournamentTitle} isMain={true} />
+				<MatchHeader title={dataMatches[0].date} />
+
+				{#each dataMatches as match, i}
+					{#if i != 0 && dataMatches[i].tournamentTitle != dataMatches[i - 1].tournamentTitle}
+						<MatchHeader title={dataMatches[i].tournamentTitle} isMain={true} />
+						<MatchHeader title={dataMatches[i].date} />
+					{:else if i != 0 && dataMatches[i].date != dataMatches[i - 1].date}
+						<MatchHeader title={dataMatches[i].date} />
+					{/if}
+					<div class="matches-grid">
+						<div class="no-wrap content">
+							{match.opponentName}
+							<span class="rating">
+								{#if match.opponentRatingBefore}
+									({match.opponentRatingBefore})
+								{/if}
+							</span>
 						</div>
-					{/each}
-				</section>
-			</div></Pagination
-		>
-	{:else}
-		<p class="details">Oops! There is not a single entity satisfying the query</p>
-	{/if}
-{/await}
+						<div class="no-wrap content">
+							{#if match.delta > 0}
+								<span class="positive">+{match.delta}</span>
+							{:else if match.delta < 0}
+								<span class="negative">{match.delta}</span>
+							{:else}
+								<span class="zero">{match.delta}</span>
+							{/if}
+						</div>
+						<div class="score content">
+							{match.score}
+						</div>
+					</div>
+				{/each}
+			</section>
+		</div></ProfilePagination
+	>
+{:else}
+	<p class="details">Oops! There is not a single entity satisfying the query</p>
+{/if}
 
 <style>
 	.details {
@@ -143,7 +96,7 @@
 	}
 	.matches-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr 2rem auto;
+		grid-template-columns: 3fr 1fr 2rem auto;
 		gap: 1rem 1rem;
 		color: var(--content-color);
 		height: 1.1em;
@@ -166,7 +119,7 @@
 	}
 	.table-header {
 		display: grid;
-		grid-template-columns: 1fr 1fr 4rem;
+		grid-template-columns: 3fr 1fr 4rem;
 		gap: 1rem 1rem;
 	}
 	.table-header span {
@@ -174,11 +127,10 @@
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
 	}
-
-	.rating .positive {
+	.positive {
 		color: var(--rating-positive-color);
 	}
-	.rating .negative {
+	.negative {
 		color: var(--rating-negative-color);
 	}
 </style>

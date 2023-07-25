@@ -19,9 +19,11 @@
 </script>
 
 <div class="tooltip" style={tooltipStyle}>
-	<h1>Rating : {tournament.rating}</h1>
+	<h1>Rating : {Math.floor(tournament.rating * 100) / 100}</h1>
 	<p>{tournament.name}</p>
-	<p class={isGreen ? 'p-green' : 'p-red'}>{tournament.delta >= 0 ? '+' : '-'}{tournament.delta}</p>
+	<p class={isGreen ? 'p-green' : 'p-red'}>
+		{tournament.delta >= 0 ? '+' : '-'}{Math.floor(tournament.delta * 100) / 100}
+	</p>
 </div>
 
 <style>

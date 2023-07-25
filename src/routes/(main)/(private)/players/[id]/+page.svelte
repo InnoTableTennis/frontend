@@ -3,7 +3,7 @@
 	import InfoBlocks from '$lib/components/InfoBlocks.svelte';
 	import ProfileMatchesComponent from '$lib/components/profile/ProfileMatchesComponent.svelte';
 	import RatingGraph from '$lib/components/graph/RatingGraph.svelte';
-	import type { ProfileData, RatingHistoryItem } from '$lib/types/profileTypes.js';
+	import type { ProfileData, RatingHistoryItem, ProfileMatch } from '$lib/types/profileTypes.js';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 
@@ -15,12 +15,14 @@
 
 	let profileData: ProfileData;
 	let graphInfo: RatingHistoryItem[];
+	let dataMatches: ProfileMatch[];
 	const requestProfileData = async () => {
 		await db
 			.getProfileData(playerID)
 			.then((result) => {
 				profileData = result;
 				graphInfo = profileData.graph;
+				dataMatches = profileData.matches;
 			})
 			.catch((error) => {
 				dispatch('error', error);
@@ -43,7 +45,7 @@
 		<div class="column">
 			<InfoBlocks {playerID} />
 			<RatingGraph Data={graphInfo} />
-			<ProfileMatchesComponent />
+			<ProfileMatchesComponent {dataMatches} />
 		</div>
 	</div>
 {/await}

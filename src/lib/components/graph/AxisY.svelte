@@ -25,11 +25,15 @@
 			maxRating = elem.rating;
 		}
 	});
-	let upperBound = (maxRating / 10 + 1) * 10;
+	let upperBound = (Math.floor(Math.floor(maxRating) / 10) + 1) * 10;
 	let lowerBound = (minRating / 10 - 1) * 10;
+	const coef =
+		Math.round((maxRating - minRating) / 100) * 10 > 10
+			? Math.round((maxRating - minRating) / 100) * 10
+			: 10;
 	while (upperBound >= lowerBound) {
 		ticks.push(upperBound);
-		upperBound -= 10;
+		upperBound -= coef;
 	}
 	yTicks = ticks;
 </script>
