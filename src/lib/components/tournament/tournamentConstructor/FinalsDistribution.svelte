@@ -5,13 +5,19 @@
 	import FinalsDistributor from '$lib/components/tournament/tournamentConstructor/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Player, Tournament } from '$lib/types/types';
-	import type { Final, Group, TournamentStage } from '$lib/types/tournamentTypes';
+	import type {
+		Final,
+		Group,
+		SingleEliminationBracket,
+		TournamentStage,
+	} from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
 	export let id: number;
 	export let stage: TournamentStage;
 	export let finals: Player[][];
 
+	let types: string[] = [];
 	let chosenId: number[];
 
 	const dispatch = createEventDispatcher();
@@ -68,12 +74,28 @@
 				matches: [],
 				id: i,
 			};
-			if (temp) {
-				temp.push(newGroup);
-			} else {
-				temp = [];
-				temp.push(newGroup);
+			let newBracket: SingleEliminationBracket = {
+				init: true,
+				type: 'SingleEliminationBracket',
+				players: groupPlayers,
+			} as SingleEliminationBracket;
+			if (types[i] === 'Groups') {
+				if (temp) {
+					temp.push(newGroup);
+				} else {
+					temp = [];
+					temp.push(newGroup);
+				}
 			}
+			if (types[i] === 'Finals') {
+				if (temp) {
+					temp.push(newBracket);
+				} else {
+					temp = [];
+					temp.push(newBracket);
+				}
+			}
+			console.log(types[i], temp[i]);
 		}
 		if (
 			!tournament.state.secondStage ||
@@ -116,6 +138,7 @@
 					bind:numberParticipants
 					bind:numberFinals
 					bind:chosenId
+					bind:types
 				/>
 			</div>
 			<div class="button">

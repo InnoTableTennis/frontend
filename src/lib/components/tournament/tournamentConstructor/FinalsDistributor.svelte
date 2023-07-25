@@ -6,10 +6,10 @@
 	export let numberGroups = 0;
 	export let numberParticipants = 0;
 	export let chosenId: number[] = [];
+	export let types: string[] = [];
 
 	let groups: number[] = [];
 	let finals: number[][] = [];
-	let types: string[] = [];
 
 	let peopleInGroups = Math.ceil(numberParticipants / numberGroups);
 	let typeOptions: string[] = ['Finals', 'Groups'];
