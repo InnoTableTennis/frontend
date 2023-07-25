@@ -33,7 +33,7 @@
 				dispatch('error', error);
 			});
 	}
-	
+
 	const changeParticipants = function () {
 		stage = 'addParticipants';
 	};
@@ -41,6 +41,7 @@
 		stage = 'numberGroups';
 	};
 	const nextStage = function () {
+		prerenderPlaces();
 		stage = 'continue';
 	};
 	async function updateTournament(e: CustomEvent) {
@@ -57,6 +58,15 @@
 		let players = e.detail;
 		for (let i = 0; i < players.length; i++) {
 			finals[i][id] = players[i];
+		}
+	}
+	function prerenderPlaces() {
+		if (tournament.state.firstStage) {
+			for (let i = 0; i < tournament.state.firstStage.length; i++) {
+				for (let j = 0; j < tournament.state.firstStage[i].players.length; j++) {
+					finals[j][i] = tournament.state.firstStage[i].players[j];
+				}
+			}
 		}
 	}
 </script>

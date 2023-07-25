@@ -8,7 +8,7 @@
 
 	export let id: number;
 	export let stage;
-	
+
 	let numberParticipants = 0;
 	let participants: Player[] = [];
 	let participant: Player = {} as Player;
@@ -45,8 +45,8 @@
 	const nextStage = async function () {
 		state = {
 			participants: participants,
-			firstStage: null,
-			secondStage: null,
+			firstStage: tournament.state ? (tournament.state.firstStage ? tournament.state.firstStage : null) : null,
+			secondStage: tournament.state ? (tournament.state.secondStage ? tournament.state.secondStage : null) : null
 		};
 		await addParticipants();
 		stage = 'numberGroups';

@@ -2,61 +2,82 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import { stringifyNumber } from '$lib/helper';
+	import type {Player, Tournament} from "$lib/types/types";
+	import * as db from "$lib/requests";
+	import {createEventDispatcher} from "svelte";
+	import TournamentGroup from "$lib/components/tournamentConstructor/TournamentGroup.svelte";
+	import {goto} from '$app/navigation'
+
+	const dispatch = createEventDispatcher();
 
 	export let stage;
+	export let id: number;
 	export let numberFinals = 0;
-	// export let finals: Player[][] = [];
-	export let games = [
-		'Bogdankov M. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Abdukhamidov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-		'Bogdankov N. - Iskhakov A.',
-	];
 
-	let finals: number[][] = [];
-	let completed = false;
 	let chosenId = 0;
+	let tournament: Tournament = {} as Tournament;
+	let finalResults: Player[][] = new Array(numberFinals).fill(null);
+	async function requestTournament() {
+		await db
+				.getTournament(id)
+				.then((result) => {
+					tournament = result.data;
+				})
+				.catch((error) => {
+					dispatch('error', error);
+				});
+	}
 
 	const changeNumberFinals = function () {
 		stage = 'numberFinals';
 	};
-	const finish = function () {
-		console.log('You finished');
+	const finish = async function () {
+		tournament.state.participants = [];
+		for (let i = 0; i < numberFinals; i++) {
+			for (let j = 0; j < finalResults[i].length; j++) {
+				if (finalResults[i][j]) {
+					tournament.state.participants.push(finalResults[i][j]);
+				}
+			}
+		}
+		await db.updateTournament(id, tournament.state).catch((error) => {
+			dispatch('error', error);
+		});
+		await requestTournament();
+		await db.finishTournament(id.toString()).catch((error) => {
+			dispatch('error', error);
+		});
+		goto(`/tournaments/${tournament.id}`);
 	};
 
-	const countGroups = function () {
-		for (let i = 0; i < numberFinals; i++) {
-			finals.push([]);
-		}
+	const countGroups = async function () {
+		await requestTournament();
 	};
+	async function updateTournament(e: CustomEvent) {
+		let newGroup = e.detail;
+		if (tournament.state.secondStage) {
+			tournament.state.secondStage[e.detail] = newGroup;
+		}
+		await db.updateTournament(id, tournament.state).catch((error) => {
+			dispatch('error', error);
+		});
+		await requestTournament();
+		tournament.state.secondStage
+	}
+	async function updatePlaces(e: CustomEvent, id:number) {
+		let players = e.detail;
+		finalResults[id] = new Array(players.length).fill(null);
+		for (let i = 0; i < players.length; i++) {
+			finalResults[id][i] = players[i];
+		}
+	}
+	requestTournament();
 </script>
 
 {#await countGroups() then}
 	<h1>Second stage</h1>
 
 	<div class="menu-layout">
-		<div class="next-games">
-			<h2>Next games</h2>
-			<div class="games-block">
-				{#each games as game}
-					<div class="game-line" class:disabled={completed}>
-						{game}
-					</div>
-				{/each}
-			</div>
-		</div>
 		<div class="settings">
 			<h2>Settings</h2>
 			<span class="setting-line">
@@ -73,21 +94,33 @@
 	</div>
 
 	<div class="finals">
-		// TODO: replace each finals, because final is not used. Lint shows warning
-		{#each finals as final, i}
-			<button
-				class="final-button"
-				class:selected={chosenId === i}
-				on:click|preventDefault={() => {
+		<div class="final-button-block">
+			{#each tournament.state.secondStage as _, i}
+				<button
+						class="final-button"
+						class:selected={chosenId === i}
+						on:click|preventDefault={() => {
 					chosenId = i;
-					final;
 				}}
-			>
-				{stringifyNumber(i + 1)
-					.charAt(0)
-					.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
-			</button>
-		{/each}
+				>
+					{stringifyNumber(i + 1)
+							.charAt(0)
+							.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
+				</button>
+			{/each}
+		</div>
+		{#if tournament.state.secondStage}
+			<TournamentGroup groupInfo={tournament.state.secondStage[chosenId]} on:update={updateTournament}
+							 on:finalize={(event) => {updatePlaces(event, chosenId)}} >{stringifyNumber(chosenId + 1)
+					.charAt(0).toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup>
+		{/if}
+		<div class="pre-render-group-block">
+			{#each tournament.state.secondStage as _, i}
+				{#if tournament.state.secondStage}
+						<TournamentGroup groupInfo={tournament.state.secondStage[i]} on:finalize={(event) => {updatePlaces(event, i)}}></TournamentGroup>
+				{/if}
+			{/each}
+		</div>
 	</div>
 {/await}
 
@@ -100,32 +133,24 @@
 		grid-template-columns: 1fr 1fr;
 	}
 	.finals {
+		position: relative;
 		margin-top: 1.2rem;
-		display: flex;
 		gap: 1rem;
 		overflow-x: scroll;
+		justify-content: space-between;
+	}
+	.final-button-block {
+		display: flex;
+		justify-content: space-between;
+	}
+	.final-button {
+		margin: 1rem auto;
 	}
 	.finals::-webkit-scrollbar {
 		display: none;
 	}
-	.games-block {
-		max-height: 10.25rem;
-		overflow-y: scroll;
-	}
-	.games-block::-webkit-scrollbar {
+	.pre-render-group-block {
 		display: none;
-	}
-	.setting-line {
-		margin-top: 1rem;
-		display: flex;
-		align-items: center;
-	}
-	.game-line {
-		margin-bottom: 0.6rem;
-		display: flex;
-		align-items: center;
-		font-size: var(--fontsize-medium2);
-		color: var(--content-color);
 	}
 	.restart-button {
 		background: none;
@@ -139,11 +164,7 @@
 	.finish-button {
 		width: 12rem;
 		height: 2.75rem;
-		margin: auto;
-		margin-top: 2rem;
-	}
-	.disabled {
-		color: var(--not-chosen-font-color);
+		margin: 1rem 0;
 	}
 	.final-button {
 		background: none;

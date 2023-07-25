@@ -4,11 +4,14 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import FinalsDistributor from '$lib/components/createTournament/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
-	import type { Tournament } from '$lib/types/types';
+	import type {Final, Group, Player, Tournament} from '$lib/types/types';
 
 	export let numberFinals = 0;
 	export let id: number;
 	export let stage;
+	export let finals: Player[][];
+
+	let chosenId:number[];
 
 	const dispatch = createEventDispatcher();
 	
@@ -28,10 +31,62 @@
 				dispatch('error', error);
 			});
 	}
+	async function updateTournament() {
+		await db.updateTournament(id, tournament.state).catch((error) => {
+			dispatch('error', error);
+		});
+		await requestTournament();
+	}
 
 	function back() {
 		stage = 'numberFinals';
 	}
+	async function nextStage() {
+		let distribution: Player[][] = new Array(numberFinals).fill(null).map(() => new Array(0));
+		let nChosenId: number[] = new Array(chosenId.length).fill(null);
+		let temp: Final[] = [];
+		for (let i = 0; i < chosenId.length; i++) {
+			nChosenId[i] = Math.floor((chosenId[i] - 1) / chosenId.length);
+		}
+		for (let i = 0; i < nChosenId.length; i++) {
+			for (let j = 0; j < finals[i].length; j++) {
+				if (finals[i][j]) {
+					distribution[nChosenId[i]].push(finals[i][j]);
+				}
+			}
+		}
+		for (let i = 0; i < numberFinals; i++) {
+			let groupPlayers: Player[] = [];
+			for (let j = 0; j < distribution[i].length; j++) {
+				groupPlayers.push(distribution[i][j]);
+			}
+			let newGroup: Group = {type: "Group", tournamentTitle: tournament.title, players: groupPlayers, matches: [], id: i};
+			if (temp) {
+				temp.push(newGroup);
+			} else {
+				temp = [];
+				temp.push(newGroup);
+			}
+		}
+		if (!tournament.state.secondStage || !tournament.state.secondStage.length || tournament.state.secondStage.length != temp.length) {
+			tournament.state.secondStage = temp;
+		} else {
+			let equal = true;
+			for (let i = 0; i < temp.length; i++) {
+				if (tournament.state.secondStage[i].players.length != temp[i].players.length) {
+					equal = false;
+					break;
+				}
+			}
+			if (!equal) {
+				tournament.state.secondStage = temp;
+			}
+		}
+		await updateTournament();
+		await requestTournament();
+		stage = 'secondStage';
+	}
+	requestTournament();
 </script>
 
 {#await requestTournament() then}
@@ -45,10 +100,10 @@
 		<div class="distribution">
 			<h1>Distribute places between finals</h1>
 			<div class="distributor">
-				<FinalsDistributor bind:numberGroups bind:numberParticipants bind:numberFinals />
+				<FinalsDistributor bind:numberGroups bind:numberParticipants bind:numberFinals bind:chosenId/>
 			</div>
 			<div class="button">
-				<Button type="button" on:click={() => (stage = 'secondStage')}>Confirm</Button>
+				<Button type="button" on:click={nextStage}>Confirm</Button>
 			</div>
 		</div>
 	</div>

@@ -5,13 +5,13 @@
 	export let numberFinals = 0;
 	export let numberGroups = 0;
 	export let numberParticipants = 0;
+	export let chosenId: number[] = [];
 
 	let groups: number[] = [];
 	let finals: number[][] = [];
-	let chosenId: number[] = [];
 	let types: string[] = [];
 
-	let peopleInGroups = numberParticipants / numberGroups;
+	let peopleInGroups = Math.ceil(numberParticipants / numberGroups);
 	let typeOptions: string[] = ['Finals', 'Groups'];
 
 	const countGroups = function () {
@@ -21,17 +21,27 @@
 		for (let i = 0; i < peopleInGroups; i++) {
 			groups.push(i + 1);
 		}
-		for (let i = 0; i < peopleInGroups; i++) {
-			chosenId.push(i + 1);
-		}
 		for (let i = 0; i < numberFinals; i++) {
 			types.push(typeOptions[0]);
 		}
 	};
 
+	const formChosenId = () => {
+		let peopleInFinal = Math.ceil(peopleInGroups / numberFinals);
+		let tempVal = 1 - peopleInGroups;
+		for (let i = 0; i < peopleInGroups; i++) {
+			if (i % peopleInFinal == 0) {
+				tempVal += peopleInGroups;
+			}
+			chosenId.push(tempVal);
+			tempVal++;
+		}
+	}
+
 	function handleSelectType(event: CustomEvent, index: number) {
 		types[index] = event.detail;
 	}
+	formChosenId();
 </script>
 
 {#await countGroups() then}
@@ -59,7 +69,9 @@
 							class="button"
 							class:selected={chosenId[j - 1] === i * peopleInGroups + j}
 							on:click|preventDefault={() => {
-								chosenId[j - 1] = i * peopleInGroups + j;
+								if ((j === 1 || j > 1 && chosenId[j - 2] <= i * peopleInGroups + j) && (j === peopleInGroups || j < peopleInGroups && chosenId[j] >= i * peopleInGroups + j)) {
+									chosenId[j - 1] = i * peopleInGroups + j;
+								}
 								final;
 							}}
 						>
@@ -89,7 +101,7 @@
 	}
 	.separator {
 		margin-top: 1rem;
-		height: 0.5px;
+		height: 1px;
 		background-color: var(--secondary-color);
 	}
 	.invisible {
@@ -116,14 +128,13 @@
 		gap: 1rem;
 	}
 	.button {
-		background: none;
 		border: none;
 		min-width: 2.8125rem;
 		height: 2.1875rem;
 		border-radius: 0.625rem;
 		font-size: var(--fontsize-medium1);
 		font-weight: var(--fontweight-1);
-		background-color: var(--secondary-bg-color);
+		background: var(--secondary-bg-color) none;
 		color: #fff;
 	}
 	.selected {

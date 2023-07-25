@@ -10,6 +10,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types.js';
 	import SecondStage from '$lib/components/createTournament/SecondStage.svelte';
+	import {handleError} from "$lib/errorHandler";
 
 	export let data;
 
@@ -27,8 +28,6 @@
 	let id: number;
 	let tournament: Tournament = {} as Tournament;
 	let finals: Player[][];
-	let numberParticipants = 0;
-	let numberGroups = 1;
 	let numberFinals = 1;
 
 	async function requestTournament() {
@@ -47,19 +46,19 @@
 {#await requestTournament() then}
 	{#if stage === 'create'}
 		<CreateTournament bind:id bind:stage />
-	{:else if stage == 'addParticipants'}
+	{:else if stage === 'addParticipants'}
 		<AddParticipants bind:id={tournament.id} bind:stage />
-	{:else if stage == 'numberGroups'}
+	{:else if stage === 'numberGroups'}
 		<NumberGroups bind:id={tournament.id} bind:stage />
-	{:else if stage == 'groups'}
-		<Groups bind:id={tournament.id} bind:stage bind:finals />
-	{:else if stage == 'continue'}
+	{:else if stage === 'groups'}
+		<Groups bind:id={tournament.id} bind:stage bind:finals/>
+	{:else if stage === 'continue'}
 		<Continue bind:stage />
-	{:else if stage == 'numberFinals'}
-		<NumberFinals bind:numberFinals bind:stage />
-	{:else if stage == 'finalsDistribution'}
-		<FinalsDistribution bind:numberFinals bind:stage bind:id />
-	{:else if stage == 'secondStage'}
-		<SecondStage bind:numberFinals bind:stage />
+	{:else if stage === 'numberFinals'}
+		<NumberFinals bind:id={tournament.id} bind:numberFinals bind:stage />
+	{:else if stage === 'finalsDistribution'}
+		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals/>
+	{:else if stage === 'secondStage'}
+		<SecondStage bind:numberFinals bind:stage bind:id={tournament.id} on:error={handleError}/>
 	{/if}
 {/await}

@@ -2,8 +2,9 @@
     import type {Group, Match, Player} from '$lib/types/types';
     import {alertInputPopup} from "$lib/inputPopupHandler";
     import {createMatch, editMatch} from "$lib/requests";
-    import {createEventDispatcher} from "svelte";
-
+    import {createEventDispatcher, onMount} from "svelte";
+    import {isLeader} from "$lib/stores";
+    import { page } from '$app/stores';
     const dispatch = createEventDispatcher();
     export let groupInfo: Group = {type: "Group", tournamentTitle: "Tournament", players: [], matches: [], id: 0};
     let data = [] as Player[];
@@ -18,6 +19,7 @@
     let finalPlaces: number[] = new Array(data.length).fill(-1);
     let matchID: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
     let tableResults: number[][] = new Array(data.length).fill(null).map(() => new Array(data.length).fill(null));
+    let finalPlayers: Player[] = new Array(data.length);
     const findPlayerNumber = (name: string) => {
         for (let i = 0; i < data.length; i++) {
             if (data[i].name == name) {
@@ -107,20 +109,10 @@
         for (let i = data.length - 1; i >= data.length - temp.length; i--) {
             placesTribune[i] = temp[data.length - i - 1];
         }
-        let changed = false;
         for (let i = 0; i < data.length; i++) {
-            if (finalPlaces[placesTribune[i]] != i) {
-                finalPlaces[placesTribune[i]] = i;
-                changed = true;
-            }
+            finalPlayers[i] = data[placesTribune[i]];
         }
-        if (changed) {
-            let finalPlayers: Player[] = new Array(data.length);
-            for (let i = 0; i < data.length; i++) {
-                finalPlayers[i] = data[placesTribune[i]];
-            }
-            dispatch("finalize", finalPlayers);
-        }
+        dispatch("finalize", finalPlayers);
     }
     const findTable = (num: number) => {
         if (num >= tour.length || tour[num] >= data.length - 1 + data.length % 2) {
@@ -266,6 +258,9 @@
             countPoints(i);
         }
     }
+    if (allMatchesPlayed()) {
+        generatePlaces();
+    }
     $: if(groupInfo) {
         data = [] as Player[];
         if (groupInfo.players && groupInfo.players.length > 0) {
@@ -293,6 +288,11 @@
             generatePlaces();
         }
     }
+    onMount(() => {
+        if (allMatchesPlayed()) {
+            dispatch('finalize', finalPlayers);
+        }
+    })
 </script>
 
 {#if data.length > 0}
@@ -319,19 +319,19 @@
                             {:else}
                                 <td>
                                     {#if (tableResults[rowIndex][index] || tableResults[index][rowIndex]) && !checkTable(rowIndex, index)}
-                                        <button class="results-cell" on:click={(event) => {waitingForMatchResult(event, rowIndex, index)}}>
+                                        <button class="results-cell" disabled={!$isLeader || $page.data.title !== "Create Tournament"} on:click={(event) => {waitingForMatchResult(event, rowIndex, index)}}>
                                             {tablePoints[rowIndex][index]}<br>{tableResults[rowIndex][index]} : {tableResults[index][rowIndex]}
                                         </button>
                                     {:else}
                                         {#if rowIndex !== index && checkTable(rowIndex, index) && tablePlaying[rowIndex][index]}
-                                            <button class="finish-match-button match-button" on:click={(event) => {waitingForMatchResult(event, rowIndex, index)}}></button>
+                                            <button class="finish-match-button match-button" disabled={!$isLeader || $page.data.title !== "Create Tournament"} on:click={(event) => {waitingForMatchResult(event, rowIndex, index)}}></button>
 
                                         {:else}
                                             {#if rowIndex !== index && checkTable(rowIndex, index) && !tablePlaying[rowIndex][index]}
-                                                <button class="start-match-button match-button" on:click={(event) => {matchStarted(event, rowIndex, index)}}></button>
+                                                <button class="start-match-button match-button" disabled={!$isLeader || $page.data.title !== "Create Tournament"} on:click={(event) => {matchStarted(event, rowIndex, index)}}></button>
                                             {:else}
                                                 {#if rowIndex !== index}
-                                                    <button class="invisible-match-button" on:click={(event) => {waitingForMatchResultImmediately(event, rowIndex, index)}}></button>
+                                                    <button class="invisible-match-button" disabled={!$isLeader || $page.data.title !== "Create Tournament"} on:click={(event) => {waitingForMatchResultImmediately(event, rowIndex, index)}}></button>
                                                 {/if}
                                             {/if}
                                         {/if}
@@ -440,6 +440,9 @@
     }
     .finish-match-button {
         background: var(--content-color);
+    }
+    button:disabled {
+        cursor: unset;
     }
     @media(max-width: 800px) {
         .table-container {

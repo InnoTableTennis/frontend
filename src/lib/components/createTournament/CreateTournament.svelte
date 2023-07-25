@@ -33,7 +33,11 @@
 			<h1>{tournament.title}</h1>
 			<p>{tournament.startDateString} - {tournament.endDateString}</p>
 			<div class="button">
-				<Button on:click={() => nextStage()}>Create tournament</Button>
+				{#if tournament.state != null}
+					<Button on:click={() => nextStage()}>Continue</Button>
+				{:else}
+					<Button on:click={() => nextStage()}>Create tournament</Button>
+				{/if}
 			</div>
 		</div>
 	</div>

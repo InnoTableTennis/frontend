@@ -5,6 +5,7 @@
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Group, Tournament, TournamentState } from '$lib/types/types';
+	import {alertPopup} from "$lib/popupHandler";
 
 	export let stage;
 	export let id: number;
@@ -49,14 +50,18 @@
 	};
 
 	const nextStage = async function () {
-		makeGroups();
-		tournament.state = {
-			participants: tournament.state.participants,
-			firstStage: groups,
-			secondStage: null,
-		};
-		await addGroups(tournament.state);
-		stage = 'groups';
+		if (!tournament.state || !tournament.state.firstStage?.length || tournament.state.firstStage.length == numberGroups || (tournament.state && tournament.state.firstStage?.length != numberGroups && await alertPopup('Are you sure? Changing the number of groups can cause the loss of previous results.'))) {
+			makeGroups();
+			if (numberGroups != tournament.state.firstStage?.length) {
+				tournament.state = {
+					participants: tournament.state.participants,
+					firstStage: groups,
+					secondStage: null,
+				};
+			}
+			await addGroups(tournament.state);
+			stage = 'groups';
+		}
 	};
 	function back() {
 		stage = 'addParticipants';
@@ -77,13 +82,13 @@
 						max="100"
 						name="groupNumber"
 						placeholder=""
-						defaultNumValue={numberGroups}
+						defaultNumValue={tournament.state.firstStage?.length ? tournament.state.firstStage?.length : numberGroups}
 						bind:numberVal={numberGroups}
 						textAlignCenter={true}
 					/>
 				</div>
 				<div class="button">
-					<Button type="submit">Confirm</Button>
+					<Button type="submit">{numberGroups === tournament.state.firstStage?.length ? "Continue" : "Confirm"}</Button>
 				</div>
 			</form>
 		</div>
@@ -102,14 +107,12 @@
 		text-align: center;
 	}
 	.button {
-		margin: auto;
-		margin-top: 2rem;
+		margin: 2rem auto auto;
 		width: 9rem;
 		height: 2.75rem;
 	}
 	.input {
-		margin: auto;
-		margin-top: 3rem;
+		margin: 3rem auto auto;
 		max-width: 5rem;
 	}
 

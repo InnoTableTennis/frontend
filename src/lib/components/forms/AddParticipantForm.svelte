@@ -4,11 +4,14 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
+	import {alertPopup} from "$lib/popupHandler";
 
 	export let player: Player;
 	export let players: Player[];
 	export let participants: Player[] = [];
 	export let numberParticipants = 0;
+
+	let abilityToChange = false;
 
 	let name = $AddPlayerFormStore.name;
 	$: playerNames = players.map((player) => player.name);
@@ -21,23 +24,41 @@
 		name = event.detail;
 	}
 
-	function addParticipant() {
-		for (let i = 0; i < players.length; i++) {
-			if (players[i].name === name) {
-				if (!participants.includes(players[i])) {
-					participants = [...participants, players[i]];
-					numberParticipants++;
+	async function addParticipant() {
+		if (participants.length && !abilityToChange) {
+			if (await alertPopup("Are you sure? It will delete all saved progress.")) {
+				abilityToChange = true;
+			}
+		} else {
+			abilityToChange = true;
+		}
+		if (abilityToChange) {
+			for (let i = 0; i < players.length; i++) {
+				if (players[i].name === name) {
+					if (!participants.includes(players[i])) {
+						participants = [...participants, players[i]];
+						numberParticipants++;
+					}
 				}
 			}
 		}
 	}
 
-	function removeParticipant() {
-		for (let i = 0; i < participants.length; i++) {
-			if (participants[i].name === name) {
-				participants.splice(i, 1);
-				participants = participants;
-				numberParticipants--;
+	async function removeParticipant() {
+		if (participants.length && !abilityToChange) {
+			if (await alertPopup("Are you sure? It will delete all saved progress.")) {
+				abilityToChange = true;
+			}
+		} else {
+			abilityToChange = true;
+		}
+		if (abilityToChange) {
+			for (let i = 0; i < participants.length; i++) {
+				if (participants[i].name === name) {
+					participants.splice(i, 1);
+					participants = participants;
+					numberParticipants--;
+				}
 			}
 		}
 	}
@@ -64,8 +85,8 @@
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<Button on:click={() => removeParticipant()}>Remove</Button>
-		<Button on:click={() => addParticipant()}>Add</Button>
+		<Button on:click={async () => await removeParticipant()}>Remove</Button>
+		<Button on:click={async () => await addParticipant()}>Add</Button>
 	</div>
 </form>
 
