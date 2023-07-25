@@ -129,6 +129,11 @@
 			placesTribune[i] = temp[data.length - i - 1];
 		}
 		for (let i = 0; i < data.length; i++) {
+			if (finalPlaces[placesTribune[i]] != i) {
+				finalPlaces[placesTribune[i]] = i;
+			}
+		}
+		for (let i = 0; i < data.length; i++) {
 			finalPlayers[i] = data[placesTribune[i]];
 		}
 		dispatch('finalize', finalPlayers);
