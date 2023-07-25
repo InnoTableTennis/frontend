@@ -8,7 +8,7 @@
 
 	export let id: number;
 	export let stage;
-	
+
 	let numberParticipants = 0;
 	let participants: Player[] = [];
 	let participant: Player = {} as Player;
@@ -34,7 +34,7 @@
 			.getTournament(id)
 			.then((result) => {
 				tournament = result.data;
-				participants = tournament.state.participants
+				participants = tournament.state.participants;
 				numberParticipants = participants.length;
 			})
 			.catch((error) => {

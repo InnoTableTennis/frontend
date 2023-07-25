@@ -8,7 +8,7 @@
 	export let stage;
 
 	const dispatch = createEventDispatcher();
-	
+
 	let tournament: Tournament = {} as Tournament;
 
 	const nextStage = function () {

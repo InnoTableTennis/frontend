@@ -16,7 +16,7 @@
 	const dispatch = createEventDispatcher();
 
 	let stage:
-		'create'
+		| 'create'
 		| 'addParticipants'
 		| 'numberGroups'
 		| 'groups'
@@ -27,8 +27,6 @@
 	let id: number;
 	let tournament: Tournament = {} as Tournament;
 	let finals: Player[][];
-	let numberParticipants = 0;
-	let numberGroups = 1;
 	let numberFinals = 1;
 
 	async function requestTournament() {

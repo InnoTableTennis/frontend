@@ -10,7 +10,7 @@
 	export let id: number;
 
 	const dispatch = createEventDispatcher();
-	
+
 	let numberGroups = 0;
 	let tournament: Tournament = {} as Tournament;
 	let groups: Group[] = [];
@@ -44,7 +44,10 @@
 			};
 		}
 		for (let i = 0; i < tournament.state.participants.length; i++) {
-			groups[i % numberGroups].players = [...groups[i % numberGroups].players, tournament.state.participants[i]];
+			groups[i % numberGroups].players = [
+				...groups[i % numberGroups].players,
+				tournament.state.participants[i],
+			];
 		}
 	};
 
