@@ -14,7 +14,7 @@
 	let chosenId:number[];
 
 	const dispatch = createEventDispatcher();
-	
+
 	let numberGroups: number | undefined;
 	let numberParticipants: number;
 	let tournament: Tournament = {} as Tournament;

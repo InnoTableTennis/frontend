@@ -17,7 +17,7 @@
 	const dispatch = createEventDispatcher();
 
 	let stage:
-		'create'
+		| 'create'
 		| 'addParticipants'
 		| 'numberGroups'
 		| 'groups'

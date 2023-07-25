@@ -23,10 +23,10 @@
 		<div class="value">{numberOfGames}</div>
 		<div class="description">in total</div>
 	</div>
-	<div class="info-block">
+	<div class="info-block places">
 		<div class="name">Places</div>
 		{#each places as place, i}
-			<div class="place-line">
+			<div class="place-line" class:hidden={i > 2}>
 				<div class="place">{i + 1}</div>
 				<div class="player">{place.name}</div>
 			</div>
@@ -115,6 +115,9 @@
 	.footer {
 		margin-bottom: 1rem;
 	}
+	.hidden {
+		display: none;
+	}
 	@media (max-width: 800px) and (min-width: 480px) {
 		.name {
 			font-size: var(--fontsize-medium);
@@ -139,11 +142,14 @@
 			font-size: 1rem;
 			font-weight: var(--fontweight-2);
 		}
+		.hidden {
+			display: none;
+		}
 	}
 	@media (max-width: 480px) {
-		.info-blocks-panel {
+		/* .info-blocks-panel {
 			display: block;
-		}
+		} */
 		.info-block {
 			margin: 0 auto;
 			height: 10rem;
@@ -151,6 +157,9 @@
 		}
 		.name {
 			font-size: var(--fontsize-medium);
+		}
+		.places .name {
+			height: 2rem;
 		}
 		.value {
 			font-size: 2.5rem;
@@ -165,12 +174,15 @@
 		.place {
 			margin: 0;
 			width: 100%;
-			font-size: 1.2rem;
+			font-size: var(--fontsize-medium);
 			font-weight: var(--fontweight-2);
 		}
 		.player {
 			font-size: var(--fontsize-medium);
 			font-weight: var(--fontweight-2);
+		}
+		.hidden {
+			display: none;
 		}
 	}
 </style>

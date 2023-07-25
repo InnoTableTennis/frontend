@@ -34,7 +34,7 @@
 			.getTournament(id)
 			.then((result) => {
 				tournament = result.data;
-				participants = tournament.state.participants
+				participants = tournament.state.participants;
 				numberParticipants = participants.length;
 			})
 			.catch((error) => {
