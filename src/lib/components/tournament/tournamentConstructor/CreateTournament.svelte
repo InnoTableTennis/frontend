@@ -1,15 +1,16 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import type { Tournament } from '$lib/types/types';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 
 	export let id: number;
-	export let stage;
 
 	const dispatch = createEventDispatcher();
 
 	let tournament: Tournament = {} as Tournament;
+	export let stage: TournamentStage;
 
 	const nextStage = function () {
 		stage = 'addParticipants';

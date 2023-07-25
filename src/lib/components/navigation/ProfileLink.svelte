@@ -2,6 +2,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
+	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { getUsername } from '$lib/token';
 	import { userToken } from '$lib/stores';
@@ -20,6 +21,8 @@
 		isMenuVisible = isMenuVisible ? false : true;
 	};
 
+	let playerInfo: Player | null = null;
+
 	const dispatch = createEventDispatcher();
 
 	const requestUserinfo = async () => {
@@ -34,10 +37,13 @@
 			});
 		return players.find((user) => user.telegramAlias == getUsername($userToken));
 	};
+	let linkToProfile = `${base}/players/`;
 
-	let playerInfo: Player | null = null;
-	requestUserinfo().then((response) => {
-		playerInfo = response as Player;
+	onMount(() => {
+		requestUserinfo().then((response) => {
+			playerInfo = response as Player;
+			linkToProfile += playerInfo.id;
+		});
 	});
 </script>
 
@@ -69,7 +75,9 @@
 							<div class="space-for-icon" />
 						</div>
 						<div class="lower-subcontainer">
-							<button class="open-profile-button">Profile</button>
+							<a href={linkToProfile}>
+								<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
+							</a>
 							<button class="log-out-button" on:click={logOut}>Log Out</button>
 						</div>
 					</div>
@@ -208,6 +216,11 @@
 		height: 2rem;
 		margin: 0.25rem;
 	}
+	.lower-subcontainer a {
+		width: 100%;
+		height: 2rem;
+		margin: 0.25rem;
+	}
 
 	.log-out-button:hover {
 		box-shadow: 0px 4px 4px 2px var(--not-chosen-font-color);
@@ -220,7 +233,7 @@
 		position: absolute;
 		right: 0;
 		top: 0;
-		height: 100vh;
+		height: 99vh;
 		width: 100vw;
 	}
 	@media (min-width: 480px) {

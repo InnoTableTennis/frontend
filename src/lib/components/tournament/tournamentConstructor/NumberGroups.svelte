@@ -6,8 +6,10 @@
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Group, Tournament, TournamentState } from '$lib/types/types';
 	import { alertPopup } from '$lib/popupHandler';
+	import type { Player, Tournament } from '$lib/types/types';
+	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
-	export let stage;
+	export let stage: TournamentStage;
 	export let id: number;
 
 	const dispatch = createEventDispatcher();

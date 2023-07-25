@@ -19,6 +19,17 @@
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Discover the talented members of InnoTableTennis Club here. Check out their ratings, aliases, and win/loss records. Explore the achievements and skills of our dedicated players."
+	/>
+	<meta
+		name="keywords"
+		content="table tennis club members, InnoTableTennis Club, player ratings, player aliases, win/loss records, talented players"
+	/>
+</svelte:head>
+
 <div class="info">
 	{#if isLeader}
 		<div class="edit-mode">

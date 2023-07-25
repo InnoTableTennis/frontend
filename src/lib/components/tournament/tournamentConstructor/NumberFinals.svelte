@@ -2,12 +2,14 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import * as db from '$lib/requests';
 	import type { Tournament } from '$lib/types/types';
 	import { createEventDispatcher } from 'svelte';
 	import { alertPopup } from '$lib/popupHandler';
 
 	export let numberFinals = 0;
+	export let stage: TournamentStage;
 	export let id: number;
 	let tournament = {} as Tournament;
 	const dispatch = createEventDispatcher();

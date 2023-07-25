@@ -31,6 +31,17 @@
 	}
 </script>
 
+<svelte:head>
+	<meta
+		name="description"
+		content="Explore the latest table tennis matches of InnoTableTennis Club members here. Stay updated with thrilling competitions, results, and player performances."
+	/>
+	<meta
+		name="keywords"
+		content="table tennis matches, InnoTableTennis Club, table tennis competitions, player performances, match results"
+	/>
+</svelte:head>
+
 {#if isLeader}
 	<div class="edit-mode">
 		<ToggleCheckboxButton

@@ -9,8 +9,9 @@
 	import { goto } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
-	export let stage;
+	export let stage: TournamentStage;
 	export let id: number;
 	export let numberFinals = 0;
 
@@ -227,9 +228,6 @@
 	}
 
 	@media (max-width: 1100px) {
-		.menu-layout {
-			display: block;
-		}
 		.settings {
 			margin-top: 1rem;
 		}

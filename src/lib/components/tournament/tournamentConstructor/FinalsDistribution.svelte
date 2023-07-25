@@ -2,13 +2,14 @@
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
-	import FinalsDistributor from '$lib/components/createTournament/FinalsDistributor.svelte';
+	import FinalsDistributor from '$lib/components/tournament/tournamentConstructor/FinalsDistributor.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Final, Group, Player, Tournament } from '$lib/types/types';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
 	export let id: number;
-	export let stage;
+	export let stage: TournamentStage;
 	export let finals: Player[][];
 
 	let chosenId: number[];

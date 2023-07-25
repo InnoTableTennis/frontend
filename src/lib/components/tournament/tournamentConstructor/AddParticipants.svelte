@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as db from '$lib/requests';
-	import type { Player, Tournament, TournamentState } from '$lib/types/types.js';
+	import type { Player, Tournament } from '$lib/types/types.js';
+	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsList from '$lib/components/lists/ParticipantsCreateList.svelte';

@@ -74,4 +74,36 @@
 		color: var(--main-color);
 		transition: color 0.3s ease-in;
 	}
+
+	@media (max-width: 600px) {
+		.bar-wrapper {
+			width: 24rem;
+		}
+
+		button {
+			width: 8rem;
+			font-size: var(--fontsize-medium2);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.bar-wrapper {
+			width: 21rem;
+		}
+
+		button {
+			width: 7rem;
+			font-size: var(--fontsize-medium2);
+		}
+	}
+
+	@media (max-width: 300px) {
+		.bar-wrapper {
+			width: 15rem;
+		}
+
+		button {
+			width: 5rem;
+		}
+	}
 </style>

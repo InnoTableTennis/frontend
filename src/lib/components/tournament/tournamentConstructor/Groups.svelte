@@ -2,11 +2,13 @@
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types';
+	import type { Tournament } from '$lib/types/types';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
-	import TournamentGroup from '$lib/components/tournamentConstructor/TournamentGroup.svelte';
+	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 
-	export let stage;
+	export let stage: TournamentStage;
 	export let id: number;
 	export let finals: Player[][];
 
