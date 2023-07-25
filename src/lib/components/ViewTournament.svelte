@@ -25,7 +25,6 @@
 			.getTournament(id)
 			.then((result) => {
 				tournament = result.data;
-				console.log(tournament);
 			})
 			.catch((error) => {
 				dispatch('error', error);

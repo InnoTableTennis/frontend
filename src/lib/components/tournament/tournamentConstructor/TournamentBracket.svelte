@@ -225,7 +225,6 @@
 		}
 
 		// get the future match
-		console.log(data.matchesNetwork);
 		let matchToUpdate = Number(data.matchesNetwork.get(matchIdx.toString()));
 
 		// if there is no next match, set the winner of the final
@@ -354,7 +353,6 @@
 			data.rounds.push([]);
 		}
 		createLayout();
-		console.log(data.matchesNetwork);
 
 		dispatch('update', data);
 	}
@@ -366,7 +364,6 @@
 	onMount(() => {
 		if (data.init) {
 			build();
-			console.log(data.matchesNetwork);
 		}
 	});
 </script>

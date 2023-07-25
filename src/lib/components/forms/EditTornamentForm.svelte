@@ -44,7 +44,6 @@
 				dispatch('update');
 			})
 			.catch((error) => {
-				console.log(error);
 				dispatch('error', error);
 			});
 		tournament = {} as Tournament;

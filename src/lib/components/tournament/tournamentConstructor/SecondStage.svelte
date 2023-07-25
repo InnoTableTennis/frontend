@@ -128,7 +128,11 @@
 							.toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup
 					>
 				{:else if tournament.state.secondStage[chosenId].type === 'SingleEliminationBracket'}
-					<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[chosenId]} />
+					<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[chosenId]} 
+					on:update={updateTournament}
+						on:finalize={(event) => {
+							updatePlaces(event, chosenId);
+						}} />
 				{/if}
 			{/if}
 			<div class="pre-render-group-block">

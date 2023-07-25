@@ -3,23 +3,11 @@
 	import ProfilePagination from '$lib/components/profile/ProfilePagination.svelte';
 	import type { ProfileMatch } from '$lib/types/profileTypes';
 
-	// import { createEventDispatcher } from 'svelte';
 	import { isLeader } from '$lib/stores';
-	// import { SortFilterProfileMatchFormStore } from '$lib/formStores';
-
-	// const dispatch = createEventDispatcher();
 
 	export let dataMatches: ProfileMatch[];
 
-	// $: console.log($SortFilterProfileMatchFormStore)
-	// $: if($SortFilterProfileMatchFormStore.name != "") {
-	// 		dataMatches = dataMatches.filter(elem => {
-	// 			elem.opponentName == $SortFilterProfileMatchFormStore.name
-	// 		})
-	// 	}
 </script>
-
-<!-- {@debug matches} -->
 
 {#if dataMatches.length}
 	<ProfilePagination>

@@ -95,7 +95,6 @@
 					temp.push(newBracket);
 				}
 			}
-			console.log(types[i], temp[i]);
 		}
 		if (
 			!tournament.state.secondStage ||
