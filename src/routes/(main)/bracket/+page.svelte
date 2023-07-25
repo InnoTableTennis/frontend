@@ -26,43 +26,19 @@
 			telegramAlias: '',
 			winRate: 10,
 		},
-
-		{
-			id: 3,
-			name: 'Nur Islamov',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
-		{
-			id: 4,
-			name: 'Nail Min',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
-		{
-			id: 5,
-			name: 'Mikhail K',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
-
 		{
 			id: 1,
-			name: 'Mikhail Kalinin',
+			name: 'Nur Islam',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 1000,
+			telegramAlias: '',
+			winRate: 10,
+		},
+		{
+			id: 1,
+			name: 'Mikhail K',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -73,7 +49,7 @@
 
 		{
 			id: 2,
-			name: 'Nikita Boris',
+			name: 'Ivan Ivan',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
@@ -81,39 +57,48 @@
 			telegramAlias: '',
 			winRate: 10,
 		},
-
 		{
-			id: 3,
-			name: 'Nur Islamov',
+			id: 1,
+			name: 'Ma Long',
 			numberOfGames: 5,
 			numberOfLosses: 2,
 			numberOfWins: 3,
-			rating: 105,
+			rating: 1000,
+			telegramAlias: '',
+			winRate: 10,
+		},
+		{
+			id: 1,
+			name: 'Anvar Anvar',
+			numberOfGames: 5,
+			numberOfLosses: 2,
+			numberOfWins: 3,
+			rating: 1000,
 			telegramAlias: '',
 			winRate: 10,
 		},
 
-		{
-			id: 4,
-			name: 'Nail Min',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
+		// {
+		// 	id: 2,
+		// 	name: 'Bulat Bulat',
+		// 	numberOfGames: 5,
+		// 	numberOfLosses: 2,
+		// 	numberOfWins: 3,
+		// 	rating: 900,
+		// 	telegramAlias: '',
+		// 	winRate: 10,
+		// },
 
-		{
-			id: 5,
-			name: 'Mikhail K',
-			numberOfGames: 5,
-			numberOfLosses: 2,
-			numberOfWins: 3,
-			rating: 105,
-			telegramAlias: '',
-			winRate: 10,
-		},
+		// {
+		// 	id: 2,
+		// 	name: 'Forwarded name',
+		// 	numberOfGames: 5,
+		// 	numberOfLosses: 2,
+		// 	numberOfWins: 3,
+		// 	rating: 900,
+		// 	telegramAlias: '',
+		// 	winRate: 10,
+		// },
 	];
 
 	let data: readData = {
@@ -122,22 +107,12 @@
 		playersList: players,
 	} as readData;
 
-	let data2: readData = {
-		init: true,
-		type: 'SingleEliminationBracket',
-		playersList: players,
-	} as readData;
-
 	function updateData(event: CustomEvent) {
-		data2 = event.detail;
-	}
-
-	function updateData2(event: CustomEvent) {
 		data = event.detail;
 	}
 
 	function printLeaderBoard(event: CustomEvent) {
-		console.log(event.detail);
+		// console.log(event.detail);
 	}
 
 	let tournament = {
@@ -153,4 +128,3 @@
 	{data}
 	{tournament}
 />
-<TournamentBracket on:update={updateData2} on:error={handleError} data={data2} {tournament} />

@@ -9,6 +9,7 @@
 	import { TSMap } from 'typescript-map';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import type { readData } from '$lib/types/bracketTypes';
+	import { isEqual } from 'lodash';
 
 	const dispatch = createEventDispatcher();
 
@@ -86,9 +87,10 @@
 		return newMatch;
 	}
 
-	// fucntion to add finished matches to database
+	// function to add finished matches to database
 	async function addMatchToDB(matchIdx: number) {
-		let matchToAdd = data.allMatches[matchIdx];
+		let round = findRound(matchIdx);
+		let matchToAdd = data.rounds[round][matchIdx];
 		let localDateString = convertDateToStringDash(new Date());
 		let createdMatch = await db.createMatch(
 			matchToAdd.firstPlayerName,
@@ -98,89 +100,59 @@
 			matchToAdd.tournamentTitle,
 			localDateString,
 		);
-		data.allMatches[matchIdx] = createdMatch;
+		data.rounds[round][matchIdx] = createdMatch;
 		dispatch('update', data);
 	}
 
 	// function to create layout for empty bracket
 	function createLayout(): void {
-		// create matches for first round from list of players
-		for (let i = 0; i < data.playersList.length - 1; i += 2) {
-			let firstPlayer = data.playersList[i];
-			let secondPlayer = data.playersList[i + 1];
-
-			data.allMatches.push(createMatch(firstPlayer, secondPlayer));
-			data.rounds[0].push(data.allMatches.length - 1);
-		}
-
-		// connect first round with second round
-		arrangeMatches(data.rounds[0], 0);
-
-		// // forward the players to the second round for those who do not have an opponent
-		for (let i = 0; i < data.rounds[0].length; i++) {
-			if (
-				data.allMatches[data.rounds[0][i]].firstPlayerName === '' ||
-				data.allMatches[data.rounds[0][i]].secondPlayerName === ''
-			) {
-				// data.allMatches.splice(data.rounds[0][i] , 1);
-				setWinner(data.rounds[0][i]);
+		for (let i = 0; i < roundAmount; i++) {
+			data.rounds.push([]);
+			data.finishedMatches.push([]);
+			data.inProgressMatches.push([]);
+			for (let j = 0; j < roundAmount * 2 + 1; j++) {
+				data.rounds[i].push(createMatch(emptyPlayer, emptyPlayer));
 			}
 		}
-		// set up connection for the rest of the matches
-		for (let i = 1; i < roundAmount - 1; i++) {
-			arrangeMatches(data.rounds[i], i);
+
+		let idx = 0;
+		for (let i = 0; i < data.players.length - 1; i += 2) {
+			let firstPlayer = data.players[i];
+			let secondPlayer = data.players[i + 1];
+			let newMatch = createMatch(firstPlayer, secondPlayer);
+			data.rounds[0][idx] = newMatch;
+			idx += 2;
+		}
+
+		for (let i = 0; i < roundAmount * 2 - 1; i += 2) {
+			let currentMatch = data.rounds[0][i];
+
+			if (currentMatch.firstPlayerName === '' || currentMatch.secondPlayerName === '') {
+				console.log(currentMatch);
+				setWinner(0, i);
+				data.rounds[0][i] = createMatch(emptyPlayer, emptyPlayer);
+			}
 		}
 	}
 
-	// function to set up connections between matches
-	function arrangeMatches(matchesList: number[], round: number): void {
-		let nextMatch: Match = {} as Match;
-
-		let updateMatch = false;
-
-		// create new match
-		nextMatch = createMatch(emptyPlayer, emptyPlayer);
-		data.allMatches.push(nextMatch);
-
-		// push the new match to the next round
-		data.rounds[round + 1].push(data.allMatches.length - 1);
-
-		// set up connection between the initial match and the future one
-		data.matchesNetwork.set(matchesList[0].toString(), (data.allMatches.length - 1).toString());
-
-		for (let i = 1; i < matchesList.length; i++) {
-			// check if a new next match should be created
-			if (updateMatch) {
-				nextMatch = createMatch(emptyPlayer, emptyPlayer);
-				data.allMatches.push(nextMatch);
-				data.rounds[round + 1].push(data.allMatches.length - 1);
-			}
-			// update the flag
-			updateMatch = !updateMatch;
-
-			data.matchesNetwork.set(matchesList[i].toString(), (data.allMatches.length - 1).toString());
+	function findRound(matchIdx: number) {
+		let roundProgression = [1];
+		for (let i = 1; i < roundAmount; i++) {
+			roundProgression.push(roundProgression[i - 1] * 2 + 1);
 		}
-	}
-
-	// function to check if the winner of a match should go as first player to the future match
-	function isFirstWinner(initMatch: number, nextMatch: number) {
-		let keys = Array.from(data.matchesNetwork.keys());
-
-		let initIndex = 0;
-		let neighbourIndex = 0;
-
-		for (let i = 0; i < keys.length; i++) {
-			let currentMatch = Number(data.matchesNetwork.get(keys[i]));
-			if (currentMatch === nextMatch) {
-				if (keys[i] === initMatch.toString()) {
-					initIndex = i;
-				} else {
-					neighbourIndex = i;
+		for (let round = 0; round < roundAmount; round++) {
+			let startingPosition = 0;
+			if (round !== 0) {
+				startingPosition = roundProgression[round - 1];
+			}
+			for (let j = startingPosition; j < roundAmount * 2 - 1; j += 1 + roundProgression[round]) {
+				if (isEqual(data.rounds[round][j], data.rounds[round][matchIdx])) {
+					return j;
 				}
 			}
 		}
-
-		return initIndex < neighbourIndex;
+		console.log('match not found : find round function');
+		return -1;
 	}
 
 	// function to mark the match as being in progress
@@ -188,51 +160,81 @@
 		let isConfirmed = await alertPopup('Are you sure that you want to start this match?');
 		if (!isConfirmed) return;
 
-		data.inProgressMatches = [...data.inProgressMatches, matchIdx];
+		let round = findRound(matchIdx);
+
+		data.inProgressMatches[round].push(matchIdx);
 		dispatch('update', data);
 	}
 
 	function findPlayer(name: string): Player {
-		for (let i = 0; i < data.playersList.length; i++) {
-			if (data.playersList[i].name === name) {
-				return data.playersList[i];
+		for (let i = 0; i < data.players.length; i++) {
+			if (data.players[i].name === name) {
+				return data.players[i];
 			}
 		}
 		return {} as Player;
 	}
 
+	function getNeighbour(round: number, matchIdx: number) {
+		let roundProgression = [1];
+		for (let i = 1; i < roundAmount; i++) {
+			roundProgression.push(roundProgression[i - 1] * 2 + 1);
+		}
+
+		let firstPosition = true;
+
+		let startingPosition = 0;
+		if (round !== 0) {
+			startingPosition = roundProgression[round - 1];
+		}
+
+		for (let i = startingPosition; i < roundAmount * 2 - 1; i += 1 + roundProgression[round]) {
+			if (matchIdx === i) {
+				break;
+			}
+			firstPosition = !firstPosition;
+		}
+
+		let neighbourIndex = 0;
+		if (firstPosition) {
+			neighbourIndex = matchIdx + 1 + roundProgression[round];
+		} else {
+			neighbourIndex = matchIdx - 1 - roundProgression[round - 1];
+		}
+
+		return neighbourIndex;
+	}
 	// function to set a winner of the match
 	// and forward the name of the winner to the next one
-	function setWinner(matchIdx: number): void {
+	function setWinner(round: number, matchIdx: number): void {
+		let neighbourIdx = getNeighbour(round, matchIdx);
+
+		let initMatch = data.rounds[round][matchIdx];
+
+		let nextMatch = data.rounds[round + 1][(matchIdx + neighbourIdx) / 2];
+
 		let winner = '';
 
-		// if the player plays with empty player, forward him to the next match
-		if (data.allMatches[matchIdx].firstPlayerName === '') {
-			winner = data.allMatches[matchIdx].secondPlayerName;
-		} else if (data.allMatches[matchIdx].secondPlayerName === '') {
-			winner = data.allMatches[matchIdx].firstPlayerName;
+		if (initMatch.firstPlayerName === '') {
+			winner = data.rounds[round][matchIdx].secondPlayerName;
+		} else if (initMatch.secondPlayerName === '') {
+			winner = data.rounds[round][matchIdx].firstPlayerName;
 		} else {
-			// check the scores and set the winner and loser
-			if (
-				data.allMatches[matchIdx].firstPlayerScore > data.allMatches[matchIdx].secondPlayerScore
-			) {
-				winner = data.allMatches[matchIdx].firstPlayerName;
-				data.leaderBoard.push(findPlayer(data.allMatches[matchIdx].secondPlayerName));
+			if (initMatch.firstPlayerScore > initMatch.secondPlayerScore) {
+				winner = initMatch.firstPlayerName;
+				data.leaderBoard.push(findPlayer(initMatch.secondPlayerName));
 			} else {
-				data.leaderBoard.push(findPlayer(data.allMatches[matchIdx].firstPlayerName));
-				winner = data.allMatches[matchIdx].secondPlayerName;
+				winner = initMatch.secondPlayerName;
+				data.leaderBoard.push(findPlayer(initMatch.firstPlayerName));
 			}
 		}
 
-		// get the future match
-		let matchToUpdate = Number(data.matchesNetwork.get(matchIdx.toString()));
-
 		// if there is no next match, set the winner of the final
-		if (matchToUpdate) {
-			if (isFirstWinner(matchIdx, matchToUpdate)) {
-				data.allMatches[matchToUpdate].firstPlayerName = winner;
+		if (nextMatch) {
+			if (matchIdx < neighbourIdx) {
+				nextMatch.firstPlayerName = winner;
 			} else {
-				data.allMatches[matchToUpdate].secondPlayerName = winner;
+				nextMatch.secondPlayerName = winner;
 			}
 		} else {
 			data.winner = winner;
@@ -243,28 +245,31 @@
 	}
 
 	async function handleMatchEdit(matchIdx: number) {
-		let nextMatchIdx = Number(data.matchesNetwork.get(matchIdx.toString()));
-		if (data.inProgressMatches.includes(nextMatchIdx)) {
+		let round = findRound(matchIdx);
+		let neighbourIdx = getNeighbour(round, matchIdx);
+		let nextMatchIdx = (matchIdx + neighbourIdx) / 2;
+
+		if (data.inProgressMatches[round].includes(nextMatchIdx)) {
 			dispatch('error', 'The next match is in progress, cannot edit');
 			return;
-		} else if (data.finishedMatches.includes(nextMatchIdx)) {
+		} else if (data.finishedMatches[round].includes(nextMatchIdx)) {
 			dispatch('error', 'The next match is finished, cannot edit');
 			return;
 		}
 
 		let scores = await alertInputPopup(
 			'Please input the new results of the match',
-			data.allMatches[matchIdx].firstPlayerName,
-			data.allMatches[matchIdx].secondPlayerName,
+			data.rounds[round][matchIdx].firstPlayerName,
+			data.rounds[round][matchIdx].secondPlayerName,
 		);
 
-		let matchToEdit = data.allMatches[matchIdx];
+		let matchToEdit = data.rounds[round][matchIdx];
 
 		if (scores) {
 			matchToEdit.firstPlayerScore = Number(scores[0]);
 			matchToEdit.secondPlayerScore = Number(scores[1]);
 
-			setWinner(matchIdx);
+			setWinner(round, matchIdx);
 
 			db.editMatch(
 				matchToEdit.id.toString(),
@@ -281,11 +286,12 @@
 
 	// function to finish the match
 	async function handleMatchEnd(matchIdx: number) {
+		let round = findRound(matchIdx);
 		// show the form in a popup
 		let scores = await alertInputPopup(
 			'Please input the results of the match',
-			data.allMatches[matchIdx].firstPlayerName,
-			data.allMatches[matchIdx].secondPlayerName,
+			data.rounds[round][matchIdx].firstPlayerName,
+			data.rounds[round][matchIdx].secondPlayerName,
 		);
 
 		if (scores) {
@@ -294,16 +300,16 @@
 				return;
 			}
 			// set the scores
-			data.allMatches[matchIdx].firstPlayerScore = Number(scores[0]);
-			data.allMatches[matchIdx].secondPlayerScore = Number(scores[1]);
+			data.rounds[round][matchIdx].firstPlayerScore = Number(scores[0]);
+			data.rounds[round][matchIdx].secondPlayerScore = Number(scores[1]);
 
 			// delete the match from in prgress matches
-			data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
+			data.inProgressMatches[round].splice(data.inProgressMatches[round].indexOf(matchIdx), 1);
 
 			// set the winner of the match
-			setWinner(matchIdx);
+			setWinner(round, matchIdx);
 
-			data.finishedMatches = [...data.finishedMatches, matchIdx];
+			data.finishedMatches[round] = [...data.finishedMatches[round], matchIdx];
 			data.inProgressMatches = data.inProgressMatches;
 
 			addMatchToDB(matchIdx);
@@ -311,62 +317,109 @@
 		}
 	}
 
-	function isFirstRound(round: number[]) {
-		if (round.length !== data.rounds[0].length) {
-			return false;
+	function isHidden(match: number, round: number) {
+		if (
+			data.rounds[round][match].firstPlayerName === '' &&
+			data.rounds[round][match].secondPlayerName &&
+			round === 0
+		) {
+			return true;
 		}
-		for (let i = 0; i < data.rounds[0].length; i++) {
-			if (data.rounds[0][i] !== round[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	function isHidden(round: number[], matchIdx: number) {
-		return (
-			(data.allMatches[matchIdx].firstPlayerName === '' ||
-				data.allMatches[matchIdx].secondPlayerName === '') &&
-			isFirstRound(round)
-		);
+		return false;
 	}
 
 	export let tournament: Tournament;
 
 	export let data: readData;
 
-	if (data.allMatches === undefined) {
+	if (data.rounds === undefined) {
 		data.leaderBoard = [];
-		data.allMatches = [];
 		data.finishedMatches = [];
 		data.inProgressMatches = [];
-		data.matchesNetwork = new TSMap<string, string>();
 		data.rounds = [];
 		data.winner = '';
 	}
 
+	let isBuilt = false;
+
 	function build() {
-		data.playersList = sortPlayers(data.playersList);
+		data.players = sortPlayers(data.players);
 		data.init = false;
-		roundAmount = Math.ceil(Math.log2(data.playersList.length));
-		for (let i = 0; i < roundAmount; i++) {
-			data.rounds.push([]);
-		}
+		roundAmount = Math.ceil(Math.log2(data.players.length));
+		console.log(data.rounds);
 		createLayout();
 		dispatch('update', data);
+
+		console.log(data.rounds.length);
+		console.log(data.rounds[0].length);
+
+		for (let i = 0; i < data.rounds.length; i++) {
+			rows.push(i);
+		}
+
+		for (let i = 0; i < data.rounds[0].length; i++) {
+			cols.push(i);
+		}
+		console.log(rows, cols);
+
+		isBuilt = true;
+	}
+
+	function transposeTable(table: Match[][]): Match[][] {
+		const numRows = table.length;
+		const numCols = table[0].length;
+
+		// Initialize the transposed table with the correct dimensions
+		const transposedTable: Match[][] = new Array(numCols);
+		for (let i = 0; i < numCols; i++) {
+			transposedTable[i] = new Array(numRows);
+		}
+
+		// Populate the transposed table with the values from the original table
+		for (let i = 0; i < numRows; i++) {
+			for (let j = 0; j < numCols; j++) {
+				transposedTable[j][i] = table[i][j];
+			}
+		}
+
+		return transposedTable;
 	}
 
 	let roundAmount = 0;
 
 	onMount(() => {
 		if (data.init) {
+			console.log(data.players.length);
 			build();
 		}
 	});
+
+	let rows: number[] = [];
+	let cols: number[] = [];
+
+	$: console.log(data.rounds);
 </script>
 
-<div class="bracket-wrapper">
-	<div class="bracket">
+{@debug rows, cols}
+{#if data.rounds || data.rounds?.length > 0}
+	<table>
+		{#each rows as round}
+			<tr>
+				{#each cols as match}
+					<td class:hidden={isHidden(match, round)}>
+						<p>{data.rounds[match][round].firstPlayerName}</p>
+						<p>{data.rounds[match][round].secondPlayerName}</p>
+					</td>
+				{/each}
+			</tr>
+		{/each}
+	</table>
+{/if}
+
+<!-- <div class="bracket-wrapper">
+
+	<div class="bracket" 
+	>
 		{#each data.rounds as round}
 			<ul>
 				{#each round as matchIdx}
@@ -415,7 +468,7 @@
 			</li>
 		</ul>
 	</div>
-</div>
+</div> -->
 
 <style>
 	.hidden {
@@ -459,7 +512,7 @@
 	.bracket {
 		display: flex;
 		flex-direction: row;
-		height: 90%;
+		align-items: center;
 		width: 100%;
 	}
 
@@ -467,7 +520,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		height: 100%;
 		width: 100%;
 		flex-grow: 1;
 	}
@@ -476,7 +528,7 @@
 		width: 90%;
 		margin: auto;
 		max-height: 50px;
-		height: 100%;
+		height: 3rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
