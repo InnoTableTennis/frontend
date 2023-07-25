@@ -1,21 +1,16 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SortFilterMatchFormStore } from '$lib/formStores';
+	import { TournamentFilterMatchFormStore } from '$lib/tournamentStores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 
 	const dispatch = createEventDispatcher();
 
-	let name = $SortFilterMatchFormStore.name;
-	let score = $SortFilterMatchFormStore.score;
-	let minDateString = $SortFilterMatchFormStore.minDateString;
-	let maxDateString = $SortFilterMatchFormStore.maxDateString;
-	let sortBy: 'date' = 'date' as const;
-	let isDescending = true;
+	let name = $TournamentFilterMatchFormStore.name;
+	let score = $TournamentFilterMatchFormStore.score;
 
 	const sortMatch = () => {
 		dispatch('update');
@@ -23,23 +18,15 @@
 
 	const saveForm = function () {
 		score = score.replace(/\s/g, '');
-		$SortFilterMatchFormStore = {
+		$TournamentFilterMatchFormStore = {
 			name: name,
 			score: score,
-			minDateString: changeDateAnotherFormat(minDateString),
-			maxDateString: changeDateAnotherFormat(maxDateString),
-			descending: isDescending,
-			sortBy: sortBy,
 		};
 	};
 
 	const resetForm = function () {
 		name = '';
 		score = '';
-		minDateString = '';
-		maxDateString = '';
-		sortBy = 'date';
-		isDescending = true;
 		saveForm();
 	};
 </script>
@@ -49,7 +36,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortMatch} on:change={saveForm} class="filters">
+<form on:submit|preventDefault={sortMatch} on:change={saveForm} class="filters">
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>

@@ -26,8 +26,8 @@
 	<div class="content">
 		<h1>Do you want to continue tournament?</h1>
 		<div class="line-2-elems">
-			<Button type="button" on:click={finishTournament}>Finish</Button>
-			<Button type="button" on:click={nextStage}>Continue</Button>
+			<Button type="button" on:click={() => finishTournament()}>Finish</Button>
+			<Button type="button" on:click={() => nextStage()}>Continue</Button>
 		</div>
 	</div>
 </div>

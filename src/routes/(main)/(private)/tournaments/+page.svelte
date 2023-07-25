@@ -3,7 +3,7 @@
 	// import { enhance } from '$app/forms';
 	import { getRoles } from '$lib/token';
 
-	import AddTournamentForm from '$lib/components/forms/AddTournamentForm.svelte';
+	import AddTournamentForm from '$lib/components/forms/TournamentAddForm.svelte';
 	import TournamentList from '$lib/components/lists/TournamentList.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';

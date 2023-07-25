@@ -1,25 +1,48 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import type { Tournament } from '$lib/types/types';
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
-	export let tournament: Tournament;
+	export let id: number;
 	export let stage: TournamentStage;
+
+	const dispatch = createEventDispatcher();
+
+	let tournament: Tournament = {} as Tournament;
 
 	const nextStage = function () {
 		stage = 'addParticipants';
 	};
+
+	async function requestTournament() {
+		await db
+			.getTournament(id)
+			.then((result) => {
+				tournament = result.data;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+	}
 </script>
 
-<div class="center">
-	<div class="content">
-		<h1>{tournament.title}</h1>
-		<p>{tournament.startDateString} - {tournament.endDateString}</p>
-		<div class="button">
-			<Button on:click={nextStage}>Create tournament</Button>
+{#await requestTournament() then}
+	<div class="center">
+		<div class="content">
+			<h1>{tournament.title}</h1>
+			<p>{tournament.startDateString} - {tournament.endDateString}</p>
+			<div class="button">
+				{#if tournament.state != null}
+					<Button on:click={() => nextStage()}>Continue</Button>
+				{:else}
+					<Button on:click={() => nextStage()}>Create tournament</Button>
+				{/if}
+			</div>
 		</div>
 	</div>
-</div>
+{/await}
 
 <style>
 	.center {

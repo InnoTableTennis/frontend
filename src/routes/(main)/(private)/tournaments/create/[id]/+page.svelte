@@ -11,6 +11,7 @@
 	import type { Player, Tournament } from '$lib/types/types';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
+	import { handleError } from '$lib/errorHandler';
 
 	export let data;
 
@@ -18,13 +19,12 @@
 
 	let stage: TournamentStage = 'create';
 	let tournament: Tournament = {} as Tournament;
-	let participants: Player[] = [];
-	let numberParticipants = 0;
-	let numberGroups = 1;
+	let finals: Player[][];
+	let id: number;
 	let numberFinals = 1;
 
 	async function requestTournament() {
-		let id = Number(data.id);
+		id = Number(data.id);
 		await db
 			.getTournament(id)
 			.then((result) => {
@@ -49,20 +49,20 @@
 
 {#await requestTournament() then}
 	{#if stage === 'create'}
-		<CreateTournament {tournament} bind:stage />
-	{:else if stage == 'addParticipants'}
-		<AddParticipants bind:tournament bind:stage bind:numberParticipants bind:participants />
-	{:else if stage == 'numberGroups'}
-		<NumberGroups bind:tournament bind:participants bind:stage bind:numberGroups />
-	{:else if stage == 'groups'}
-		<Groups bind:tournament bind:numberGroups bind:numberParticipants bind:stage />
-	{:else if stage == 'continue'}
+		<CreateTournament bind:id={tournament.id} bind:stage />
+	{:else if stage === 'addParticipants'}
+		<AddParticipants bind:id={tournament.id} bind:stage />
+	{:else if stage === 'numberGroups'}
+		<NumberGroups bind:id={tournament.id} bind:stage />
+	{:else if stage === 'groups'}
+		<Groups bind:id={tournament.id} bind:stage bind:finals />
+	{:else if stage === 'continue'}
 		<Continue bind:stage />
-	{:else if stage == 'numberFinals'}
-		<NumberFinals bind:numberFinals bind:stage />
-	{:else if stage == 'finalsDistribution'}
-		<FinalsDistribution bind:numberFinals bind:numberGroups bind:numberParticipants bind:stage />
-	{:else if stage == 'secondStage'}
-		<SecondStage bind:numberFinals bind:stage />
+	{:else if stage === 'numberFinals'}
+		<NumberFinals bind:id={tournament.id} bind:numberFinals bind:stage />
+	{:else if stage === 'finalsDistribution'}
+		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals />
+	{:else if stage === 'secondStage'}
+		<SecondStage bind:numberFinals bind:stage bind:id={tournament.id} on:error={handleError} />
 	{/if}
 {/await}
