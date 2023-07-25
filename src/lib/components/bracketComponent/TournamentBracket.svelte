@@ -459,7 +459,7 @@
 	.bracket {
 		display: flex;
 		flex-direction: row;
-		height: 90%;
+		height: 150%;
 		width: 100%;
 	}
 
