@@ -8,6 +8,7 @@
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import { goto } from '$app/navigation';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import TournamentBracket from './TournamentBracket.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -126,6 +127,8 @@
 							.charAt(0)
 							.toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup
 					>
+				{:else if tournament.state.secondStage[chosenId].type === 'SingleEliminationBracket'}
+					<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[chosenId]} />
 				{/if}
 			{/if}
 			<div class="pre-render-group-block">
@@ -139,6 +142,8 @@
 									_;
 								}}
 							/>
+						{:else if tournament.state.secondStage[i].type === 'SingleEliminationBracket'}
+							<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[i]} />
 						{/if}
 					{/each}
 				{/if}

@@ -1,4 +1,5 @@
 import type { Match, Player } from '$lib/types/types';
+import type { TSMap } from 'typescript-map';
 
 export interface Group {
 	type: 'Group';
@@ -12,11 +13,13 @@ export interface SingleEliminationBracket {
 	init: boolean;
 	type: 'SingleEliminationBracket';
 	players: Player[];
-	rounds: Match[][];
+	matchesNetwork: TSMap<string, string>;
+	rounds: number[][];
 	winner: string;
 	leaderBoard: Player[];
-	inProgressMatches: number[][];
-	finishedMatches: number[][];
+	inProgressMatches: number[];
+	finishedMatches: number[];
+	allMatches: Match[];
 }
 
 export type Final = Group | SingleEliminationBracket;
