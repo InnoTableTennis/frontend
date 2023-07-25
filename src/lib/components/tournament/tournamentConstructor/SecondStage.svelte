@@ -9,7 +9,7 @@
 	import { goto } from '$app/navigation';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import TournamentBracket from './TournamentBracket.svelte';
-	
+
 	const dispatch = createEventDispatcher();
 
 	export let stage: TournamentStage;

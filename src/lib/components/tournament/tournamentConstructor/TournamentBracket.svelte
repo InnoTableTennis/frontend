@@ -301,7 +301,7 @@
 			// delete the match from in prgress matches
 			data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
 
-			// set the winner of the match 
+			// set the winner of the match
 			setWinner(matchIdx);
 
 			data.finishedMatches = [...data.finishedMatches, matchIdx];

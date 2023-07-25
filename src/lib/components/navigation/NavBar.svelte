@@ -10,21 +10,20 @@
 	import { getUsername } from '$lib/token';
 	import { getRoles } from '$lib/token';
 	import { createEventDispatcher } from 'svelte';
-	import type { ProfileData } from '$lib/types/profileTypes.js';
 
 	const dispatch = createEventDispatcher();
 
-	let profileData: ProfileData;
-	const requestProfileData = async () => {
-		await db
-			.getProfileData(24)
-			.then((result) => {
-				profileData = result;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	};
+	// let profileData: ProfileData;
+	// const requestProfileData = async () => {
+	// 	await db
+	// 		.getProfileData(24)
+	// 		.then((result) => {
+	// 			profileData = result;
+	// 		})
+	// 		.catch((error) => {
+	// 			dispatch('error', error);
+	// 		});
+	// };
 
 	let playerInfo: Player | null = null;
 
@@ -47,7 +46,7 @@
 			playerInfo = response as Player;
 			linkToProfile += playerInfo?.id;
 		});
-		requestProfileData();
+		// requestProfileData();
 	});
 
 	const logOut = () => {
@@ -56,55 +55,56 @@
 	};
 </script>
 
-{#await requestProfileData() then}
-	<nav>
-		<input type="checkbox" />
-		<div class="hamburger-lines">
-			<div class="line line1" />
-			<div class="line line2" />
-			<div class="line line3" />
+<!-- {#await requestProfileData() then} -->
+<nav>
+	<input type="checkbox" />
+	<div class="hamburger-lines">
+		<div class="line line1" />
+		<div class="line line2" />
+		<div class="line line3" />
+	</div>
+	<div class="nav-container">
+		<div class="toggle-theme-container">
+			<ToggleTheme />
 		</div>
-		<div class="nav-container">
-			<div class="toggle-theme-container">
-				<ToggleTheme />
-			</div>
-			{#if getRoles($userToken).includes('USER')}
-				<div class="for-mobile">
-					<div class="prof-info">
-						<div class="user-name">
-							{profileData?.name}
-						</div>
-						<div class="user-alias">
-							@{profileData?.telegramAlias}
-						</div>
+		{#if getRoles($userToken).includes('USER')}
+			<div class="for-mobile">
+				<div class="prof-info">
+					<div class="user-name">
+						{playerInfo?.name}
+					</div>
+					<div class="user-alias">
+						@{playerInfo?.telegramAlias}
 					</div>
 				</div>
+			</div>
+		{/if}
+		<ul class="nav-links">
+			{#if $isLeader}
+				<li><a href="{base}/admin">Admin panel</a></li>
 			{/if}
-			<ul class="nav-links">
-				{#if $isLeader}
-					<li><a href="{base}/admin">Admin panel</a></li>
-				{/if}
-				<li><a href="{base}/">Matches</a></li>
-				<li><a href="{base}/tournaments">Tournaments</a></li>
-				<li><a href="{base}/players">Players</a></li>
-				{#if getRoles($userToken).includes('USER')}
-					<li class="for-mobile"><a href={linkToProfile}>Profile</a></li>
-					<li><button class="log-out-button" on:click={logOut}>Log Out</button></li>
-				{/if}
-			</ul>
-			<div class="prof-link-container">
-				<div class="for-pc">
+			<li><a href="{base}/">Matches</a></li>
+			<li><a href="{base}/tournaments">Tournaments</a></li>
+			<li><a href="{base}/players">Players</a></li>
+			{#if getRoles($userToken).includes('USER')}
+				<li class="for-mobile"><a href={linkToProfile}>Profile</a></li>
+				<li><button class="log-out-button" on:click={logOut}>Log Out</button></li>
+			{/if}
+		</ul>
+		<div class="prof-link-container">
+			<div class="for-pc">
+				<ProfileLink />
+			</div>
+			{#if !getRoles($userToken).includes('USER')}
+				<div class="for-mobile">
 					<ProfileLink />
 				</div>
-				{#if !getRoles($userToken).includes('USER')}
-					<div class="for-mobile">
-						<ProfileLink />
-					</div>
-				{/if}
-			</div>
+			{/if}
 		</div>
-	</nav>
-{/await}
+	</div>
+</nav>
+
+<!-- {/await} -->
 
 <style>
 	.for-mobile {
