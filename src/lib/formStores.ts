@@ -51,6 +51,7 @@ const ADD_MATCH_FORM: addMatchFormStore = {
 export const SortFilterPlayerFormStore = writable(SORT_FILTER_PLAYER_FORM);
 export const SortFilterTournamentFormStore = writable(SORT_FILTER_TOURNAMENT_FORM);
 export const SortFilterMatchFormStore = writable(SORT_FILTER_MATCH_FORM);
+export const SortFilterProfileMatchFormStore = writable(SORT_FILTER_MATCH_FORM);
 export const AddPlayerFormStore = writable(ADD_PLAYER_FORM);
 export const AddTournamentFormStore = writable(ADD_TOURNAMENT_FORM);
 export const AddMatchFormStore = writable(ADD_MATCH_FORM);

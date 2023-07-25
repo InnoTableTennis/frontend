@@ -49,6 +49,8 @@
 	/>
 {:else if type === 'text'}
 	<input type="text" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
+{:else if type === 'password'}
+	<input type="password" {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
 {:else if type === 'textarea'}
 	<textarea {name} bind:value={stringVal} {placeholder} {required} bind:this={input} />
 {:else if type === 'date'}

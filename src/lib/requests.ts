@@ -1,8 +1,6 @@
 import { titleCase } from '$lib/helper';
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
-import { dev } from '$app/environment';
-
 import { userToken } from '$lib/stores';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
@@ -20,9 +18,7 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev
-	? 'http://10.90.138.217:8080'
-	: 'https://7ba5-109-187-223-174.ngrok-free.app';
+const serverPath = 'https://4e13-109-187-223-174.ngrok-free.app';
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 
@@ -63,6 +59,9 @@ export async function getMatches(
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -103,6 +102,7 @@ export async function createMatch(
 	const response: Response = await fetch(serverAPI + '/matches', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -141,6 +141,7 @@ export async function editMatch(
 	const response: Response = await fetch(serverAPI + '/matches/' + id, {
 		method: 'PUT',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -165,6 +166,9 @@ export async function deleteMatch(matchID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/matches/' + matchID, {
 		method: 'DELETE',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
 		},
 	});
@@ -211,6 +215,9 @@ export async function getPlayers(
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -263,6 +270,7 @@ export async function createPlayer(
 	const response: Response = await fetch(serverAPI + '/players', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -286,6 +294,7 @@ export async function createPlayer(
  * @param telegramAlias - The Telegram alias of the player.
  * @param rating - The rating of the player.
  */
+
 export async function editPlayer(
 	id: string,
 	name: string,
@@ -319,6 +328,7 @@ export async function editPlayer(
 	const response: Response = await fetch(serverAPI + '/players/' + id, {
 		method: 'PUT',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -341,6 +351,9 @@ export async function deletePlayer(playerID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/players/' + playerID, {
 		method: 'DELETE',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -367,6 +380,7 @@ export async function authenticate(username: string, password: string): Promise<
 	const response: Response = await fetch(serverAUTH + '/authenticate', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 		},
@@ -427,6 +441,9 @@ export async function getTournaments(
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -455,6 +472,9 @@ export async function getTournament(id: number | null = null): Promise<{
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -479,6 +499,7 @@ export async function updateTournament(
 	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID + '/state', {
 		method: 'PATCH',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
@@ -509,6 +530,7 @@ export async function createTournament(
 	const response: Response = await fetch(serverAPI + '/tournaments', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -538,6 +560,7 @@ export async function editTournament(
 	const response: Response = await fetch(serverAPI + '/tournaments/' + id, {
 		method: 'PUT',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -559,6 +582,9 @@ export async function deleteTournament(tournamentID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID, {
 		method: 'DELETE',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -574,6 +600,9 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID, {
 		method: 'PATCH',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -588,6 +617,7 @@ export async function getStatistics(playerID: number | null = null): Promise<{
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
@@ -597,6 +627,7 @@ export async function getStatistics(playerID: number | null = null): Promise<{
 	await handleGetErrors(response, token);
 
 	const data = await response.json();
+	console.log(data);
 	return { data };
 }
 
@@ -611,6 +642,9 @@ export async function getLeaders(): Promise<{
 
 	const response: Response = await fetch(url, {
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -633,6 +667,7 @@ export async function promoteLeader(telegramAlias: string): Promise<Player> {
 	const response: Response = await fetch(serverAPI + '/leaders', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -657,6 +692,9 @@ export async function demoteLeader(leaderId: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/leaders/' + leaderId, {
 		method: 'DELETE',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
@@ -672,6 +710,7 @@ export async function broadcastMessage(message: string): Promise<void> {
 	const response: Response = await fetch(serverAPI + '/telegram', {
 		method: 'POST',
 		headers: {
+			'ngrok-skip-browser-warning': '69420',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: 'Bearer ' + token,
@@ -684,23 +723,22 @@ export async function broadcastMessage(message: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getProfileData(playerID: number | null = null): Promise<ProfileData> {
+export async function getProfileData(playerID: number | string): Promise<ProfileData> {
 	const url: string = serverAPI + '/players/' + playerID;
 
 	console.log('data');
 
 	const response: Response = await fetch(url, {
 		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
+			'ngrok-skip-browser-warning': '69420',
 			Authorization: `Bearer ${token}`,
 		},
 	});
-
 	await handleGetErrors(response, token);
-	console.log('data');
 
 	const resp = await response.json();
+
+	console.log(resp);
 
 	const data = resp.data as ProfileData;
 
