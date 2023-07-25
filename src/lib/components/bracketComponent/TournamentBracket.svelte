@@ -129,6 +129,7 @@
 		// set up connection for the rest of the matches
 		for (let i = 1; i < roundAmount - 1; i++) {
 			arrangeMatches(data.rounds[i], i);
+			
 		}
 	}
 
