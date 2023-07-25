@@ -113,14 +113,14 @@
 				{#if tournament.state.firstStage}
 					<h1>First stage - Groups</h1>
 					{#each tournament.state.firstStage as group}
-						<TournamentGroup groupInfo={group}>Group {group.id + 1}</TournamentGroup>
+						<TournamentGroup finalInfo={group}>Group {group.id + 1}</TournamentGroup>
 					{/each}
 				{/if}
 				{#if tournament.state.secondStage}
 					<h1>Second stage - 2 finals</h1>
 					{#each tournament.state.secondStage as final, i}
 						{#if final.type === 'Group'}
-							<TournamentGroup groupInfo={final}>Final {i + 1}</TournamentGroup>
+							<TournamentGroup finalInfo={final}>Final {i + 1}</TournamentGroup>
 						{:else}
 							{'single elim tourn'}
 						{/if}

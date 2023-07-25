@@ -10,7 +10,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types.js';
 	import SecondStage from '$lib/components/createTournament/SecondStage.svelte';
-	import {handleError} from "$lib/errorHandler";
+	import { handleError } from '$lib/errorHandler';
 
 	export let data;
 
@@ -51,14 +51,14 @@
 	{:else if stage === 'numberGroups'}
 		<NumberGroups bind:id={tournament.id} bind:stage />
 	{:else if stage === 'groups'}
-		<Groups bind:id={tournament.id} bind:stage bind:finals/>
+		<Groups bind:id={tournament.id} bind:stage bind:finals />
 	{:else if stage === 'continue'}
 		<Continue bind:stage />
 	{:else if stage === 'numberFinals'}
-		<NumberFinals bind:id={tournament.id} bind:numberFinals bind:stage />
+		<NumberFinals id={tournament.id} bind:numberFinals bind:stage />
 	{:else if stage === 'finalsDistribution'}
-		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals/>
+		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals />
 	{:else if stage === 'secondStage'}
-		<SecondStage bind:numberFinals bind:stage bind:id={tournament.id} on:error={handleError}/>
+		<SecondStage bind:numberFinals bind:stage bind:id={tournament.id} on:error={handleError} />
 	{/if}
 {/await}

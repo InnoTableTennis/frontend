@@ -56,14 +56,14 @@ export interface Group {
 }
 
 export interface SingleEliminationBracket {
+	init: boolean;
 	type: 'SingleEliminationBracket';
-	matchesNetwork: object;
-	playersAmount: number;
-	rounds: number[][];
+	players: Player[];
+	rounds: Match[][];
 	winner: string;
-	inProgressMatches: number[];
-	finishedMatches: number[];
-	allMatches: Match[];
+	leaderBoard: Player[];
+	inProgressMatches: number[][];
+	finishedMatches: number[][];
 }
 
 export type Final = Group | SingleEliminationBracket;

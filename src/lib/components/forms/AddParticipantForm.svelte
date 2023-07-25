@@ -4,7 +4,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import {alertPopup} from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	export let player: Player;
 	export let players: Player[];
@@ -26,7 +26,7 @@
 
 	async function addParticipant() {
 		if (participants.length && !abilityToChange) {
-			if (await alertPopup("Are you sure? It will delete all saved progress.")) {
+			if (await alertPopup('Are you sure? It will delete all saved progress.')) {
 				abilityToChange = true;
 			}
 		} else {
@@ -46,7 +46,7 @@
 
 	async function removeParticipant() {
 		if (participants.length && !abilityToChange) {
-			if (await alertPopup("Are you sure? It will delete all saved progress.")) {
+			if (await alertPopup('Are you sure? It will delete all saved progress.')) {
 				abilityToChange = true;
 			}
 		} else {

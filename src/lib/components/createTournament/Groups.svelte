@@ -100,7 +100,7 @@
 				{#if tournament.state.firstStage}
 					{#each tournament.state.firstStage as group}
 						<TournamentGroup
-							groupInfo={group}
+							finalInfo={group}
 							on:update={updateTournament}
 							on:finalize={(event) => {
 								updatePlaces(event, group.id);

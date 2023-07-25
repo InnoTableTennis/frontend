@@ -36,7 +36,7 @@
 			chosenId.push(tempVal);
 			tempVal++;
 		}
-	}
+	};
 
 	function handleSelectType(event: CustomEvent, index: number) {
 		types[index] = event.detail;
@@ -69,7 +69,11 @@
 							class="button"
 							class:selected={chosenId[j - 1] === i * peopleInGroups + j}
 							on:click|preventDefault={() => {
-								if ((j === 1 || j > 1 && chosenId[j - 2] <= i * peopleInGroups + j) && (j === peopleInGroups || j < peopleInGroups && chosenId[j] >= i * peopleInGroups + j)) {
+								if (
+									(j === 1 || (j > 1 && chosenId[j - 2] <= i * peopleInGroups + j)) &&
+									(j === peopleInGroups ||
+										(j < peopleInGroups && chosenId[j] >= i * peopleInGroups + j))
+								) {
 									chosenId[j - 1] = i * peopleInGroups + j;
 								}
 								final;

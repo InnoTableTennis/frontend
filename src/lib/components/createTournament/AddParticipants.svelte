@@ -45,8 +45,16 @@
 	const nextStage = async function () {
 		state = {
 			participants: participants,
-			firstStage: tournament.state ? (tournament.state.firstStage ? tournament.state.firstStage : null) : null,
-			secondStage: tournament.state ? (tournament.state.secondStage ? tournament.state.secondStage : null) : null
+			firstStage: tournament.state
+				? tournament.state.firstStage
+					? tournament.state.firstStage
+					: null
+				: null,
+			secondStage: tournament.state
+				? tournament.state.secondStage
+					? tournament.state.secondStage
+					: null
+				: null,
 		};
 		await addParticipants();
 		stage = 'numberGroups';

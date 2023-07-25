@@ -5,7 +5,7 @@
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Group, Tournament, TournamentState } from '$lib/types/types';
-	import {alertPopup} from "$lib/popupHandler";
+	import { alertPopup } from '$lib/popupHandler';
 
 	export let stage;
 	export let id: number;
@@ -53,7 +53,16 @@
 	};
 
 	const nextStage = async function () {
-		if (!tournament.state || !tournament.state.firstStage?.length || tournament.state.firstStage.length == numberGroups || (tournament.state && tournament.state.firstStage?.length != numberGroups && await alertPopup('Are you sure? Changing the number of groups can cause the loss of previous results.'))) {
+		if (
+			!tournament.state ||
+			!tournament.state.firstStage?.length ||
+			tournament.state.firstStage.length == numberGroups ||
+			(tournament.state &&
+				tournament.state.firstStage?.length != numberGroups &&
+				(await alertPopup(
+					'Are you sure? Changing the number of groups can cause the loss of previous results.',
+				)))
+		) {
 			makeGroups();
 			if (numberGroups != tournament.state.firstStage?.length) {
 				tournament.state = {
@@ -85,13 +94,17 @@
 						max="100"
 						name="groupNumber"
 						placeholder=""
-						defaultNumValue={tournament.state.firstStage?.length ? tournament.state.firstStage?.length : numberGroups}
+						defaultNumValue={tournament.state.firstStage?.length
+							? tournament.state.firstStage?.length
+							: numberGroups}
 						bind:numberVal={numberGroups}
 						textAlignCenter={true}
 					/>
 				</div>
 				<div class="button">
-					<Button type="submit">{numberGroups === tournament.state.firstStage?.length ? "Continue" : "Confirm"}</Button>
+					<Button type="submit"
+						>{numberGroups === tournament.state.firstStage?.length ? 'Continue' : 'Confirm'}</Button
+					>
 				</div>
 			</form>
 		</div>

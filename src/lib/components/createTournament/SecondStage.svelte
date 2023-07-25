@@ -2,11 +2,11 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import { stringifyNumber } from '$lib/helper';
-	import type {Player, Tournament} from "$lib/types/types";
-	import * as db from "$lib/requests";
-	import {createEventDispatcher} from "svelte";
-	import TournamentGroup from "$lib/components/tournamentConstructor/TournamentGroup.svelte";
-	import {goto} from '$app/navigation'
+	import type { Player, Tournament } from '$lib/types/types';
+	import * as db from '$lib/requests';
+	import { createEventDispatcher } from 'svelte';
+	import TournamentGroup from '$lib/components/tournamentConstructor/TournamentGroup.svelte';
+	import { goto } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
 
@@ -19,13 +19,13 @@
 	let finalResults: Player[][] = new Array(numberFinals).fill(null);
 	async function requestTournament() {
 		await db
-				.getTournament(id)
-				.then((result) => {
-					tournament = result.data;
-				})
-				.catch((error) => {
-					dispatch('error', error);
-				});
+			.getTournament(id)
+			.then((result) => {
+				tournament = result.data;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
 	}
 
 	const changeNumberFinals = function () {
@@ -62,9 +62,9 @@
 			dispatch('error', error);
 		});
 		await requestTournament();
-		tournament.state.secondStage
+		tournament.state.secondStage;
 	}
-	async function updatePlaces(e: CustomEvent, id:number) {
+	async function updatePlaces(e: CustomEvent, id: number) {
 		let players = e.detail;
 		finalResults[id] = new Array(players.length).fill(null);
 		for (let i = 0; i < players.length; i++) {
@@ -95,31 +95,53 @@
 
 	<div class="finals">
 		<div class="final-button-block">
-			{#each tournament.state.secondStage as _, i}
-				<button
+			{#if tournament.state.secondStage}
+				{#each tournament.state.secondStage as _, i}
+					<button
 						class="final-button"
 						class:selected={chosenId === i}
 						on:click|preventDefault={() => {
-					chosenId = i;
-				}}
-				>
-					{stringifyNumber(i + 1)
+							chosenId = i;
+							_;
+						}}
+					>
+						{stringifyNumber(i + 1)
 							.charAt(0)
 							.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
-				</button>
-			{/each}
+					</button>
+				{/each}
+			{/if}
 		</div>
-		{#if tournament.state.secondStage}
-			<TournamentGroup groupInfo={tournament.state.secondStage[chosenId]} on:update={updateTournament}
-							 on:finalize={(event) => {updatePlaces(event, chosenId)}} >{stringifyNumber(chosenId + 1)
-					.charAt(0).toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup>
-		{/if}
-		<div class="pre-render-group-block">
-			{#each tournament.state.secondStage as _, i}
-				{#if tournament.state.secondStage}
-						<TournamentGroup groupInfo={tournament.state.secondStage[i]} on:finalize={(event) => {updatePlaces(event, i)}}></TournamentGroup>
+		<div class="finals">
+			{#if tournament.state.secondStage}
+				{#if tournament.state.secondStage[chosenId].type === 'Group'}
+					<TournamentGroup
+						finalInfo={tournament.state.secondStage[chosenId]}
+						on:update={updateTournament}
+						on:finalize={(event) => {
+							updatePlaces(event, chosenId);
+						}}
+						>{stringifyNumber(chosenId + 1)
+							.charAt(0)
+							.toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup
+					>
 				{/if}
-			{/each}
+			{/if}
+			<div class="pre-render-group-block">
+				{#if tournament.state.secondStage}
+					{#each tournament.state.secondStage as _, i}
+						{#if tournament.state.secondStage[i].type === 'Group'}
+							<TournamentGroup
+								finalInfo={tournament.state.secondStage[i]}
+								on:finalize={(event) => {
+									updatePlaces(event, i);
+									_;
+								}}
+							/>
+						{/if}
+					{/each}
+				{/if}
+			</div>
 		</div>
 	</div>
 {/await}
@@ -136,17 +158,26 @@
 		position: relative;
 		margin-top: 1.2rem;
 		gap: 1rem;
-		overflow-x: scroll;
 		justify-content: space-between;
 	}
 	.final-button-block {
+		overflow-x: scroll;
 		display: flex;
-		justify-content: space-between;
 	}
 	.final-button {
-		margin: 1rem auto;
+		margin-right: 1rem;
+		background: none;
+		border: none;
+		cursor: pointer;
+		width: 10rem;
+		height: 2.5rem;
+		flex-shrink: 0;
+		border-radius: 0.9375rem;
+		font-size: var(--fontsize-medium1);
+		background: var(--secondary-bg-color);
+		color: #fff;
 	}
-	.finals::-webkit-scrollbar {
+	.final-button-block::-webkit-scrollbar {
 		display: none;
 	}
 	.pre-render-group-block {
@@ -158,7 +189,7 @@
 		cursor: pointer;
 		margin-left: 1rem;
 		padding: 0;
-		height: 1.1rem;
+		height: 0.8rem;
 		width: 1.1rem;
 	}
 	.finish-button {
