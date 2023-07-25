@@ -147,9 +147,6 @@
 		}
 	}
 	@media (max-width: 480px) {
-		/* .info-blocks-panel {
-			display: block;
-		} */
 		.info-block {
 			margin: 0 auto;
 			height: 10rem;
