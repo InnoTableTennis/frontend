@@ -1,31 +1,23 @@
 <script lang="ts">
-	import AddParticipants from '$lib/components/createTournament/AddParticipants.svelte';
-	import Continue from '$lib/components/createTournament/Continue.svelte';
-	import CreateTournament from '$lib/components/createTournament/CreateTournament.svelte';
-	import FinalsDistribution from '$lib/components/createTournament/FinalsDistribution.svelte';
-	import Groups from '$lib/components/createTournament/Groups.svelte';
-	import NumberGroups from '$lib/components/createTournament/NumberGroups.svelte';
-	import NumberFinals from '$lib/components/createTournament/NumberFinals.svelte';
+	import AddParticipants from '$lib/components/tournament/tournamentConstructor/AddParticipants.svelte';
+	import Continue from '$lib/components/tournament/tournamentConstructor/Continue.svelte';
+	import CreateTournament from '$lib/components/tournament/tournamentConstructor/CreateTournament.svelte';
+	import FinalsDistribution from '$lib/components/tournament/tournamentConstructor/FinalsDistribution.svelte';
+	import Groups from '$lib/components/tournament/tournamentConstructor/Groups.svelte';
+	import NumberGroups from '$lib/components/tournament/tournamentConstructor/NumberGroups.svelte';
+	import NumberFinals from '$lib/components/tournament/tournamentConstructor/NumberFinals.svelte';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
-	import type { Player, Tournament } from '$lib/types/types.js';
-	import SecondStage from '$lib/components/createTournament/SecondStage.svelte';
+	import type { Player, Tournament } from '$lib/types/types';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
 	import { handleError } from '$lib/errorHandler';
 
 	export let data;
 
 	const dispatch = createEventDispatcher();
 
-	let stage:
-		| 'create'
-		| 'addParticipants'
-		| 'numberGroups'
-		| 'groups'
-		| 'continue'
-		| 'numberFinals'
-		| 'finalsDistribution'
-		| 'secondStage' = 'create';
-	let id: number;
+	let stage: TournamentStage = 'create';
 	let tournament: Tournament = {} as Tournament;
 	let finals: Player[][];
 	let numberFinals = 1;
@@ -42,6 +34,17 @@
 			});
 	}
 </script>
+
+<svelte:head>
+	<meta
+		name="description"
+		content="Create and manage table tennis tournaments with the Tournament Constructor at InnoTableTennis Club. Set up participants, organize games in groups, and progress to the finals with the easy-to-use constructor tool."
+	/>
+	<meta
+		name="keywords"
+		content="tournament constructor, InnoTableTennis Club, create tournaments, manage tournaments, group games, tournament net, table tennis"
+	/>
+</svelte:head>
 
 {#await requestTournament() then}
 	{#if stage === 'create'}

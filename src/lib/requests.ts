@@ -5,7 +5,10 @@ import { dev } from '$app/environment';
 
 import { userToken } from '$lib/stores';
 
-import type { Player, Match, Tournament, TournamentState } from '$lib/types/types';
+import type { Player, Match, Tournament } from '$lib/types/types';
+import type { TournamentState } from '$lib/types/tournamentTypes';
+
+import type { Stats, ProfileData } from '$lib/types/profileTypes';
 
 /**
  * This file contains functions for making API requests.
@@ -17,7 +20,9 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev ? 'http://10.90.138.217:8080' : 'http://e516-109-187-223-174.ngrok-free.app';
+const serverPath = dev
+	? 'http://10.90.138.217:8080'
+	: 'https://7ba5-109-187-223-174.ngrok-free.app';
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 
@@ -576,31 +581,23 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getStatistics(
-	pageNumber: number | null = null,
-	pageSize: number | null = null,
-): Promise<{
-	data: Tournament[];
-	totalPages: number;
+export async function getStatistics(playerID: number | null = null): Promise<{
+	data: Stats;
 }> {
-	let url: string = serverAPI + '/tournaments';
-	if (pageNumber) {
-		url += '?page=' + pageNumber;
-		if (pageSize) url += '&size=' + pageSize;
-	}
+	const url: string = serverAPI + '/players/' + playerID + '/stats';
 
 	const response: Response = await fetch(url, {
 		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 	});
 
 	await handleGetErrors(response, token);
 
-	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
-
 	const data = await response.json();
-	return { data, totalPages };
+	return { data };
 }
 
 /**
@@ -685,4 +682,27 @@ export async function broadcastMessage(message: string): Promise<void> {
 	});
 
 	await handleModifyErrors(response, token);
+}
+
+export async function getProfileData(playerID: number | null = null): Promise<ProfileData> {
+	const url: string = serverAPI + '/players/' + playerID;
+
+	console.log('data');
+
+	const response: Response = await fetch(url, {
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	});
+
+	await handleGetErrors(response, token);
+	console.log('data');
+
+	const resp = await response.json();
+
+	const data = resp.data as ProfileData;
+
+	return data;
 }

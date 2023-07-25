@@ -28,6 +28,17 @@
 
 <svelte:head>
 	<title>InnoTableTennis | {$page.data.title}</title>
+	<meta name="author" content="InnoTableTennis club" />
+	<meta
+		name="description"
+		content="Welcome to InnoTableTennis Club! Stay updated with exciting table tennis matches, tournaments, and player statistics. Join us at Innopolis University for a thrilling table tennis experience."
+	/>
+	<meta
+		name="keywords"
+		content="table tennis, tennis, Innopolis, Inno, University, InnoTableTennis, Innopolis University, Club, Table tennis club"
+	/>
+	<link rel="canonical" href="https://tabletennis.innopolis.university/" />
+	<meta name="robots" content="index, follow" />
 </svelte:head>
 
 {#if isLoaded}

@@ -1,19 +1,19 @@
 <script lang="ts">
 	import * as db from '$lib/requests';
-	import type { Player, Tournament, TournamentState } from '$lib/types/types.js';
+	import type { Player, Tournament } from '$lib/types/types.js';
+	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsList from '$lib/components/lists/ParticipantsCreateList.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	export let id: number;
-	export let stage;
+	export let tournament: Tournament;
+	export let stage: TournamentStage;
+	export let numberParticipants = 0;
+	export let participants: Player[] = [];
 
-	let numberParticipants = 0;
-	let participants: Player[] = [];
 	let participant: Player = {} as Player;
 	let state: TournamentState | null = null;
-	let tournament: Tournament = {} as Tournament;
 
 	const dispatch = createEventDispatcher();
 
@@ -23,66 +23,43 @@
 		return { players: playersResponse.data };
 	}
 
-	async function addParticipants() {
-		await db.updateTournament(id, state).catch((error) => {
+	async function addParticipants(state: TournamentState) {
+		await db.updateTournament(tournament.id, state).catch((error) => {
 			dispatch('error', error);
 		});
 	}
 
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-				participants = tournament.state.participants;
-				numberParticipants = participants.length;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
-
-	const nextStage = async function () {
+	const nextStage = function () {
 		state = {
-			participants: participants,
-			firstStage: tournament.state
-				? tournament.state.firstStage
-					? tournament.state.firstStage
-					: null
-				: null,
-			secondStage: tournament.state
-				? tournament.state.secondStage
-					? tournament.state.secondStage
-					: null
-				: null,
+			participants: tournament.state.participants,
+			firstStage: null,
+			secondStage: null,
 		};
-		await addParticipants();
+		addParticipants(state);
 		stage = 'numberGroups';
 	};
 </script>
 
-{#await requestTournament() then}
-	{#await getFormData() then resp}
-		<div class="form-list-layout">
-			<div class="form">
-				<AddParticipantForm
-					players={resp.players}
-					bind:player={participant}
-					bind:participants
-					bind:numberParticipants
-				/>
-			</div>
-			<div class="participants-list">
-				<ParticipantsList bind:participant bind:participants />
-				<div class="line-2-elems">
-					<span>{numberParticipants} participants in total</span>
-					<div class="button">
-						<Button on:click={() => nextStage()}>Continue</Button>
-					</div>
+{#await getFormData() then resp}
+	<div class="form-list-layout">
+		<div class="form">
+			<AddParticipantForm
+				players={resp.players}
+				bind:player={participant}
+				bind:participants
+				bind:numberParticipants
+			/>
+		</div>
+		<div class="participants-list">
+			<ParticipantsList bind:participant bind:participants />
+			<div class="line-2-elems">
+				<span>{numberParticipants} participants in total</span>
+				<div class="button">
+					<Button on:click={() => nextStage()}>Continue</Button>
 				</div>
 			</div>
 		</div>
-	{/await}
+	</div>
 {/await}
 
 <style>

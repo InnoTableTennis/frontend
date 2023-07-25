@@ -109,9 +109,9 @@
 								chosenId = tournament.id;
 								if (mode === 'delete') {
 									deleteTournament(tournament.id.toString());
-								} else if (mode === 'create') {
+								} else if (mode === 'create' && tournament.finished === false) {
 									goto(`/tournaments/create/${tournament.id}`);
-								} else if (mode == 'view') {
+								} else if ((mode === 'create' && tournament.finished === true) || mode === 'view') {
 									goto(`/tournaments/view/${tournament.id}`);
 								} else {
 									editData = tournament;
