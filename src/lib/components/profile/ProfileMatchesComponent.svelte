@@ -8,7 +8,7 @@
 
 <div class="matches-comp-wrapper">
 	<div class="form-list-layout">
-		<h1>Your resent games</h1>
+		<h1>All games played</h1>
 		<div class="matches-list">
 			<ProfileMatchesList on:error={handleError} {dataMatches} />
 		</div>
@@ -20,18 +20,13 @@
 		font-size: var(--fontsize-x-large);
 		font-weight: 700;
 	}
-	.form-list-layout {
-		display: grid;
-		grid-auto-flow: column;
-		align-items: center;
-		grid-template-columns: 1fr 2fr;
-	}
 	.matches-comp-wrapper {
 		box-sizing: border-box;
 		padding: 0% 3% 3% 3%;
 		height: 100%;
 	}
 	.matches-list {
+		margin: 0 auto;
 		max-width: 900px;
 	}
 
