@@ -71,7 +71,11 @@
 						</div>
 						<div class="stat-subblock">
 							<div class="name">Win persentage</div>
-							<div class="value">{Math.floor(playerStats.winPercentage * 100)}%</div>
+							<div class="value">
+								{Math.floor(playerStats.winPercentage * 100)
+									? Math.floor(playerStats.winPercentage * 100)
+									: 0}%
+							</div>
 						</div>
 					</div>
 					{#if statsBlockStatus}
@@ -97,11 +101,19 @@
 								</div>
 								<div class="stat-subblock">
 									<div class="name">Average match points</div>
-									<div class="value">{normalizeNumber(playerStats.averageMatchPoints)}</div>
+									<div class="value">
+										{normalizeNumber(playerStats.averageMatchPoints)
+											? normalizeNumber(playerStats.averageMatchPoints)
+											: 0}
+									</div>
 								</div>
 								<div class="stat-subblock">
 									<div class="name">Average match delta</div>
-									<div class="value">{normalizeNumber(playerStats.averageMatchDelta)}</div>
+									<div class="value">
+										{normalizeNumber(playerStats.averageMatchDelta)
+											? normalizeNumber(playerStats.averageMatchDelta)
+											: 0}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -271,7 +283,7 @@
 			font-size: var(--fontsize-medium);
 		}
 		.value {
-			font-size: 2.5rem;
+			font-size: 2.2rem;
 		}
 		.description {
 			font-size: var(--fontsize-medium);

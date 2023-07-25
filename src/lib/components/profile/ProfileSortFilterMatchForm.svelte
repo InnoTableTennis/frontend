@@ -1,6 +1,5 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
-	import { SortFilterMatchFormStore } from '$lib/formStores';
+	import { SortFilterProfileMatchFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';
@@ -12,10 +11,10 @@
 
 	const dispatch = createEventDispatcher();
 
-	let name = $SortFilterMatchFormStore.name;
-	let score = $SortFilterMatchFormStore.score;
-	let minDateString = $SortFilterMatchFormStore.minDateString;
-	let maxDateString = $SortFilterMatchFormStore.maxDateString;
+	let name = $SortFilterProfileMatchFormStore.name;
+	let score = $SortFilterProfileMatchFormStore.score;
+	let minDateString = $SortFilterProfileMatchFormStore.minDateString;
+	let maxDateString = $SortFilterProfileMatchFormStore.maxDateString;
 	let sortBy: 'date' = 'date' as const;
 	let isDescending = true;
 
@@ -28,7 +27,7 @@
 
 	const saveForm = function () {
 		score = score.replace(/\s/g, '');
-		$SortFilterMatchFormStore = {
+		$SortFilterProfileMatchFormStore = {
 			name: name,
 			score: score,
 			minDateString: changeDateAnotherFormat(minDateString),

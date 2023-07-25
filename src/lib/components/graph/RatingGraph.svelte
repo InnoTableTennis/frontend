@@ -32,7 +32,7 @@
 		}
 	});
 
-	let width = 800;
+	let width = 900;
 	let height = 400;
 
 	type Tournament = {
@@ -162,6 +162,10 @@
 		padding: 5%;
 		box-sizing: border-box;
 		box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
+	}
+
+	.chart-container {
+		position: relative;
 	}
 
 	g {

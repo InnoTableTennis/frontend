@@ -1,33 +1,135 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-
 	import { isLeader } from '$lib/stores';
 	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
 	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
+	import type { Player } from '$lib/types/types';
+	import * as db from '$lib/requests';
+	import { userToken } from '$lib/stores';
+	import { getUsername } from '$lib/token';
+	import { getRoles } from '$lib/token';
+	import { createEventDispatcher } from 'svelte';
+	import type { ProfileData } from '$lib/types/profileTypes.js';
+
+	const dispatch = createEventDispatcher();
+
+	let profileData: ProfileData;
+	const requestProfileData = async () => {
+		await db
+			.getProfileData(24)
+			.then((result) => {
+				profileData = result;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+	};
+
+	let playerInfo: Player | null = null;
+
+	const requestUserinfo = async () => {
+		let players: Player[] = [];
+		await db
+			.getPlayers()
+			.then((result) => {
+				players = result.data;
+			})
+			.catch((error) => {
+				dispatch('error', error);
+			});
+		return players.find((user) => user.telegramAlias == getUsername($userToken));
+	};
+	let linkToProfile = `${base}/players/`;
+
+	onMount(() => {
+		requestUserinfo().then((response) => {
+			playerInfo = response as Player;
+			linkToProfile += playerInfo?.id;
+		});
+		requestProfileData();
+	});
+
+	const logOut = () => {
+		localStorage.removeItem('token');
+		userToken.set('');
+	};
 </script>
 
-<nav>
-	<input type="checkbox" />
-	<div class="hamburger-lines">
-		<div class="line line1" />
-		<div class="line line2" />
-		<div class="line line3" />
-	</div>
-	<div class="nav-container">
-		<ToggleTheme />
-		<ul class="nav-links">
-			{#if $isLeader}
-				<li><a href="{base}/admin">Admin panel</a></li>
+{#await requestProfileData() then}
+	<nav>
+		<input type="checkbox" />
+		<div class="hamburger-lines">
+			<div class="line line1" />
+			<div class="line line2" />
+			<div class="line line3" />
+		</div>
+		<div class="nav-container">
+			<div class="toggle-theme-container">
+				<ToggleTheme />
+			</div>
+			{#if getRoles($userToken).includes('USER')}
+				<div class="for-mobile">
+					<div class="prof-info">
+						<div class="user-name">
+							{profileData?.name}
+						</div>
+						<div class="user-alias">
+							@{profileData?.telegramAlias}
+						</div>
+					</div>
+				</div>
 			{/if}
-			<li><a href="{base}/">Matches</a></li>
-			<li><a href="{base}/tournaments">Tournaments</a></li>
-			<li><a href="{base}/players">Players</a></li>
-		</ul>
-		<ProfileLink />
-	</div>
-</nav>
+			<ul class="nav-links">
+				{#if $isLeader}
+					<li><a href="{base}/admin">Admin panel</a></li>
+				{/if}
+				<li><a href="{base}/">Matches</a></li>
+				<li><a href="{base}/tournaments">Tournaments</a></li>
+				<li><a href="{base}/players">Players</a></li>
+				{#if getRoles($userToken).includes('USER')}
+					<li class="for-mobile"><a href={linkToProfile}>Profile</a></li>
+					<li><button class="log-out-button" on:click={logOut}>Log Out</button></li>
+				{/if}
+			</ul>
+			<div class="prof-link-container">
+				<div class="for-pc">
+					<ProfileLink />
+				</div>
+				{#if !getRoles($userToken).includes('USER')}
+					<div class="for-mobile">
+						<ProfileLink />
+					</div>
+				{/if}
+			</div>
+		</div>
+	</nav>
+{/await}
 
 <style>
+	.for-mobile {
+		display: none;
+	}
+	.log-out-button {
+		display: none;
+		border-radius: 10px;
+		outline: none;
+		box-sizing: border-box;
+		border: 2px solid var(--content-color);
+		padding: 0.1rem 0rem;
+		background: var(--main-color);
+		color: var(--content-color);
+		font-weight: var(--fontweight-2);
+		transition: 0.1s;
+		width: 100%;
+		height: 2rem;
+		margin-top: 0.5rem;
+	}
+
+	.log-out-button:hover {
+		box-shadow: 0px 4px 4px 2px var(--not-chosen-font-color);
+		cursor: pointer;
+	}
 	input[type='checkbox'] {
 		display: none;
 		margin: 0;
@@ -59,9 +161,6 @@
 		height: 100%;
 		line-height: 4em;
 	}
-	/* .nav-links li:first-child {
-		margin-left: 0em;
-	} */
 
 	.nav-links li a {
 		text-decoration: none;
@@ -90,6 +189,15 @@
 	}
 
 	@media (max-width: 480px) {
+		.for-mobile {
+			display: block;
+		}
+		.log-out-button {
+			display: block;
+		}
+		.for-pc {
+			display: none;
+		}
 		.hamburger-lines {
 			height: 1.5rem;
 			width: 2rem;
@@ -132,7 +240,8 @@
 		}
 		.nav-container {
 			transform: translate(100%);
-			display: grid;
+			display: flex;
+			flex-direction: column;
 			position: fixed;
 			min-width: 160px;
 			z-index: 1;
@@ -146,7 +255,19 @@
 			justify-content: center;
 		}
 		.nav-links {
-			display: block;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+		.toggle-theme-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+		}
+		.prof-link-container {
+			height: 100%;
 		}
 		input[type='checkbox']:checked ~ .nav-container {
 			transform: translateX(0);
@@ -156,6 +277,37 @@
 		}
 		.nav-links li {
 			margin: 0.15em;
+		}
+		.user-name {
+			text-align: center;
+			font-size: var(--fontsize-large);
+			max-width: 13rem;
+			box-sizing: border-box;
+			padding: 0.5rem;
+		}
+		.user-alias {
+			text-align: center;
+			box-sizing: border-box;
+			padding: 0.5rem;
+		}
+		li.for-mobile {
+			border-radius: 10px;
+			background-color: var(--secondary-color);
+			height: 2.5rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		li.for-mobile a {
+			/* height: 1.5rem; */
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			color: white;
+			border-bottom: none;
+		}
+		li.for-mobile a:hover {
+			border-bottom: none;
 		}
 	}
 </style>

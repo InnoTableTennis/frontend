@@ -57,7 +57,7 @@
 							isFirst={true}
 						/>
 						<InputTemplate
-							type="text"
+							type="password"
 							name="password"
 							bind:stringVal={password}
 							placeholder="password"
