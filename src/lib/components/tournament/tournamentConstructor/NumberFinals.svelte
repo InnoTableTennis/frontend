@@ -9,11 +9,10 @@
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
+	export let stage: TournamentStage;
 	export let id: number;
 	let tournament = {} as Tournament;
 	const dispatch = createEventDispatcher();
-
-	export let stage: TournamentStage;
 
 	const nextStage = async function () {
 		if (
