@@ -5,17 +5,18 @@ export interface Group {
 	tournamentTitle: string;
 	players: Player[];
 	matches: Match[];
+	id: number;
 }
 
 export interface SingleEliminationBracket {
+	init: boolean;
 	type: 'SingleEliminationBracket';
-	matchesNetwork: object;
-	playersAmount: number;
-	rounds: number[][];
+	players: Player[];
+	rounds: Match[][];
 	winner: string;
-	inProgressMatches: number[];
-	finishedMatches: number[];
-	allMatches: Match[];
+	leaderBoard: Player[];
+	inProgressMatches: number[][];
+	finishedMatches: number[][];
 }
 
 export type Final = Group | SingleEliminationBracket;
@@ -36,7 +37,7 @@ export type TournamentStage =
 	| 'numberFinals'
 	| 'finalsDistribution'
 	| 'secondStage';
-	
+
 export interface tournamentSortFilterPlayerFormStore {
 	name: string;
 	telegramAlias: string;

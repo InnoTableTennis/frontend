@@ -18,7 +18,6 @@
 		for (let i = 0; i < numberFinals; i++) {
 			finals.push([]);
 		}
-		console.log(peopleInGroups);
 		for (let i = 0; i < peopleInGroups; i++) {
 			groups.push(i + 1);
 		}
@@ -47,7 +46,6 @@
 
 {#await countGroups() then}
 	<div class="content">
-		// TODO: replace each finals, because final is not used. Lint shows warning
 		{#each finals as final, i}
 			<div
 				class="separator"

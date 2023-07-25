@@ -5,9 +5,8 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
-	export let stage: TournamentStage;
+	export let stage;
 	export let id: number;
 	export let finals: Player[][];
 

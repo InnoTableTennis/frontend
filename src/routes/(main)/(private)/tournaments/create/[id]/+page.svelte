@@ -20,6 +20,7 @@
 	let stage: TournamentStage = 'create';
 	let tournament: Tournament = {} as Tournament;
 	let finals: Player[][];
+	let id: number;
 	let numberFinals = 1;
 
 	async function requestTournament() {
@@ -48,7 +49,7 @@
 
 {#await requestTournament() then}
 	{#if stage === 'create'}
-		<CreateTournament bind:id bind:stage />
+		<CreateTournament bind:id={tournament.id} bind:stage />
 	{:else if stage === 'addParticipants'}
 		<AddParticipants bind:id={tournament.id} bind:stage />
 	{:else if stage === 'numberGroups'}
@@ -58,7 +59,7 @@
 	{:else if stage === 'continue'}
 		<Continue bind:stage />
 	{:else if stage === 'numberFinals'}
-		<NumberFinals id={tournament.id} bind:numberFinals bind:stage />
+		<NumberFinals bind:id={tournament.id} bind:numberFinals bind:stage />
 	{:else if stage === 'finalsDistribution'}
 		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals />
 	{:else if stage === 'secondStage'}
