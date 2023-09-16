@@ -4,7 +4,7 @@
 	import ProfileMatchesComponent from '$lib/components/profile/ProfileMatchesComponent.svelte';
 	import RatingGraph from '$lib/components/graph/RatingGraph.svelte';
 	import type { ProfileData, RatingHistoryItem, ProfileMatch } from '$lib/types/profileTypes.js';
-	import * as db from '$lib/requests';
+	import * as db from '$lib/requests.js';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();

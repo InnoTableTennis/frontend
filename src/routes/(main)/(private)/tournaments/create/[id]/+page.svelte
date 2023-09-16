@@ -6,7 +6,7 @@
 	import Groups from '$lib/components/tournament/tournamentConstructor/Groups.svelte';
 	import NumberGroups from '$lib/components/tournament/tournamentConstructor/NumberGroups.svelte';
 	import NumberFinals from '$lib/components/tournament/tournamentConstructor/NumberFinals.svelte';
-	import * as db from '$lib/requests';
+	import * as db from '$lib/requests.js';
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';

@@ -20,9 +20,11 @@
 	export let endDateString = '';
 	export let startDateString = '';
 
-	let matches: Match[] = [];
+	export let matches: Match[] = [];
+	export let totalPages: number = 0;
+	
 
-	let lastPageNumber: number;
+	let lastPageNumber: number = totalPages;
 	let currentPageNumber = 1;
 	let currentPageSize = 10;
 
@@ -75,84 +77,82 @@
 </script>
 
 <!-- {@debug matches} -->
-{#await requestNewPage() then}
-	{#if matches.length}
-		<Pagination {lastPageNumber} on:request={handleRequest}>
-			<div class="scroll">
-				<section class="games-list">
-					<div class="table-header" class:not-leader={!$isLeader}>
-						<span>First Player</span>
-						<span>Second Player</span>
-						<span>Score</span>
-						<span />
-					</div>
-					{#if oneTournament}
-						<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
-						<MatchHeader title={matches[0].localDateString} />
-					{/if}
+{#if matches.length}
+	<Pagination {lastPageNumber} on:request={handleRequest}>
+		<div class="scroll">
+			<section class="games-list">
+				<div class="table-header" class:not-leader={!$isLeader}>
+					<span>First Player</span>
+					<span>Second Player</span>
+					<span>Score</span>
+					<span />
+				</div>
+				{#if oneTournament}
+					<MatchHeader title={matches[0].tournamentTitle} isMain={true} />
+					<MatchHeader title={matches[0].localDateString} />
+				{/if}
 
-					{#each matches as match, i}
-						{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
-							<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
-							<MatchHeader title={matches[i].localDateString} />
-						{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
-							<MatchHeader title={matches[i].localDateString} />
-						{/if}
-						<button
-							class="match-line"
-							class:selected={chosenId === match.id}
-							on:click|preventDefault={() => {
-								chosenId = match.id;
-								if (mode === 'delete') {
-									deleteMatch(match.id.toString());
-								} else {
-									editData = match;
-								}
-							}}
-							disabled={!isChoosing || chosenId === match.id}
-						>
-							<div class="matches-grid">
-								<div class="no-wrap content">
-									{match.firstPlayerName}
-									<span class="rating">
-										{#if match.firstPlayerRatingDelta}
-											({match.firstPlayerRatingBefore})
-											{#if match.firstPlayerRatingDelta > 0}
-												<span class="positive">+{match.firstPlayerRatingDelta}</span>
-											{:else}
-												<span class="negative">{match.firstPlayerRatingDelta}</span>
-											{/if}
+				{#each matches as match, i}
+					{#if i != 0 && matches[i].tournamentTitle != matches[i - 1].tournamentTitle}
+						<MatchHeader title={matches[i].tournamentTitle} isMain={true} />
+						<MatchHeader title={matches[i].localDateString} />
+					{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
+						<MatchHeader title={matches[i].localDateString} />
+					{/if}
+					<button
+						class="match-line"
+						class:selected={chosenId === match.id}
+						on:click|preventDefault={() => {
+							chosenId = match.id;
+							if (mode === 'delete') {
+								deleteMatch(match.id.toString());
+							} else {
+								editData = match;
+							}
+						}}
+						disabled={!isChoosing || chosenId === match.id}
+					>
+						<div class="matches-grid">
+							<div class="no-wrap content">
+								{match.firstPlayerName}
+								<span class="rating">
+									{#if match.firstPlayerRatingDelta}
+										({match.firstPlayerRatingBefore})
+										{#if match.firstPlayerRatingDelta > 0}
+											<span class="positive">+{match.firstPlayerRatingDelta}</span>
+										{:else}
+											<span class="negative">{match.firstPlayerRatingDelta}</span>
 										{/if}
-									</span>
-								</div>
-								<div class="no-wrap content">
-									{match.secondPlayerName}
-									<span class="rating">
-										{#if match.secondPlayerRatingDelta}
-											({match.secondPlayerRatingBefore})
-											{#if match.secondPlayerRatingDelta > 0}
-												<span class="positive">+{match.secondPlayerRatingDelta}</span>
-											{:else}
-												<span class="negative">{match.secondPlayerRatingDelta}</span>
-											{/if}
-										{/if}
-									</span>
-								</div>
-								<div class="score content">
-									{match.firstPlayerScore}
-									:
-									{match.secondPlayerScore}
-								</div>
+									{/if}
+								</span>
 							</div>
-						</button>
-					{/each}
-				</section>
-			</div></Pagination
-		>
-	{:else}
-		<p class="details">Oops! There is not a single entity satisfying the query</p>
-	{/if}
-{/await}
+							<div class="no-wrap content">
+								{match.secondPlayerName}
+								<span class="rating">
+									{#if match.secondPlayerRatingDelta}
+										({match.secondPlayerRatingBefore})
+										{#if match.secondPlayerRatingDelta > 0}
+											<span class="positive">+{match.secondPlayerRatingDelta}</span>
+										{:else}
+											<span class="negative">{match.secondPlayerRatingDelta}</span>
+										{/if}
+									{/if}
+								</span>
+							</div>
+							<div class="score content">
+								{match.firstPlayerScore}
+								:
+								{match.secondPlayerScore}
+							</div>
+						</div>
+					</button>
+				{/each}
+			</section>
+		</div></Pagination
+	>
+{:else}
+	<p class="details">Oops! There is not a single entity satisfying the query</p>
+{/if}
 
 <style>
 	.details {

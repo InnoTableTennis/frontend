@@ -219,6 +219,8 @@ export async function getPlayers(
 			Authorization: `Bearer ${token}`,
 		},
 	});
+
+	console.log('Response:', response);
 	
 
 	await handleGetErrors(response, token);
@@ -226,6 +228,8 @@ export async function getPlayers(
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data = await response.json();
+
+	console.log(data);
 	
 
 	return { data, totalPages };

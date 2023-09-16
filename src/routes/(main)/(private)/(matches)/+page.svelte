@@ -12,6 +12,8 @@
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
 	import type { Match } from '$lib/types/types';
 
+	export let data;
+
 	let handleInsert: () => void;
 	let editData: Match = {} as Match;
 	let isEditing = false;
@@ -105,6 +107,8 @@
 			bind:isChoosing
 			bind:chosenId
 			bind:editData
+			matches={data.matches.data}
+			totalPages={data.matches.totalPages}
 		/>
 	</div>
 </div>
