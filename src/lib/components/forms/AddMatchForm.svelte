@@ -134,7 +134,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addMatch} on:change={saveForm}>
+<form on:submit={addMatch} on:change={saveForm} method="POST" action="?/create">
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>

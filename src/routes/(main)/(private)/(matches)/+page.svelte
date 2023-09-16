@@ -44,42 +44,21 @@
 	/>
 </svelte:head>
 
-{#if isLeader}
-	<div class="edit-mode">
-		<ToggleCheckboxButton
-			bind:checked={isEditing}
-			bind:chosenId
-			bind:editData
-			bind:mode
-			label={'Edit Mode'}
-		/>
-		<span />
-	</div>
-{/if}
-
-{#if isEditing}
-	<div class="edit-switch-bar">
-		<EditSwitchBar bind:mode bind:chosenId bind:editData />
-	</div>
-{/if}
-
 <div class="form-list-layout">
-	{#if isEditing}
-		{#await getFormData() then resp}
-			{#if mode === 'add'}
-				<div class="form">
+	<div class="form">
+		{#if isEditing}
+			{#await getFormData() then resp}
+				{#if mode === 'add'}
 					<AddMatchForm
 						players={resp.players}
 						tournaments={resp.tournaments}
 						on:error={handleError}
 						on:update={() => handleInsert()}
 					/>
-				</div>
-			{:else if mode === 'edit'}
-				{#if chosenId === -1}
-					Please choose a match to edit
-				{:else}
-					<div class="form">
+				{:else if mode === 'edit'}
+					{#if chosenId === -1}
+						Please choose a match to edit
+					{:else}
 						<EditMatchForm
 							players={resp.players}
 							tournaments={resp.tournaments}
@@ -88,18 +67,35 @@
 							bind:match={editData}
 							bind:chosenId
 						/>
-					</div>
+					{/if}
+				{:else if mode === 'delete'}
+					Please choose a match to delete
 				{/if}
-			{:else if mode === 'delete'}
-				Please choose a match to delete
-			{/if}
-		{/await}
-	{:else}
-		<div class="form">
+			{/await}
+		{:else}
 			<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
-		</div>
-	{/if}
+		{/if}
+	</div>
+
 	<div class="matches-list">
+		{#if isLeader}
+			<div class="edit-mode">
+				<ToggleCheckboxButton
+					bind:checked={isEditing}
+					bind:chosenId
+					bind:editData
+					bind:mode
+					label={'Edit Mode'}
+				/>
+				<span />
+			</div>
+		{/if}
+
+		{#if isEditing}
+			<div class="edit-switch-bar">
+				<EditSwitchBar bind:mode bind:chosenId bind:editData />
+			</div>
+		{/if}
 		<MatchesList
 			on:error={handleError}
 			bind:handleInsert

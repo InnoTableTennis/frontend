@@ -115,7 +115,7 @@
 
 <h2>Edit Match</h2>
 
-<form on:submit={editMatch}>
+<form on:submit={editMatch} action="?/edit">
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>

@@ -110,11 +110,9 @@
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
-</form>
 
-<h2>Sort by</h2>
-
-<form on:submit={sortMatch} on:change={saveForm}>
+	<h2>Sort by</h2>
+	
 	<div class="column-1-elems">
 		<RadioGroup
 			group={sortBy}

@@ -30,27 +30,6 @@
 	/>
 </svelte:head>
 
-<div class="info">
-	{#if isLeader}
-		<div class="edit-mode">
-			<ToggleCheckboxButton
-				bind:checked={isEditing}
-				bind:chosenId
-				bind:editData
-				bind:mode
-				label={'Edit Mode'}
-			/>
-			<span />
-		</div>
-	{/if}
-
-	{#if isEditing}
-		<div class="edit-switch-bar">
-			<EditSwitchBar bind:mode bind:chosenId bind:editData />
-		</div>
-	{/if}
-</div>
-
 <div class="form-list-layout">
 	{#if isEditing}
 		{#if mode === 'add'}
@@ -78,7 +57,26 @@
 			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
+	
 	<div class="players-list">
+		{#if isLeader}
+			<div class="edit-mode">
+				<ToggleCheckboxButton
+					bind:checked={isEditing}
+					bind:chosenId
+					bind:editData
+					bind:mode
+					label={'Edit Mode'}
+				/>
+				<span />
+			</div>
+		{/if}
+	
+		{#if isEditing}
+			<div class="edit-switch-bar">
+				<EditSwitchBar bind:mode bind:chosenId bind:editData />
+			</div>
+		{/if}
 		<PlayersList
 			on:error={handleError}
 			bind:handleInsert

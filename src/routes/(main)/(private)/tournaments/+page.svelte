@@ -37,25 +37,6 @@
 	/>
 </svelte:head>
 
-{#if isLeader}
-	<div class="edit-mode">
-		<ToggleCheckboxButton
-			bind:checked={isEditing}
-			bind:chosenId
-			bind:editData
-			bind:mode
-			label={'Edit Mode'}
-		/>
-		<span />
-	</div>
-{/if}
-
-{#if isEditing}
-	<div class="edit-switch-bar">
-		<EditSwitchBar bind:mode bind:chosenId bind:editData />
-	</div>
-{/if}
-
 <div class="form-list-layout">
 	{#if isEditing}
 		{#if mode === 'add'}
@@ -84,6 +65,24 @@
 		</div>
 	{/if}
 	<div class="tournaments-list">
+		{#if isLeader}
+	<div class="edit-mode">
+		<ToggleCheckboxButton
+			bind:checked={isEditing}
+			bind:chosenId
+			bind:editData
+			bind:mode
+			label={'Edit Mode'}
+		/>
+		<span />
+	</div>
+{/if}
+
+{#if isEditing}
+	<div class="edit-switch-bar">
+		<EditSwitchBar bind:mode bind:chosenId bind:editData />
+	</div>
+{/if}
 		<TournamentList
 			on:error={handleError}
 			bind:handleInsert
