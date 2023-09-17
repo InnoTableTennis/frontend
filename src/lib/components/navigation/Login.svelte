@@ -7,6 +7,7 @@
 	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
 	import * as db from '$lib/requests';
 	import { base } from '$app/paths';
+	import { enhance } from '$app/forms';
 
 	const dispatch = createEventDispatcher();
 
@@ -46,7 +47,7 @@
 		<div class="container">
 			<div class="wrapper-left">
 				<div class="column">
-					<form on:submit={login}>
+					<form on:submit={login} method="POST" use:enhance>
 						<h2>Sign in</h2>
 						<InputTemplate
 							type="text"

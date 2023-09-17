@@ -9,7 +9,8 @@ import type { TournamentState } from '$lib/types/tournamentTypes';
 import type { Stats, ProfileData } from '$lib/types/profileTypes';
 
 import { dev } from '$app/environment';
-import { PUBLIC_DEV_SERVER_URL } from '$env/static/public';
+
+import { DEV_SERVER_URL, PROD_SERVER_URL } from '$env/static/private';
 
 /**
  * This file contains functions for making API requests.
@@ -21,7 +22,7 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev ? PUBLIC_DEV_SERVER_URL : '';
+const serverPath = dev ? DEV_SERVER_URL : PROD_SERVER_URL;
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 
@@ -38,27 +39,35 @@ const serverAUTH: string = serverPath + '/auth';
  * @returns The matches data and total number of pages.
  */
 export async function getMatches(
-	descending: boolean | null = null,
-	name: string | null = null,
-	score: string | null = null,
-	minDateString: string | null = null,
-	maxDateString: string | null = null,
-	pageNumber: number | null = null,
-	pageSize: number | null = null,
+	descending: boolean,
+	name: string,
+	score: string,
+	minDateString: string,
+	maxDateString: string,
+	pageNumber: number,
+	pageSize: number,
 ): Promise<{
-	data: Match[];
+	matches: Match[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/matches';
-	if (descending != null) {
-		url += '?descending=' + descending;
-		if (name) url += '&hasPlayerWith=' + name;
-		if (minDateString) url += '&startDate=' + minDateString;
-		if (maxDateString) url += '&endDate=' + maxDateString;
-		if (score) url += '&score=' + score;
-		if (pageNumber) url += '&page=' + pageNumber;
-		if (pageSize) url += '&size=' + pageSize;
-	}
+	const searchParams = {
+		descending: String(descending),
+		hasPlayerWith: name,
+		startDate: minDateString,
+		endDate: maxDateString,
+	};
+
+	const searchParamsString = new URLSearchParams({
+		...searchParams,
+		...(pageNumber && { page: String(pageNumber) }),
+		...(pageSize && { size: String(pageSize) }),
+		...(score && { score }),
+	}).toString();
+
+	const url: string = serverAPI + '/matches' + '?' + searchParamsString;
+
+	console.log(url);
+	
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -74,7 +83,7 @@ export async function getMatches(
 
 	const data = await response.json();
 
-	return { data, totalPages };
+	return { matches:data, totalPages };
 }
 
 /**
@@ -210,7 +219,7 @@ export async function getPlayers(
 		if (maxRating != null && !isNaN(maxRating)) url += '&maxRating=' + maxRating;
 		if (pageNumber) url += '&page=' + pageNumber;
 		if (pageSize) url += '&size=' + pageSize;
-	}	
+	}
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -220,17 +229,11 @@ export async function getPlayers(
 		},
 	});
 
-	console.log('Response:', response);
-	
-
 	await handleGetErrors(response, token);
 
 	const totalPages: number = parseInt(response.headers.get('X-Total-Pages') ?? '100', 10);
 
 	const data = await response.json();
-
-	console.log(data);
-	
 
 	return { data, totalPages };
 }
@@ -619,7 +622,7 @@ export async function getStatistics(playerID: number | null = null): Promise<{
 	await handleGetErrors(response, token);
 
 	const data = await response.json();
-	
+
 	return { data };
 }
 

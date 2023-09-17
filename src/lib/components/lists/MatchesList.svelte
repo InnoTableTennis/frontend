@@ -1,14 +1,15 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
 	import MatchHeader from '$lib/components/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Match } from '$lib/types/types';
-
-	import * as db from '$lib/requests';
 
 	import { createEventDispatcher } from 'svelte';
 	import { isLeader } from '$lib/stores';
 	import { SortFilterMatchFormStore } from '$lib/formStores';
 	import { alertPopup } from '$lib/popupHandler';
+	import MatchesListLine from './MatchesListLine.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -17,68 +18,21 @@
 	export let mode = 'add';
 	export let editData: Match = {} as Match;
 	export let oneTournament = true;
-	export let endDateString = '';
-	export let startDateString = '';
 
 	export let matches: Match[] = [];
 	export let totalPages: number = 0;
 	
 
-	let lastPageNumber: number = totalPages;
-	let currentPageNumber = 1;
-	let currentPageSize = 10;
+	// export const handleInsert = () => {
+	// 	currentPageNumber = 1;
+	// 	requestNewPage();
+	// };
 
-	export const handleInsert = () => {
-		currentPageNumber = 1;
-		requestNewPage();
-	};
-
-	async function requestNewPage() {
-		let name = $SortFilterMatchFormStore.name;
-		let score = $SortFilterMatchFormStore.score;
-		let minDateString = $SortFilterMatchFormStore.minDateString;
-		let maxDateString = $SortFilterMatchFormStore.maxDateString;
-		let descending = $SortFilterMatchFormStore.descending;
-		if (startDateString) minDateString = startDateString;
-		if (endDateString) maxDateString = endDateString;
-		await db
-			.getMatches(
-				descending,
-				name,
-				score,
-				minDateString,
-				maxDateString,
-				currentPageNumber,
-				currentPageSize,
-			)
-			.then((result) => {
-				matches = result.data;
-				lastPageNumber = result.totalPages;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
-
-	function handleRequest(event: CustomEvent) {
-		currentPageNumber = event.detail.currentPageNumber;
-		currentPageSize = event.detail.currentPageSize;
-		requestNewPage();
-	}
-
-	async function deleteMatch(id: string) {
-		let isConfirmed = await alertPopup('Are you sure that you want to delete this match?');
-		if (!isConfirmed) return;
-		await db.deleteMatch(id as string).catch((error) => {
-			dispatch('error', error);
-		});
-		requestNewPage();
-	}
 </script>
 
 <!-- {@debug matches} -->
 {#if matches.length}
-	<Pagination {lastPageNumber} on:request={handleRequest}>
+	<Pagination lastPageNumber={totalPages}>
 		<div class="scroll">
 			<section class="games-list">
 				<div class="table-header" class:not-leader={!$isLeader}>
@@ -99,53 +53,27 @@
 					{:else if i != 0 && matches[i].localDateString != matches[i - 1].localDateString}
 						<MatchHeader title={matches[i].localDateString} />
 					{/if}
-					<button
-						class="match-line"
-						class:selected={chosenId === match.id}
-						on:click|preventDefault={() => {
-							chosenId = match.id;
-							if (mode === 'delete') {
-								deleteMatch(match.id.toString());
-							} else {
-								editData = match;
-							}
-						}}
-						disabled={!isChoosing || chosenId === match.id}
-					>
-						<div class="matches-grid">
-							<div class="no-wrap content">
-								{match.firstPlayerName}
-								<span class="rating">
-									{#if match.firstPlayerRatingDelta}
-										({match.firstPlayerRatingBefore})
-										{#if match.firstPlayerRatingDelta > 0}
-											<span class="positive">+{match.firstPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.firstPlayerRatingDelta}</span>
-										{/if}
-									{/if}
-								</span>
-							</div>
-							<div class="no-wrap content">
-								{match.secondPlayerName}
-								<span class="rating">
-									{#if match.secondPlayerRatingDelta}
-										({match.secondPlayerRatingBefore})
-										{#if match.secondPlayerRatingDelta > 0}
-											<span class="positive">+{match.secondPlayerRatingDelta}</span>
-										{:else}
-											<span class="negative">{match.secondPlayerRatingDelta}</span>
-										{/if}
-									{/if}
-								</span>
-							</div>
-							<div class="score content">
-								{match.firstPlayerScore}
-								:
-								{match.secondPlayerScore}
-							</div>
-						</div>
-					</button>
+					{#if mode === 'delete'}
+						<form
+							method="POST"
+							action="?/deleteMatch"
+							use:enhance={async ({ cancel }) => {
+								let isConfirmed = await alertPopup(
+									'Are you sure that you want to delete this match?',
+								);
+								if (!isConfirmed) {
+									isChoosing = true;
+									chosenId = -1;
+									cancel();
+								}
+							}}
+						>
+							<input type="hidden" name="matchId" value={match.id} />
+							<MatchesListLine {match} bind:chosenId bind:editData {isChoosing} {mode} />
+						</form>
+					{:else}
+						<MatchesListLine {match} bind:chosenId bind:editData {isChoosing} {mode} />
+					{/if}
 				{/each}
 			</section>
 		</div></Pagination
@@ -177,60 +105,7 @@
 	.scroll {
 		overflow-x: scroll;
 	}
-	.matches-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr 2rem auto;
-		gap: 1rem 1rem;
-		color: var(--content-color);
-		height: 1.1em;
-	}
-	.match-line {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		border: none;
-		width: 100%;
-		height: 1.3rem;
-		margin-bottom: 0.2rem;
-	}
-	.match-line:disabled {
-		cursor: default;
-	}
 
-	.match-line:enabled:hover {
-		background-color: var(--secondary-bg-color);
-		border-radius: 3px;
-	}
-
-	.selected {
-		background-color: var(--secondary-color);
-		border-radius: 3px;
-	}
-
-	.selected .no-wrap {
-		color: var(--main-color);
-	}
-
-	.selected .score {
-		color: var(--main-color);
-	}
-
-	.score {
-		white-space: nowrap;
-	}
-
-	.no-wrap {
-		display: flex;
-		align-items: center;
-		text-align: left;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.content {
-		font-size: var(--fontsize-medium1);
-	}
 	.table-header {
 		display: grid;
 		grid-template-columns: 1fr 1fr 4rem;
@@ -240,12 +115,5 @@
 		color: var(--content-color);
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
-	}
-
-	.rating .positive {
-		color: var(--rating-positive-color);
-	}
-	.rating .negative {
-		color: var(--rating-negative-color);
 	}
 </style>

@@ -116,6 +116,7 @@
 		z-index: 3;
 		background: var(--main-color);
 		border: 0;
+		cursor: pointer;
 	}
 	.profile-icon {
 		width: 3rem;
@@ -231,10 +232,10 @@
 		z-index: 1;
 		background: none;
 		border: none;
-		position: absolute;
+		position: fixed;
 		right: 0;
 		top: 0;
-		height: 99vh;
+		height: 100vh;
 		width: 100vw;
 	}
 	@media (min-width: 480px) {

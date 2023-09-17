@@ -1,5 +1,5 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
 
@@ -115,7 +115,21 @@
 
 <h2>Edit Match</h2>
 
-<form on:submit={editMatch} action="?/edit">
+<form
+	method="POST"
+	action="?/editMatch"
+	use:enhance={async ({ cancel }) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
+		if (!isConfirmed) {
+			cancel();
+		}
+
+		return async ({update}) => {
+			await update({reset: false})
+		} 
+	}}
+>
+	<input type="hidden" name="matchId" value={match.id} />
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>

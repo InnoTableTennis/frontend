@@ -9,7 +9,7 @@ import type { TournamentState } from '$lib/types/tournamentTypes';
 import type { Stats, ProfileData } from '$lib/types/profileTypes';
 
 import { dev } from '$app/environment';
-import { PUBLIC_DEV_SERVER_URL } from '$env/static/public';
+import { PUBLIC_DEV_SERVER_URL, PUBLIC_PROD_SERVER_URL } from '$env/static/public';
 
 /**
  * This file contains functions for making API requests.
@@ -21,7 +21,7 @@ userToken.subscribe((value: string) => {
 	token = value;
 });
 
-const serverPath = dev ? PUBLIC_DEV_SERVER_URL : '';
+const serverPath = dev ? PUBLIC_DEV_SERVER_URL : PUBLIC_PROD_SERVER_URL;
 const serverAPI: string = serverPath + '/api';
 const serverAUTH: string = serverPath + '/auth';
 

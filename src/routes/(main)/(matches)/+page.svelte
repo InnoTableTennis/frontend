@@ -98,13 +98,12 @@
 		{/if}
 		<MatchesList
 			on:error={handleError}
-			bind:handleInsert
 			bind:mode
 			bind:isChoosing
 			bind:chosenId
 			bind:editData
-			matches={data.matches.data}
-			totalPages={data.matches.totalPages}
+			matches={data.matches}
+			totalPages={data.totalPages}
 		/>
 	</div>
 </div>

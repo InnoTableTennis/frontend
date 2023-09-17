@@ -1,5 +1,5 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
 	import { AddMatchFormStore } from '$lib/formStores';
@@ -49,35 +49,6 @@
 	}
 
 	let localDateString = convertDateToStringDash(new Date());
-
-	const addMatch = async (e: Event) => {
-		const data = new FormData(e.target as HTMLFormElement);
-
-		if (
-			!players.find((player) => player.name === firstPlayerName) ||
-			!players.find((player) => player.name === secondPlayerName)
-		) {
-			dispatch('error', 'There are no such players!');
-		} else if (!tournaments.find((tournament) => tournament.title === tournamentTitle)) {
-			dispatch('error', 'There is no such tournament!');
-		} else {
-			db.createMatch(
-				data.get('firstPlayerName') as string,
-				data.get('secondPlayerName') as string,
-				Number(data.get('firstPlayerScore')),
-				Number(data.get('secondPlayerScore')),
-				data.get('tournamentTitle') as string,
-				data.get('localDateString') as string,
-			)
-				.then(() => {
-					dispatch('update');
-					resetForm();
-				})
-				.catch((error) => {
-					dispatch('error', error);
-				});
-		}
-	};
 
 	const saveForm = function () {
 		$AddMatchFormStore = {
@@ -134,7 +105,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addMatch} on:change={saveForm} method="POST" action="?/create">
+<form on:change={saveForm} method="POST" action="?/createMatch" use:enhance>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>

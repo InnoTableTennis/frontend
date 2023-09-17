@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import LeftArrow from '$lib/components/icons/LeftArrow.svelte';
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';
+	import { page } from '$app/stores';
 
 	const dispatch = createEventDispatcher();
 
@@ -10,11 +11,14 @@
 	let visiblePages: number[];
 	let currentPageIndex = 0;
 
+	let disabled = false;
+	$: $page.url, (disabled = false);
+
 	let sizes = [10, 20, 50, 100, 200];
 
 	export let isTop = true;
 	export let currentPageNumber = firstPageNumber;
-	export let currentPageSize = 200;
+	export let currentPageSize = 10;
 	export let lastPageNumber = 100;
 	export let isTopHidden = false;
 
@@ -76,14 +80,15 @@
 		currentPageSize = Number((<HTMLInputElement>event.target).value);
 		currentPageNumber = firstPageNumber;
 		dispatch('click');
+		disabled = true;
 	}
 </script>
 
-<div class="container" class:isTop class:isBottom={!isTop}>
+<div class="container" class:isTop class:isBottom={!isTop} class:loading={disabled}>
 	{#if isTop}
 		{#if !isTopHidden}
 			<div class="pages">
-				<button class="arrow" on:click={handleLeftClick}>
+				<button class="arrow" {disabled} on:click={handleLeftClick}>
 					<LeftArrow height="0.9375rem" width="0.5625rem" color={'white'} />
 				</button>
 
@@ -92,6 +97,7 @@
 						class="first number"
 						class:invisible={currentPageNumber - firstPageNumber < 2}
 						on:click={handleClick}
+						{disabled}
 						value={firstPageNumber}>{firstPageNumber}</button
 					>
 					<span class="ellipses" class:invisible={currentPageNumber - firstPageNumber < 2}>...</span
@@ -102,6 +108,7 @@
 						class="number"
 						class:current={currentPageIndex == i}
 						on:click={handleClick}
+						{disabled}
 						value={visiblePage}>{visiblePage}</button
 					>
 				{/each}
@@ -111,10 +118,11 @@
 						class="last number"
 						class:invisible={lastPageNumber - currentPageNumber < 2}
 						on:click={handleClick}
+						{disabled}
 						value={lastPageNumber}>{lastPageNumber}</button
 					>
 				{/if}
-				<button class="arrow" on:click={handleRightClick}>
+				<button class="arrow" {disabled} on:click={handleRightClick}>
 					<RightArrow height="0.9375rem" width="0.5625rem" color={'white'} />
 				</button>
 			</div>
@@ -134,6 +142,46 @@
 </div>
 
 <style>
+	.loading::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 10%;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.3);
+		transform: skewX(-30deg);
+		transition: 0.3s;
+		animation: slide 3s linear infinite;
+	}
+
+	@keyframes slide {
+		0% {
+			left: 0;
+			width: 0%;
+		}
+		5% {
+			left: 5%;
+			width: 0%;
+		}
+		25% {
+			left: 25%;
+			width: 10%;
+		}
+		75% {
+			left: 75%;
+			width: 10%;
+		}
+		95% {
+			left: 95%;
+			width: 0%;
+		}
+		100% {
+			left: 100%;
+			width: 0%;
+		}
+	}
+
 	.sizes-label {
 		color: white;
 		margin-right: 0.8rem;
@@ -146,8 +194,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		position: relative;
 		background-color: var(--secondary-bg-color);
 		cursor: default;
+		box-sizing: border-box;
 	}
 	.isTop {
 		margin-top: 2em;

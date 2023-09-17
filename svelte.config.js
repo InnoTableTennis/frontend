@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 const dev = process.argv.includes('dev');
@@ -16,11 +16,11 @@ const config = {
 		adapter: adapter({
 			// default options are shown. On some platforms
 			// these options are set automatically — see below
-			pages: 'build',
-			assets: 'build',
-			fallback: undefined,
-			precompress: false,
-			strict: true,
+			// pages: 'build',
+			// assets: 'build',
+			// fallback: undefined,
+			// precompress: false,
+			// strict: true,
 		}),
 		paths: {
 			base: dev ? '' : process.env.BASE_PATH,
