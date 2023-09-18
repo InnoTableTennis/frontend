@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { changeDateDottedFormat } from '$lib/helper';
+	import { changeDateDottedFormat, changeDateFormat } from '$lib/helper';
 
 	export let type: string;
 	export let name: string;
@@ -16,10 +16,13 @@
 
 	export let stringVal = '';
 	export let numberVal: number | string = 0;
-	
-	let dateVal = '';
-	$: if(dateVal) stringVal = changeDateDottedFormat(dateVal)
 
+	let dateVal = stringVal ? changeDateFormat(stringVal) : '';
+	$: {
+		if (type === 'date') {
+			dateVal = stringVal ? changeDateFormat(stringVal) : '';
+		}
+	}
 	export let textAlignCenter = false;
 
 	export const reset = () => {
@@ -29,11 +32,15 @@
 
 	let input: HTMLInputElement | HTMLTextAreaElement;
 
+	function handleDateChange() {
+		stringVal = dateVal ? changeDateDottedFormat(dateVal) : '';
+	}
+
 	onMount(() => {
 		if (isFirst) input.focus();
 	});
 
-	$: isEmpty = stringVal == '' ? true : false;
+	$: isDateEmpty = dateVal == '' ? true : false;
 </script>
 
 {#if type === 'number'}
@@ -61,11 +68,12 @@
 			type="date"
 			{name}
 			bind:value={dateVal}
+			on:change={handleDateChange}
 			{placeholder}
 			{required}
 			bind:this={input}
 			class="date"
-			class:isEmpty
+			class:isDateEmpty
 			class:text-center={textAlignCenter}
 		/>
 	</div>
@@ -122,7 +130,7 @@
 		position: relative;
 		top: -2.8rem;
 	}
-	.isEmpty {
+	.isDateEmpty {
 		opacity: 0;
 	}
 	.date:focus {

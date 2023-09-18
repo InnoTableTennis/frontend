@@ -103,7 +103,6 @@
 				type="date"
 				name="minDateString"
 				placeholder="Min date"
-				bind:defaultValue={$SortFilterMatchFormStore.minDateString}
 				bind:stringVal={$SortFilterMatchFormStore.minDateString}
 			/>
 		</label>
@@ -113,7 +112,6 @@
 				type="date"
 				name="maxDateString"
 				placeholder="Max date"
-				bind:defaultValue={$SortFilterMatchFormStore.maxDateString}
 				bind:stringVal={$SortFilterMatchFormStore.maxDateString}
 			/>
 		</label>
