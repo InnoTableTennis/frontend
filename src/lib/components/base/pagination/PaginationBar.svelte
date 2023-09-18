@@ -24,10 +24,7 @@
 	export let isTopHidden = false;
 
 	$: isSmallLeft = (currentPageNumber - firstPageNumber) < 2 || (visiblePages[0] == firstPageNumber);
-	$: isSmallRight = (lastPageNumber - currentPageNumber) < 2 || (visiblePages[2] == lastPageNumber);
-
-	$: console.log(currentPageNumber, firstPageNumber, lastPageNumber, isSmallLeft, isSmallRight, visiblePages);
-	
+	$: isSmallRight = (lastPageNumber - currentPageNumber) < 2 || (visiblePages[2] == lastPageNumber);	
 
 	$: currentPageNumber = currentPageNumber < lastPageNumber ? currentPageNumber : lastPageNumber;
 

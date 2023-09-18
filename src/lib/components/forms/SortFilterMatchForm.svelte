@@ -15,11 +15,8 @@
 	onMount(() => {
 		if ($page.url.pathname == '/') {
 		let searchParams = $page.url.searchParams;
-		console.log('searchParams', searchParams);
 
 		$SortFilterMatchFormStore.name = searchParams?.get('name') || $SortFilterMatchFormStore.name;
-
-		console.log('$SortFilterMatchFormStore.name', $SortFilterMatchFormStore.name);
 
 		$SortFilterMatchFormStore.score = searchParams?.get('score') || $SortFilterMatchFormStore.score;
 		$SortFilterMatchFormStore.minDateString =
