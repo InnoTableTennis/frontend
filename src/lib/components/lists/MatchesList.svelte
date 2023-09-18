@@ -5,13 +5,9 @@
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Match } from '$lib/types/types';
 
-	import { createEventDispatcher } from 'svelte';
 	import { isLeader } from '$lib/stores';
-	import { SortFilterMatchFormStore } from '$lib/formStores';
 	import { alertPopup } from '$lib/popupHandler';
 	import MatchesListLine from './MatchesListLine.svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let chosenId = -1;
 	export let isChoosing = false;
@@ -21,13 +17,6 @@
 
 	export let matches: Match[] = [];
 	export let totalPages: number = 0;
-	
-
-	// export const handleInsert = () => {
-	// 	currentPageNumber = 1;
-	// 	requestNewPage();
-	// };
-
 </script>
 
 <!-- {@debug matches} -->
