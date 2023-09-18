@@ -26,7 +26,7 @@ const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = {
 	descending: true,
 	sortBy: 'date',
 };
-const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
+export const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
 	name: '',
 	score: '',
 	minDateString: '',
@@ -34,7 +34,7 @@ const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
 	descending: true,
 	sortBy: 'date',
 };
-const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 100 };
+const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 0 };
 const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
 	title: '',
 	startDateString: convertDateToStringDash(new Date()),
@@ -48,10 +48,10 @@ const ADD_MATCH_FORM: addMatchFormStore = {
 	secondPlayerScore: 0,
 };
 
-export const SortFilterPlayerFormStore = writable(SORT_FILTER_PLAYER_FORM);
-export const SortFilterTournamentFormStore = writable(SORT_FILTER_TOURNAMENT_FORM);
-export const SortFilterMatchFormStore = writable(SORT_FILTER_MATCH_FORM);
-export const SortFilterProfileMatchFormStore = writable(SORT_FILTER_MATCH_FORM);
-export const AddPlayerFormStore = writable(ADD_PLAYER_FORM);
-export const AddTournamentFormStore = writable(ADD_TOURNAMENT_FORM);
-export const AddMatchFormStore = writable(ADD_MATCH_FORM);
+export const SortFilterPlayerFormStore = writable(structuredClone(SORT_FILTER_PLAYER_FORM));
+export const SortFilterTournamentFormStore = writable(structuredClone(SORT_FILTER_TOURNAMENT_FORM));
+export const SortFilterMatchFormStore = writable(structuredClone(SORT_FILTER_MATCH_FORM));
+export const SortFilterProfileMatchFormStore = writable(structuredClone(SORT_FILTER_MATCH_FORM));
+export const AddPlayerFormStore = writable(structuredClone(ADD_PLAYER_FORM));
+export const AddTournamentFormStore = writable(structuredClone(ADD_TOURNAMENT_FORM));
+export const AddMatchFormStore = writable(structuredClone(ADD_MATCH_FORM));

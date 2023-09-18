@@ -5,7 +5,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
+	import { changeDateDottedFormat } from '$lib/helper';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
 
@@ -30,8 +30,8 @@
 		$SortFilterProfileMatchFormStore = {
 			name: name,
 			score: score,
-			minDateString: changeDateAnotherFormat(minDateString),
-			maxDateString: changeDateAnotherFormat(maxDateString),
+			minDateString: changeDateDottedFormat(minDateString),
+			maxDateString: changeDateDottedFormat(maxDateString),
 			descending: isDescending,
 			sortBy: sortBy,
 		};

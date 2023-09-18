@@ -108,7 +108,7 @@ export function changeDateFormat(initDate: string) {
  * @param initDate - The input date string to convert.
  * @returns The formatted date string.
  */
-export function changeDateAnotherFormat(initDate: string) {
+export function changeDateDottedFormat(initDate: string) {
 	if (initDate) {
 		const year = Number(initDate.slice(0, 4));
 		const month = Number(initDate.slice(5, 7)) - 1;
@@ -137,4 +137,15 @@ export function countNameWords(name: string): number {
 		if (element !== '') counter++;
 	});
 	return counter;
+}
+
+export function objectToURLSearchParams(obj: { [key: string]: FormDataEntryValue | string | null }): string {
+		const result: {
+		[key: string]: string;
+	} = {};
+	for (const [key, value] of Object.entries(obj)) {
+		if (value !== '' && value !== null) result[key] = String(value);
+	}
+
+	return new URLSearchParams(result).toString();
 }

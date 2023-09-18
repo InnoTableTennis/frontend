@@ -10,14 +10,23 @@ export async function load({ url, cookies }) {
 
 	const searchParams = url.searchParams;
 
+	const descending = searchParams.get('descending');
+	const name = searchParams.get('name');
+	const score = searchParams.get('score');
+	const minDateString = searchParams.get('minDateString');
+	const maxDateString = searchParams.get('maxDateString');
+	const currentPageNumber = searchParams.get('currentPageNumber');
+	const currentPageSize = searchParams.get('currentPageSize');
+	
+
 	const data = await db.getMatches(
-		searchParams.get('descending') !== 'false',
-		searchParams.get('name') || '',
-		searchParams.get('score') || '',
-		searchParams.get('minDateString') || '',
-		searchParams.get('maxDateString') || '',
-		Number(searchParams.get('currentPageNumber') || 0),
-		Number(searchParams.get('currentPageSize') || 0),
+		descending !== null ? descending=='true' : null,
+		name,
+		score,
+		minDateString,
+		maxDateString,
+		currentPageNumber ? Number(currentPageNumber) : null,
+		currentPageSize ? Number(currentPageSize) : null,
 	);
 
 	return {
@@ -53,9 +62,7 @@ export const actions = {
 	},
 	deleteMatch: async ({ request }) => {
 		const data = await request.formData();
-		
-		await db.deleteMatch(
-			String(data.get('matchId') || ''),
-		)
-	}
+
+		await db.deleteMatch(String(data.get('matchId') || ''));
+	},
 };

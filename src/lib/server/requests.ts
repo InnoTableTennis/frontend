@@ -1,4 +1,4 @@
-import { titleCase } from '$lib/helper';
+import { objectToURLSearchParams, titleCase } from '$lib/helper';
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import { userToken } from '$lib/stores';
@@ -39,35 +39,31 @@ const serverAUTH: string = serverPath + '/auth';
  * @returns The matches data and total number of pages.
  */
 export async function getMatches(
-	descending: boolean,
-	name: string,
-	score: string,
-	minDateString: string,
-	maxDateString: string,
-	pageNumber: number,
-	pageSize: number,
+	descending: boolean | null,
+	name: string | null,
+	score: string | null,
+	minDateString: string | null,
+	maxDateString: string | null,
+	pageNumber: number | null,
+	pageSize: number | null,
 ): Promise<{
 	matches: Match[];
 	totalPages: number;
 }> {
-	const searchParams = {
-		descending: String(descending),
+	
+
+	const searchParams = objectToURLSearchParams({
+		score,
+		descending: descending !== null ? String(descending) : null,
 		hasPlayerWith: name,
 		startDate: minDateString,
 		endDate: maxDateString,
-	};
+		page: pageNumber ? String(pageNumber) : null,
+		size: pageSize ? String(pageSize) : null,
+	});
 
-	const searchParamsString = new URLSearchParams({
-		...searchParams,
-		...(pageNumber && { page: String(pageNumber) }),
-		...(pageSize && { size: String(pageSize) }),
-		...(score && { score }),
-	}).toString();
+	const url: string = serverAPI + '/matches' + (searchParams && '?' + searchParams);
 
-	const url: string = serverAPI + '/matches' + '?' + searchParamsString;
-
-	console.log(url);
-	
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -83,7 +79,7 @@ export async function getMatches(
 
 	const data = await response.json();
 
-	return { matches:data, totalPages };
+	return { matches: data, totalPages };
 }
 
 /**

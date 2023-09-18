@@ -8,7 +8,7 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
+	import { changeDateDottedFormat } from '$lib/helper';
 
 	const dispatch = createEventDispatcher();
 
@@ -32,8 +32,8 @@
 			title: title,
 			minParticipants: minParticipants,
 			maxParticipants: maxParticipants,
-			startDateString: changeDateAnotherFormat(startDateString),
-			endDateString: changeDateAnotherFormat(endDateString),
+			startDateString: changeDateDottedFormat(startDateString),
+			endDateString: changeDateDottedFormat(endDateString),
 			descending: isDescending,
 			sortBy: sortBy,
 		};

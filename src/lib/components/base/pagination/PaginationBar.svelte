@@ -3,6 +3,7 @@
 	import LeftArrow from '$lib/components/icons/LeftArrow.svelte';
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';
 	import { page } from '$app/stores';
+	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/const';
 
 	const dispatch = createEventDispatcher();
 
@@ -18,8 +19,8 @@
 
 	export let isTop = true;
 	export let currentPageNumber = firstPageNumber;
-	export let currentPageSize = 10;
-	export let lastPageNumber = 100;
+	export let currentPageSize = DEFAULT_PAGE_SIZE;
+	export let lastPageNumber = DEFAULT_PAGE_NUMBER;
 	export let isTopHidden = false;
 
 	$: isSmallLeft = currentPageNumber - firstPageNumber < 2;

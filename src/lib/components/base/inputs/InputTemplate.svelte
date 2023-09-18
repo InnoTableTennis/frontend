@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { changeDateDottedFormat } from '$lib/helper';
 
 	export let type: string;
 	export let name: string;
@@ -15,6 +16,9 @@
 
 	export let stringVal = '';
 	export let numberVal: number | string = 0;
+	
+	let dateVal = '';
+	$: if(dateVal) stringVal = changeDateDottedFormat(dateVal)
 
 	export let textAlignCenter = false;
 
@@ -22,9 +26,6 @@
 		stringVal = defaultValue;
 		numberVal = defaultNumValue;
 	};
-
-	$: stringVal = defaultValue;
-	$: numberVal = defaultNumValue;
 
 	let input: HTMLInputElement | HTMLTextAreaElement;
 
@@ -59,7 +60,7 @@
 		<input
 			type="date"
 			{name}
-			bind:value={stringVal}
+			bind:value={dateVal}
 			{placeholder}
 			{required}
 			bind:this={input}
