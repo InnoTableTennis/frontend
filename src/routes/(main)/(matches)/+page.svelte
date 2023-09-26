@@ -64,7 +64,7 @@
 							tournaments={resp.tournaments}
 							on:error={handleError}
 							on:update={() => handleInsert()}
-							bind:match={editData}
+							match={editData}
 							bind:chosenId
 						/>
 					{/if}

@@ -44,4 +44,5 @@ export interface addMatchFormStore {
 	tournamentTitle: string;
 	firstPlayerScore: number;
 	secondPlayerScore: number;
+	localDateString: string;
 }

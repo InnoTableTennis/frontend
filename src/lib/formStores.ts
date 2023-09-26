@@ -40,12 +40,13 @@ const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
 	startDateString: convertDateToStringDash(new Date()),
 	endDateString: convertDateToStringDash(new Date()),
 };
-const ADD_MATCH_FORM: addMatchFormStore = {
+export const ADD_MATCH_FORM: addMatchFormStore = {
 	firstPlayerName: '',
 	secondPlayerName: '',
 	tournamentTitle: '',
 	firstPlayerScore: 0,
 	secondPlayerScore: 0,
+	localDateString: ''
 };
 
 export const SortFilterPlayerFormStore = writable(structuredClone(SORT_FILTER_PLAYER_FORM));

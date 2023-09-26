@@ -2,18 +2,14 @@
 	import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
-	import { AddMatchFormStore } from '$lib/formStores';
+	import { ADD_MATCH_FORM, AddMatchFormStore } from '$lib/formStores';
 
-	import * as db from '$lib/requests';
-	import { convertDateToStringDash } from '$lib/helper';
+	import { convertDateToString } from '$lib/helper';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
-	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-
-	const dispatch = createEventDispatcher();
 
 	export let players: Player[];
 	export let tournaments: Tournament[];
@@ -22,70 +18,46 @@
 	let latestTournamentTitle = '';
 
 	$: playerNames = players.map((player) => player.name);
-	$: {
-		tournamentTitles = tournaments.map((tournament) => tournament.title);
-		latestTournamentTitle = tournamentTitles[0];
-		if (!tournamentTitle) {
-			tournamentTitle = latestTournamentTitle;
-			changeDateByTournamentTitle(tournamentTitle);
-		}
+	
+	tournamentTitles = tournaments.map((tournament) => tournament.title);
+	latestTournamentTitle = tournamentTitles[0];
+	if (!$AddMatchFormStore.tournamentTitle) {
+		$AddMatchFormStore.tournamentTitle = latestTournamentTitle;
+		changeDateByTournamentTitle($AddMatchFormStore.tournamentTitle);			
 	}
-
-	let firstPlayerName = $AddMatchFormStore.firstPlayerName;
-	let secondPlayerName = $AddMatchFormStore.secondPlayerName;
-	let tournamentTitle = $AddMatchFormStore.tournamentTitle;
-	let firstPlayerScore = $AddMatchFormStore.firstPlayerScore;
-	let secondPlayerScore = $AddMatchFormStore.secondPlayerScore;
+	
 
 	let isSubmissionDisabled = true;
 
 	$: {
 		isSubmissionDisabled = !(
-			firstPlayerName &&
-			secondPlayerName &&
-			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
-			tournamentTitle !== null
+			$AddMatchFormStore.firstPlayerName &&
+			$AddMatchFormStore.secondPlayerName &&
+			($AddMatchFormStore.firstPlayerScore !== 0 || $AddMatchFormStore.secondPlayerScore !== 0) &&
+			$AddMatchFormStore.tournamentTitle !== null
 		);
 	}
 
-	let localDateString = convertDateToStringDash(new Date());
-
-	const saveForm = function () {
-		$AddMatchFormStore = {
-			firstPlayerName: firstPlayerName,
-			secondPlayerName: secondPlayerName,
-			tournamentTitle: tournamentTitle,
-			firstPlayerScore: firstPlayerScore,
-			secondPlayerScore: secondPlayerScore,
-		};
-	};
+	$AddMatchFormStore.localDateString = convertDateToString(new Date());
 
 	let inputResets = new Array(2);
 
 	function resetForm() {
-		firstPlayerName = '';
-		secondPlayerName = '';
-		tournamentTitle = '';
-		firstPlayerScore = 0;
-		secondPlayerScore = 0;
+		$AddMatchFormStore = ADD_MATCH_FORM
 		inputResets.forEach((reset) => {
 			reset();
 		});
-		saveForm();
 	}
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
-		firstPlayerName = event.detail;
-		saveForm();
+		$AddMatchFormStore.firstPlayerName = event.detail;
 	}
 	function handleSelectSecondPlayerName(event: CustomEvent) {
-		secondPlayerName = event.detail;
-		saveForm();
+		$AddMatchFormStore.secondPlayerName = event.detail;
 	}
 	function handleSelectTournament(event: CustomEvent) {
-		tournamentTitle = event.detail;
-		changeDateByTournamentTitle(tournamentTitle);
-		saveForm();
+		$AddMatchFormStore.tournamentTitle = event.detail;
+		changeDateByTournamentTitle($AddMatchFormStore.tournamentTitle);
 	}
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
@@ -95,7 +67,8 @@
 			const year = Number(dateString.slice(6, 10));
 			const month = Number(dateString.slice(3, 5)) - 1;
 			const day = Number(dateString.slice(0, 2));
-			localDateString = convertDateToStringDash(new Date(year, month, day));
+			
+			$AddMatchFormStore.localDateString = convertDateToString(new Date(year, month, day));
 		}
 	}
 </script>
@@ -105,7 +78,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:change={saveForm} method="POST" action="?/createMatch" use:enhance>
+<form method="POST" action="?/createMatch" use:enhance>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -115,7 +88,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				isFirstInput={true}
-				defaultValue={firstPlayerName}
+				defaultValue={$AddMatchFormStore.firstPlayerName}
 				bind:reset={inputResets[0]}
 			/>
 		</label>
@@ -125,7 +98,7 @@
 				name="secondPlayerName"
 				placeholder="Second player"
 				options={playerNames}
-				defaultValue={secondPlayerName}
+				defaultValue={$AddMatchFormStore.secondPlayerName}
 				on:select={handleSelectSecondPlayerName}
 				bind:reset={inputResets[1]}
 			/>
@@ -138,7 +111,7 @@
 				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
-				bind:numberVal={firstPlayerScore}
+				bind:numberVal={$AddMatchFormStore.firstPlayerScore}
 			/>
 		</label>
 
@@ -148,7 +121,7 @@
 				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
-				bind:numberVal={secondPlayerScore}
+				bind:numberVal={$AddMatchFormStore.secondPlayerScore}
 			/>
 		</label>
 	</div>
@@ -159,8 +132,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				defaultValue={localDateString}
-				bind:stringVal={localDateString}
+				bind:stringVal={$AddMatchFormStore.localDateString}
 			/>
 		</label>
 
@@ -170,7 +142,7 @@
 			<DropdownInput
 				name="tournamentTitle"
 				placeholder="Tournament"
-				defaultValue={tournamentTitle}
+				defaultValue={$AddMatchFormStore.tournamentTitle}
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
 			/>

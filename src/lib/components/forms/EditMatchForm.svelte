@@ -3,15 +3,11 @@
 
 	import Button from '$lib/components/base/Button.svelte';
 
-	import * as db from '$lib/requests';
-	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
+	import { convertDateToString } from '$lib/helper';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { alertPopup } from '$lib/popupHandler';
-
-	const dispatch = createEventDispatcher();
 
 	export let players: Player[];
 	export let tournaments: Tournament[];
@@ -19,18 +15,18 @@
 	export let match: Match;
 
 	export let chosenId = -1;
-	let selectedDate = '';
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
 
 	let isSubmissionDisabled = true;
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
+	let firstPlayerName = match.firstPlayerName;
+	let secondPlayerName = match.secondPlayerName;
+	let tournamentTitle = match.tournamentTitle;
+	let firstPlayerScore = match.firstPlayerScore;
+	let secondPlayerScore = match.secondPlayerScore;
+	let localDateString = match.localDateString;
 
 	$: {
 		isSubmissionDisabled = !(
@@ -51,45 +47,6 @@
 		}
 	}
 
-	$: tournamentTitle = match.tournamentTitle;
-
-	let localDateString = '';
-
-	$: selectedDate = changeDateFormat(match.localDateString);
-	$: localDateString = selectedDate;
-
-	const editMatch = async (e: Event) => {
-		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
-		if (!isConfirmed) return;
-		const data = new FormData(e.target as HTMLFormElement);
-		if (
-			!players.find((player) => player.name === firstPlayerName) ||
-			!players.find((player) => player.name === secondPlayerName)
-		) {
-			dispatch('error', 'There are no such players!');
-		} else if (!tournaments.find((tournament) => tournament.title === tournamentTitle)) {
-			dispatch('error', 'There is no such tournament!');
-		} else {
-			db.editMatch(
-				match.id.toString(),
-				data.get('firstPlayerName') as string,
-				data.get('secondPlayerName') as string,
-				Number(data.get('firstPlayerScore')),
-				Number(data.get('secondPlayerScore')),
-				data.get('tournamentTitle') as string,
-				data.get('localDateString') as string,
-			)
-				.then(() => {
-					dispatch('update');
-				})
-				.catch((error) => {
-					dispatch('error', error);
-				});
-		}
-		match = {} as Match;
-		chosenId = -1;
-	};
-
 	function handleSelectFirstPlayerName(event: CustomEvent) {
 		firstPlayerName = event.detail;
 	}
@@ -108,8 +65,13 @@
 			const year = Number(dateString.slice(6, 10));
 			const month = Number(dateString.slice(3, 5)) - 1;
 			const day = Number(dateString.slice(0, 2));
-			localDateString = convertDateToStringDash(new Date(year, month, day));
+			localDateString = convertDateToString(new Date(year, month, day));
 		}
+	}
+
+	function resetMatch() {
+		match = {} as Match;
+		chosenId = -1;		
 	}
 </script>
 
@@ -126,6 +88,7 @@
 
 		return async ({update}) => {
 			await update({reset: false})
+			resetMatch();
 		} 
 	}}
 >
@@ -161,7 +124,6 @@
 				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
-				defaultNumValue={match.firstPlayerScore}
 				bind:numberVal={firstPlayerScore}
 			/>
 		</label>
@@ -172,7 +134,6 @@
 				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
-				defaultNumValue={match.secondPlayerScore}
 				bind:numberVal={secondPlayerScore}
 			/>
 		</label>
@@ -184,7 +145,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				defaultValue={localDateString}
+				bind:stringVal={localDateString}
 			/>
 		</label>
 

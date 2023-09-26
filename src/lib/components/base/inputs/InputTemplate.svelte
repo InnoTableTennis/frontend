@@ -14,15 +14,20 @@
 	export let min = '0';
 	export let max = '10';
 
-	export let stringVal = '';
-	export let numberVal: number | string = 0;
+	export let stringVal = defaultValue;
+	export let numberVal = defaultNumValue;
 
 	let dateVal = stringVal ? changeDateFormat(stringVal) : '';
 	$: {
 		if (type === 'date') {
 			dateVal = stringVal ? changeDateFormat(stringVal) : '';
-		}
+		}			
 	}
+	function handleDateChange() {
+		stringVal = dateVal ? changeDateDottedFormat(dateVal) : '';
+	}
+	$: isDateEmpty = dateVal == '' ? true : false;
+	
 	export let textAlignCenter = false;
 
 	export const reset = () => {
@@ -32,15 +37,11 @@
 
 	let input: HTMLInputElement | HTMLTextAreaElement;
 
-	function handleDateChange() {
-		stringVal = dateVal ? changeDateDottedFormat(dateVal) : '';
-	}
 
 	onMount(() => {
 		if (isFirst) input.focus();
 	});
 
-	$: isDateEmpty = dateVal == '' ? true : false;
 </script>
 
 {#if type === 'number'}
