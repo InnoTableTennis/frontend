@@ -5,7 +5,7 @@
 
 	export let data : LayoutData;
 
-	$: $isLeader = data.isLeader;	
+	$: $isLeader= data.isLeader;	
 </script>
 
 <header>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { userToken } from '$lib/stores';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import signin from '$lib/assets/signin.jpg';
 	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';

@@ -3,19 +3,17 @@
 	import PlayersList from '$lib/components/lists/PlayersList.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Player } from '$lib/types/types';
-	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
 	import { handleError } from '$lib/errorHandler';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
+	import { isLeader } from '$lib/stores';
 
 	let handleInsert: () => void;
 	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'add';
-	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 </script>
 
@@ -59,7 +57,7 @@
 	{/if}
 	
 	<div class="players-list">
-		{#if isLeader}
+		{#if $isLeader}
 			<div class="edit-mode">
 				<ToggleCheckboxButton
 					bind:checked={isEditing}
@@ -80,7 +78,6 @@
 		<PlayersList
 			on:error={handleError}
 			bind:handleInsert
-			{isLeader}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

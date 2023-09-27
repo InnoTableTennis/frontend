@@ -7,21 +7,20 @@
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';
 
-	import { userToken } from '$lib/stores';
 	import { handleError } from '$lib/errorHandler';
 	import type { Tournament } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditTornamentForm from '$lib/components/forms/EditTornamentForm.svelte';
+	import { isLeader } from '$lib/stores';
 
 	let handleInsert: () => void;
 	let editData: Tournament = {} as Tournament;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = '';
-	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = mode === 'edit' || mode === 'delete' || mode === 'create' || mode === 'view';
 	$: if (!isEditing) {
-		mode = isLeader ? 'create' : 'view';
+		mode = $isLeader ? 'create' : 'view';
 	}
 </script>
 
@@ -85,7 +84,6 @@
 		<TournamentList
 			on:error={handleError}
 			bind:handleInsert
-			{isLeader}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

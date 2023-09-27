@@ -9,8 +9,8 @@
 
 	import * as db from '$lib/requests';
 	import { alertPopup } from '$lib/popupHandler';
+	import { isLeader } from '$lib/stores';
 
-	export let isLeader = false;
 	let players: Player[] = [];
 
 	let lastPageNumber: number;
@@ -82,7 +82,7 @@
 		<Pagination {lastPageNumber} on:request={handleRequest}>
 			<div class="scroll">
 				<section class="games-list">
-					<div class="table-header" class:not-leader={!isLeader}>
+					<div class="table-header" class:not-leader={!$isLeader}>
 						<span>#</span>
 						<span>Name</span>
 						<span>Telegram Alias</span>
@@ -106,7 +106,7 @@
 							}}
 							disabled={!isChoosing || chosenId === player.id}
 						>
-							<div class="players-grid" class:not-leader={!isLeader}>
+							<div class="players-grid" class:not-leader={!$isLeader}>
 								<div>
 									<span class="position bold"
 										>{(currentPageNumber - 1) * currentPageSize + i + 1}</span

@@ -10,10 +10,10 @@
 	import PlayersIcon from '$lib/components/icons/PlayersIcon.svelte';
 	import { alertPopup } from '$lib/popupHandler';
 	import { goto } from '$app/navigation';
+	import { isLeader } from '$lib/stores';
 
 	const dispatch = createEventDispatcher();
 
-	export let isLeader = false;
 	let tournaments: Tournament[] = [];
 
 	let lastPageNumber: number;
@@ -93,7 +93,7 @@
 		<Pagination {lastPageNumber} on:request={handleRequest}>
 			<div class="scroll">
 				<section class="games-list">
-					<div class="table-header" class:not-leader={!isLeader}>
+					<div class="table-header" class:not-leader={!$isLeader}>
 						<span>Title</span>
 						<span>Dates</span>
 						<span>Kf</span>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { userToken } from '$lib/stores';
 	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
@@ -11,6 +10,7 @@
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
 	import type { Match } from '$lib/types/types';
+	import { isLeader } from '$lib/stores.js';
 
 	export let data;
 
@@ -19,7 +19,6 @@
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'add';
-	$: isLeader = getRoles($userToken).includes('LEADER');
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 
 	async function getFormData() {
@@ -78,7 +77,7 @@
 	</div>
 
 	<div class="matches-list">
-		{#if isLeader}
+		{#if $isLeader}
 			<div class="edit-mode">
 				<ToggleCheckboxButton
 					bind:checked={isEditing}
