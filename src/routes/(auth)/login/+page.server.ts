@@ -1,4 +1,5 @@
 import * as db from '$lib/server/requests';
+import { redirect } from '@sveltejs/kit';
 
 export const prerender = false;
 
@@ -15,6 +16,7 @@ export const actions = {
 			String(data.get('username') || ''),
 			String(data.get('password') || ''),
 		);
-		cookies.set('userToken', token, {path:'/'})
-	}
-}
+		cookies.set('userToken', token, { path: '/' });
+		throw redirect(308, '/');
+	},
+};

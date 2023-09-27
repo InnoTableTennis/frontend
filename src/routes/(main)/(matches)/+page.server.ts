@@ -1,13 +1,8 @@
 import * as db from '$lib/server/requests';
 
-import { userToken } from '$lib/stores';
-
 export const prerender = false;
 
-export async function load({ url, cookies }) {
-	const token = cookies.get('userToken') || '';
-	userToken.set(token);
-
+export async function load({ url }) {
 	const searchParams = url.searchParams;
 
 	const descending = searchParams.get('descending');

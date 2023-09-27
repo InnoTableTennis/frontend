@@ -1,15 +1,16 @@
 import type { Writable } from 'svelte/store';
-import { derived, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type { Error } from '$lib/types/types';
 import { browser } from '$app/environment';
-import { getRoles } from '$lib/token';
+// import { getRoles } from '$lib/token';
 
 /**
  * Represents the user token store.
  * Stores the user token value.
  */
 export const userToken: Writable<string> = writable('');
-export const isLeader = derived(userToken, ($userToken) => getRoles($userToken).includes('LEADER'));
+export const isLeader: Writable<boolean> = writable(false);
+// export const isLeader = derived(userToken, ($userToken) => getRoles($userToken).includes('LEADER'));
 
 /**
  * Represents the loaded page store.

@@ -8,24 +8,14 @@
 	import * as db from '$lib/requests';
 	import { userToken } from '$lib/stores';
 	import { getUsername } from '$lib/token';
-	import { getRoles } from '$lib/token';
 	import { createEventDispatcher } from 'svelte';
+	import { enhance } from '$app/forms';
 
 	const dispatch = createEventDispatcher();
 
-	// let profileData: ProfileData;
-	// const requestProfileData = async () => {
-	// 	await db
-	// 		.getProfileData(24)
-	// 		.then((result) => {
-	// 			profileData = result;
-	// 		})
-	// 		.catch((error) => {
-	// 			dispatch('error', error);
-	// 		});
-	// };
-
 	let playerInfo: Player | null = null;
+
+	export let isAuthorized = false;
 
 	const requestUserinfo = async () => {
 		let players: Player[] = [];
@@ -46,16 +36,9 @@
 			playerInfo = response as Player;
 			linkToProfile += playerInfo?.id;
 		});
-		// requestProfileData();
 	});
-
-	const logOut = () => {
-		localStorage.removeItem('token');
-		userToken.set('');
-	};
 </script>
 
-<!-- {#await requestProfileData() then} -->
 <nav>
 	<input type="checkbox" />
 	<div class="hamburger-lines">
@@ -67,7 +50,7 @@
 		<div class="toggle-theme-container">
 			<ToggleTheme />
 		</div>
-		{#if getRoles($userToken).includes('USER')}
+		{#if isAuthorized}
 			<div class="for-mobile">
 				<div class="prof-info">
 					<div class="user-name">
@@ -86,25 +69,27 @@
 			<li><a href="{base}/">Matches</a></li>
 			<li><a href="{base}/tournaments">Tournaments</a></li>
 			<li><a href="{base}/players">Players</a></li>
-			{#if getRoles($userToken).includes('USER')}
+			{#if isAuthorized}
 				<li class="for-mobile"><a href={linkToProfile}>Profile</a></li>
-				<li><button class="log-out-button" on:click={logOut}>Log Out</button></li>
+				<li>
+					<form method="POST" action="/logout" use:enhance>
+						<button class="log-out-button">Log Out</button>
+					</form>
+				</li>
 			{/if}
 		</ul>
 		<div class="prof-link-container">
 			<div class="for-pc">
-				<ProfileLink />
+				<ProfileLink {isAuthorized} />
 			</div>
-			{#if !getRoles($userToken).includes('USER')}
+			{#if !isAuthorized}
 				<div class="for-mobile">
-					<ProfileLink />
+					<ProfileLink {isAuthorized} />
 				</div>
 			{/if}
 		</div>
 	</div>
 </nav>
-
-<!-- {/await} -->
 
 <style>
 	.for-mobile {

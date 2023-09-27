@@ -6,21 +6,18 @@
 	import { createEventDispatcher } from 'svelte';
 	import { getUsername } from '$lib/token';
 	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 	import type { Player } from '$lib/types/types';
 	import { base } from '$app/paths';
+	import { enhance } from '$app/forms';
 
 	let isMenuVisible = false;
-
-	const logOut = () => {
-		localStorage.removeItem('token');
-		userToken.set('');
-	};
 
 	const toggleProfileMenu = () => {
 		isMenuVisible = isMenuVisible ? false : true;
 	};
+
+	export let isAuthorized = false;	
 
 	let playerInfo: Player | null = null;
 
@@ -49,7 +46,7 @@
 </script>
 
 <div class="profile-container">
-	{#if !getRoles($userToken).includes('USER')}
+	{#if !isAuthorized}
 		<div class="sign-in">
 			<a id="nav-link-matches" href="{base}/login">Sign in</a>
 		</div>
@@ -79,7 +76,9 @@
 							<a href={linkToProfile}>
 								<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
 							</a>
-							<button class="log-out-button" on:click={logOut}>Log Out</button>
+							<form method="POST" action="/logout" class='log-out-form' use:enhance>
+								<button class="log-out-button">Log Out</button>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -205,18 +204,23 @@
 		cursor: pointer;
 	}
 
+	.log-out-form {
+		width: 100%;
+		height: 2rem;
+		margin: 0.25rem;
+	}
+	
 	.log-out-button {
 		border-radius: 10px;
 		outline: none;
 		border: 2px solid var(--content-color);
-		padding: 0.1rem 0rem;
 		background: var(--main-color);
 		color: var(--content-color);
 		font-weight: var(--fontweight-2);
+		padding: 0.1rem 0rem;
 		transition: 0.1s;
 		width: 100%;
-		height: 2rem;
-		margin: 0.25rem;
+		height: 100%;
 	}
 	.lower-subcontainer a {
 		width: 100%;

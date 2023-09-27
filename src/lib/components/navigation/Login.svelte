@@ -13,21 +13,6 @@
 
 	let username = '';
 	let password = '';
-
-	const login = async (e: Event) => {
-		e.preventDefault();
-		const data = new FormData(e.target as HTMLFormElement);
-		db.authenticate(data.get('username') as string, data.get('password') as string)
-			.then((response: string) => {
-				const token = response;
-				localStorage.setItem('token', token);
-				userToken.set(token);
-				window.location.replace('/');
-			})
-			.catch((error: Error) => {
-				dispatch('error', { error });
-			});
-	};
 </script>
 
 <button
@@ -47,7 +32,7 @@
 		<div class="container">
 			<div class="wrapper-left">
 				<div class="column">
-					<form on:submit={login} method="POST" use:enhance>
+					<form method="POST" use:enhance>
 						<h2>Sign in</h2>
 						<InputTemplate
 							type="text"
