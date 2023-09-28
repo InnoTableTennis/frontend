@@ -9,7 +9,7 @@ import type {
 } from '$lib/types/formTypes';
 import { convertDateToStringDash } from '$lib/helper';
 
-const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {
+export const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {
 	name: '',
 	telegramAlias: '',
 	minRating: '',
@@ -17,7 +17,7 @@ const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {
 	descending: true,
 	sortBy: 'rating',
 };
-const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = {
+export const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = {
 	title: '',
 	minParticipants: '',
 	maxParticipants: '',
@@ -34,8 +34,8 @@ export const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
 	descending: true,
 	sortBy: 'date',
 };
-const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 0 };
-const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
+export const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 0 };
+export const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
 	title: '',
 	startDateString: convertDateToStringDash(new Date()),
 	endDateString: convertDateToStringDash(new Date()),

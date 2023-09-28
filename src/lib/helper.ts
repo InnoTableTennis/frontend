@@ -40,19 +40,6 @@ export function stringifyNumber(number: number): string {
 }
 
 /**
- * Converts a phrase to title case.
- * @param phrase - The input phrase to convert.
- * @returns The converted phrase in title case.
- */
-export function titleCase(phrase: string): string {
-	return phrase
-		.toLowerCase()
-		.split(' ')
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(' ');
-}
-
-/**
  * Converts a date to a formatted string in the format "dd.mm.yyyy".
  * @param date - The input date to convert.
  * @returns The formatted date string.
@@ -129,15 +116,6 @@ export const getShorterName = (name: string): string => {
 	const secondName = arr.splice(1).join(' ');
 	return firstName[0] + '. ' + secondName;
 };
-
-export function countNameWords(name: string): number {
-	const arrayStrings: string[] = name.split(/\W+/);
-	let counter = 0;
-	arrayStrings.forEach((element) => {
-		if (element !== '') counter++;
-	});
-	return counter;
-}
 
 export function objectToURLSearchParams(obj: { [key: string]: FormDataEntryValue | string | null }): string {
 		const result: {

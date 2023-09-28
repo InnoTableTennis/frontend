@@ -13,9 +13,9 @@ export interface Stats {
 	highestMatchDelta: number;
 	lowestMatchDelta: number;
 	averageMatchDelta: number;
-	highestTornamentsDelta: number;
-	lowestTornamentsDelta: number;
-	averageTornamentsDelta: number;
+	highestTournamentsDelta: number;
+	lowestTournamentsDelta: number;
+	averageTournamentsDelta: number;
 	ranking: number;
 	rating: number;
 }

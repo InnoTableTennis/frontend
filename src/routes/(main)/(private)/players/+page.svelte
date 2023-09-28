@@ -9,6 +9,8 @@
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
 	import { isLeader } from '$lib/stores';
 
+	export let data;
+
 	let handleInsert: () => void;
 	let editData: Player = {} as Player;
 	let isEditing = false;
@@ -55,7 +57,7 @@
 			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
 		</div>
 	{/if}
-	
+
 	<div class="players-list">
 		{#if $isLeader}
 			<div class="edit-mode">
@@ -69,7 +71,7 @@
 				<span />
 			</div>
 		{/if}
-	
+
 		{#if isEditing}
 			<div class="edit-switch-bar">
 				<EditSwitchBar bind:mode bind:chosenId bind:editData />
@@ -77,11 +79,12 @@
 		{/if}
 		<PlayersList
 			on:error={handleError}
-			bind:handleInsert
 			bind:mode
 			bind:isChoosing
 			bind:chosenId
 			bind:editData
+			players={data.players}
+			totalPages={data.totalPages}
 		/>
 	</div>
 </div>

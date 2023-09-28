@@ -11,6 +11,7 @@
 	import type { Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { alertPopup } from '$lib/popupHandler';
+	import { enhance } from '$app/forms';
 
 	let title = '';
 	let startDateString = '';
@@ -25,35 +26,30 @@
 		isSubmissionDisabled = !(title && startDateString && endDateString);
 	}
 
-	$: {
-		endDateString = startDateString;
-	}
-
-	const editTournament = async (e: Event) => {
-		let isConfirmed = await alertPopup('Are you sure that you want to edit this tournament?');
-		if (!isConfirmed) return;
-		const data = new FormData(e.target as HTMLFormElement);
-
-		db.editTournament(
-			tournament.id.toString() as string,
-			data.get('title') as string,
-			data.get('startDateString') as string,
-			data.get('endDateString') as string,
-		)
-			.then(() => {
-				dispatch('update');
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
+	function resetTournament() {
 		tournament = {} as Tournament;
 		chosenId = -1;
-	};
+	}
 </script>
 
 <h2>Edit Tournament</h2>
 
-<form on:submit={editTournament}>
+<form
+	method="POST"
+	action="?/editTournament"
+	use:enhance={async ({ cancel }) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this tournament?');
+		if (!isConfirmed) {
+			cancel();
+		}
+
+		return async ({ update }) => {
+			await update({ reset: false });
+			resetTournament();
+		};
+	}}
+>
+	<input type="hidden" name="tournamentId" value={tournament.id} />
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -76,7 +72,7 @@
 				type="date"
 				name="startDateString"
 				placeholder="Start date"
-				defaultValue={changeDateFormat(tournament.startDateString)}
+				defaultValue={tournament.startDateString}
 				bind:stringVal={startDateString}
 			/>
 		</label>
@@ -87,7 +83,7 @@
 				type="date"
 				name="endDateString"
 				placeholder="End date"
-				defaultValue={changeDateFormat(tournament.endDateString)}
+				defaultValue={tournament.endDateString}
 				bind:stringVal={endDateString}
 			/>
 		</label>

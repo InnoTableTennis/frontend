@@ -14,7 +14,7 @@ export interface sortFilterTournamentFormStore {
 	startDateString: string;
 	endDateString: string;
 	descending: boolean;
-	sortBy: 'date' | 'players' | 'kf';
+	sortBy: 'date' | 'players' | 'coefficient';
 }
 
 export interface sortFilterMatchFormStore {

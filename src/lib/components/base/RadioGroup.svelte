@@ -16,7 +16,6 @@
 			class="radio"
 			bind:group
 			{value}
-			on:click={() => dispatch('update', { value })}
 		/>
 		<label for={labels[i]}>{labels[i]}</label>
 	</div>

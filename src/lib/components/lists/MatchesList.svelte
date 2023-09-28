@@ -7,19 +7,18 @@
 
 	import { isLeader } from '$lib/stores';
 	import { alertPopup } from '$lib/popupHandler';
-	import MatchesListLine from './MatchesListLine.svelte';
+	import MatchesListLine from '$lib/components/lists/MatchesListLine.svelte';
 
 	export let chosenId = -1;
 	export let isChoosing = false;
 	export let mode = 'add';
-	export let editData: Match = {} as Match;
-	export let oneTournament = true;
-
+	export let editData: Match;
 	export let matches: Match[] = [];
 	export let totalPages: number = 0;
+	
+	let oneTournament = true;
 </script>
 
-<!-- {@debug matches} -->
 {#if matches.length}
 	<Pagination lastPageNumber={totalPages}>
 		<div class="scroll">

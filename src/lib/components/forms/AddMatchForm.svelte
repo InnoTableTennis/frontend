@@ -43,7 +43,7 @@
 	let inputResets = new Array(2);
 
 	function resetForm() {
-		$AddMatchFormStore = ADD_MATCH_FORM
+		$AddMatchFormStore = structuredClone(ADD_MATCH_FORM)
 		inputResets.forEach((reset) => {
 			reset();
 		});

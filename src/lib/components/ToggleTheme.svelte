@@ -2,7 +2,15 @@
 	import { fly } from 'svelte/transition';
 	import { Moon, Sun } from 'lucide-svelte';
 	import { theme } from '$lib/stores';
-	import { toggleTheme } from '$lib/theme';
+
+	$: {
+		document.documentElement.setAttribute('color-scheme', $theme);
+		localStorage.setItem('color-scheme', $theme);
+	}
+
+	function toggleTheme() {
+		$theme = $theme === 'dark' ? 'light' : 'dark';
+	}
 </script>
 
 <button on:click={toggleTheme} aria-label="Toggle theme">

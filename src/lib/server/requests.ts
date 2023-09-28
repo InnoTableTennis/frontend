@@ -1,4 +1,4 @@
-import { objectToURLSearchParams, titleCase } from '$lib/helper';
+import { objectToURLSearchParams } from '$lib/helper';
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import { userToken } from '$lib/stores';
@@ -194,28 +194,30 @@ export async function deleteMatch(matchID: string): Promise<void> {
  */
 export async function getPlayers(
 	sortBy: 'name' | 'rating' = 'rating',
-	descending: boolean | null = null,
-	name: string | null = null,
-	alias: string | null = null,
-	minRating: number | null = null,
-	maxRating: number | null = null,
-	pageNumber: number | null = null,
-	pageSize: number | null = null,
+	descending: boolean | null,
+	name: string | null,
+	alias: string | null,
+	minRating: number | null,
+	maxRating: number | null,
+	pageNumber: number | null,
+	pageSize: number | null,
 ): Promise<{
-	data: Player[];
+	players: Player[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/players';
-	if (sortBy) {
-		url += '?sortBy=' + sortBy;
-		if (descending != null) url += '&descending=' + descending;
-		if (alias) url += '&aliasHas=' + alias;
-		if (name) url += '&nameHas=' + name;
-		if (minRating != null && !isNaN(minRating)) url += '&minRating=' + minRating;
-		if (maxRating != null && !isNaN(maxRating)) url += '&maxRating=' + maxRating;
-		if (pageNumber) url += '&page=' + pageNumber;
-		if (pageSize) url += '&size=' + pageSize;
-	}
+
+	const searchParams = objectToURLSearchParams({
+		sortBy,
+		descending: descending !== null ? String(descending) : null,
+		nameHas: name,
+		aliasHas: alias,
+		minRating: minRating ? String(minRating) : null,
+		maxRating: maxRating ? String(maxRating) : null,
+		page: pageNumber ? String(pageNumber) : null,
+		size: pageSize ? String(pageSize) : null,
+	});
+
+	const url: string = serverAPI + '/players' + (searchParams && '?' + searchParams);
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -231,7 +233,7 @@ export async function getPlayers(
 
 	const data = await response.json();
 
-	return { data, totalPages };
+	return { players: data, totalPages };
 }
 
 /**
@@ -267,8 +269,6 @@ export async function createPlayer(
 	if (name.split(' ').length < 2) {
 		throw new Error('Name must consist of at least two parts!');
 	}
-
-	name = titleCase(name);
 
 	const response: Response = await fetch(serverAPI + '/players', {
 		method: 'POST',
@@ -323,9 +323,7 @@ export async function editPlayer(
 
 	if (name.split(' ').length < 2) {
 		throw new Error('Name must consist of at least two parts!');
-	}
-
-	name = titleCase(name);
+	}	
 
 	const response: Response = await fetch(serverAPI + '/players/' + id, {
 		method: 'PUT',
@@ -413,30 +411,32 @@ export async function authenticate(username: string, password: string): Promise<
  */
 export async function getTournaments(
 	sortBy: 'date' | 'kf' | 'players' = 'date',
-	descending: boolean | null = null,
-	title: string | null = null,
-	minParticipants: number | null = null,
-	maxParticipants: number | null = null,
-	startDateString: string | null = null,
-	endDateString: string | null = null,
-	pageNumber: number | null = null,
-	pageSize: number | null = null,
+	descending: boolean | null,
+	title: string | null,
+	minParticipants: number | null,
+	maxParticipants: number | null,
+	startDateString: string | null,
+	endDateString: string | null,
+	pageNumber: number | null,
+	pageSize: number | null,
 ): Promise<{
-	data: Tournament[];
+	tournaments: Tournament[];
 	totalPages: number;
 }> {
-	let url: string = serverAPI + '/tournaments';
-	if (sortBy) {
-		url += '?sortBy=' + sortBy;
-		if (descending != null) url += '&descending=' + descending;
-		if (title) url += '&titleHas=' + title;
-		if (startDateString) url += '&minEndDate=' + startDateString;
-		if (endDateString) url += '&maxEndDate=' + endDateString;
-		if (minParticipants != null && !isNaN(minParticipants)) url += '&minPlayers=' + minParticipants;
-		if (maxParticipants != null && !isNaN(maxParticipants)) url += '&maxPlayers=' + maxParticipants;
-		if (pageNumber) url += '&page=' + pageNumber;
-		if (pageSize) url += '&size=' + pageSize;
-	}
+
+	const searchParams = objectToURLSearchParams({
+		sortBy,
+		descending: descending !== null ? String(descending) : null,
+		titleHas: title,
+		minEndDate: startDateString,
+		maxEndDate: endDateString,
+		minPlayers: minParticipants ? String(minParticipants) : null,
+		maxParticipants: maxParticipants ? String(maxParticipants) : null,
+		page: pageNumber ? String(pageNumber) : null,
+		size: pageSize ? String(pageSize) : null,
+	});
+
+	const url: string = serverAPI + '/tournaments' + (searchParams && '?' + searchParams);
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -452,7 +452,7 @@ export async function getTournaments(
 
 	const data = await response.json();
 
-	return { data, totalPages };
+	return { tournaments: data, totalPages };
 }
 
 /**

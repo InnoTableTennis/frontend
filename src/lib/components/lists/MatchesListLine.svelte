@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { alertPopup } from '$lib/popupHandler';
 	import type { Match } from '$lib/types/types';
 
 	export let match: Match;

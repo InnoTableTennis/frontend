@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { getRoles } from '$lib/token';
 	import * as db from '$lib/requests';
 
 	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';

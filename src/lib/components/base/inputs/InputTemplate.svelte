@@ -7,7 +7,7 @@
 	export let placeholder: string;
 
 	export let defaultValue = '';
-	export let defaultNumValue: number | string = 0;
+	export let defaultNumValue: number | string = '';
 	export let required = false;
 	export let isFirst = false;
 
@@ -17,17 +17,20 @@
 	export let stringVal = defaultValue;
 	export let numberVal = defaultNumValue;
 
+	$: stringVal = defaultValue;
+	$: numberVal = defaultNumValue;
+
 	let dateVal = stringVal ? changeDateFormat(stringVal) : '';
 	$: {
 		if (type === 'date') {
 			dateVal = stringVal ? changeDateFormat(stringVal) : '';
-		}			
+		}
 	}
 	function handleDateChange() {
 		stringVal = dateVal ? changeDateDottedFormat(dateVal) : '';
 	}
 	$: isDateEmpty = dateVal == '' ? true : false;
-	
+
 	export let textAlignCenter = false;
 
 	export const reset = () => {
@@ -37,11 +40,9 @@
 
 	let input: HTMLInputElement | HTMLTextAreaElement;
 
-
 	onMount(() => {
 		if (isFirst) input.focus();
 	});
-
 </script>
 
 {#if type === 'number'}
@@ -49,6 +50,16 @@
 		type="number"
 		{min}
 		{max}
+		{name}
+		bind:value={numberVal}
+		{placeholder}
+		{required}
+		bind:this={input}
+		class:text-center={textAlignCenter}
+	/>
+{:else if type === 'float'}
+	<input
+		type="text"
 		{name}
 		bind:value={numberVal}
 		{placeholder}

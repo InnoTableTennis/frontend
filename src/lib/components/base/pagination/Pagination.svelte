@@ -5,8 +5,8 @@
 	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/const';
 
 	let url: URL;
-	let currentPageNumber: number;
-	let currentPageSize: number;
+	export let currentPageNumber: number = 0;
+	export let currentPageSize: number = 0;
 	$: {
 		url = new URL($page.url);
 		currentPageNumber = Number(url.searchParams.get('currentPageNumber') || DEFAULT_PAGE_NUMBER);
@@ -29,6 +29,7 @@
 		const new_url = new URL(`${url.origin}${url.pathname}?${searchParams}&${url.searchParams}`);
 		goto(new_url.href, { replaceState: true, noScroll: true });
 	}
+	
 </script>
 
 <PaginationBar

@@ -46,9 +46,9 @@
 			dispatch('error', error);
 		});
 		await requestTournament();
-		await db.finishTournament(id.toString()).catch((error) => {
-			dispatch('error', error);
-		});
+		// await db.finishTournament(id.toString()).catch((error) => {
+		// 	dispatch('error', error);
+		// });
 		goto(`/tournaments/${tournament.id}`);
 	};
 

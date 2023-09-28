@@ -14,24 +14,24 @@
 
 	onMount(() => {
 		if ($page.url.pathname == '/') {
-		let searchParams = $page.url.searchParams;
+			let searchParams = $page.url.searchParams;
 
-		$SortFilterMatchFormStore.name = searchParams?.get('name') || $SortFilterMatchFormStore.name;
-
-		$SortFilterMatchFormStore.score = searchParams?.get('score') || $SortFilterMatchFormStore.score;
-		$SortFilterMatchFormStore.minDateString =
-			searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
-		$SortFilterMatchFormStore.minDateString =
-			searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
-		$SortFilterMatchFormStore.maxDateString =
-			searchParams?.get('maxDateString') || $SortFilterMatchFormStore.maxDateString;
-		if (searchParams?.get('sortBy')) {
-			$SortFilterMatchFormStore.sortBy = searchParams.get('sortBy') as 'date';
+			$SortFilterMatchFormStore.name = searchParams?.get('name') || $SortFilterMatchFormStore.name;
+			$SortFilterMatchFormStore.score =
+				searchParams?.get('score') || $SortFilterMatchFormStore.score;
+			$SortFilterMatchFormStore.minDateString =
+				searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
+			$SortFilterMatchFormStore.minDateString =
+				searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
+			$SortFilterMatchFormStore.maxDateString =
+				searchParams?.get('maxDateString') || $SortFilterMatchFormStore.maxDateString;
+			if (searchParams?.get('sortBy')) {
+				$SortFilterMatchFormStore.sortBy = searchParams.get('sortBy') as 'date';
+			}
+			if (searchParams?.get('descending')) {
+				$SortFilterMatchFormStore.descending = searchParams.get('descending') !== 'false';
+			}
 		}
-		if (searchParams?.get('descending')) {
-			$SortFilterMatchFormStore.descending = searchParams.get('descending') !== 'false';
-		}
-	}
 	});
 
 	$: $SortFilterMatchFormStore.score = $SortFilterMatchFormStore.score.replace(/\s/g, '');
@@ -60,7 +60,7 @@
 		const new_url = new URL(`${url.origin}${url.pathname}?${searchParams}`);
 
 		event.preventDefault();
-		goto(new_url.href, { replaceState: true, noScroll:true, keepFocus:true });
+		goto(new_url.href, { replaceState: true, noScroll: true, keepFocus: true });
 	}
 </script>
 

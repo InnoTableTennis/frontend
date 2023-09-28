@@ -2,6 +2,7 @@ import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type { Error } from '$lib/types/types';
 import { browser } from '$app/environment';
+import { DEFAULT_THEME } from './const';
 // import { getRoles } from '$lib/token';
 
 /**
@@ -24,7 +25,7 @@ export const errors: Writable<Error[]> = writable([]);
  * Represents the color-scheme store.
  * Stores the color-scheme value.
  */
-export const theme = writable((browser && localStorage.getItem('color-scheme')) ?? 'light');
+export const theme = writable<string>((browser && localStorage.getItem('color-scheme')) || DEFAULT_THEME);
 export const overlayText: Writable<string | null> = writable(null);
 export const inputOverlayText: Writable<string[] | null> = writable(null);
 export const outputOverlayText: Writable<number[] | null> = writable(null);

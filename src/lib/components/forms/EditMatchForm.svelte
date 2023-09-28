@@ -21,12 +21,12 @@
 
 	let isSubmissionDisabled = true;
 
-	let firstPlayerName = match.firstPlayerName;
-	let secondPlayerName = match.secondPlayerName;
-	let tournamentTitle = match.tournamentTitle;
-	let firstPlayerScore = match.firstPlayerScore;
-	let secondPlayerScore = match.secondPlayerScore;
-	let localDateString = match.localDateString;
+	let firstPlayerName = '';
+	let secondPlayerName = '';
+	let tournamentTitle = '';
+	let firstPlayerScore = 0;
+	let secondPlayerScore = 0;
+	let localDateString = '';
 
 	$: {
 		isSubmissionDisabled = !(
@@ -125,6 +125,7 @@
 				name="firstPlayerScore"
 				placeholder="First score"
 				bind:numberVal={firstPlayerScore}
+				defaultNumValue={match.firstPlayerScore}
 			/>
 		</label>
 
@@ -135,6 +136,7 @@
 				name="secondPlayerScore"
 				placeholder="Second score"
 				bind:numberVal={secondPlayerScore}
+				defaultNumValue={match.secondPlayerScore}
 			/>
 		</label>
 	</div>
@@ -146,6 +148,7 @@
 				name="localDateString"
 				placeholder="Date"
 				bind:stringVal={localDateString}
+				defaultValue={match.localDateString}
 			/>
 		</label>
 
@@ -156,7 +159,7 @@
 				placeholder="Tournament"
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
-				defaultValue={tournamentTitle}
+				defaultValue={match.tournamentTitle}
 			/>
 		</label>
 	</div>

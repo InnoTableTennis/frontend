@@ -1,57 +1,26 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { AddTournamentFormStore } from '$lib/formStores';
+	import { ADD_TOURNAMENT_FORM, AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import * as db from '$lib/requests';
-	import { convertDateToStringDash } from '$lib/helper';
+	import { convertDateToString } from '$lib/helper';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-
-	const dispatch = createEventDispatcher();
-
-	let title = $AddTournamentFormStore.title;
-	let startDateString = $AddTournamentFormStore.startDateString;
-	let endDateString = $AddTournamentFormStore.endDateString;
+	import { enhance } from '$app/forms';
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(title && startDateString && endDateString);
+		isSubmissionDisabled = !($AddTournamentFormStore.title && $AddTournamentFormStore.startDateString && $AddTournamentFormStore.endDateString);
 	}
 
-	$: {
-		endDateString = startDateString;
-	}
-	const addTournament = async (e: Event) => {
-		const data = new FormData(e.target as HTMLFormElement);
-		db.createTournament(
-			data.get('title') as string,
-			data.get('startDateString') as string,
-			data.get('endDateString') as string,
-		)
-			.then(() => {
-				dispatch('update');
-				resetForm();
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	};
-
-	const saveForm = function () {
-		$AddTournamentFormStore = {
-			title: title,
-			startDateString: startDateString,
-			endDateString: endDateString,
-		};
-	};
-
+	let startDateString = convertDateToString(new Date())
+	$AddTournamentFormStore.endDateString = convertDateToString(new Date())
+	
+	$: $AddTournamentFormStore.startDateString = startDateString
+	$: $AddTournamentFormStore.endDateString = startDateString
+	
 	function resetForm() {
-		title = '';
-		startDateString = convertDateToStringDash(new Date());
-		endDateString = convertDateToStringDash(new Date());
-		saveForm();
+		$AddTournamentFormStore = structuredClone(ADD_TOURNAMENT_FORM)
 	}
 </script>
 
@@ -60,7 +29,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addTournament} on:change={saveForm}>
+<form method="POST" action="?/createTournament" use:enhance>
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="elem1">
@@ -70,7 +39,7 @@
 				placeholder="Tournament title"
 				required={true}
 				isFirst={true}
-				bind:stringVal={title}
+				bind:stringVal={$AddTournamentFormStore.title}
 			/>
 		</label>
 	</div>
@@ -81,7 +50,6 @@
 				type="date"
 				name="startDateString"
 				placeholder="Start date"
-				defaultValue={startDateString}
 				bind:stringVal={startDateString}
 			/>
 		</label>
@@ -91,8 +59,7 @@
 				type="date"
 				name="endDateString"
 				placeholder="End date"
-				defaultValue={endDateString}
-				bind:stringVal={endDateString}
+				bind:stringVal={$AddTournamentFormStore.endDateString}
 			/>
 		</label>
 	</div>
