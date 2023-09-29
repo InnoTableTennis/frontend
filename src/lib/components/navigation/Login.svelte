@@ -1,14 +1,10 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import signin from '$lib/assets/signin.jpg';
 	import NewLeftArrow from '$lib/components/icons/NewLeftArrow.svelte';
-	import * as db from '$lib/requests';
 	import { base } from '$app/paths';
 	import { enhance } from '$app/forms';
-
-	const dispatch = createEventDispatcher();
 
 	let username = '';
 	let password = '';
