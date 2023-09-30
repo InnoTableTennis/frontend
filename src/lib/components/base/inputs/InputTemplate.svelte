@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { changeDateDottedFormat, changeDateFormat } from '$lib/helper';
+	import { changeDateDottedFormat, changeDateFormat } from '$lib/utils';
 
 	export let type: string;
 	export let name: string;

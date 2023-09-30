@@ -8,7 +8,7 @@
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { page } from '$app/stores';
-	import { objectToURLSearchParams } from '$lib/helper';
+	import { objectToURLSearchParams } from '$lib/utils';
 	import { goto } from '$app/navigation';
 
 	onMount(() => {

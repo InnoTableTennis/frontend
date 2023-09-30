@@ -9,7 +9,7 @@
 
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { objectToURLSearchParams } from '$lib/helper';
+	import { objectToURLSearchParams } from '$lib/utils';
 	import { onMount } from 'svelte';
 
 	onMount(() => {

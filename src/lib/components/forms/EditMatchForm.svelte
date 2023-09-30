@@ -3,7 +3,7 @@
 
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { convertDateToString } from '$lib/helper';
+	import { convertDateToString } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';

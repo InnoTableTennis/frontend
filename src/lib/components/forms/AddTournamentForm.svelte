@@ -2,7 +2,7 @@
 	// import { enhance } from '$app/forms';
 	import { ADD_TOURNAMENT_FORM, AddTournamentFormStore } from '$lib/formStores';
 	import Button from '$lib/components/base/Button.svelte';
-	import { convertDateToString } from '$lib/helper';
+	import { convertDateToString } from '$lib/utils';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { enhance } from '$app/forms';

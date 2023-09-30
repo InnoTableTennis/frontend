@@ -4,7 +4,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import { ADD_MATCH_FORM, AddMatchFormStore } from '$lib/formStores';
 
-	import { convertDateToString } from '$lib/helper';
+	import { convertDateToString } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	import type { Player, Tournament } from '$lib/types/types';

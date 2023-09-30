@@ -2,7 +2,7 @@
 	import * as db from '$lib/requests';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import { Play, Dot } from 'lucide-svelte';
-	import { convertDateToStringDash } from '$lib/helper';
+	import { convertDateToStringDash } from '$lib/utils';
 	import { alertPopup } from '$lib/popupHandler';
 	import { isLeader } from '$lib/stores';
 	import { alertInputPopup } from '$lib/inputPopupHandler';

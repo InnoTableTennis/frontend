@@ -1,4 +1,4 @@
-import { objectToURLSearchParams } from '$lib/helper';
+import { objectToURLSearchParams } from '$lib/utils';
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import { userToken } from '$lib/server/stores';

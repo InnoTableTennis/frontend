@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
-	import { stringifyNumber } from '$lib/helper';
+	import { stringifyNumber } from '$lib/utils';
 	import type { Player, Tournament } from '$lib/types/types';
 	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';

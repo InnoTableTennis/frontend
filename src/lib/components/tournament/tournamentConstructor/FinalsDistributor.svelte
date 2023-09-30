@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { stringifyNumber } from '$lib/helper';
+	import { stringifyNumber } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 
 	export let numberFinals = 0;
