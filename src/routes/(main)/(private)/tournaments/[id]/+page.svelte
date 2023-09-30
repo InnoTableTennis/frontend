@@ -2,12 +2,12 @@
 	import type { Tournament } from '$lib/types/types';
 	import { handleError } from '$lib/errorHandler';
 	import profileImage from '$lib/assets/tournament.png';
-	import TournamentInfoPanel from '$lib/components/TournamentInfoPanel.svelte';
-	import ParticipantsViewTournamentList from '$lib/components/lists/ParticipantsList.svelte';
+	import TournamentInfoPanel from '$lib/components/tournament/TournamentInfoPanel.svelte';
+	import ParticipantsTable from '$lib/components/tables/ParticipantsTable.svelte';
 	import TournamentSortFilterParticipantsForm from '$lib/components/forms/TournamentSortFilterParticipantsForm.svelte';
 	import TournamentFilterMatchForm from '$lib/components/forms/TournamentFilterMatchForm.svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
-	import TournamentMatchesList from '$lib/components/lists/TournamentMatchesList.svelte';
+	import TournamentMatchesTable from '$lib/components/tables/TournamentMatchesTable.svelte';
 	let handleInsert: () => void;
 
 	export let data;
@@ -74,7 +74,7 @@
 						/>
 					</div>
 					<div class="participants-list">
-						<ParticipantsViewTournamentList
+						<ParticipantsTable
 							participants={tournament.state.participants}
 							{deltas}
 							on:error={handleError}
@@ -106,7 +106,7 @@
 				<TournamentFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
 			</div>
 			<div class="participants-list">
-				<TournamentMatchesList
+				<TournamentMatchesTable
 					matches={tournament.matches}
 					on:error={handleError}
 					bind:handleInsert

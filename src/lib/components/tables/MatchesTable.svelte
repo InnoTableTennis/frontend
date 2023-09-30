@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 
-	import MatchHeader from '$lib/components/MatchHeader.svelte';
+	import MatchHeader from '$lib/components/tables/MatchHeader.svelte';
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Match } from '$lib/types/types';
 
 	import { isLeader } from '$lib/stores';
 	import { alertPopup } from '$lib/popupHandler';
-	import MatchesListLine from '$lib/components/lists/MatchesListLine.svelte';
+	import MatchesTableRow from '$lib/components/tables/MatchesTableRow.svelte';
 
 	export let chosenId = -1;
 	export let isChoosing = false;
@@ -57,10 +57,10 @@
 							}}
 						>
 							<input type="hidden" name="matchId" value={match.id} />
-							<MatchesListLine {match} bind:chosenId bind:editData {isChoosing} {mode} />
+							<MatchesTableRow {match} bind:chosenId bind:editData {isChoosing} {mode} />
 						</form>
 					{:else}
-						<MatchesListLine {match} bind:chosenId bind:editData {isChoosing} {mode} />
+						<MatchesTableRow {match} bind:chosenId bind:editData {isChoosing} {mode} />
 					{/if}
 				{/each}
 			</section>

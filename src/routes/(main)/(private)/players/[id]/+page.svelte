@@ -1,6 +1,6 @@
 <script lang="ts">
 	import profileImage from '$lib/assets/profileImage.png';
-	import InfoBlocks from '$lib/components/InfoBlocks.svelte';
+	import InfoBlocks from '$lib/components/profile/InfoBlocks.svelte';
 	import ProfileMatchesComponent from '$lib/components/profile/ProfileMatchesComponent.svelte';
 	import RatingGraph from '$lib/components/graph/RatingGraph.svelte';
 	import type { ProfileData, ProfileMatch, RatingHistoryItem } from '$lib/types/profileTypes.js';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MatchHeader from '$lib/components/MatchHeader.svelte';
+	import MatchHeader from '$lib/components/tables/MatchHeader.svelte';
 	import ProfilePagination from '$lib/components/profile/ProfilePagination.svelte';
 	import type { ProfileMatch } from '$lib/types/profileTypes';
 

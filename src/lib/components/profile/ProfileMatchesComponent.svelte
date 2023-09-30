@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { handleError } from '$lib/errorHandler';
-	import ProfileMatchesList from '$lib/components/profile/ProfileMatchesList.svelte';
+	import ProfileMatchesTable from '$lib/components/tables/ProfileMatchesTable.svelte';
 	import type { ProfileMatch } from '$lib/types/profileTypes';
 
 	export let dataMatches: ProfileMatch[];
@@ -10,7 +10,7 @@
 	<div class="form-list-layout">
 		<h1>All games played</h1>
 		<div class="matches-list">
-			<ProfileMatchesList on:error={handleError} {dataMatches} />
+			<ProfileMatchesTable on:error={handleError} {dataMatches} />
 		</div>
 	</div>
 </div>

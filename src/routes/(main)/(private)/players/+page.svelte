@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AddPlayerForm from '$lib/components/forms/AddPlayerForm.svelte';
-	import PlayersList from '$lib/components/lists/PlayersList.svelte';
+	import PlayersTable from '$lib/components/tables/PlayersTable.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Player } from '$lib/types/types';
 	import { handleError } from '$lib/errorHandler';
@@ -77,7 +77,7 @@
 				<EditSwitchBar bind:mode bind:chosenId bind:editData />
 			</div>
 		{/if}
-		<PlayersList
+		<PlayersTable
 			on:error={handleError}
 			bind:mode
 			bind:isChoosing

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AddTournamentForm from '$lib/components/forms/AddTournamentForm.svelte';
-	import TournamentList from '$lib/components/lists/TournamentList.svelte';
+	import TournamentTable from '$lib/components/tables/TournamentTable.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';
 
@@ -80,7 +80,7 @@
 				<EditSwitchBar bind:mode bind:chosenId bind:editData />
 			</div>
 		{/if}
-		<TournamentList
+		<TournamentTable
 			on:error={handleError}
 			bind:mode
 			bind:isChoosing

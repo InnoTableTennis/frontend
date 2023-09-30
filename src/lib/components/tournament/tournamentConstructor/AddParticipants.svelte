@@ -3,7 +3,7 @@
 	import type { Player, Tournament } from '$lib/types/types.js';
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
-	import ParticipantsList from '$lib/components/lists/ParticipantsCreateList.svelte';
+	import ParticipantsCreateTable from '$lib/components/tables/ParticipantsCreateTable.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
@@ -58,7 +58,7 @@
 				/>
 			</div>
 			<div class="participants-list">
-				<ParticipantsList bind:participant bind:participants />
+				<ParticipantsCreateTable bind:participant bind:participants />
 				<div class="line-2-elems">
 					<span>{numberParticipants} participants in total</span>
 					<div class="button">

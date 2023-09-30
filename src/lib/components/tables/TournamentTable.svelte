@@ -2,7 +2,7 @@
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Tournament } from '$lib/types/types';
 
-	import TournamentListLine from '$lib/components/lists/TournamentListLine.svelte';
+	import TournamentTableRow from '$lib/components/tables/TournamentTableRow.svelte';
 	import { alertPopup } from '$lib/popupHandler';
 	import { isLeader } from '$lib/stores';
 	import { enhance } from '$app/forms';
@@ -44,10 +44,10 @@
 							}}
 						>
 						<input type="hidden" name="tournamentId" value={tournament.id} />
-						<TournamentListLine {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
+						<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
 					</form>
 					{:else}
-					<TournamentListLine {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
+					<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
 					{/if}
 				{/each}
 			</section>

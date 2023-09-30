@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 
-	import { createEventDispatcher } from 'svelte';
 	import DownExpandIcon from '$lib/components/icons/DownExpandIcon.svelte';
 	import UpCompressIcon from '$lib/components/icons/UpCompressIcon.svelte';
 	import type { Stats } from '$lib/types/profileTypes';
