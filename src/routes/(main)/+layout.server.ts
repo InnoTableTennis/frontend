@@ -1,7 +1,7 @@
 
 import * as db from '$lib/server/requests';
 
-import { userToken } from '$lib/stores';
+import { userToken } from '$lib/server/stores';
 import { getRoles, getUsername } from '$lib/token';
 import type { LayoutServerLoad } from './$types';
 

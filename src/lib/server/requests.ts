@@ -1,7 +1,7 @@
 import { objectToURLSearchParams } from '$lib/helper';
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
-import { userToken } from '$lib/stores';
+import { userToken } from '$lib/server/stores';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
 import type { TournamentState } from '$lib/types/tournamentTypes';

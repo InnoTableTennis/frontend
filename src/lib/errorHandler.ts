@@ -1,5 +1,5 @@
 import { getExpirationDate, getRoles } from '$lib/token';
-import { errors, userToken } from '$lib/stores';
+import { errors } from '$lib/stores';
 import type { Error } from '$lib/types/types';
 
 /**
@@ -59,7 +59,7 @@ function checkExpiration(response: Response, token: string): void {
 		const expDate = getExpirationDate(token);
 		if (expDate && expDate < new Date()) {
 			// localStorage.removeItem('token');
-			userToken.set('');
+			// userToken.set('');
 			throw new Error('Your login session is over. Please log in again!');
 		}
 	}

@@ -1,7 +1,5 @@
 import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
-import { userToken } from '$lib/stores';
-
 import type { Player, Match, Tournament } from '$lib/types/types';
 import type { TournamentState } from '$lib/types/tournamentTypes';
 
@@ -12,11 +10,7 @@ import { PUBLIC_DEV_SERVER_URL, PUBLIC_PROD_SERVER_URL } from '$env/static/publi
  * This file contains functions for making API requests.
  */
 
-let token = '';
-
-userToken.subscribe((value: string) => {
-	token = value;
-});
+const token = '';
 
 const serverPath = dev ? PUBLIC_DEV_SERVER_URL : PUBLIC_PROD_SERVER_URL;
 const serverAPI: string = serverPath + '/api';

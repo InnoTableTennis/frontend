@@ -1,14 +1,12 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type { Error } from '$lib/types/types';
-import type { ProfileData } from './types/profileTypes';
-// import { getRoles } from '$lib/token';
+import type { ProfileData } from '$lib/types/profileTypes';
 
 /**
  * Represents the user token store.
  * Stores the user token value.
  */
-export const userToken: Writable<string> = writable('');
 export const isLeader: Writable<boolean> = writable(false);
 export const playerInfo: Writable<ProfileData | undefined> = writable();
 // export const isLeader = derived(userToken, ($userToken) => getRoles($userToken).includes('LEADER'));

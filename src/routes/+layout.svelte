@@ -5,7 +5,7 @@
 
 	import Errors from '$lib/components/error/Errors.svelte';
 
-	import { loadedPage, userToken } from '$lib/stores';
+	import { loadedPage } from '$lib/stores';
 	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
 
 	let isLoaded = false;
@@ -14,11 +14,6 @@
 		isLoaded = true;
 		$loadedPage = $page.data.title;
 	}
-
-	beforeUpdate(() => {
-		const token = localStorage.getItem('token');
-		userToken.set(token ?? '');
-	});
 
 	onDestroy(() => {
 		isLoaded = false;
