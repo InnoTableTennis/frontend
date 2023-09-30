@@ -50,8 +50,6 @@ export async function getMatches(
 	matches: Match[];
 	totalPages: number;
 }> {
-	
-
 	const searchParams = objectToURLSearchParams({
 		score,
 		descending: descending !== null ? String(descending) : null,
@@ -63,7 +61,6 @@ export async function getMatches(
 	});
 
 	const url: string = serverAPI + '/matches' + (searchParams && '?' + searchParams);
-
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -205,7 +202,6 @@ export async function getPlayers(
 	players: Player[];
 	totalPages: number;
 }> {
-
 	const searchParams = objectToURLSearchParams({
 		sortBy,
 		descending: descending !== null ? String(descending) : null,
@@ -323,7 +319,7 @@ export async function editPlayer(
 
 	if (name.split(' ').length < 2) {
 		throw new Error('Name must consist of at least two parts!');
-	}	
+	}
 
 	const response: Response = await fetch(serverAPI + '/players/' + id, {
 		method: 'PUT',
@@ -423,7 +419,6 @@ export async function getTournaments(
 	tournaments: Tournament[];
 	totalPages: number;
 }> {
-
 	const searchParams = objectToURLSearchParams({
 		sortBy,
 		descending: descending !== null ? String(descending) : null,
@@ -602,9 +597,7 @@ export async function finishTournament(tournamentID: string): Promise<void> {
 	await handleModifyErrors(response, token);
 }
 
-export async function getStatistics(playerID: number | null = null): Promise<{
-	data: Stats;
-}> {
+export async function getStatistics(playerID: number | null = null): Promise<Stats> {
 	const url: string = serverAPI + '/players/' + playerID + '/stats';
 
 	const response: Response = await fetch(url, {
@@ -619,16 +612,14 @@ export async function getStatistics(playerID: number | null = null): Promise<{
 
 	const data = await response.json();
 
-	return { data };
+	return data;
 }
 
 /**
  * Retrieves leaders list from the API.
  * @returns The leaders data.
  */
-export async function getLeaders(): Promise<{
-	data: Player[];
-}> {
+export async function getLeaders(): Promise<Player[]> {
 	const url: string = serverAPI + '/leaders';
 
 	const response: Response = await fetch(url, {
@@ -641,9 +632,10 @@ export async function getLeaders(): Promise<{
 
 	await handleGetErrors(response, token);
 
-	const data = await response.json();
+	
+	const leaders = await response.json();
 
-	return { data };
+	return leaders;
 }
 
 /**
@@ -718,11 +710,12 @@ export async function getProfileData(playerID: number | string): Promise<Profile
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	await handleGetErrors(response, token);
+	await handleGetErrors(response, token);	
 
 	const resp = await response.json();
-
-	const data = resp.data as ProfileData;
+	
+	const id = +(resp.message.split(" ").at(-1))
+	const data = {...resp.data, id};
 
 	return data;
 }

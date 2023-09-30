@@ -1,11 +1,12 @@
 <script lang="ts">
 	import NavBar from '$lib/components/navigation/NavBar.svelte';
-	import { isLeader } from '$lib/stores';
+	import { isLeader, playerInfo } from '$lib/stores';
 	import type { LayoutData } from './$types';
 
 	export let data : LayoutData;
 
-	$: $isLeader= data.isLeader;	
+	$: $isLeader = data.isLeader;
+	$: $playerInfo = data.playerInfo;	
 </script>
 
 <header>

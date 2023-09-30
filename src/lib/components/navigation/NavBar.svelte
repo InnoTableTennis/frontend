@@ -1,42 +1,14 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-	import { isLeader } from '$lib/stores';
+	import { isLeader, playerInfo } from '$lib/stores';
 	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
 	import { base } from '$app/paths';
-	import { onMount } from 'svelte';
 	import type { Player } from '$lib/types/types';
-	import * as db from '$lib/requests';
-	import { userToken } from '$lib/stores';
-	import { getUsername } from '$lib/token';
-	import { createEventDispatcher } from 'svelte';
 	import { enhance } from '$app/forms';
-
-	const dispatch = createEventDispatcher();
-
-	let playerInfo: Player | null = null;
 
 	export let isAuthorized = false;
 
-	const requestUserinfo = async () => {
-		let players: Player[] = [];
-		await db
-			.getPlayers()
-			.then((result) => {
-				players = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-		return players.find((user) => user.telegramAlias == getUsername($userToken));
-	};
-	let linkToProfile = `${base}/players/`;
-
-	onMount(() => {
-		requestUserinfo().then((response) => {
-			playerInfo = response as Player;
-			linkToProfile += playerInfo?.id;
-		});
-	});
+	$: linkToProfile = `${base}/players/` + $playerInfo?.telegramAlias;
 </script>
 
 <nav>
@@ -54,10 +26,10 @@
 			<div class="for-mobile">
 				<div class="prof-info">
 					<div class="user-name">
-						{playerInfo?.name}
+						{$playerInfo?.name}
 					</div>
 					<div class="user-alias">
-						@{playerInfo?.telegramAlias}
+						@{$playerInfo?.telegramAlias}
 					</div>
 				</div>
 			</div>

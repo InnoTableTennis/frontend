@@ -1,29 +1,14 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
 	import { slide } from 'svelte/transition';
-
-	export let playerID: number;
 
 	import { createEventDispatcher } from 'svelte';
 	import DownExpandIcon from '$lib/components/icons/DownExpandIcon.svelte';
 	import UpCompressIcon from '$lib/components/icons/UpCompressIcon.svelte';
 	import type { Stats } from '$lib/types/profileTypes';
 
-	const dispatch = createEventDispatcher();
-
-	let playerStats: Stats;
+	export let profileStats: Stats;
 	let statsBlockStatus = false;
 
-	async function requestStats() {
-		await db
-			.getStatistics(playerID)
-			.then((result) => {
-				playerStats = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
 	const normalizeNumber = (stat: number) => {
 		return Math.floor(stat * 100) / 100;
 	};
@@ -33,111 +18,109 @@
 	};
 </script>
 
-{#await requestStats() then}
-	<div class="wrapper">
-		<div class="column">
-			<div class="info-blocks-panel">
-				<div class="info-block">
-					<div class="name">Tournament played</div>
-					<div class="value">{playerStats.tournamentsParticipated}</div>
-					<div class="description">in total</div>
-				</div>
-				<div class="info-block">
-					<div class="name">Rating</div>
-					<div class="value">{playerStats.rating}</div>
-					<div class="description">at this moment</div>
-				</div>
-				<div class="info-block">
-					<div class="name">Win/Lose</div>
-					<div class="value">{playerStats.matchesWon}/{playerStats.matchesLost}</div>
-					<div class="description">in total</div>
-				</div>
+<div class="wrapper">
+	<div class="column">
+		<div class="info-blocks-panel">
+			<div class="info-block">
+				<div class="name">Tournament played</div>
+				<div class="value">{profileStats.tournamentsParticipated}</div>
+				<div class="description">in total</div>
 			</div>
-			<div class="advanced-stats">
-				<div class="main-stat-block">
-					<div class="stat-header">
-						<div class="other-stat">Other statistics</div>
+			<div class="info-block">
+				<div class="name">Rating</div>
+				<div class="value">{profileStats.rating}</div>
+				<div class="description">at this moment</div>
+			</div>
+			<div class="info-block">
+				<div class="name">Win/Lose</div>
+				<div class="value">{profileStats.matchesWon}/{profileStats.matchesLost}</div>
+				<div class="description">in total</div>
+			</div>
+		</div>
+		<div class="advanced-stats">
+			<div class="main-stat-block">
+				<div class="stat-header">
+					<div class="other-stat">Other statistics</div>
+				</div>
+				<div class="row">
+					<div class="stat-subblock">
+						<div class="name">Rating position</div>
+						<div class="value">{profileStats.ranking}</div>
 					</div>
-					<div class="row">
-						<div class="stat-subblock">
-							<div class="name">Rating position</div>
-							<div class="value">{playerStats.ranking}</div>
+				</div>
+				<div class="row">
+					<div class="stat-subblock">
+						<div class="name">Games played</div>
+						<div class="value">{profileStats.matchesPlayed}</div>
+					</div>
+					<div class="stat-subblock">
+						<div class="name">Win persentage</div>
+						<div class="value">
+							{Math.floor(profileStats.winPercentage * 100)
+								? Math.floor(profileStats.winPercentage * 100)
+								: 0}%
 						</div>
 					</div>
-					<div class="row">
-						<div class="stat-subblock">
-							<div class="name">Games played</div>
-							<div class="value">{playerStats.matchesPlayed}</div>
+				</div>
+				{#if statsBlockStatus}
+					<div transition:slide>
+						<div class="row">
+							<div class="stat-subblock">
+								<div class="name">Winning streak</div>
+								<div class="value">{profileStats.winningStreak}</div>
+							</div>
+							<div class="stat-subblock">
+								<div class="name">Losing streak</div>
+								<div class="value">{profileStats.losingStreak}</div>
+							</div>
+							<div class="stat-subblock">
+								<div class="name">Points won</div>
+								<div class="value">{profileStats.pointsWon}</div>
+							</div>
 						</div>
-						<div class="stat-subblock">
-							<div class="name">Win persentage</div>
-							<div class="value">
-								{Math.floor(playerStats.winPercentage * 100)
-									? Math.floor(playerStats.winPercentage * 100)
-									: 0}%
+						<div class="row">
+							<div class="stat-subblock">
+								<div class="name">Points lost</div>
+								<div class="value">{profileStats.pointsLost}</div>
+							</div>
+							<div class="stat-subblock">
+								<div class="name">Average match points</div>
+								<div class="value">
+									{normalizeNumber(profileStats.averageMatchPoints)
+										? normalizeNumber(profileStats.averageMatchPoints)
+										: 0}
+								</div>
+							</div>
+							<div class="stat-subblock">
+								<div class="name">Average match delta</div>
+								<div class="value">
+									{normalizeNumber(profileStats.averageMatchDelta)
+										? normalizeNumber(profileStats.averageMatchDelta)
+										: 0}
+								</div>
 							</div>
 						</div>
 					</div>
-					{#if statsBlockStatus}
-						<div transition:slide>
-							<div class="row">
-								<div class="stat-subblock">
-									<div class="name">Winning streak</div>
-									<div class="value">{playerStats.winningStreak}</div>
-								</div>
-								<div class="stat-subblock">
-									<div class="name">Losing streak</div>
-									<div class="value">{playerStats.losingStreak}</div>
-								</div>
-								<div class="stat-subblock">
-									<div class="name">Points won</div>
-									<div class="value">{playerStats.pointsWon}</div>
-								</div>
+				{/if}
+				<div class="expand-button-container">
+					<button on:click={toggleStats} class="expand-button">
+						{#if !statsBlockStatus}
+							Show More
+							<div class="button-icon">
+								<DownExpandIcon />
 							</div>
-							<div class="row">
-								<div class="stat-subblock">
-									<div class="name">Points lost</div>
-									<div class="value">{playerStats.pointsLost}</div>
-								</div>
-								<div class="stat-subblock">
-									<div class="name">Average match points</div>
-									<div class="value">
-										{normalizeNumber(playerStats.averageMatchPoints)
-											? normalizeNumber(playerStats.averageMatchPoints)
-											: 0}
-									</div>
-								</div>
-								<div class="stat-subblock">
-									<div class="name">Average match delta</div>
-									<div class="value">
-										{normalizeNumber(playerStats.averageMatchDelta)
-											? normalizeNumber(playerStats.averageMatchDelta)
-											: 0}
-									</div>
-								</div>
+						{:else}
+							Show less
+							<div class="button-icon">
+								<UpCompressIcon />
 							</div>
-						</div>
-					{/if}
-					<div class="expand-button-container">
-						<button on:click={toggleStats} class="expand-button">
-							{#if !statsBlockStatus}
-								Show More
-								<div class="button-icon">
-									<DownExpandIcon />
-								</div>
-							{:else}
-								Show less
-								<div class="button-icon">
-									<UpCompressIcon />
-								</div>
-							{/if}
-						</button>
-					</div>
+						{/if}
+					</button>
 				</div>
 			</div>
 		</div>
 	</div>
-{/await}
+</div>
 
 <style>
 	.wrapper {

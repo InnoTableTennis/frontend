@@ -1,20 +1,23 @@
 <script>
 	import { fly } from 'svelte/transition';
 	import { Moon, Sun } from 'lucide-svelte';
-	import { theme } from '$lib/stores';
+	import { browser } from '$app/environment';
+	import { DEFAULT_THEME } from '$lib/const';
+	
+	let theme = browser && localStorage.getItem('color-scheme') || DEFAULT_THEME;
 
 	$: {
-		document.documentElement.setAttribute('color-scheme', $theme);
-		localStorage.setItem('color-scheme', $theme);
+		document.documentElement.setAttribute('color-scheme', theme);
+		localStorage.setItem('color-scheme', theme);
 	}
 
 	function toggleTheme() {
-		$theme = $theme === 'dark' ? 'light' : 'dark';
+		theme = theme === 'dark' ? 'light' : 'dark';
 	}
 </script>
 
 <button on:click={toggleTheme} aria-label="Toggle theme">
-	{#if $theme === 'dark'}
+	{#if theme === 'dark'}
 		<div in:fly={{ y: 10 }}>
 			<Sun />
 		</div>

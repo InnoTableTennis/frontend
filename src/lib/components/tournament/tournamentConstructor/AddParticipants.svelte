@@ -19,9 +19,8 @@
 	const dispatch = createEventDispatcher();
 
 	async function getFormData() {
-		const playersPromise = db.getPlayers('name', false, '', '', null, null, 1, 1000000);
-		const [playersResponse] = await Promise.all([playersPromise]);
-		return { players: playersResponse.data };
+		const players = await db.getAllPlayers();
+		return players;
 	}
 
 	async function addParticipants() {

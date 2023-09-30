@@ -21,13 +21,13 @@
 	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
 
 	async function getFormData() {
-		const playersPromise = db.getPlayers('rating', true, '', '', null, null, 1, 1000000);
-		const tournamentsPromise = db.getTournaments('date', true, '', null, null, '', '', 1, 1000000);
+		const playersPromise = db.getAllPlayers();
+		const tournamentsPromise = db.getAllTournaments();
 		const [playersResponse, tournamentsResponse] = await Promise.all([
 			playersPromise,
 			tournamentsPromise,
 		]);
-		return { players: playersResponse.data, tournaments: tournamentsResponse.data };
+		return { players: playersResponse.players, tournaments: tournamentsResponse.tournaments };
 	}
 </script>
 

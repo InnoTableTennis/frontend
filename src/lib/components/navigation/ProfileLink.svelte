@@ -2,12 +2,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
-	import { onMount } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { getUsername } from '$lib/token';
-	import { userToken } from '$lib/stores';
-	import * as db from '$lib/requests';
-	import type { Player } from '$lib/types/types';
+	import { playerInfo } from '$lib/stores';
 	import { base } from '$app/paths';
 	import { enhance } from '$app/forms';
 
@@ -19,30 +14,7 @@
 
 	export let isAuthorized = false;	
 
-	let playerInfo: Player | null = null;
-
-	const dispatch = createEventDispatcher();
-
-	const requestUserinfo = async () => {
-		let players: Player[] = [];
-		await db
-			.getPlayers()
-			.then((result) => {
-				players = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-		return players.find((user) => user.telegramAlias == getUsername($userToken));
-	};
-	let linkToProfile = `${base}/players/`;
-
-	onMount(() => {
-		requestUserinfo().then((response) => {
-			playerInfo = response as Player;
-			linkToProfile += playerInfo.id;
-		});
-	});
+	let linkToProfile = `${base}/players/` + $playerInfo?.telegramAlias;
 </script>
 
 <div class="profile-container">
@@ -67,8 +39,8 @@
 					<div class="profile-menu-wrapper">
 						<div class="upper-subcontainer">
 							<div class="name-tag">
-								<div class="name">{playerInfo?.name}</div>
-								<div class="tag">@{playerInfo?.telegramAlias}</div>
+								<div class="name">{$playerInfo?.name}</div>
+								<div class="tag">@{$playerInfo?.telegramAlias}</div>
 							</div>
 							<div class="space-for-icon" />
 						</div>

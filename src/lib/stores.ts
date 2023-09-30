@@ -1,8 +1,7 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type { Error } from '$lib/types/types';
-import { browser } from '$app/environment';
-import { DEFAULT_THEME } from './const';
+import type { ProfileData } from './types/profileTypes';
 // import { getRoles } from '$lib/token';
 
 /**
@@ -11,6 +10,7 @@ import { DEFAULT_THEME } from './const';
  */
 export const userToken: Writable<string> = writable('');
 export const isLeader: Writable<boolean> = writable(false);
+export const playerInfo: Writable<ProfileData | undefined> = writable();
 // export const isLeader = derived(userToken, ($userToken) => getRoles($userToken).includes('LEADER'));
 
 /**
@@ -25,7 +25,6 @@ export const errors: Writable<Error[]> = writable([]);
  * Represents the color-scheme store.
  * Stores the color-scheme value.
  */
-export const theme = writable<string>((browser && localStorage.getItem('color-scheme')) || DEFAULT_THEME);
 export const overlayText: Writable<string | null> = writable(null);
 export const inputOverlayText: Writable<string[] | null> = writable(null);
 export const outputOverlayText: Writable<number[] | null> = writable(null);

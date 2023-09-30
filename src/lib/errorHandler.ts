@@ -58,7 +58,7 @@ function checkExpiration(response: Response, token: string): void {
 	if (response.status == 401) {
 		const expDate = getExpirationDate(token);
 		if (expDate && expDate < new Date()) {
-			localStorage.removeItem('token');
+			// localStorage.removeItem('token');
 			userToken.set('');
 			throw new Error('Your login session is over. Please log in again!');
 		}

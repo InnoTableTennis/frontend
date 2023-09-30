@@ -38,6 +38,7 @@ export interface ProfileData {
 	statistics: Stats;
 	matches: ProfileMatch[];
 	graph: RatingHistoryItem[];
+	id: number;
 }
 
 export interface RatingHistoryItem {
