@@ -8,33 +8,22 @@
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let stage: TournamentStage;
-	export let id: number;
 	export let finals: Player[][];
+	export let tournament: Tournament;
 
 	const dispatch = createEventDispatcher();
 
 	let numberParticipants = 0;
 	let numberGroups: number | undefined = 0;
-	let tournament: Tournament = {} as Tournament;
 
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-				numberParticipants = tournament.state.participants.length;
-				numberGroups = tournament.state.firstStage?.length;
-				if (!finals && tournament.state.firstStage && tournament.state.firstStage.length) {
-					let groupAmount = tournament.state.firstStage.length;
-					let maxPlayersAmount = Math.ceil(tournament.state.participants.length / groupAmount);
-					finals = new Array(maxPlayersAmount)
-						.fill(null)
-						.map(() => new Array(groupAmount).fill(null));
-				}
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
+	$: {
+		numberParticipants = tournament.state.participants.length;
+		numberGroups = tournament.state.firstStage?.length;
+		if (!finals && tournament.state.firstStage && tournament.state.firstStage.length) {
+			let groupAmount = tournament.state.firstStage.length;
+			let maxPlayersAmount = Math.ceil(tournament.state.participants.length / groupAmount);
+			finals = new Array(maxPlayersAmount).fill(null).map(() => new Array(groupAmount).fill(null));
+		}
 	}
 
 	const changeParticipants = function () {
@@ -52,10 +41,9 @@
 		if (tournament.state.firstStage) {
 			tournament.state.firstStage[e.detail] = newGroup;
 		}
-		await db.updateTournament(id, tournament.state).catch((error) => {
+		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
 			dispatch('error', error);
 		});
-		await requestTournament();
 	}
 	async function updatePlaces(e: CustomEvent, id: number) {
 		let players = e.detail;
@@ -74,45 +62,43 @@
 	}
 </script>
 
-{#await requestTournament() then}
-	<div class="groups-layout">
-		<div class="form">
-			<h1>Next games</h1>
-			<h1>Settings</h1>
-			<span class="setting-line">
-				Participants - {numberParticipants}
-				<button on:click={() => changeParticipants()} class="restart-button">
-					<RestartIcon />
-				</button>
-			</span>
-			<span class="setting-line">
-				Groups - {numberGroups}
-				<button on:click={() => changeNumberGroups()} class="restart-button">
-					<RestartIcon />
-				</button>
-			</span>
-			<span class="setting-line">Finish the group stage of the tournament</span>
-			<div class="finish-button">
-				<Button type="button" on:click={() => nextStage()}>Finish</Button>
-			</div>
-		</div>
-		<div class="tables">
-			{#if tournament.state}
-				{#if tournament.state.firstStage}
-					{#each tournament.state.firstStage as group}
-						<TournamentGroup
-							finalInfo={group}
-							on:update={updateTournament}
-							on:finalize={(event) => {
-								updatePlaces(event, group.id);
-							}}>Group {group.id + 1}</TournamentGroup
-						>
-					{/each}
-				{/if}
-			{/if}
+<div class="groups-layout">
+	<div class="form">
+		<h1>Next games</h1>
+		<h1>Settings</h1>
+		<span class="setting-line">
+			Participants - {numberParticipants}
+			<button on:click={() => changeParticipants()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">
+			Groups - {numberGroups}
+			<button on:click={() => changeNumberGroups()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">Finish the group stage of the tournament</span>
+		<div class="finish-button">
+			<Button type="button" on:click={() => nextStage()}>Finish</Button>
 		</div>
 	</div>
-{/await}
+	<div class="tables">
+		{#if tournament.state}
+			{#if tournament.state.firstStage}
+				{#each tournament.state.firstStage as group}
+					<TournamentGroup
+						finalInfo={group}
+						on:update={updateTournament}
+						on:finalize={(event) => {
+							updatePlaces(event, group.id);
+						}}>Group {group.id + 1}</TournamentGroup
+					>
+				{/each}
+			{/if}
+		{/if}
+	</div>
+</div>
 
 <style>
 	.groups-layout {

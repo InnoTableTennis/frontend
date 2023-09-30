@@ -13,22 +13,11 @@
 	const dispatch = createEventDispatcher();
 
 	export let stage: TournamentStage;
-	export let id: number;
+	export let tournament: Tournament;
 	export let numberFinals = 0;
 
 	let chosenId = 0;
-	let tournament: Tournament = {} as Tournament;
 	let finalResults: Player[][] = new Array(numberFinals).fill(null);
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
 
 	const changeNumberFinals = function () {
 		stage = 'numberFinals';
@@ -42,28 +31,23 @@
 				}
 			}
 		}
-		await db.updateTournament(id, tournament.state).catch((error) => {
+		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
 			dispatch('error', error);
 		});
-		await requestTournament();
 		// await db.finishTournament(id.toString()).catch((error) => {
 		// 	dispatch('error', error);
 		// });
 		goto(`/tournaments/${tournament.id}`);
 	};
 
-	const countGroups = async function () {
-		await requestTournament();
-	};
 	async function updateTournament(e: CustomEvent) {
 		let newGroup = e.detail;
 		if (tournament.state.secondStage) {
 			tournament.state.secondStage[e.detail] = newGroup;
 		}
-		await db.updateTournament(id, tournament.state).catch((error) => {
+		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
 			dispatch('error', error);
 		});
-		await requestTournament();
 		tournament.state.secondStage;
 	}
 	async function updatePlaces(e: CustomEvent, id: number) {
@@ -73,88 +57,88 @@
 			finalResults[id][i] = players[i];
 		}
 	}
-	requestTournament();
 </script>
 
-{#await countGroups() then}
-	<h1>Second stage</h1>
+<h1>Second stage</h1>
 
-	<div class="menu-layout">
-		<div class="settings">
-			<h2>Settings</h2>
-			<span class="setting-line">
-				Finals - {numberFinals}
-				<button on:click={() => changeNumberFinals()} class="restart-button">
-					<RestartIcon />
-				</button>
-			</span>
-			<span class="setting-line">Finish the tournament</span>
-			<div class="finish-button">
-				<Button type="button" on:click={() => finish()}>Finish</Button>
-			</div>
+<div class="menu-layout">
+	<div class="settings">
+		<h2>Settings</h2>
+		<span class="setting-line">
+			Finals - {numberFinals}
+			<button on:click={() => changeNumberFinals()} class="restart-button">
+				<RestartIcon />
+			</button>
+		</span>
+		<span class="setting-line">Finish the tournament</span>
+		<div class="finish-button">
+			<Button type="button" on:click={() => finish()}>Finish</Button>
 		</div>
 	</div>
+</div>
 
+<div class="finals">
+	<div class="final-button-block">
+		{#if tournament.state.secondStage}
+			{#each tournament.state.secondStage as _, i}
+				<button
+					class="final-button"
+					class:selected={chosenId === i}
+					on:click|preventDefault={() => {
+						chosenId = i;
+						_;
+					}}
+				>
+					{stringifyNumber(i + 1)
+						.charAt(0)
+						.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
+				</button>
+			{/each}
+		{/if}
+	</div>
 	<div class="finals">
-		<div class="final-button-block">
+		{#if tournament.state.secondStage}
+			{#if tournament.state.secondStage[chosenId].type === 'Group'}
+				<TournamentGroup
+					finalInfo={tournament.state.secondStage[chosenId]}
+					on:update={updateTournament}
+					on:finalize={(event) => {
+						updatePlaces(event, chosenId);
+					}}
+					>{stringifyNumber(chosenId + 1)
+						.charAt(0)
+						.toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup
+				>
+			{:else if tournament.state.secondStage[chosenId].type === 'SingleEliminationBracket'}
+				<TournamentBracket
+					{tournament}
+					dataFinal={tournament.state.secondStage[chosenId]}
+					on:update={updateTournament}
+					on:finalize={(event) => {
+						updatePlaces(event, chosenId);
+					}}
+				/>
+			{/if}
+		{/if}
+		<div class="pre-render-group-block">
 			{#if tournament.state.secondStage}
 				{#each tournament.state.secondStage as _, i}
-					<button
-						class="final-button"
-						class:selected={chosenId === i}
-						on:click|preventDefault={() => {
-							chosenId = i;
-							_;
-						}}
-					>
-						{stringifyNumber(i + 1)
-							.charAt(0)
-							.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
-					</button>
+					{#if tournament.state.secondStage[i].type === 'Group'}
+						<TournamentGroup
+							finalInfo={tournament.state.secondStage[i]}
+							on:finalize={(event) => {
+								updatePlaces(event, i);
+								_;
+							}}
+						/>
+					{:else if tournament.state.secondStage[i].type === 'SingleEliminationBracket'}
+						<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[i]} />
+					{/if}
 				{/each}
 			{/if}
 		</div>
-		<div class="finals">
-			{#if tournament.state.secondStage}
-				{#if tournament.state.secondStage[chosenId].type === 'Group'}
-					<TournamentGroup
-						finalInfo={tournament.state.secondStage[chosenId]}
-						on:update={updateTournament}
-						on:finalize={(event) => {
-							updatePlaces(event, chosenId);
-						}}
-						>{stringifyNumber(chosenId + 1)
-							.charAt(0)
-							.toUpperCase() + stringifyNumber(chosenId + 1).slice(1)} final</TournamentGroup
-					>
-				{:else if tournament.state.secondStage[chosenId].type === 'SingleEliminationBracket'}
-					<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[chosenId]} 
-					on:update={updateTournament}
-						on:finalize={(event) => {
-							updatePlaces(event, chosenId);
-						}} />
-				{/if}
-			{/if}
-			<div class="pre-render-group-block">
-				{#if tournament.state.secondStage}
-					{#each tournament.state.secondStage as _, i}
-						{#if tournament.state.secondStage[i].type === 'Group'}
-							<TournamentGroup
-								finalInfo={tournament.state.secondStage[i]}
-								on:finalize={(event) => {
-									updatePlaces(event, i);
-									_;
-								}}
-							/>
-						{:else if tournament.state.secondStage[i].type === 'SingleEliminationBracket'}
-							<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[i]} />
-						{/if}
-					{/each}
-				{/if}
-			</div>
-		</div>
 	</div>
-{/await}
+</div>
 
 <style>
 	.menu-layout {

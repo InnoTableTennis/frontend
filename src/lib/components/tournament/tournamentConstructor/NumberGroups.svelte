@@ -9,29 +9,17 @@
 	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
 	export let stage: TournamentStage;
-	export let id: number;
+	export let tournament: Tournament;
 
 	const dispatch = createEventDispatcher();
 
 	let numberGroups = 0;
-	let tournament: Tournament = {} as Tournament;
 	let groups: Group[] = [];
 
 	async function addGroups(state: TournamentState | null) {
-		await db.updateTournament(id, state).catch((error) => {
+		await db.updateTournament(tournament.id, state).catch((error) => {
 			dispatch('error', error);
 		});
-	}
-
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
 	}
 
 	const makeGroups = function () {
@@ -81,7 +69,6 @@
 	}
 </script>
 
-{#await requestTournament() then}
 	<BackArrowButton action={back} />
 
 	<div class="center">
@@ -110,7 +97,6 @@
 			</form>
 		</div>
 	</div>
-{/await}
 
 <style>
 	.center {

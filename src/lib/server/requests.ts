@@ -455,9 +455,7 @@ export async function getTournaments(
  * @param id - The id of the tournament that you want to get.
  * @returns The tournament data.
  */
-export async function getTournament(id: number | null = null): Promise<{
-	data: Tournament;
-}> {
+export async function getTournament(id: number | null = null): Promise<Tournament> {
 	let url: string = serverAPI + '/tournaments';
 	if (id) {
 		url += '/' + id;
@@ -473,11 +471,11 @@ export async function getTournament(id: number | null = null): Promise<{
 
 	await handleGetErrors(response, token);
 
-	let data = await response.json();
-	data = data.data;
+	const json = await response.json();
+	const data = json.data;
 	data.state = JSON.parse(data.state);
 
-	return { data };
+	return data;
 }
 
 /**
@@ -632,7 +630,6 @@ export async function getLeaders(): Promise<Player[]> {
 
 	await handleGetErrors(response, token);
 
-	
 	const leaders = await response.json();
 
 	return leaders;
@@ -710,12 +707,12 @@ export async function getProfileData(playerID: number | string): Promise<Profile
 			Authorization: `Bearer ${token}`,
 		},
 	});
-	await handleGetErrors(response, token);	
+	await handleGetErrors(response, token);
 
 	const resp = await response.json();
-	
-	const id = +(resp.message.split(" ").at(-1))
-	const data = {...resp.data, id};
+
+	const id = +resp.message.split(' ').at(-1);
+	const data = { ...resp.data, id };
 
 	return data;
 }

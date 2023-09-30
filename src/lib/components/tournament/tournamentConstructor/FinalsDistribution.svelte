@@ -13,9 +13,9 @@
 	} from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;
-	export let id: number;
 	export let stage: TournamentStage;
 	export let finals: Player[][];
+	export let tournament: Tournament;
 
 	let types: string[] = [];
 	let chosenId: number[];
@@ -24,25 +24,11 @@
 
 	let numberGroups: number | undefined;
 	let numberParticipants: number;
-	let tournament: Tournament = {} as Tournament;
 
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-				numberGroups = tournament.state.firstStage?.length;
-				numberParticipants = tournament.state.participants.length;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
 	async function updateTournament() {
-		await db.updateTournament(id, tournament.state).catch((error) => {
+		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
 			dispatch('error', error);
 		});
-		await requestTournament();
 	}
 
 	function back() {
@@ -115,37 +101,33 @@
 			}
 		}
 		await updateTournament();
-		await requestTournament();
 		stage = 'secondStage';
 	}
-	requestTournament();
 </script>
 
-{#await requestTournament() then}
-	<BackArrowButton action={back} />
+<BackArrowButton action={back} />
 
-	<div class="content">
-		<h1>How many finals do you want?</h1>
-		<div class="numberFinals">
-			{numberFinals}
+<div class="content">
+	<h1>How many finals do you want?</h1>
+	<div class="numberFinals">
+		{numberFinals}
+	</div>
+	<div class="distribution">
+		<h1>Distribute places between finals</h1>
+		<div class="distributor">
+			<FinalsDistributor
+				bind:numberGroups
+				bind:numberParticipants
+				bind:numberFinals
+				bind:chosenId
+				bind:types
+			/>
 		</div>
-		<div class="distribution">
-			<h1>Distribute places between finals</h1>
-			<div class="distributor">
-				<FinalsDistributor
-					bind:numberGroups
-					bind:numberParticipants
-					bind:numberFinals
-					bind:chosenId
-					bind:types
-				/>
-			</div>
-			<div class="button">
-				<Button type="button" on:click={nextStage}>Confirm</Button>
-			</div>
+		<div class="button">
+			<Button type="button" on:click={nextStage}>Confirm</Button>
 		</div>
 	</div>
-{/await}
+</div>
 
 <style>
 	.content {

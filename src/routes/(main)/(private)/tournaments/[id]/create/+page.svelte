@@ -6,34 +6,18 @@
 	import Groups from '$lib/components/tournament/tournamentConstructor/Groups.svelte';
 	import NumberGroups from '$lib/components/tournament/tournamentConstructor/NumberGroups.svelte';
 	import NumberFinals from '$lib/components/tournament/tournamentConstructor/NumberFinals.svelte';
-	import * as db from '$lib/requests.js';
-	import { createEventDispatcher } from 'svelte';
-	import type { Player, Tournament } from '$lib/types/types';
+	import type { Player } from '$lib/types/types';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
 	import { handleError } from '$lib/errorHandler';
 
 	export let data;
 
-	const dispatch = createEventDispatcher();
+	$: tournament = data.tournament;
 
 	let stage: TournamentStage = 'create';
-	let tournament: Tournament = {} as Tournament;
 	let finals: Player[][];
-	let id: number;
 	let numberFinals = 1;
-
-	async function requestTournament() {
-		id = Number(data.id);
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
 </script>
 
 <svelte:head>
@@ -47,22 +31,20 @@
 	/>
 </svelte:head>
 
-{#await requestTournament() then}
-	{#if stage === 'create'}
-		<CreateTournament bind:id={tournament.id} bind:stage />
-	{:else if stage === 'addParticipants'}
-		<AddParticipants bind:id={tournament.id} bind:stage />
-	{:else if stage === 'numberGroups'}
-		<NumberGroups bind:id={tournament.id} bind:stage />
-	{:else if stage === 'groups'}
-		<Groups bind:id={tournament.id} bind:stage bind:finals />
-	{:else if stage === 'continue'}
-		<Continue bind:stage />
-	{:else if stage === 'numberFinals'}
-		<NumberFinals bind:id={tournament.id} bind:numberFinals bind:stage />
-	{:else if stage === 'finalsDistribution'}
-		<FinalsDistribution bind:numberFinals bind:stage bind:id={tournament.id} bind:finals />
-	{:else if stage === 'secondStage'}
-		<SecondStage bind:numberFinals bind:stage bind:id={tournament.id} on:error={handleError} />
-	{/if}
-{/await}
+{#if stage === 'create'}
+	<CreateTournament {tournament} bind:stage />
+{:else if stage === 'addParticipants'}
+	<AddParticipants {tournament} bind:stage />
+{:else if stage === 'numberGroups'}
+	<NumberGroups {tournament} bind:stage />
+{:else if stage === 'groups'}
+	<Groups {tournament} bind:stage bind:finals />
+{:else if stage === 'continue'}
+	<Continue bind:stage />
+{:else if stage === 'numberFinals'}
+	<NumberFinals {tournament} bind:numberFinals bind:stage />
+{:else if stage === 'finalsDistribution'}
+	<FinalsDistribution bind:numberFinals bind:stage {tournament} bind:finals />
+{:else if stage === 'secondStage'}
+	<SecondStage bind:numberFinals bind:stage {tournament} on:error={handleError} />
+{/if}

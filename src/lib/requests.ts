@@ -16,7 +16,7 @@ const serverPath = dev ? PUBLIC_DEV_SERVER_URL : PUBLIC_PROD_SERVER_URL;
 const serverAPI: string = serverPath + '/api';
 
 export async function getAllPlayers(): Promise<{ players: Player[] }> {
-	const response = await fetch(serverAPI + '/getAllPlayers');
+	const response = await fetch(serverAPI + '/players');
 
 	//TODO: Handle errors
 
@@ -26,7 +26,7 @@ export async function getAllPlayers(): Promise<{ players: Player[] }> {
 }
 
 export async function getAllTournaments(): Promise<{ tournaments: Tournament[] }> {
-	const response = await fetch(serverAPI + '/getAllTournaments/');
+	const response = await fetch(serverAPI + '/tournaments');
 
 	//TODO: Handle errors
 
@@ -117,36 +117,6 @@ export async function editMatch(
 }
 
 /**
- * Retrieves tournament from the API.
- * @param id - The id of the tournament that you want to get.
- * @returns The tournament data.
- */
-export async function getTournament(id: number | null = null): Promise<{
-	data: Tournament;
-}> {
-	let url: string = serverAPI + '/tournaments';
-	if (id) {
-		url += '/' + id;
-	}
-
-	const response: Response = await fetch(url, {
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-	});
-
-	await handleGetErrors(response, token);
-
-	let data = await response.json();
-	data = data.data;
-	data.state = JSON.parse(data.state);
-
-	return { data };
-}
-
-/**
  * Updates state of the tournament.
  * @param tournamentID - The ID of the tournament.
  */
@@ -157,9 +127,7 @@ export async function updateTournament(
 	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID + '/state', {
 		method: 'PATCH',
 		headers: {
-			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({
 			state: JSON.stringify(state),

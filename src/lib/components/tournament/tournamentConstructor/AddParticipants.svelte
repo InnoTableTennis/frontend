@@ -7,14 +7,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
-	export let id: number;
 	export let stage: TournamentStage;
+	export let tournament: Tournament;
 
 	let numberParticipants = 0;
 	let participants: Player[] = [];
 	let participant: Player = {} as Player;
 	let state: TournamentState | null = null;
-	let tournament: Tournament = {} as Tournament;
 
 	const dispatch = createEventDispatcher();
 
@@ -24,22 +23,9 @@
 	}
 
 	async function addParticipants() {
-		await db.updateTournament(id, state).catch((error) => {
+		await db.updateTournament(tournament.id, state).catch((error) => {
 			dispatch('error', error);
 		});
-	}
-
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-				participants = tournament.state.participants;
-				numberParticipants = participants.length;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
 	}
 
 	const nextStage = async function () {
@@ -61,7 +47,6 @@
 	};
 </script>
 
-{#await requestTournament() then}
 	{#await getFormData() then resp}
 		<div class="form-list-layout">
 			<div class="form">
@@ -83,7 +68,6 @@
 			</div>
 		</div>
 	{/await}
-{/await}
 
 <style>
 	.form-list-layout {
