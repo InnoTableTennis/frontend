@@ -1,4 +1,4 @@
-import { inputOverlayText, outputOverlayText } from '$lib/stores';
+import { inputOverlayText, outputOverlayText } from '$lib/client/stores/stores';
 import { get } from 'svelte/store';
 async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
 	return new Promise<T>((resolve) => {

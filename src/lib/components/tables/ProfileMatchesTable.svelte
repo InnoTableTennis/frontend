@@ -3,7 +3,7 @@
 	import ProfilePagination from '$lib/components/profile/ProfilePagination.svelte';
 	import type { ProfileMatch } from '$lib/types/profileTypes';
 
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores';
 
 	export let dataMatches: ProfileMatch[];
 

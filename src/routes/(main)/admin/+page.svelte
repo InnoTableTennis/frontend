@@ -3,7 +3,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler.js';
 
 	export let data;
 

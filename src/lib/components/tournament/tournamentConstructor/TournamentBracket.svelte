@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import { Play, Dot } from 'lucide-svelte';
 	import { convertDateToStringDash } from '$lib/utils';
-	import { alertPopup } from '$lib/popupHandler';
-	import { isLeader } from '$lib/stores';
-	import { alertInputPopup } from '$lib/inputPopupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import { isLeader } from '$lib/client/stores/stores';
+	import { alertInputPopup } from '$lib/client/popup/popup.handler.input';
 	import { TSMap } from 'typescript-map';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import type { Final, SingleEliminationBracket } from '$lib/types/tournamentTypes';

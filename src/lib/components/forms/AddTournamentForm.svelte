@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { ADD_TOURNAMENT_FORM, AddTournamentFormStore } from '$lib/formStores';
+	import { ADD_TOURNAMENT_FORM, AddTournamentFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import { convertDateToString } from '$lib/utils';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';

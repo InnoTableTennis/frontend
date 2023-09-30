@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import Button from '$lib/components/base/Button.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';

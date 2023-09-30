@@ -2,7 +2,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
-	import { playerInfo } from '$lib/stores';
+	import { playerInfo } from '$lib/client/stores/stores';
 	import { base } from '$app/paths';
 	import { enhance } from '$app/forms';
 

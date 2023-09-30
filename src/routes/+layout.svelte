@@ -5,7 +5,7 @@
 
 	import Errors from '$lib/components/error/Errors.svelte';
 
-	import { loadedPage } from '$lib/stores';
+	import { loadedPage } from '$lib/client/stores/stores';
 	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
 
 	let isLoaded = false;

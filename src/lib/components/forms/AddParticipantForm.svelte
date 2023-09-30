@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { AddPlayerFormStore } from '$lib/formStores';
+	import { AddPlayerFormStore } from '$lib/client/stores/stores.forms';
 	import type { Player } from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 
 	export let player: Player;
 	export let players: Player[];

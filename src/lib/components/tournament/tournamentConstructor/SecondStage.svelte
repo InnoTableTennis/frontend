@@ -3,7 +3,7 @@
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import { stringifyNumber } from '$lib/utils';
 	import type { Player, Tournament } from '$lib/types/types';
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import { goto } from '$app/navigation';

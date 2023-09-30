@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SortFilterProfileMatchFormStore } from '$lib/formStores';
+	import { SortFilterProfileMatchFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';

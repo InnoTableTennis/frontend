@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores';
 	import type { Tournament } from '$lib/types/types';
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import PlayersIcon from '$lib/components/icons/PlayersIcon.svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 
 	export let tournament: Tournament;
 	export let chosenId: number;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
-	import { ADD_PLAYER_FORM, AddPlayerFormStore } from '$lib/formStores';
+	import { ADD_PLAYER_FORM, AddPlayerFormStore } from '$lib/client/stores/stores.forms';
 
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';

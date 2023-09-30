@@ -8,7 +8,7 @@
 	import type { Tournament } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditTournamentForm from '$lib/components/forms/EditTournamentForm.svelte';
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores.js';
 
 	export let data;
 

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Tournament } from '$lib/types/types';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
 
 	export let stage: TournamentStage;

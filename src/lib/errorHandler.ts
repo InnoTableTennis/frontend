@@ -1,5 +1,5 @@
-import { getExpirationDate, getRoles } from '$lib/token';
-import { errors } from '$lib/stores';
+import { getExpirationDate, getRoles } from '$lib/server/token';
+import { errors } from '$lib/client/stores/stores';
 import type { Error } from '$lib/types/types';
 
 /**

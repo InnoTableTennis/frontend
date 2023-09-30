@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SORT_FILTER_PLAYER_FORM, SortFilterPlayerFormStore } from '$lib/formStores';
+	import { SORT_FILTER_PLAYER_FORM, SortFilterPlayerFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';

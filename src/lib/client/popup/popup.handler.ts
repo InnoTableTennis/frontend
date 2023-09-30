@@ -1,4 +1,4 @@
-import { overlayText } from '$lib/stores';
+import { overlayText } from '$lib/client/stores/stores';
 
 function getPromiseFromEvent(item: HTMLDivElement | HTMLButtonElement, event: string) {
 	return new Promise<void>((resolve) => {

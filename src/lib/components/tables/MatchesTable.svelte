@@ -5,8 +5,8 @@
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Match } from '$lib/types/types';
 
-	import { isLeader } from '$lib/stores';
-	import { alertPopup } from '$lib/popupHandler';
+	import { isLeader } from '$lib/client/stores/stores';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import MatchesTableRow from '$lib/components/tables/MatchesTableRow.svelte';
 
 	export let chosenId = -1;

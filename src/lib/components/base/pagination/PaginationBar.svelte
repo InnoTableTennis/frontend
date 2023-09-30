@@ -3,7 +3,7 @@
 	import LeftArrow from '$lib/components/icons/LeftArrow.svelte';
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';
 	import { page } from '$app/stores';
-	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/const';
+	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/client/defaults'
 
 	const dispatch = createEventDispatcher();
 

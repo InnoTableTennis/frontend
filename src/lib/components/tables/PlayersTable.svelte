@@ -2,9 +2,9 @@
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import type { Player } from '$lib/types/types';
 
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores';
 	import { enhance } from '$app/forms';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import PlayersListLine from './PlayersListLine.svelte';
 
 	export let players: Player[] = [];

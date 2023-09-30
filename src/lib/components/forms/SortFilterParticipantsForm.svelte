@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SortFilterPlayerFormStore } from '$lib/formStores';
+	import { SortFilterPlayerFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';

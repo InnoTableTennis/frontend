@@ -1,5 +1,5 @@
 import * as db from '$lib/server/requests';
-import { getRoles } from '$lib/token';
+import { getRoles } from '$lib/server/token';
 import { redirect } from '@sveltejs/kit';
 
 export const prerender = false;

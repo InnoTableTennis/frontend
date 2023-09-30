@@ -3,7 +3,7 @@
 
 	import type { Player } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import { enhance } from '$app/forms';
 
 	let name = '';

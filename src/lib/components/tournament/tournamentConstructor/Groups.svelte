@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';

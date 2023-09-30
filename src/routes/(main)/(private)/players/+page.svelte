@@ -7,7 +7,7 @@
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores.js';
 
 	export let data;
 

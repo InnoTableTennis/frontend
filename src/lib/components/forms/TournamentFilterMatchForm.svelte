@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { TournamentFilterMatchFormStore } from '$lib/tournamentStores';
+	import { TournamentFilterMatchFormStore } from '$lib/client/stores/stores.tournaments';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';

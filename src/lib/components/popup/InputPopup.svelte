@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import { fade } from 'svelte/transition';
-	import { inputOverlayText, outputOverlayText } from '$lib/stores';
+	import { inputOverlayText, outputOverlayText } from '$lib/client/stores/stores';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	export let popupText: string;
 	export let firstPlayer: string;

@@ -3,7 +3,7 @@
  */
 
 import jwt_decode from 'jwt-decode';
-import type { DecodedJWT } from './types/types';
+import type { DecodedJWT } from '$lib/types/types';
 
 /**
  * Retrieves the roles from a token.

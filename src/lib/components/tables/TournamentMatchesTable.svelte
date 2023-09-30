@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import { TournamentFilterMatchFormStore } from '$lib/tournamentStores';
+	import { TournamentFilterMatchFormStore } from '$lib/client/stores/stores.tournaments';
 	import type { Match } from '$lib/types/types';
 
 	export let matches: Match[];

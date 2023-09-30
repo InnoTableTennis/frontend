@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isLeader } from '$lib/stores';
+	import { isLeader } from '$lib/client/stores/stores';
 	import type { Player } from '$lib/types/types';
 
 	export let player: Player;

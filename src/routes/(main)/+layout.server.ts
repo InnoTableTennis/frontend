@@ -2,7 +2,7 @@
 import * as db from '$lib/server/requests';
 
 import { userToken } from '$lib/server/stores';
-import { getRoles, getUsername } from '$lib/token';
+import { getRoles, getUsername } from '$lib/server/token';
 import type { LayoutServerLoad } from './$types';
 
 

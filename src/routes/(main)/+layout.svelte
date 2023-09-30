@@ -1,6 +1,6 @@
 <script lang="ts">
 	import NavBar from '$lib/components/navigation/NavBar.svelte';
-	import { isLeader, playerInfo } from '$lib/stores';
+	import { isLeader, playerInfo } from '$lib/client/stores/stores';
 	import type { LayoutData } from './$types';
 
 	export let data : LayoutData;

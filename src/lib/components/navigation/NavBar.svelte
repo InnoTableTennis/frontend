@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-	import { isLeader, playerInfo } from '$lib/stores';
+	import { isLeader, playerInfo } from '$lib/client/stores/stores';
 	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
 	import { base } from '$app/paths';
 	import type { Player } from '$lib/types/types';

@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
-	import { ADD_MATCH_FORM, AddMatchFormStore } from '$lib/formStores';
+	import { ADD_MATCH_FORM, AddMatchFormStore } from '$lib/client/stores/stores.forms';
 
 	import { convertDateToString } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';

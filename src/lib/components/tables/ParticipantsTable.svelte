@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
-	import { TournamentSortFilterParticpantsFormStore } from '$lib/tournamentStores';
+	import { TournamentSortFilterParticpantsFormStore } from '$lib/client/stores/stores.tournaments';
 	import type { Participant } from '$lib/types/tournamentTypes';
 	import type { Player } from '$lib/types/types';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests.js';
 
 	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';
 	import MatchesTable from '$lib/components/tables/MatchesTable.svelte';
@@ -9,7 +9,7 @@
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
 	import type { Match } from '$lib/types/types';
-	import { isLeader } from '$lib/stores.js';
+	import { isLeader } from '$lib/client/stores/stores.js';
 
 	export let data;
 

@@ -4,7 +4,7 @@
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Tournament } from '$lib/types/types';
 	import { createEventDispatcher } from 'svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 
 	export let numberFinals = 0;

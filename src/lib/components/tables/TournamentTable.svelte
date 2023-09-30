@@ -3,8 +3,8 @@
 	import type { Tournament } from '$lib/types/types';
 
 	import TournamentTableRow from '$lib/components/tables/TournamentTableRow.svelte';
-	import { alertPopup } from '$lib/popupHandler';
-	import { isLeader } from '$lib/stores';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import { isLeader } from '$lib/client/stores/stores';
 	import { enhance } from '$app/forms';
 
 	export let tournaments: Tournament[] = [];
