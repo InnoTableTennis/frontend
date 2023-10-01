@@ -4,7 +4,6 @@
 	import AddMatchForm from '$lib/components/forms/AddMatchForm.svelte';
 	import MatchesTable from '$lib/components/tables/MatchesTable.svelte';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
-	import { handleError } from '$lib/errorHandler';
 	import SortFilterMatchForm from '$lib/components/forms/SortFilterMatchForm.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
@@ -13,7 +12,6 @@
 
 	export let data;
 
-	let handleInsert: () => void;
 	let editData: Match = {} as Match;
 	let isEditing = false;
 	let chosenId = -1;
@@ -50,8 +48,6 @@
 					<AddMatchForm
 						players={resp.players}
 						tournaments={resp.tournaments}
-						on:error={handleError}
-						on:update={() => handleInsert()}
 					/>
 				{:else if mode === 'edit'}
 					{#if chosenId === -1}
@@ -60,8 +56,6 @@
 						<EditMatchForm
 							players={resp.players}
 							tournaments={resp.tournaments}
-							on:error={handleError}
-							on:update={() => handleInsert()}
 							match={editData}
 							bind:chosenId
 						/>
@@ -71,7 +65,7 @@
 				{/if}
 			{/await}
 		{:else}
-			<SortFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+			<SortFilterMatchForm />
 		{/if}
 	</div>
 
@@ -95,7 +89,6 @@
 			</div>
 		{/if}
 		<MatchesTable
-			on:error={handleError}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

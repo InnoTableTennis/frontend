@@ -4,7 +4,6 @@
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import SortFilterTournamentForm from '$lib/components/forms/SortFilterTournamentForm.svelte';
 
-	import { handleError } from '$lib/errorHandler';
 	import type { Tournament } from '$lib/types/types';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditTournamentForm from '$lib/components/forms/EditTournamentForm.svelte';
@@ -12,7 +11,6 @@
 
 	export let data;
 
-	let handleInsert: () => void;
 	let editData: Tournament = {} as Tournament;
 	let isEditing = false;
 	let chosenId = -1;
@@ -38,7 +36,7 @@
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddTournamentForm/>
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
@@ -46,8 +44,6 @@
 			{:else}
 				<div class="form">
 					<EditTournamentForm
-						on:error={handleError}
-						on:update={() => handleInsert()}
 						bind:tournament={editData}
 						bind:chosenId
 					/>
@@ -58,7 +54,7 @@
 		{/if}
 	{:else}
 		<div class="form">
-			<SortFilterTournamentForm on:error={handleError} on:update={() => handleInsert()} />
+			<SortFilterTournamentForm />
 		</div>
 	{/if}
 	<div class="tournaments-list">
@@ -81,7 +77,6 @@
 			</div>
 		{/if}
 		<TournamentTable
-			on:error={handleError}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

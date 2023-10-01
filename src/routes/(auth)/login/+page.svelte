@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Login from '$lib/components/navigation/Login.svelte';
-	import { handleError } from '$lib/errorHandler';
 </script>
 
 <svelte:head>
@@ -15,4 +14,4 @@
 	/>
 </svelte:head>
 
-<Login on:error={handleError} />
+<Login/>

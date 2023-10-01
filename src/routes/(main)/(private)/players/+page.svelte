@@ -3,7 +3,6 @@
 	import PlayersTable from '$lib/components/tables/PlayersTable.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Player } from '$lib/types/types';
-	import { handleError } from '$lib/errorHandler';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
@@ -11,7 +10,6 @@
 
 	export let data;
 
-	let handleInsert: () => void;
 	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
@@ -34,7 +32,7 @@
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddPlayerForm/>
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
@@ -42,8 +40,6 @@
 			{:else}
 				<div class="form">
 					<EditPlayerForm
-						on:error={handleError}
-						on:update={() => handleInsert()}
 						bind:player={editData}
 						bind:chosenId
 					/>
@@ -54,7 +50,7 @@
 		{/if}
 	{:else}
 		<div class="form">
-			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+			<SortFilterPlayerForm />
 		</div>
 	{/if}
 
@@ -78,7 +74,6 @@
 			</div>
 		{/if}
 		<PlayersTable
-			on:error={handleError}
 			bind:mode
 			bind:isChoosing
 			bind:chosenId

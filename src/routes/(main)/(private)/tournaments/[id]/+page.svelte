@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { Tournament } from '$lib/types/types';
-	import { handleError } from '$lib/errorHandler';
 	import profileImage from '$lib/assets/tournament.png';
 	import TournamentInfoPanel from '$lib/components/tournament/TournamentInfoPanel.svelte';
 	import ParticipantsTable from '$lib/components/tables/ParticipantsTable.svelte';
@@ -69,7 +67,6 @@
 				<div class="form-list-layout">
 					<div class="form">
 						<TournamentSortFilterParticipantsForm
-							on:error={handleError}
 							on:update={() => handleInsert()}
 						/>
 					</div>
@@ -77,7 +74,6 @@
 						<ParticipantsTable
 							participants={tournament.state.participants}
 							{deltas}
-							on:error={handleError}
 							bind:handleInsert
 						/>
 					</div>
@@ -103,12 +99,11 @@
 		<h1>Matches</h1>
 		<div class="form-list-layout">
 			<div class="form">
-				<TournamentFilterMatchForm on:error={handleError} on:update={() => handleInsert()} />
+				<TournamentFilterMatchForm on:update={() => handleInsert()} />
 			</div>
 			<div class="participants-list">
 				<TournamentMatchesTable
 					matches={tournament.matches}
-					on:error={handleError}
 					bind:handleInsert
 				/>
 			</div>

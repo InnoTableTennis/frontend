@@ -9,7 +9,6 @@
 	import type { Player } from '$lib/types/types';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
-	import { handleError } from '$lib/errorHandler';
 
 	export let data;
 
@@ -46,5 +45,5 @@
 {:else if stage === 'finalsDistribution'}
 	<FinalsDistribution bind:numberFinals bind:stage {tournament} bind:finals />
 {:else if stage === 'secondStage'}
-	<SecondStage bind:numberFinals bind:stage {tournament} on:error={handleError} />
+	<SecondStage bind:numberFinals bind:stage {tournament} />
 {/if}

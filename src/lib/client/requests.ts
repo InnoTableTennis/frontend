@@ -1,4 +1,4 @@
-import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
+// import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
 import type { TournamentState } from '$lib/types/tournamentTypes';
@@ -76,7 +76,8 @@ export async function createMatch(
 		}),
 	});
 
-	await handleModifyErrors(response, token);
+	// await handleModifyErrors(response, token);
+	//TODO: handle errors
 
 	const data = await response.json();
 	return data;
@@ -113,7 +114,8 @@ export async function editMatch(
 			localDateString,
 		}),
 	});
-	await handleModifyErrors(response, token);
+	// await handleModifyErrors(response, token);
+	//TODO: handle errors
 }
 
 /**
@@ -134,5 +136,6 @@ export async function updateTournament(
 		}),
 	});
 
-	await handleModifyErrors(response, token);
+	// await handleModifyErrors(response, token);
+	//TODO: handle errors
 }
