@@ -21,11 +21,11 @@
 	async function getFormData() {
 		const playersPromise = db.getAllPlayers();
 		const tournamentsPromise = db.getAllTournaments();
-		const [playersResponse, tournamentsResponse] = await Promise.all([
+		const [players, tournaments] = await Promise.all([
 			playersPromise,
 			tournamentsPromise,
 		]);
-		return { players: playersResponse.players, tournaments: tournamentsResponse.tournaments };
+		return { players, tournaments };
 	}
 </script>
 

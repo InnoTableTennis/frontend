@@ -6,6 +6,7 @@
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import { invalidate } from '$app/navigation';
 
 	export let stage: TournamentStage;
 	export let finals: Player[][];
@@ -13,12 +14,11 @@
 
 	const dispatch = createEventDispatcher();
 
-	let numberParticipants = 0;
-	let numberGroups: number | undefined = 0;
+	$: numberParticipants = tournament.state.participants.length;
+	
+	$: numberGroups = tournament.state.firstStage?.length;
 
 	$: {
-		numberParticipants = tournament.state.participants.length;
-		numberGroups = tournament.state.firstStage?.length;
 		if (!finals && tournament.state.firstStage && tournament.state.firstStage.length) {
 			let groupAmount = tournament.state.firstStage.length;
 			let maxPlayersAmount = Math.ceil(tournament.state.participants.length / groupAmount);
@@ -41,7 +41,7 @@
 		if (tournament.state.firstStage) {
 			tournament.state.firstStage[e.detail] = newGroup;
 		}
-		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
+		await db.updateTournament(tournament.id, tournament.state).then(()=>{invalidate('tournament:update')}).catch((error) => {
 			dispatch('error', error);
 		});
 	}

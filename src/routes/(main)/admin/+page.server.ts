@@ -24,14 +24,10 @@ export const actions = {
 	promoteLeader: async ({ request }) => {
 		const data = await request.formData();
 
-		console.log(data)
-
 		await db.promoteLeader(String(data.get('telegramAlias') || ''));
 	},
 	demoteLeader: async ({ request }) => {
 		const data = await request.formData();
-
-		console.log(data);
 
 		await db.demoteLeader(String(data.get('id') || ''));
 	},

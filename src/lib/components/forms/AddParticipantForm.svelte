@@ -69,7 +69,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addParticipant}>
+<form on:submit={async ()=>{await addParticipant(); resetForm()}}>
 	<div class="input">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -85,8 +85,8 @@
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<Button on:click={async () => await removeParticipant()}>Remove</Button>
-		<Button on:click={async () => await addParticipant()}>Add</Button>
+		<Button on:click={async () => {await removeParticipant(); resetForm()}}>Remove</Button>
+		<Button type='submit'>Add</Button>
 	</div>
 </form>
 

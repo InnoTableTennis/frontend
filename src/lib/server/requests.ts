@@ -473,7 +473,16 @@ export async function getTournament(id: number | null = null): Promise<Tournamen
 
 	const json = await response.json();
 	const data = json.data;
-	data.state = JSON.parse(data.state);
+	
+	try {
+		data.state = JSON.parse(JSON.parse(data.state)) as TournamentState;	
+	} catch {
+		try {
+			data.state = JSON.parse(data.state) as TournamentState
+		} catch {
+			data.state=null;
+		}
+	}
 
 	return data;
 }

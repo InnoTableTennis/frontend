@@ -12,27 +12,27 @@ import { PUBLIC_DEV_SERVER_URL, PUBLIC_PROD_SERVER_URL } from '$env/static/publi
 
 const token = '';
 
-const serverPath = dev ? PUBLIC_DEV_SERVER_URL : PUBLIC_PROD_SERVER_URL;
-const serverAPI: string = serverPath + '/api';
+const SERVER_URL = dev ? PUBLIC_DEV_SERVER_URL : PUBLIC_PROD_SERVER_URL;
+const SERVER_API: string = SERVER_URL + '/api';
 
-export async function getAllPlayers(): Promise<{ players: Player[] }> {
-	const response = await fetch(serverAPI + '/players');
+export async function getAllPlayers(): Promise<Player[]> {
+	const response = await fetch(SERVER_API + '/players');
 
 	//TODO: Handle errors
 
 	const players = await response.json();
 
-	return { players };
+	return players;
 }
 
-export async function getAllTournaments(): Promise<{ tournaments: Tournament[] }> {
-	const response = await fetch(serverAPI + '/tournaments');
+export async function getAllTournaments(): Promise<Tournament[]> {
+	const response = await fetch(SERVER_API + '/tournaments');
 
 	//TODO: Handle errors
 
 	const tournaments = await response.json();
 
-	return { tournaments };
+	return tournaments;
 }
 
 /**
@@ -59,7 +59,7 @@ export async function createMatch(
 		localDateString = new Date().toLocaleDateString('ru');
 	}
 
-	const response: Response = await fetch(serverAPI + '/matches', {
+	const response: Response = await fetch(SERVER_API + '/matches', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -98,7 +98,7 @@ export async function editMatch(
 		localDateString = new Date().toLocaleDateString('ru');
 	}
 
-	const response: Response = await fetch(serverAPI + '/matches/' + id, {
+	const response: Response = await fetch(SERVER_API + '/matches/' + id, {
 		method: 'PUT',
 		headers: {
 			Accept: 'application/json',
@@ -126,7 +126,8 @@ export async function updateTournament(
 	tournamentID: number,
 	state: TournamentState | null,
 ): Promise<void> {
-	const response: Response = await fetch(serverAPI + '/tournaments/' + tournamentID + '/state', {
+
+	const response: Response = await fetch(SERVER_API + '/tournaments/' + tournamentID + '/state', {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',

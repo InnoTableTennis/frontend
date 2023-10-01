@@ -29,7 +29,7 @@
 	method="POST"
 	action="?/editPlayer"
 	use:enhance={async ({ cancel }) => {
-		let isConfirmed = await alertPopup('Are you sure that you want to edit this tournament?');
+		let isConfirmed = await alertPopup(`Are you sure that you want to edit player ${player.name}?`);
 		if (!isConfirmed) {
 			cancel();
 		}

@@ -5,69 +5,54 @@
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsCreateTable from '$lib/components/tables/ParticipantsCreateTable.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import { invalidate } from '$app/navigation';
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
-	let numberParticipants = 0;
-	let participants: Player[] = [];
-	let participant: Player = {} as Player;
-	let state: TournamentState | null = null;
+	let participants = tournament.state.participants ?? [];
+	$: numberParticipants = participants.length;
+	
+	$: tournament.state.participants = participants
+	$: state = tournament.state;
 
+	let participant: Player = {} as Player;
+	
 	const dispatch = createEventDispatcher();
 
-	async function getFormData() {
-		const players = await db.getAllPlayers();
-		return players;
-	}
-
 	async function addParticipants() {
-		await db.updateTournament(tournament.id, state).catch((error) => {
+		await db.updateTournament(tournament.id, state).then(()=>{invalidate('tournament:update')}).catch((error) => {			console.error(error);
 			dispatch('error', error);
 		});
 	}
 
 	const nextStage = async function () {
-		state = {
-			participants: participants,
-			firstStage: tournament.state
-				? tournament.state.firstStage
-					? tournament.state.firstStage
-					: null
-				: null,
-			secondStage: tournament.state
-				? tournament.state.secondStage
-					? tournament.state.secondStage
-					: null
-				: null,
-		};
 		await addParticipants();
 		stage = 'numberGroups';
 	};
 </script>
 
-	{#await getFormData() then resp}
-		<div class="form-list-layout">
-			<div class="form">
-				<AddParticipantForm
-					players={resp.players}
-					bind:player={participant}
-					bind:participants
-					bind:numberParticipants
-				/>
-			</div>
-			<div class="participants-list">
-				<ParticipantsCreateTable bind:participant bind:participants />
-				<div class="line-2-elems">
-					<span>{numberParticipants} participants in total</span>
-					<div class="button">
-						<Button on:click={() => nextStage()}>Continue</Button>
-					</div>
-				</div>
+<div class="form-list-layout">
+	<div class="form">
+		{#await db.getAllPlayers() then allPlayers}
+			<AddParticipantForm
+				players={allPlayers}
+				bind:player={participant}
+				bind:participants={participants}
+			/>
+		{/await}
+	</div>
+	<div class="participants-list">
+		<ParticipantsCreateTable bind:participant {participants} />
+		<div class="line-2-elems">
+			<span>{numberParticipants} participants in total</span>
+			<div class="button">
+				<Button on:click={() => nextStage()}>Continue</Button>
 			</div>
 		</div>
-	{/await}
+	</div>
+</div>
 
 <style>
 	.form-list-layout {

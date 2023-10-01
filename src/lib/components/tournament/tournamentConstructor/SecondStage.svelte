@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import TournamentBracket from './TournamentBracket.svelte';
+	import { base } from '$app/paths';
 
 	const dispatch = createEventDispatcher();
 
@@ -37,7 +38,7 @@
 		// await db.finishTournament(id.toString()).catch((error) => {
 		// 	dispatch('error', error);
 		// });
-		goto(`/tournaments/${tournament.id}`);
+		goto(`${base}/tournaments/${tournament.id}`);
 	};
 
 	async function updateTournament(e: CustomEvent) {

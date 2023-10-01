@@ -43,11 +43,11 @@
 								}
 							}}
 						>
-						<input type="hidden" name="tournamentId" value={tournament.id} />
-						<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
-					</form>
+							<input type="hidden" name="tournamentId" value={tournament.id} />
+							<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
+						</form>
 					{:else}
-					<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
+						<TournamentTableRow {tournament} bind:chosenId bind:editData {isChoosing} {mode} />
 					{/if}
 				{/each}
 			</section>

@@ -6,6 +6,7 @@
 	import FinishIcon from '$lib/components/icons/FinishIcon.svelte';
 	import PlayersIcon from '$lib/components/icons/PlayersIcon.svelte';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import { base } from '$app/paths';
 
 	export let tournament: Tournament;
 	export let chosenId: number;
@@ -20,9 +21,9 @@
 		if (mode == 'edit') {
 			editData = tournament;
 		} else if (mode === 'create' && tournament.finished === false) {
-			goto(`/tournaments/${tournament.id}/create`);
+			goto(`${base}/tournaments/${tournament.id}/create`);
 		} else if ((mode === 'create' && tournament.finished === true) || mode === 'view') {
-			goto(`/tournaments/${tournament.id}`);
+			goto(`${base}/tournaments/${tournament.id}`);
 		}
 	}
 </script>

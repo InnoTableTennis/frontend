@@ -14,6 +14,7 @@
 		matches: [],
 		id: 0,
 	} as Final;
+
 	let groupInfo = finalInfo as Group;
 	let data = [] as Player[];
 	if (groupInfo.players && groupInfo.players.length > 0) {

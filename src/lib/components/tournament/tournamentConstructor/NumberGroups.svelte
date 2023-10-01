@@ -7,6 +7,7 @@
 	import type { Tournament } from '$lib/types/types';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
+	import { invalidate } from '$app/navigation';
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
@@ -17,7 +18,7 @@
 	let groups: Group[] = [];
 
 	async function addGroups(state: TournamentState | null) {
-		await db.updateTournament(tournament.id, state).catch((error) => {
+		await db.updateTournament(tournament.id, state).then(() => invalidate('tournament:update')).catch((error) => {
 			dispatch('error', error);
 		});
 	}
