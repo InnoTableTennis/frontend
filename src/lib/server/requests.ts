@@ -4,9 +4,9 @@ import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 import { userToken } from '$lib/server/stores';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
-import type { TournamentState } from '$lib/types/tournamentTypes';
+import type { TournamentState } from '$lib/types/types.tournaments';
 
-import type { Stats, ProfileData } from '$lib/types/profileTypes';
+import type { Stats, ProfileData } from '$lib/types/types.profile';
 
 import { dev } from '$app/environment';
 
@@ -97,12 +97,13 @@ export async function createMatch(
 	tournamentTitle: string,
 	localDateString: string | null = null,
 ): Promise<Match> {
+
 	if (localDateString !== null) {
 		localDateString = new Date(localDateString).toLocaleDateString('ru');
 	} else {
 		localDateString = new Date().toLocaleDateString('ru');
 	}
-
+	
 	const response: Response = await fetch(serverAPI + '/matches', {
 		method: 'POST',
 		headers: {
@@ -123,6 +124,7 @@ export async function createMatch(
 	await handleModifyErrors(response, token);
 
 	const data = await response.json();
+	
 	return data;
 }
 
@@ -455,11 +457,8 @@ export async function getTournaments(
  * @param id - The id of the tournament that you want to get.
  * @returns The tournament data.
  */
-export async function getTournament(id: number | null = null): Promise<Tournament> {
-	let url: string = serverAPI + '/tournaments';
-	if (id) {
-		url += '/' + id;
-	}
+export async function getTournament(id: number): Promise<Tournament> {
+	const url: string = serverAPI + '/tournaments/' + id;
 
 	const response: Response = await fetch(url, {
 		headers: {
@@ -473,16 +472,16 @@ export async function getTournament(id: number | null = null): Promise<Tournamen
 
 	const json = await response.json();
 	const data = json.data;
-	
-	try {
-		data.state = JSON.parse(JSON.parse(data.state)) as TournamentState;	
-	} catch {
+
+	if (data.state) {
 		try {
-			data.state = JSON.parse(data.state) as TournamentState
+			data.state = JSON.parse(JSON.parse(data.state)) as TournamentState;
 		} catch {
-			data.state=null;
+			data.state = JSON.parse(data.state) as TournamentState;
 		}
+		
 	}
+	data.state = { participants: [], ...data.state };
 
 	return data;
 }
@@ -715,12 +714,14 @@ export async function getProfileData(playerID: number | string): Promise<Profile
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
-	});
+	});	
+
 	await handleGetErrors(response, token);
 
 	const resp = await response.json();
 
 	const id = +resp.message.split(' ').at(-1);
+
 	const data = { ...resp.data, id };
 
 	return data;

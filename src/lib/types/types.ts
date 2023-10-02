@@ -1,4 +1,4 @@
-import type { TournamentState } from '$lib/types/tournamentTypes';
+import type { TournamentState } from '$lib/types/types.tournaments';
 
 export interface Error {
 	message: string;

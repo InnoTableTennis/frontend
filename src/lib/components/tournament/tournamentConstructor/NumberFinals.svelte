@@ -35,7 +35,7 @@
 	<div class="content">
 		<h1>How many finals do you want?</h1>
 		<form
-			on:submit={async () => {
+			on:submit|preventDefault={async () => {
 				await nextStage();
 			}}
 		>

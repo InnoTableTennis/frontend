@@ -1,7 +1,7 @@
 // import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import type { Player, Match, Tournament } from '$lib/types/types';
-import type { TournamentState } from '$lib/types/tournamentTypes';
+import type { TournamentState } from '$lib/types/types.tournaments';
 
 import { dev } from '$app/environment';
 import { PUBLIC_DEV_SERVER_URL, PUBLIC_PROD_SERVER_URL } from '$env/static/public';
@@ -53,12 +53,6 @@ export async function createMatch(
 	tournamentTitle: string,
 	localDateString: string | null = null,
 ): Promise<Match> {
-	if (localDateString !== null) {
-		localDateString = new Date(localDateString).toLocaleDateString('ru');
-	} else {
-		localDateString = new Date().toLocaleDateString('ru');
-	}
-
 	const response: Response = await fetch(SERVER_API + '/matches', {
 		method: 'POST',
 		headers: {
@@ -80,6 +74,7 @@ export async function createMatch(
 	//TODO: handle errors
 
 	const data = await response.json();
+
 	return data;
 }
 
@@ -92,12 +87,6 @@ export async function editMatch(
 	tournamentTitle: string,
 	localDateString: string | null = null,
 ): Promise<void> {
-	if (localDateString !== null) {
-		localDateString = new Date(localDateString).toLocaleDateString('ru');
-	} else {
-		localDateString = new Date().toLocaleDateString('ru');
-	}
-
 	const response: Response = await fetch(SERVER_API + '/matches/' + id, {
 		method: 'PUT',
 		headers: {

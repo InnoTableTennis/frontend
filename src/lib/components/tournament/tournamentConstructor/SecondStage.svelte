@@ -32,9 +32,7 @@
 				}
 			}
 		}
-		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
-			dispatch('error', error);
-		});
+		dispatch('update', { state: tournament.state });
 		// await db.finishTournament(id.toString()).catch((error) => {
 		// 	dispatch('error', error);
 		// });
@@ -46,10 +44,7 @@
 		if (tournament.state.secondStage) {
 			tournament.state.secondStage[e.detail] = newGroup;
 		}
-		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
-			dispatch('error', error);
-		});
-		tournament.state.secondStage;
+		dispatch('update', { state: tournament.state });
 	}
 	async function updatePlaces(e: CustomEvent, id: number) {
 		let players = e.detail;
@@ -65,13 +60,13 @@
 <div class="menu-layout">
 	<div class="settings">
 		<h2>Settings</h2>
-		<span class="setting-line">
+		<div class="setting-line">
 			Finals - {numberFinals}
 			<button on:click={() => changeNumberFinals()} class="restart-button">
 				<RestartIcon />
 			</button>
-		</span>
-		<span class="setting-line">Finish the tournament</span>
+		</div>
+		<div class="setting-line">Finish the tournament</div>
 		<div class="finish-button">
 			<Button type="button" on:click={() => finish()}>Finish</Button>
 		</div>
@@ -87,7 +82,6 @@
 					class:selected={chosenId === i}
 					on:click|preventDefault={() => {
 						chosenId = i;
-						_;
 					}}
 				>
 					{stringifyNumber(i + 1)
@@ -101,7 +95,9 @@
 		{#if tournament.state.secondStage}
 			{#if tournament.state.secondStage[chosenId].type === 'Group'}
 				<TournamentGroup
+					isInConstructor
 					finalInfo={tournament.state.secondStage[chosenId]}
+					tournamentDate={tournament.startDateString}
 					on:update={updateTournament}
 					on:finalize={(event) => {
 						updatePlaces(event, chosenId);
@@ -123,17 +119,18 @@
 		{/if}
 		<div class="pre-render-group-block">
 			{#if tournament.state.secondStage}
-				{#each tournament.state.secondStage as _, i}
-					{#if tournament.state.secondStage[i].type === 'Group'}
+				{#each tournament.state.secondStage as final, i}
+					{#if final.type === 'Group'}
 						<TournamentGroup
-							finalInfo={tournament.state.secondStage[i]}
+							tournamentDate={tournament.startDateString}
+							finalInfo={final}
+							on:update={updateTournament}
 							on:finalize={(event) => {
 								updatePlaces(event, i);
-								_;
 							}}
 						/>
-					{:else if tournament.state.secondStage[i].type === 'SingleEliminationBracket'}
-						<TournamentBracket {tournament} dataFinal={tournament.state.secondStage[i]} />
+					{:else if final.type === 'SingleEliminationBracket'}
+						<TournamentBracket {tournament} dataFinal={final} />
 					{/if}
 				{/each}
 			{/if}
@@ -190,7 +187,7 @@
 	.finish-button {
 		width: 12rem;
 		height: 2.75rem;
-		margin: 1rem 0;
+		margin-top: 0.5rem;
 	}
 	.final-button {
 		background: none;
@@ -219,6 +216,10 @@
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
 		letter-spacing: 0.09375rem;
+	}
+
+	.setting-line {
+		margin-top: 0.5rem;
 	}
 
 	@media (max-width: 1100px) {

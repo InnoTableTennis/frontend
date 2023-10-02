@@ -1,4 +1,5 @@
 import { inputOverlayText, outputOverlayText } from '$lib/client/stores/stores';
+import type { OverlayOutput } from '$lib/types/types.popup';
 import { get } from 'svelte/store';
 async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
 	return new Promise<T>((resolve) => {
@@ -18,19 +19,19 @@ async function waitFor<T extends HTMLElement>(selector: string): Promise<T> {
 	});
 }
 function waitForAnswer(item: HTMLFormElement, event: string) {
-	return new Promise<number[] | null>((resolve) => {
+	return new Promise<OverlayOutput | null>((resolve) => {
 		const listener = () => {
 			item.removeEventListener(event, listener);
 			resolve(get(outputOverlayText));
 		};
 		item.addEventListener(event, listener);
-	}).then((value: number[] | null) => {
+	}).then((value: OverlayOutput | null) => {
 		outputOverlayText.set(null);
 		return value;
 	});
 }
 function waitForBackgroundTriggered(item: HTMLButtonElement, event: string) {
-	return new Promise<number[] | null>((resolve) => {
+	return new Promise<OverlayOutput | null>((resolve) => {
 		const listener = () => {
 			item.removeEventListener(event, listener);
 			resolve(get(outputOverlayText));
@@ -50,7 +51,7 @@ async function waitForClick() {
 		waitForAnswer(inputPopup, 'submit'),
 	]);
 }
-export async function alertInputPopup(message: string, firstName: string, secondName: string) {
-	inputOverlayText.set([message, firstName, secondName]);
+export async function alertInputPopup(message: string, firstName: string, secondName: string, date?: string) {
+	inputOverlayText.set({message, firstName, secondName, date});
 	return await waitForClick();
 }

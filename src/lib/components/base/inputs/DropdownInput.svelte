@@ -13,7 +13,7 @@
 	export const reset = () => {
 		inputVal = defaultValue;
 		selectedOption = '';
-		filteredOptions = options;
+		filteredOptions = options;		
 	};
 
 	let filteredOptions: string[] = [];

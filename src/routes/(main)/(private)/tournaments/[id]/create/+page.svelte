@@ -10,6 +10,9 @@
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
 	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
 
+	import * as db from '$lib/client/requests';
+	import { invalidate } from '$app/navigation';
+
 	export let data;
 
 	$: tournament = data.tournament;
@@ -17,6 +20,19 @@
 	let stage: TournamentStage = 'create';
 	let finals: Player[][];
 	let numberFinals = 1;
+
+	async function handleUpdateState(e: CustomEvent) {
+		const state = e.detail.state;		
+
+		await db
+			.updateTournament(tournament.id, state)
+			.then(() => {
+				invalidate('tournament:update');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}
 </script>
 
 <svelte:head>
@@ -33,17 +49,17 @@
 {#if stage === 'create'}
 	<CreateTournament {tournament} bind:stage />
 {:else if stage === 'addParticipants'}
-	<AddParticipants {tournament} bind:stage />
+	<AddParticipants {tournament} bind:stage on:update={handleUpdateState} />
 {:else if stage === 'numberGroups'}
-	<NumberGroups {tournament} bind:stage />
+	<NumberGroups {tournament} bind:stage on:update={handleUpdateState}/>
 {:else if stage === 'groups'}
-	<Groups {tournament} bind:stage bind:finals />
+	<Groups {tournament} bind:stage bind:finals on:update={handleUpdateState}/>
 {:else if stage === 'continue'}
-	<Continue bind:stage />
+	<Continue bind:stage {tournament}/>
 {:else if stage === 'numberFinals'}
 	<NumberFinals {tournament} bind:numberFinals bind:stage />
 {:else if stage === 'finalsDistribution'}
-	<FinalsDistribution bind:numberFinals bind:stage {tournament} bind:finals />
+	<FinalsDistribution bind:numberFinals bind:stage {tournament} bind:finals on:update={handleUpdateState}/>
 {:else if stage === 'secondStage'}
-	<SecondStage bind:numberFinals bind:stage {tournament} />
+	<SecondStage bind:numberFinals bind:stage {tournament} on:update={handleUpdateState}/>
 {/if}

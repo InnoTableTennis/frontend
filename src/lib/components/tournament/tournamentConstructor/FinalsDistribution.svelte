@@ -17,19 +17,13 @@
 	export let finals: Player[][];
 	export let tournament: Tournament;
 
-	let types: string[] = [];
+	let types: ('Groups' | 'Single Elimination')[] = [];
 	let chosenId: number[];
 
 	const dispatch = createEventDispatcher();
 
-	let numberGroups: number | undefined;
-	let numberParticipants: number;
-
-	async function updateTournament() {
-		await db.updateTournament(tournament.id, tournament.state).catch((error) => {
-			dispatch('error', error);
-		});
-	}
+	$: numberGroups = tournament.state.firstStage?.length ?? 0;
+	$: numberParticipants = tournament.state.participants.length;
 
 	function back() {
 		stage = 'numberFinals';
@@ -73,7 +67,7 @@
 					temp.push(newGroup);
 				}
 			}
-			if (types[i] === 'Finals') {
+			if (types[i] === 'Single Elimination') {
 				if (temp) {
 					temp.push(newBracket);
 				} else {
@@ -100,7 +94,7 @@
 				tournament.state.secondStage = temp;
 			}
 		}
-		await updateTournament();
+		dispatch('update', {state: tournament.state})
 		stage = 'secondStage';
 	}
 </script>

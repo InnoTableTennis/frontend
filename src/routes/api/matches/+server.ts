@@ -19,5 +19,7 @@ export async function POST({ request }) {
 		tournamentTitle,
 		localDateString,
 	);
-	return json(data, { status: 204 });
+	
+
+	return json(data, { status: 201 });
 }

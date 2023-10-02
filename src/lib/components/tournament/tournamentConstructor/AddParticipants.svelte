@@ -4,42 +4,42 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsCreateTable from '$lib/components/tables/ParticipantsCreateTable.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
-	import { invalidate } from '$app/navigation';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher()
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
-	let participants = tournament.state.participants ?? [];
-	$: numberParticipants = participants.length;
+	let participants = tournament.state.participants
+
+	$: tournament.state.participants = participants;		
 	
-	$: tournament.state.participants = participants
-	$: state = tournament.state;
+	$: numberParticipants = participants.length;
 
 	let participant: Player = {} as Player;
-	
-	const dispatch = createEventDispatcher();
-
-	async function addParticipants() {
-		await db.updateTournament(tournament.id, state).then(()=>{invalidate('tournament:update')}).catch((error) => {			console.error(error);
-			dispatch('error', error);
-		});
-	}
 
 	const nextStage = async function () {
-		await addParticipants();
 		stage = 'numberGroups';
 	};
+
+	function handleParticipantsUpdate(e: CustomEvent) {
+
+		participants = e.detail.participants		
+
+		dispatch('update', {state: {...tournament.state, participants}})
+	}
 </script>
 
 <div class="form-list-layout">
 	<div class="form">
 		{#await db.getAllPlayers() then allPlayers}
 			<AddParticipantForm
-				players={allPlayers}
-				bind:player={participant}
-				bind:participants={participants}
+				{allPlayers}
+				playerName={participant.name}
+				{participants}
+				on:update={handleParticipantsUpdate}
 			/>
 		{/await}
 	</div>

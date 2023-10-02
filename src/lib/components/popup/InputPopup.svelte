@@ -3,25 +3,28 @@
 	import { fade } from 'svelte/transition';
 	import { inputOverlayText, outputOverlayText } from '$lib/client/stores/stores';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { convertDateToString } from '$lib/utils';
 	export let popupText: string;
 	export let firstPlayer: string;
 	export let secondPlayer: string;
+	export let date: string = convertDateToString(new Date());
+
 	const buttonPressed = (e: Event) => {
 		e.preventDefault();
 		let data = new FormData(e.target as HTMLFormElement);
-		$outputOverlayText = [Number(data.get('firstScore')), Number(data.get('secondScore'))];
+		$outputOverlayText = {firstScore: Number(data.get('firstScore')), secondScore: Number(data.get('secondScore')), date: String(data.get('matchDate'))};
 		$inputOverlayText = null;
 	};
 </script>
 
-<form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
+<form class="fullscreen-overlay" transition:fade on:submit|preventDefault={buttonPressed}>
 	<button class="overlay-background" type="button" />
 	<div class="overlay-content">
 		<div class="overlay-head">
 			<div class="circle">!</div>
 		</div>
 		<p class="overlay-text">{popupText}</p>
-		<div class="inputScore">
+		<div class="input-score">
 			<div class="player-block">
 				<p>{firstPlayer}</p>
 				<div class="input">
@@ -45,9 +48,23 @@
 				</div>
 			</div>
 		</div>
+		<div class="input-date">
+			<div>
+				<InputTemplate
+					type="date"
+					name="matchDate"
+					defaultValue={date}
+					placeholder="Match Date"
+				/>
+			</div>
+		</div>
+		<div />
 		<div class="overlay-button-block">
 			<div class="overlay-button">
-				<Button type={'submit'}>Ok</Button>
+				<Button type={'submit'}>Submit</Button>
+			</div>
+			<div class="overlay-button">
+				<Button dark={true} type={'submit'}>Cancel</Button>
 			</div>
 		</div>
 	</div>
@@ -80,7 +97,6 @@
 		position: relative;
 		background: var(--main-color);
 		z-index: 1;
-		height: 20rem;
 		width: 25rem;
 		text-align: center;
 		border-radius: 30px;
@@ -91,6 +107,7 @@
 	.overlay-head {
 		display: flex;
 		height: 25%;
+		padding: 0.5rem 0;
 		background-color: var(--secondary-color);
 		border-top-left-radius: 30px;
 		border-top-right-radius: 30px;
@@ -114,15 +131,13 @@
 		margin: 1rem auto;
 	}
 	.overlay-button-block {
-		position: absolute;
 		display: flex;
-		bottom: 5%;
-		height: 15%;
 		width: 100%;
+		gap: 2rem;
 		justify-content: center;
 	}
 	.overlay-button {
-		width: 20%;
+		margin: 0.5rem 0 1rem;
 	}
 	.player-block {
 		width: 40%;
@@ -134,7 +149,15 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.inputScore {
+
+	.input-date {
+		display: flex;
+		justify-content: space-between;
+		margin: 0.5rem 0;
+		padding: 0 5%;
+	}
+
+	.input-score {
 		margin-top: 1.5rem;
 		width: 100%;
 		display: flex;
@@ -166,13 +189,10 @@
 			font-size: var(--fontsize-large);
 			margin-top: 2rem;
 		}
-		.overlay-button-block {
-			bottom: 5%;
-		}
 		.overlay-button {
 			width: 60%;
 		}
-		.inputScore {
+		.input-score {
 			display: block;
 			margin: 2rem auto;
 		}

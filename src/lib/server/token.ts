@@ -37,12 +37,12 @@ export function getUsername(token: string): string {
  * @param token - The JWT token.
  * @returns The expiration date of the token as a Date object, or null if the date cannot be determined.
  */
-export function getExpirationDate(token: string): Date | null {
-	let expDate: Date | null;
+export function getExpirationDate(token: string): Date {
+	let expDate: Date;
 	try {
 		expDate = new Date((<DecodedJWT>jwt_decode(token)).exp * 1000);
 	} catch (error) {
-		expDate = null;
+		expDate = new Date(0)
 	}
 	return expDate;
 }

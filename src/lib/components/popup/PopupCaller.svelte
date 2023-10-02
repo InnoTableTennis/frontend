@@ -11,9 +11,10 @@
 	{/if}
 	{#if $inputOverlayText != null}
 		<InputPopup
-			popupText={$inputOverlayText[0]}
-			firstPlayer={$inputOverlayText[1]}
-			secondPlayer={$inputOverlayText[2]}
+			popupText={$inputOverlayText.message}
+			firstPlayer={$inputOverlayText.firstName}
+			secondPlayer={$inputOverlayText.secondName}
+			date={$inputOverlayText.date}
 		/>
 	{/if}
 </div>

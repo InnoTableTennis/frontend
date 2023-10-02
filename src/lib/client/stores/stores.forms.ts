@@ -6,7 +6,7 @@ import type {
 	addPlayerFormStore,
 	addTournamentFormStore,
 	addMatchFormStore,
-} from '$lib/types/formTypes';
+} from '$lib/types/types.forms';
 import { convertDateToStringDash } from '$lib/utils';
 
 export const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {

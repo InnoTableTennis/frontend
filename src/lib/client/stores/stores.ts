@@ -1,7 +1,8 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import type { Error } from '$lib/types/types';
-import type { ProfileData } from '$lib/types/profileTypes';
+import type { ProfileData } from '$lib/types/types.profile';
+import type { OverlayInput, OverlayOutput } from '$lib/types/types.popup';
 
 /**
  * Represents the user token store.
@@ -24,5 +25,5 @@ export const errors: Writable<Error[]> = writable([]);
  * Stores the color-scheme value.
  */
 export const overlayText: Writable<string | null> = writable(null);
-export const inputOverlayText: Writable<string[] | null> = writable(null);
-export const outputOverlayText: Writable<number[] | null> = writable(null);
+export const inputOverlayText: Writable<OverlayInput | null> = writable(null);
+export const outputOverlayText: Writable<OverlayOutput | null> = writable(null);

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
@@ -7,21 +6,14 @@
 	import type { Tournament } from '$lib/types/types';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
-	import { invalidate } from '$app/navigation';
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
 	const dispatch = createEventDispatcher();
 
-	let numberGroups = 0;
+	let numberGroups = tournament.state.firstStage?.length ?? 0;
 	let groups: Group[] = [];
-
-	async function addGroups(state: TournamentState | null) {
-		await db.updateTournament(tournament.id, state).then(() => invalidate('tournament:update')).catch((error) => {
-			dispatch('error', error);
-		});
-	}
 
 	const makeGroups = function () {
 		groups = [];
@@ -61,7 +53,8 @@
 					secondStage: null,
 				};
 			}
-			await addGroups(tournament.state);
+			
+			dispatch('update', {state: tournament.state});
 			stage = 'groups';
 		}
 	};
@@ -75,7 +68,7 @@
 	<div class="center">
 		<div class="content">
 			<h1>Choose the number of groups in the tournament</h1>
-			<form on:submit={nextStage}>
+			<form on:submit|preventDefault={nextStage}>
 				<div class="input">
 					<InputTemplate
 						type="number"

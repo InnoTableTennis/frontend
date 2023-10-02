@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type {
 	tournamentSortFilterMatchFormStore,
 	tournamentSortFilterPlayerFormStore,
-} from '$lib/types/tournamentTypes';
+} from '$lib/types/types.tournaments';
 
 const TOURNAMENT_SORT_FILTER_MATCH_FORM: tournamentSortFilterMatchFormStore = {
 	name: '',

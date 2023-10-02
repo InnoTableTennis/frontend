@@ -1,12 +1,10 @@
 <script lang="ts">
-	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import type { Player, Tournament } from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';
 	import RestartIcon from '$lib/components/icons/RestartIcon.svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import type { TournamentStage } from '$lib/types/tournamentTypes';
-	import { invalidate } from '$app/navigation';
 
 	export let stage: TournamentStage;
 	export let finals: Player[][];
@@ -15,7 +13,7 @@
 	const dispatch = createEventDispatcher();
 
 	$: numberParticipants = tournament.state.participants.length;
-	
+
 	$: numberGroups = tournament.state.firstStage?.length;
 
 	$: {
@@ -41,9 +39,7 @@
 		if (tournament.state.firstStage) {
 			tournament.state.firstStage[e.detail] = newGroup;
 		}
-		await db.updateTournament(tournament.id, tournament.state).then(()=>{invalidate('tournament:update')}).catch((error) => {
-			dispatch('error', error);
-		});
+		dispatch('update', {state: tournament.state})
 	}
 	async function updatePlaces(e: CustomEvent, id: number) {
 		let players = e.detail;
@@ -60,6 +56,7 @@
 			}
 		}
 	}
+	
 </script>
 
 <div class="groups-layout">
@@ -89,6 +86,8 @@
 				{#each tournament.state.firstStage as group}
 					<TournamentGroup
 						finalInfo={group}
+						tournamentDate={tournament.startDateString}
+						isInConstructor
 						on:update={updateTournament}
 						on:finalize={(event) => {
 							updatePlaces(event, group.id);
