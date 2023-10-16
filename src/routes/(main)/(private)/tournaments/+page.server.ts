@@ -1,4 +1,5 @@
 import * as db from '$lib/server/requests';
+import type { Tournament } from '$lib/types/types.js';
 
 export const prerender = false;
 
@@ -6,8 +7,8 @@ export async function load({ url }) {
 	const searchParams = url.searchParams;
 
 	const title = searchParams.get('title');
-    const minParticipants = searchParams.get('minParticipants')
-    const maxParticipants = searchParams.get('maxParticipants')
+	const minParticipants = searchParams.get('minParticipants');
+	const maxParticipants = searchParams.get('maxParticipants');
 	const startDateString = searchParams.get('startDateString');
 	const endDateString = searchParams.get('endDateString');
 	const descending = searchParams.get('descending');
@@ -15,20 +16,32 @@ export async function load({ url }) {
 	const currentPageNumber = searchParams.get('currentPageNumber');
 	const currentPageSize = searchParams.get('currentPageSize');
 
-	const data = await db.getTournaments(
-        sortBy as 'date' | 'kf' | 'players',
-        descending !== null ? descending=='true' : null,
-        title,
-        minParticipants ? Number(minParticipants) : null,
-        maxParticipants ? Number(maxParticipants) : null,
-        startDateString,
-        endDateString,
-        currentPageNumber ? Number(currentPageNumber) : null,
-        currentPageSize ? Number(currentPageSize) : null,
-	);
+	let data: { tournaments: Tournament[]; totalPages: number } = { tournaments: [], totalPages: 0 };
+	let error: string | undefined;
+
+	try {
+		data = await db.getTournaments(
+			sortBy as 'date' | 'kf' | 'players',
+			descending !== null ? descending == 'true' : null,
+			title,
+			minParticipants ? Number(minParticipants) : null,
+			maxParticipants ? Number(maxParticipants) : null,
+			startDateString,
+			endDateString,
+			currentPageNumber ? Number(currentPageNumber) : null,
+			currentPageSize ? Number(currentPageSize) : null,
+		);
+	} catch (e) {
+		if (typeof e === 'string') {
+			error = e;
+		} else if (e instanceof Error) {
+			error = e.message; // works, `e` narrowed to Error
+		}
+	}
 
 	return {
 		...data,
+		error,
 		title: 'Tournaments',
 	};
 }
@@ -37,9 +50,9 @@ export const actions = {
 	createTournament: async ({ request }) => {
 		const data = await request.formData();
 		await db.createTournament(
-            String(data.get('title') || ''),
-            String(data.get('startDateString') || ''),
-            String(data.get('endDateString') || '')
+			String(data.get('title') || ''),
+			String(data.get('startDateString') || ''),
+			String(data.get('endDateString') || ''),
 		);
 	},
 	editTournament: async ({ request }) => {
@@ -48,8 +61,8 @@ export const actions = {
 		await db.editTournament(
 			String(data.get('tournamentId') || ''),
 			String(data.get('title') || ''),
-            String(data.get('startDateString') || ''),
-            String(data.get('endDateString') || '')
+			String(data.get('startDateString') || ''),
+			String(data.get('endDateString') || ''),
 		);
 	},
 	deleteTournament: async ({ request }) => {

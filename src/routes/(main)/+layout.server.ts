@@ -2,6 +2,7 @@ import * as db from '$lib/server/requests';
 
 import { userToken } from '$lib/server/stores';
 import { getExpirationDate, getRoles, getUsername } from '$lib/server/token';
+import type { ProfileData } from '$lib/types/types.profile';
 import type { LayoutServerLoad } from './$types';
 
 export const prerender = false;
@@ -23,15 +24,28 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 
 	const isAuthorized = userRoles.includes('USER');
 	const isLeader = userRoles.includes('LEADER') && isAuthorized;
+	const isAdmin = userRoles.includes('ADMIN') && isAuthorized;
 
-	let playerInfo;
-	if (isAuthorized) {
-		playerInfo = await db.getProfileData(username);
+	let playerInfo : ProfileData | undefined;
+	let error: string | undefined;
+
+	if (isAuthorized && !isAdmin) {
+		try {
+			playerInfo = await db.getProfileData(username);
+		} catch (e) {
+			if (typeof e === 'string') {
+				error = e;
+			} else if (e instanceof Error) {
+				error = e.message;
+			}
+		}
 	}
-
 	return {
 		isAuthorized,
 		isLeader,
+		isAdmin,
+		username,
 		playerInfo,
+		error
 	};
 };

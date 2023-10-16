@@ -9,8 +9,13 @@
 	import EditMatchForm from '$lib/components/forms/EditMatchForm.svelte';
 	import type { Match } from '$lib/types/types';
 	import { isLeader } from '$lib/client/stores/stores.js';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	let editData: Match = {} as Match;
 	let isEditing = false;

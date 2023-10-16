@@ -1,4 +1,5 @@
 import * as db from '$lib/server/requests';
+import type { Player } from '$lib/types/types.js';
 
 export const prerender = false;
 
@@ -6,27 +7,44 @@ export async function load({ url }) {
 	const searchParams = url.searchParams;
 
 	const name = searchParams.get('name');
-    const telegramAlias = searchParams.get('telegramAlias')
-    const minRating = searchParams.get('minRating')
+	const telegramAlias = searchParams.get('telegramAlias');
+	const minRating = searchParams.get('minRating');
 	const maxRating = searchParams.get('maxRating');
 	const descending = searchParams.get('descending');
 	const sortBy = searchParams.get('sortBy');
 	const currentPageNumber = searchParams.get('currentPageNumber');
 	const currentPageSize = searchParams.get('currentPageSize');
 
-	const data = await db.getPlayers(
-        sortBy as 'name' | 'rating',
-        descending !== null ? descending=='true' : null,
-        name,
-        telegramAlias,
-        minRating ? Number(minRating) : null,
-		maxRating ? Number(maxRating) : null,
-        currentPageNumber ? Number(currentPageNumber) : null,
-        currentPageSize ? Number(currentPageSize) : null,
-	);
+	let data: {
+		players: Player[];
+		totalPages: number;
+	};
+	let error: string | undefined;
+
+	try {
+		data = await db.getPlayers(
+			sortBy as 'name' | 'rating',
+			descending !== null ? descending == 'true' : null,
+			name,
+			telegramAlias,
+			minRating ? Number(minRating) : null,
+			maxRating ? Number(maxRating) : null,
+			currentPageNumber ? Number(currentPageNumber) : null,
+			currentPageSize ? Number(currentPageSize) : null,
+		);
+	} catch (e) {
+		data = { players: [], totalPages: 0 };
+
+		if (typeof e === 'string') {
+			error = e;
+		} else if (e instanceof Error) {
+			error = e.message; // works, `e` narrowed to Error
+		}
+	}
 
 	return {
 		...data,
+		error,
 		title: 'Players',
 	};
 }
@@ -36,8 +54,8 @@ export const actions = {
 		const data = await request.formData();
 		await db.createPlayer(
 			String(data.get('name') || ''),
-            String(data.get('telegramAlias') || ''),
-            Number(data.get('rating') || '0')
+			String(data.get('telegramAlias') || ''),
+			Number(data.get('rating') || '0'),
 		);
 	},
 	editPlayer: async ({ request }) => {
@@ -46,13 +64,13 @@ export const actions = {
 		await db.editPlayer(
 			String(data.get('playerId') || ''),
 			String(data.get('name') || ''),
-            String(data.get('telegramAlias') || ''),
-            Number(data.get('rating') || '0')
+			String(data.get('telegramAlias') || ''),
+			Number(data.get('rating') || '0'),
 		);
 	},
 	deletePlayer: async ({ request }) => {
 		const data = await request.formData();
 
 		await db.deletePlayer(String(data.get('playerId') || ''));
-	}
+	},
 };

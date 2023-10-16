@@ -9,6 +9,8 @@ import type { OverlayInput, OverlayOutput } from '$lib/types/types.popup';
  * Stores the user token value.
  */
 export const isLeader: Writable<boolean> = writable(false);
+export const isAdmin: Writable<boolean> = writable(false);
+export const username: Writable<string> = writable('');
 export const playerInfo: Writable<ProfileData | undefined> = writable();
 // export const isLeader = derived(userToken, ($userToken) => getRoles($userToken).includes('LEADER'));
 

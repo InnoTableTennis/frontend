@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { beforeUpdate, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 
 	import Errors from '$lib/components/error/Errors.svelte';
 

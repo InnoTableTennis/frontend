@@ -4,8 +4,13 @@
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
 	import { alertPopup } from '$lib/client/popup/popup.handler.js';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	$: leaders = data.leaders;
 

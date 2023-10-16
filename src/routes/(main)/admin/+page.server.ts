@@ -1,5 +1,6 @@
 import * as db from '$lib/server/requests';
 import { getRoles } from '$lib/server/token';
+import type { Player } from '$lib/types/types';
 import { redirect } from '@sveltejs/kit';
 
 export const prerender = false;
@@ -12,10 +13,22 @@ export async function load({ cookies }) {
 		throw redirect(308, '/');
 	}
 
-	const leaders = await db.getLeaders();		
+	let leaders: Player[] = [];
+	let error: string | undefined;
+
+	try {
+		leaders = await db.getLeaders();
+	} catch (e) {
+		if (typeof e === 'string') {
+			error = e;
+		} else if (e instanceof Error) {
+			error = e.message;
+		}
+	}
 
 	return {
 		leaders,
+		error,
 		title: 'Admin Panel',
 	};
 }

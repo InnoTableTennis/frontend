@@ -2,7 +2,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
-	import { playerInfo } from '$lib/client/stores/stores';
+	import { isAdmin, playerInfo, username } from '$lib/client/stores/stores';
 	import { base } from '$app/paths';
 	import { enhance } from '$app/forms';
 
@@ -12,9 +12,9 @@
 		isMenuVisible = isMenuVisible ? false : true;
 	};
 
-	export let isAuthorized = false;	
+	export let isAuthorized = false;
 
-	let linkToProfile = `${base}/players/` + $playerInfo?.telegramAlias;
+	let linkToProfile = `${base}/players/` + $username;
 </script>
 
 <div class="profile-container">
@@ -39,16 +39,24 @@
 					<div class="profile-menu-wrapper">
 						<div class="upper-subcontainer">
 							<div class="name-tag">
-								<div class="name">{$playerInfo?.name}</div>
-								<div class="tag">@{$playerInfo?.telegramAlias}</div>
+								<div class="name">
+									{#if $isAdmin}
+										{$username}
+									{:else}
+										{$playerInfo?.name}
+									{/if}
+								</div>
+								<div class="tag">@{$username}</div>
 							</div>
 							<div class="space-for-icon" />
 						</div>
 						<div class="lower-subcontainer">
-							<a href={linkToProfile}>
-								<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
-							</a>
-							<form method="POST" action="/logout" class='log-out-form' use:enhance>
+							{#if !$isAdmin}
+								<a href={linkToProfile}>
+									<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
+								</a>
+							{/if}
+							<form method="POST" action="/logout" class="log-out-form" use:enhance>
 								<button class="log-out-button">Log Out</button>
 							</form>
 						</div>
@@ -181,7 +189,7 @@
 		height: 2rem;
 		margin: 0.25rem;
 	}
-	
+
 	.log-out-button {
 		border-radius: 10px;
 		outline: none;

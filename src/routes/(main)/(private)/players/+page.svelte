@@ -7,14 +7,19 @@
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
 	import { isLeader } from '$lib/client/stores/stores.js';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
-	let mode = 'add';
-	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
+	let mode = 'view';
+	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing || (mode === 'view');
 </script>
 
 <svelte:head>

@@ -1,9 +1,8 @@
 <script lang="ts">
 	import ProfileLink from '$lib/components/navigation/ProfileLink.svelte';
-	import { isLeader, playerInfo } from '$lib/client/stores/stores';
+	import { isAdmin, isLeader, playerInfo, username } from '$lib/client/stores/stores';
 	import ToggleTheme from '$lib/components/ToggleTheme.svelte';
 	import { base } from '$app/paths';
-	import type { Player } from '$lib/types/types';
 	import { enhance } from '$app/forms';
 
 	export let isAuthorized = false;
@@ -26,10 +25,14 @@
 			<div class="for-mobile">
 				<div class="prof-info">
 					<div class="user-name">
-						{$playerInfo?.name}
+						{#if $isAdmin}
+							{$username}
+						{:else}
+							{$playerInfo?.name}
+						{/if}
 					</div>
 					<div class="user-alias">
-						@{$playerInfo?.telegramAlias}
+						@{$username}
 					</div>
 				</div>
 			</div>

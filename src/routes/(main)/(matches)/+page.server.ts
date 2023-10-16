@@ -1,4 +1,5 @@
 import * as db from '$lib/server/requests';
+import type { Match } from '$lib/types/types';
 
 export const prerender = false;
 
@@ -12,20 +13,36 @@ export async function load({ url }) {
 	const maxDateString = searchParams.get('maxDateString');
 	const currentPageNumber = searchParams.get('currentPageNumber');
 	const currentPageSize = searchParams.get('currentPageSize');
-	
 
-	const data = await db.getMatches(
-		descending !== null ? descending=='true' : null,
-		name,
-		score,
-		minDateString,
-		maxDateString,
-		currentPageNumber ? Number(currentPageNumber) : null,
-		currentPageSize ? Number(currentPageSize) : null,
-	);
+	let data: {
+		matches: Match[];
+		totalPages: number;
+	};
+	let error: string | undefined;
+
+	try {
+		data = await db.getMatches(
+			descending !== null ? descending == 'true' : null,
+			name,
+			score,
+			minDateString,
+			maxDateString,
+			currentPageNumber ? Number(currentPageNumber) : null,
+			currentPageSize ? Number(currentPageSize) : null,
+		);
+	} catch (e) {
+		data = { matches: [], totalPages: 0 };
+		
+		if (typeof e === 'string') {
+			error = e;
+		} else if (e instanceof Error) {
+			error = e.message; // works, `e` narrowed to Error
+		}
+	}
 
 	return {
 		...data,
+		error,
 		title: 'Matches',
 	};
 }

@@ -3,9 +3,14 @@
 	import InfoBlocks from '$lib/components/profile/InfoBlocks.svelte';
 	import ProfileMatchesComponent from '$lib/components/profile/ProfileMatchesComponent.svelte';
 	import RatingGraph from '$lib/components/graph/RatingGraph.svelte';
-	import type { ProfileData, ProfileMatch, RatingHistoryItem } from '$lib/types/profileTypes.js';
+	import type { ProfileData, ProfileMatch, RatingHistoryItem } from '$lib/types/types.profile.js';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	let profileStats = data.profileStats
 

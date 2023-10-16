@@ -7,13 +7,18 @@
 	import NumberGroups from '$lib/components/tournament/tournamentConstructor/NumberGroups.svelte';
 	import NumberFinals from '$lib/components/tournament/tournamentConstructor/NumberFinals.svelte';
 	import type { Player } from '$lib/types/types';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments.js';
 	import SecondStage from '$lib/components/tournament/tournamentConstructor/SecondStage.svelte';
 
 	import * as db from '$lib/client/requests';
 	import { invalidate } from '$app/navigation';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	$: tournament = data.tournament;
 

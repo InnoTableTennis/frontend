@@ -5,7 +5,7 @@
 	import { isLeader } from '$lib/client/stores/stores';
 	import { enhance } from '$app/forms';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
-	import PlayersListLine from './PlayersListLine.svelte';
+	import PlayersListLine from './PlayersTableRow.svelte';
 
 	export let players: Player[] = [];
 	export let totalPages: number;

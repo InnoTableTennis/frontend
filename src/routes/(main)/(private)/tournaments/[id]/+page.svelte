@@ -6,9 +6,14 @@
 	import TournamentFilterMatchForm from '$lib/components/forms/TournamentFilterMatchForm.svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import TournamentMatchesTable from '$lib/components/tables/TournamentMatchesTable.svelte';
+	import { handleError } from '$lib/client/handleError.js';
 	let handleInsert: () => void;
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 	
 	$: tournament = data.tournament;
 	$: deltas = data.deltas;

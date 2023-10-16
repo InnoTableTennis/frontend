@@ -1,21 +1,25 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { isLeader } from '$lib/client/stores/stores';
 	import type { Player } from '$lib/types/types';
+
+	import { base } from '$app/paths';
 
 	export let player: Player;
 	export let chosenId: number;
 	export let editData;
 	export let isChoosing: boolean;
 	export let mode: string;
-
     export let position : number;
 
 	$: selected = chosenId === player.id;    
 
 	async function handleClick(event: MouseEvent) {
 		chosenId = player.id;
-		if (mode == 'edit') {
+		if (mode === 'edit') {
 			editData = player;
+		} else if (mode === 'view') {
+			goto(`${base}/players/${player.id}`)
 		}
 	}
 

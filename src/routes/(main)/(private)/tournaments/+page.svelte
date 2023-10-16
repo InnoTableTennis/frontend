@@ -8,8 +8,13 @@
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditTournamentForm from '$lib/components/forms/EditTournamentForm.svelte';
 	import { isLeader } from '$lib/client/stores/stores.js';
+	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+
+	$: if (data.error) {
+		handleError(data.error);
+	};
 
 	let editData: Tournament = {} as Tournament;
 	let isEditing = false;

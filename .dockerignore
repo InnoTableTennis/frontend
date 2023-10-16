@@ -16,4 +16,5 @@ build
 package
 # **/.env
 
+# Docker-related files
 docker-compose-dev.yml
