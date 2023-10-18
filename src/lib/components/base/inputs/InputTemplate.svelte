@@ -17,9 +17,6 @@
 	export let stringVal = defaultValue;
 	export let numberVal = defaultNumValue;
 
-	$: stringVal = defaultValue;
-	$: numberVal = defaultNumValue;
-
 	let dateVal = stringVal ? changeDateFormat(stringVal) : '';
 	$: {
 		if (type === 'date') {

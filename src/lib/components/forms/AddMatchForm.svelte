@@ -21,11 +21,11 @@
 	
 	tournamentTitles = tournaments.map((tournament) => tournament.title);
 	latestTournamentTitle = tournamentTitles[0];
+	
 	if (!$AddMatchFormStore.tournamentTitle) {
 		$AddMatchFormStore.tournamentTitle = latestTournamentTitle;
 		changeDateByTournamentTitle($AddMatchFormStore.tournamentTitle);			
 	}
-	
 
 	let isSubmissionDisabled = true;
 
@@ -62,6 +62,8 @@
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
 		const tournament = tournaments.find((tournament) => tournament.title === tournamentTitle);
+
+		
 		if (tournament) {
 			const dateString = tournament.startDateString;
 			const year = Number(dateString.slice(6, 10));

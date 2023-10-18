@@ -6,15 +6,13 @@
 	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import { enhance } from '$app/forms';
 
-	let name = '';
-
 	export let player: Player;
 	export let chosenId = -1;
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !Boolean(name);
+		isSubmissionDisabled = !Boolean(player.name);
 	}
 
 	function resetPlayer() {
@@ -52,7 +50,7 @@
 				required={true}
 				isFirst={true}
 				defaultValue={player.name}
-				bind:stringVal={name}
+				bind:stringVal={player.name}
 			/>
 		</label>
 		<label>
@@ -61,6 +59,7 @@
 				name="telegramAlias"
 				placeholder="Player's alias"
 				defaultValue={player.telegramAlias}
+				bind:stringVal={player.telegramAlias}
 			/>
 		</label>
 	</div>
@@ -72,6 +71,7 @@
 				name="rating"
 				placeholder="Rating"
 				defaultNumValue={player.rating}
+				bind:numberVal={player.rating}
 			/>
 		</label>
 	</div>

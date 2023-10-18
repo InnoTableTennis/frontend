@@ -2,20 +2,10 @@
 	// import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
-	import * as db from '$lib/client/requests';
-	import { changeDateFormat } from '$lib/utils';
 	import type { Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import { enhance } from '$app/forms';
-
-	let title = '';
-	let startDateString = '';
-	let endDateString = '';
 
 	export let tournament: Tournament;
 	export let chosenId = -1;
@@ -23,7 +13,7 @@
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(title && startDateString && endDateString);
+		isSubmissionDisabled = !(tournament.title && tournament.startDateString && tournament.endDateString);
 	}
 
 	function resetTournament() {
@@ -60,7 +50,7 @@
 				required={true}
 				isFirst={true}
 				defaultValue={tournament.title}
-				bind:stringVal={title}
+				bind:stringVal={tournament.title}
 			/>
 		</label>
 	</div>
@@ -72,8 +62,8 @@
 				type="date"
 				name="startDateString"
 				placeholder="Start date"
+				bind:stringVal={tournament.startDateString}
 				defaultValue={tournament.startDateString}
-				bind:stringVal={startDateString}
 			/>
 		</label>
 
@@ -83,8 +73,8 @@
 				type="date"
 				name="endDateString"
 				placeholder="End date"
+				bind:stringVal={tournament.endDateString}
 				defaultValue={tournament.endDateString}
-				bind:stringVal={endDateString}
 			/>
 		</label>
 	</div>

@@ -14,48 +14,38 @@
 
 	export let match: Match;
 
-	export let chosenId = -1;
+	export let chosenId = -1;	
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
 
 	let isSubmissionDisabled = true;
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
-	let localDateString = '';
-
 	$: {
 		isSubmissionDisabled = !(
-			firstPlayerName &&
-			secondPlayerName &&
-			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
-			tournamentTitle !== null
+			match.firstPlayerName &&
+			match.secondPlayerName &&
+			(match.firstPlayerScore !== 0 || match.secondPlayerScore !== 0) &&
+			match.tournamentTitle !== null
 		);
 	}
 
 	$: playerNames = players.map((player) => player.name);
+	
 	$: {
 		tournamentTitles = tournaments.map((tournament) => tournament.title);
 		latestTournamentTitle = tournamentTitles[0];
-		if (!tournamentTitle) {
-			tournamentTitle = latestTournamentTitle;
-			changeDateByTournamentTitle(tournamentTitle);
-		}
 	}
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
-		firstPlayerName = event.detail;
+		match.firstPlayerName = event.detail;
 	}
 	function handleSelectSecondPlayerName(event: CustomEvent) {
-		secondPlayerName = event.detail;
+		match.secondPlayerName = event.detail;
 	}
 	function handleSelectTournament(event: CustomEvent) {
-		tournamentTitle = event.detail;
-		changeDateByTournamentTitle(tournamentTitle);
+		match.tournamentTitle = event.detail;
+		changeDateByTournamentTitle(match.tournamentTitle);
 	}
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
@@ -65,7 +55,7 @@
 			const year = Number(dateString.slice(6, 10));
 			const month = Number(dateString.slice(3, 5)) - 1;
 			const day = Number(dateString.slice(0, 2));
-			localDateString = convertDateToString(new Date(year, month, day));
+			match.localDateString = convertDateToString(new Date(year, month, day));
 		}
 	}
 
@@ -102,7 +92,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				defaultValue={match.firstPlayerName}
-				bind:inputVal={firstPlayerName}
+				bind:inputVal={match.firstPlayerName}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -113,7 +103,7 @@
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
 				defaultValue={match.secondPlayerName}
-				bind:inputVal={secondPlayerName}
+				bind:inputVal={match.secondPlayerName}
 			/>
 		</label>
 	</div>
@@ -124,7 +114,7 @@
 				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
-				bind:numberVal={firstPlayerScore}
+				bind:numberVal={match.firstPlayerScore}
 				defaultNumValue={match.firstPlayerScore}
 			/>
 		</label>
@@ -135,7 +125,7 @@
 				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
-				bind:numberVal={secondPlayerScore}
+				bind:numberVal={match.secondPlayerScore}
 				defaultNumValue={match.secondPlayerScore}
 			/>
 		</label>
@@ -147,7 +137,7 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				bind:stringVal={localDateString}
+				bind:stringVal={match.localDateString}
 				defaultValue={match.localDateString}
 			/>
 		</label>

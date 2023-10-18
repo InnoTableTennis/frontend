@@ -45,7 +45,7 @@
 			{:else}
 				<div class="form">
 					<EditPlayerForm
-						bind:player={editData}
+						player={editData}
 						bind:chosenId
 					/>
 				</div>

@@ -49,7 +49,7 @@
 			{:else}
 				<div class="form">
 					<EditTournamentForm
-						bind:tournament={editData}
+						tournament={editData}
 						bind:chosenId
 					/>
 				</div>
