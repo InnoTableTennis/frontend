@@ -1,5 +1,6 @@
 import * as db from '$lib/server/requests';
 import type { Match } from '$lib/types/types';
+import { fail } from '@sveltejs/kit';
 
 export const prerender = false;
 
@@ -32,7 +33,7 @@ export async function load({ url }) {
 		);
 	} catch (e) {
 		data = { matches: [], totalPages: 0 };
-		
+
 		if (typeof e === 'string') {
 			error = e;
 		} else if (e instanceof Error) {
@@ -50,31 +51,50 @@ export async function load({ url }) {
 export const actions = {
 	createMatch: async ({ request }) => {
 		const data = await request.formData();
-		await db.createMatch(
-			String(data.get('firstPlayerName') || ''),
-			String(data.get('secondPlayerName') || ''),
-			Number(data.get('firstPlayerScore')),
-			Number(data.get('secondPlayerScore')),
-			String(data.get('tournamentTitle') || ''),
-			String(data.get('localDateString') || ''),
-		);
+
+		try {
+			await db.createMatch(
+				String(data.get('firstPlayerName') || ''),
+				String(data.get('secondPlayerName') || ''),
+				Number(data.get('firstPlayerScore')),
+				Number(data.get('secondPlayerScore')),
+				String(data.get('tournamentTitle') || ''),
+				String(data.get('localDateString') || ''),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	editMatch: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.editMatch(
-			String(data.get('matchId') || ''),
-			String(data.get('firstPlayerName') || ''),
-			String(data.get('secondPlayerName') || ''),
-			Number(data.get('firstPlayerScore')),
-			Number(data.get('secondPlayerScore')),
-			String(data.get('tournamentTitle') || ''),
-			String(data.get('localDateString') || ''),
-		);
+		try {
+			await db.editMatch(
+				String(data.get('matchId') || ''),
+				String(data.get('firstPlayerName') || ''),
+				String(data.get('secondPlayerName') || ''),
+				Number(data.get('firstPlayerScore')),
+				Number(data.get('secondPlayerScore')),
+				String(data.get('tournamentTitle') || ''),
+				String(data.get('localDateString') || ''),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	deleteMatch: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.deleteMatch(String(data.get('matchId') || ''));
+		try {
+			await db.deleteMatch(String(data.get('matchId') || ''));
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 };

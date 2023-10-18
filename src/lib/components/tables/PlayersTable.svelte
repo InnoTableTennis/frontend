@@ -5,7 +5,7 @@
 	import { isLeader } from '$lib/client/stores/stores';
 	import { enhance } from '$app/forms';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
-	import PlayersListLine from './PlayersTableRow.svelte';
+	import PlayersTableRow from '$lib/components/tables/PlayersTableRow.svelte';
 
 	export let players: Player[] = [];
 	export let totalPages: number;
@@ -48,10 +48,10 @@
 							}}
 						>
 							<input type="hidden" name="playerId" value={player.id} />
-							<PlayersListLine {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1} />
+							<PlayersTableRow {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1} />
 						</form>
 					{:else}
-						<PlayersListLine {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1}/>
+						<PlayersTableRow {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1}/>
 					{/if}
 				{/each}
 			</section>

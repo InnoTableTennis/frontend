@@ -7,9 +7,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import TournamentGroup from '$lib/components/tournament/tournamentConstructor/TournamentGroup.svelte';
 	import { goto } from '$app/navigation';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
-	import TournamentBracket from './TournamentBracket.svelte';
 	import { base } from '$app/paths';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
+	import TournamentBracket from '$lib/components/tournament/tournamentConstructor/TournamentBracket.svelte';
 
 	const dispatch = createEventDispatcher();
 

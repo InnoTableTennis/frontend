@@ -10,7 +10,11 @@
 	import { handleError } from '$lib/client/handleError.js';
 
 	export let data;
+	export let form;
 
+	$: if (form?.error) {
+		handleError(form.error);
+	};
 	$: if (data.error) {
 		handleError(data.error);
 	};

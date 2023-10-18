@@ -1,5 +1,6 @@
 import * as db from '$lib/server/requests';
 import type { Player } from '$lib/types/types.js';
+import { fail } from '@sveltejs/kit';
 
 export const prerender = false;
 
@@ -52,25 +53,43 @@ export async function load({ url }) {
 export const actions = {
 	createPlayer: async ({ request }) => {
 		const data = await request.formData();
-		await db.createPlayer(
-			String(data.get('name') || ''),
-			String(data.get('telegramAlias') || ''),
-			Number(data.get('rating') || '0'),
-		);
+		try {
+			await db.createPlayer(
+				String(data.get('name') || ''),
+				String(data.get('telegramAlias') || ''),
+				Number(data.get('rating') || '0'),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	editPlayer: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.editPlayer(
-			String(data.get('playerId') || ''),
-			String(data.get('name') || ''),
-			String(data.get('telegramAlias') || ''),
-			Number(data.get('rating') || '0'),
-		);
+		try {
+			await db.editPlayer(
+				String(data.get('playerId') || ''),
+				String(data.get('name') || ''),
+				String(data.get('telegramAlias') || ''),
+				Number(data.get('rating') || '0'),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	deletePlayer: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.deletePlayer(String(data.get('playerId') || ''));
+		try {
+			await db.deletePlayer(String(data.get('playerId') || ''));
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 };

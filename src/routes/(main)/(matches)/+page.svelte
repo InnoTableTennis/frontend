@@ -11,8 +11,12 @@
 	import { isLeader } from '$lib/client/stores/stores.js';
 	import { handleError } from '$lib/client/handleError.js';
 
+	export let form;
 	export let data;
 
+	$: if (form?.error) {
+		handleError(form.error);
+	};
 	$: if (data.error) {
 		handleError(data.error);
 	};

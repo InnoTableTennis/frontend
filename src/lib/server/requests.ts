@@ -3,7 +3,7 @@ import { handleGetErrors, handleModifyErrors } from '$lib/errorHandler';
 
 import { userToken } from '$lib/server/stores';
 
-import type { Player, Match, Tournament, Error } from '$lib/types/types';
+import type { Player, Match, Tournament } from '$lib/types/types';
 import type { TournamentState } from '$lib/types/types.tournaments';
 
 import type { Stats, ProfileData } from '$lib/types/types.profile';
@@ -11,7 +11,6 @@ import type { Stats, ProfileData } from '$lib/types/types.profile';
 import { dev } from '$app/environment';
 
 import { DEV_SERVER_URL, PROD_SERVER_URL } from '$env/static/private';
-import { error } from '@sveltejs/kit';
 
 /**
  * This file contains functions for making API requests.
@@ -385,7 +384,7 @@ export async function authenticate(username: string, password: string): Promise<
 
 	if (!response.ok) {
 		const errorResponse = await response.json();
-		throw error(response.status, { message: errorResponse });
+		throw new Error(errorResponse.message);
 	}
 
 	const data = await response.json();

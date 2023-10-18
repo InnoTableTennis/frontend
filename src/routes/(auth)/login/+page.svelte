@@ -1,5 +1,14 @@
 <script lang="ts">
+	import { handleError } from '$lib/client/handleError.js';
 	import Login from '$lib/components/navigation/Login.svelte';
+
+	export let form;
+	
+	$: console.log(form);
+
+	$: if (form?.error) {
+		handleError(form.error);
+	};
 </script>
 
 <svelte:head>

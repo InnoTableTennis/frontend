@@ -1,5 +1,6 @@
 import * as db from '$lib/server/requests';
 import type { Tournament } from '$lib/types/types.js';
+import { fail } from '@sveltejs/kit';
 
 export const prerender = false;
 
@@ -49,30 +50,55 @@ export async function load({ url }) {
 export const actions = {
 	createTournament: async ({ request }) => {
 		const data = await request.formData();
-		await db.createTournament(
-			String(data.get('title') || ''),
-			String(data.get('startDateString') || ''),
-			String(data.get('endDateString') || ''),
-		);
+
+		try {
+			await db.createTournament(
+				String(data.get('title') || ''),
+				String(data.get('startDateString') || ''),
+				String(data.get('endDateString') || ''),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	editTournament: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.editTournament(
-			String(data.get('tournamentId') || ''),
-			String(data.get('title') || ''),
-			String(data.get('startDateString') || ''),
-			String(data.get('endDateString') || ''),
-		);
+		try {
+			await db.editTournament(
+				String(data.get('tournamentId') || ''),
+				String(data.get('title') || ''),
+				String(data.get('startDateString') || ''),
+				String(data.get('endDateString') || ''),
+			);
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	deleteTournament: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.deleteTournament(String(data.get('tournamentId') || ''));
+		try {
+			await db.deleteTournament(String(data.get('tournamentId') || ''));
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 	finishTournament: async ({ request }) => {
 		const data = await request.formData();
 
-		await db.finishTournament(String(data.get('tournamentId') || ''));
+		try {
+			await db.finishTournament(String(data.get('tournamentId') || ''));
+		} catch (error) {
+			return fail(422, {
+				error: (<Error>error).message,
+			});
+		}
 	},
 };

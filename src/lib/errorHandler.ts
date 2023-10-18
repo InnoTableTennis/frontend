@@ -1,5 +1,4 @@
 import { getExpirationDate, getRoles } from '$lib/server/token';
-import type { Error } from './types/types';
 import { error } from '@sveltejs/kit';
 
 /**
@@ -73,4 +72,7 @@ function checkExpiration(response: Response, token: string): void {
 function handleCommonErrors(response: Response, token: string) {
 	checkExpiration(response, token);
 
+	if (response.status == 404) {
+		throw new Error('Entity is not found!');
+	}
 }
