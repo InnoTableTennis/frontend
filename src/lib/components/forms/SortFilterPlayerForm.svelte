@@ -15,8 +15,6 @@
 		if ($page.url.pathname == '/') {
 			let searchParams = $page.url.searchParams;
 
-			const sortBy = searchParams?.get('sortBy') as 'rating' | 'name';
-
 			$SortFilterPlayerFormStore.name =
 				searchParams?.get('name') || $SortFilterPlayerFormStore.name;
 			$SortFilterPlayerFormStore.telegramAlias =
@@ -25,8 +23,8 @@
 				searchParams?.get('minRating') || $SortFilterPlayerFormStore.minRating;
 			$SortFilterPlayerFormStore.maxRating =
 				searchParams?.get('endDateString') || $SortFilterPlayerFormStore.maxRating;
-			if (['date', 'players', 'kf'].includes(sortBy)) {
-				$SortFilterPlayerFormStore.sortBy = sortBy;
+			if (searchParams?.get('sortBy')) {
+				$SortFilterPlayerFormStore.sortBy = searchParams.get('sortBy') as 'rating' | 'name';
 			}
 			if (searchParams?.get('descending')) {
 				$SortFilterPlayerFormStore.descending = searchParams.get('descending') !== 'false';
@@ -47,6 +45,8 @@
 		const currentPageSize = url.searchParams.get('currentPageSize');
 
 		const formData = new FormData(event.target as HTMLFormElement);
+		
+		console.log(formData);
 
 		const searchParams = objectToURLSearchParams({
 			...Object.fromEntries(formData),
@@ -120,6 +120,7 @@
 	<h2>Sort by</h2>
 
 	<div class="column-2-elems">
+		<input hidden name="sortBy" bind:value={$SortFilterPlayerFormStore.sortBy} />
 		<RadioGroup
 			bind:group={$SortFilterPlayerFormStore.sortBy}
 			values={radioValues}

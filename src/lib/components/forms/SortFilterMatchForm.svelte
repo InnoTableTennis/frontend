@@ -50,6 +50,8 @@
 
 		const formData = new FormData(event.target as HTMLFormElement);
 
+		console.log(formData);
+
 		const searchParams = objectToURLSearchParams({
 			...Object.fromEntries(formData),
 			minDateString: $SortFilterMatchFormStore.minDateString,
@@ -122,8 +124,9 @@
 	<h2>Sort by</h2>
 
 	<div class="column-1-elems">
+		<input hidden name="sortBy" bind:value={$SortFilterMatchFormStore.sortBy} />
 		<RadioGroup
-			group={$SortFilterMatchFormStore.sortBy}
+			bind:group={$SortFilterMatchFormStore.sortBy}
 			values={radioValues}
 			labels={radioLabels}
 		/>
