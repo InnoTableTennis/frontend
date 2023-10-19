@@ -117,7 +117,7 @@
 				/>
 			{/if}
 		{/if}
-		<div class="pre-render-group-block">
+		<!-- <div class="pre-render-group-block">
 			{#if tournament.state.secondStage}
 				{#each tournament.state.secondStage as final, i}
 					{#if final.type === 'Group'}
@@ -134,7 +134,7 @@
 					{/if}
 				{/each}
 			{/if}
-		</div>
+		</div> -->
 	</div>
 </div>
 
@@ -172,9 +172,9 @@
 	.final-button-block::-webkit-scrollbar {
 		display: none;
 	}
-	.pre-render-group-block {
+	/* .pre-render-group-block {
 		display: none;
-	}
+	} */
 	.restart-button {
 		background: none;
 		border: none;

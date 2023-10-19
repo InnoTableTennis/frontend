@@ -12,7 +12,11 @@
 	const buttonPressed = (e: Event) => {
 		e.preventDefault();
 		let data = new FormData(e.target as HTMLFormElement);
-		$outputOverlayText = {firstScore: Number(data.get('firstScore')), secondScore: Number(data.get('secondScore')), date: String(data.get('matchDate'))};
+		$outputOverlayText = {
+			firstScore: Number(data.get('firstScore')),
+			secondScore: Number(data.get('secondScore')),
+			date: String(data.get('matchDate')),
+		};
 		$inputOverlayText = null;
 	};
 </script>
@@ -23,48 +27,44 @@
 		<div class="overlay-head">
 			<div class="circle">!</div>
 		</div>
-		<p class="overlay-text">{popupText}</p>
-		<div class="input-score">
-			<div class="player-block">
-				<p>{firstPlayer}</p>
-				<div class="input">
-					<InputTemplate
-						type={'number'}
-						name={'firstScore'}
-						defaultNumValue={0}
-						placeholder={'First Score'}
-					/>
+		<div class='popup-container'>
+			<p class="overlay-text">{popupText}</p>
+			<div class="input-score">
+				<div class="player-block">
+					<p>{firstPlayer}</p>
+					<div class="input">
+						<InputTemplate
+							type={'number'}
+							name={'firstScore'}
+							defaultNumValue={0}
+							placeholder={'First Score'}
+						/>
+					</div>
+				</div>
+				<div class="player-block">
+					<p>{secondPlayer}</p>
+					<div class="input">
+						<InputTemplate
+							type={'number'}
+							name={'secondScore'}
+							defaultNumValue={0}
+							placeholder={'Second Score'}
+						/>
+					</div>
 				</div>
 			</div>
-			<div class="player-block">
-				<p>{secondPlayer}</p>
-				<div class="input">
-					<InputTemplate
-						type={'number'}
-						name={'secondScore'}
-						defaultNumValue={0}
-						placeholder={'Second Score'}
-					/>
+			<div class="input-date">
+				<!-- <div> -->
+				<InputTemplate type="date" name="matchDate" defaultValue={date} placeholder="Match Date" />
+				<!-- </div> -->
+			</div>
+			<div class="overlay-button-block">
+				<div class="overlay-button">
+					<Button type={'submit'}>Submit</Button>
 				</div>
-			</div>
-		</div>
-		<div class="input-date">
-			<div>
-				<InputTemplate
-					type="date"
-					name="matchDate"
-					defaultValue={date}
-					placeholder="Match Date"
-				/>
-			</div>
-		</div>
-		<div />
-		<div class="overlay-button-block">
-			<div class="overlay-button">
-				<Button type={'submit'}>Submit</Button>
-			</div>
-			<div class="overlay-button">
-				<Button dark={true} type={'submit'}>Cancel</Button>
+				<div class="overlay-button">
+					<Button dark={true} type={'submit'}>Cancel</Button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -106,7 +106,7 @@
 	}
 	.overlay-head {
 		display: flex;
-		height: 25%;
+		height: 2.5rem;
 		padding: 0.5rem 0;
 		background-color: var(--secondary-color);
 		border-top-left-radius: 30px;
@@ -126,6 +126,9 @@
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
 	}
+	.popup-container {
+		padding: 0 10%;
+	}
 	.overlay-text {
 		font-size: var(--fontsize-large);
 		margin: 1rem auto;
@@ -133,13 +136,12 @@
 	.overlay-button-block {
 		display: flex;
 		width: 100%;
-		gap: 2rem;
-		justify-content: center;
+		justify-content:space-evenly;
+		margin: 1rem 0;
+		padding: 1rem 0 1.5rem;
 	}
 	.overlay-button {
-		margin: 0.5rem 0 1rem;
-	}
-	.player-block {
+		/* margin: 0.5rem 0 1rem; */
 		width: 40%;
 	}
 	.player-block p {
@@ -154,56 +156,50 @@
 		display: flex;
 		justify-content: space-between;
 		margin: 0.5rem 0;
-		padding: 0 5%;
 	}
 
 	.input-score {
 		margin-top: 1.5rem;
 		width: 100%;
 		display: flex;
-		justify-content: space-around;
+		gap: 1.5rem;
+		justify-content: space-between;
 	}
 	.input {
-		width: 80%;
-		margin: 0.5rem auto;
+		margin: 0.5rem 0;
 	}
 	@media (max-width: 800px) {
 		.overlay-content {
-			height: 50%;
 			width: 60%;
-		}
-		.player-block {
-			width: 40%;
 		}
 	}
 	@media (max-width: 480px) {
 		.overlay-content {
 			padding: 0;
-			height: 30rem;
 			width: 70%;
-		}
-		.overlay-head {
-			height: 20%;
 		}
 		.overlay-text {
 			font-size: var(--fontsize-large);
 			margin-top: 2rem;
 		}
-		.overlay-button {
+		/* .overlay-button {
 			width: 60%;
-		}
+		} */
 		.input-score {
-			display: block;
-			margin: 2rem auto;
+			margin-top: 0;
+			/* display: block; */
+			/* margin: 2rem auto; */
+			flex-direction: column;
 		}
 		.player-block {
-			width: 80%;
-			margin: 1rem auto;
 			text-align: center;
 		}
 		.input {
 			margin: 0 auto;
-			width: 70%;
+		}
+
+		.input-date {
+			margin-top: 1.5rem;
 		}
 	}
 </style>

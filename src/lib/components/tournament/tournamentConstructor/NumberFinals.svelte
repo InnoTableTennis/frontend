@@ -3,14 +3,14 @@
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Tournament } from '$lib/types/types';
-	import { createEventDispatcher } from 'svelte';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
 
-	export let numberFinals = 0;
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
+	export let numberFinals = tournament.state.secondStage?.length ?? 1;
+	
 	const nextStage = async function () {
 		if (
 			!tournament.state ||
@@ -46,9 +46,6 @@
 					max="100"
 					name="groupNumber"
 					placeholder=""
-					defaultNumValue={tournament.state.secondStage?.length
-						? tournament.state.secondStage?.length
-						: numberFinals}
 					bind:numberVal={numberFinals}
 					textAlignCenter={true}
 				/>

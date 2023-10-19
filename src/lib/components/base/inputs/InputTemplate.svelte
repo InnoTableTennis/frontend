@@ -114,6 +114,11 @@
 		font-size: var(--fontsize-medium1);
 		transition: 0.2s linear;
 	}
+	.date-container {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
 	input:focus {
 		outline: none;
 		color: var(--content-color);

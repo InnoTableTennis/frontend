@@ -10,7 +10,7 @@
 		Group,
 		SingleEliminationBracket,
 		TournamentStage,
-	} from '$lib/types/tournamentTypes';
+	} from '$lib/types/types.tournaments';
 
 	export let numberFinals = 0;
 	export let stage: TournamentStage;

@@ -24,17 +24,18 @@
 
 	let stage: TournamentStage = 'create';
 	let finals: Player[][];
-	let numberFinals = 1;
+	let numberFinals : number;
 
 	async function handleUpdateState(e: CustomEvent) {
 		const state = e.detail.state;		
 
 		await db
 			.updateTournament(tournament.id, state)
-			.then(() => {
-				invalidate('tournament:update');
-			})
+			// .then(() => {
+			// 	invalidate('tournament:update');
+			// })
 			.catch((error) => {
+				handleError(error)
 				console.error(error);
 			});
 	}

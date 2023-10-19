@@ -4,7 +4,7 @@
 	import { createMatch, editMatch } from '$lib/client/requests';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { isLeader } from '$lib/client/stores/stores';
-	import type { Final, Group } from '$lib/types/tournamentTypes';
+	import type { Final, Group } from '$lib/types/types.tournaments';
 	import type { OverlayOutput } from '$lib/types/types.popup';
 	const dispatch = createEventDispatcher();
 	export let finalInfo: Final;
@@ -174,6 +174,10 @@
 	const setMatchID = (currentMatch: Match) => {
 		const first = findPlayerNumber(currentMatch.firstPlayerName);
 		const second = findPlayerNumber(currentMatch.secondPlayerName);
+		
+		console.log(matchID);
+		console.log(first, second)
+		
 		matchID[first][second] = matchID[second][first] = currentMatch.id;
 	};
 	const matchFinished = (row: number, column: number) => {
