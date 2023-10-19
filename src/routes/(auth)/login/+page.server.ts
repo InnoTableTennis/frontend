@@ -20,13 +20,11 @@ export const actions = {
 				String(data.get('password') || ''),
 			);
 			cookies.set('userToken', token, { path: '/' });
-			throw redirect(308, `${base}/`);
-		} catch (error) {
-			console.log(error);
-			
+		} catch (error) {			
 			return fail(422, {
 				error: (<Error>error).message,
 			});
 		}
+		throw redirect(308, `${base}/`);
 	},
 };

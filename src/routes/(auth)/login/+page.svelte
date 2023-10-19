@@ -4,8 +4,6 @@
 
 	export let form;
 	
-	$: console.log(form);
-
 	$: if (form?.error) {
 		handleError(form.error);
 	};

@@ -45,8 +45,6 @@
 		const currentPageSize = url.searchParams.get('currentPageSize');
 
 		const formData = new FormData(event.target as HTMLFormElement);
-		
-		console.log(formData);
 
 		const searchParams = objectToURLSearchParams({
 			...Object.fromEntries(formData),
