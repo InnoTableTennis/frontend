@@ -12,15 +12,15 @@ import { convertDateToStringDash } from '$lib/utils';
 export const SORT_FILTER_PLAYER_FORM: sortFilterPlayerFormStore = {
 	name: '',
 	telegramAlias: '',
-	minRating: '',
-	maxRating: '',
+	minRating: null,
+	maxRating: null,
 	descending: true,
 	sortBy: 'rating',
 };
 export const SORT_FILTER_TOURNAMENT_FORM: sortFilterTournamentFormStore = {
 	title: '',
-	minParticipants: '',
-	maxParticipants: '',
+	minParticipants: null,
+	maxParticipants: null,
 	startDateString: '',
 	endDateString: '',
 	descending: true,

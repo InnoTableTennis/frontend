@@ -1,10 +1,8 @@
 <script lang="ts">
 	import type { Player } from '$lib/types/types';
 
-	let player = {} as Player;
-
 	export let numberOfGames: number;
-	export let places: Player[] = [player, player, player];
+	export let places: Player[] | [] = [];
 	export let numberOfParticipants: number;
 </script>
 
@@ -14,16 +12,19 @@
 		<div class="value">{numberOfGames}</div>
 		<div class="description">in total</div>
 	</div>
+	{#if places.length}
 	<div class="info-block places">
+		
 		<div class="name">Places</div>
 		{#each places as place, i}
-			<div class="place-line" class:hidden={i > 2}>
-				<div class="place">{i + 1}</div>
-				<div class="player">{place.name}</div>
-			</div>
+		<div class="place-line" class:hidden={i > 2}>
+			<div class="place">{i + 1}</div>
+			<div class="player">{place.name}</div>
+		</div>
 		{/each}
 		<div class="footer" />
 	</div>
+	{/if}
 	<div class="info-block">
 		<div class="name">Number of participants</div>
 		<div class="value">{numberOfParticipants}</div>
@@ -43,13 +44,15 @@
 		padding: 3% 3% 3% 3%;
 		margin: auto;
 		margin-top: -5%;
+		gap: 1.5rem;
 	}
 	.info-block {
 		background-color: var(--main-color);
 		border: 0px solid black;
 		box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.25);
 		border-radius: 20px;
-		width: 32%;
+		/* width: 32%; */
+		width: 100%;
 		min-height: 9rem;
 		height: 13rem;
 		box-sizing: border-box;

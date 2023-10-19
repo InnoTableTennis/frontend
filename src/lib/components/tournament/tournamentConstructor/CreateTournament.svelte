@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import type { Tournament } from '$lib/types/types';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;

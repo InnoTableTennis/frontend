@@ -1,16 +1,16 @@
 export interface sortFilterPlayerFormStore {
 	name: string;
 	telegramAlias: string;
-	minRating: string;
-	maxRating: string;
+	minRating: number | null;
+	maxRating: number | null;
 	descending: boolean;
 	sortBy: 'rating' | 'name';
 }
 
 export interface sortFilterTournamentFormStore {
 	title: string;
-	minParticipants: string;
-	maxParticipants: string;
+	minParticipants: number | null;
+	maxParticipants: number | null;
 	startDateString: string;
 	endDateString: string;
 	descending: boolean;

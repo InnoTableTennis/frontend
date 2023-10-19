@@ -46,11 +46,6 @@
 		isDescending = true;
 		saveForm();
 	};
-
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
-	}
 </script>
 
 <div class="line-2-elems">
@@ -115,10 +110,9 @@
 <form on:submit={sortMatch} on:change={saveForm}>
 	<div class="column-1-elems">
 		<RadioGroup
-			group={sortBy}
+			bind:group={sortBy}
 			values={radioValues}
 			labels={radioLabels}
-			on:update={updateRadioGroupValue}
 		/>
 	</div>
 	<OrderButton bind:value={isDescending} />

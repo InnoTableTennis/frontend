@@ -40,17 +40,12 @@
 	const resetForm = function () {
 		name = '';
 		telegramAlias = '';
-		minRating = '';
-		maxRating = '';
+		minRating = null;
+		maxRating = null;
 		sortBy = 'rating';
 		isDescending = true;
 		saveForm();
 	};
-
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
-	}
 </script>
 
 <div class="line-2-elems">
@@ -118,10 +113,9 @@
 
 	<div class="column-2-elems">
 		<RadioGroup
-			group={sortBy}
+			bind:group={sortBy}
 			values={radioValues}
 			labels={radioLabels}
-			on:update={updateRadioGroupValue}
 		/>
 	</div>
 	<OrderButton bind:value={isDescending} />

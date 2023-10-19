@@ -67,7 +67,7 @@
 	</div>
 	<div class="main">
 		{#if tournament.state}
-			{#if tournament.finished}
+			<!-- {#if tournament.finished} -->
 				<h1>List of all the participants</h1>
 				<div class="form-list-layout">
 					<div class="form">
@@ -83,7 +83,7 @@
 						/>
 					</div>
 				</div>
-			{/if}
+			<!-- {/if} -->
 			{#if tournament.state.firstStage}
 				<h1>First stage - Groups</h1>
 				{#each tournament.state.firstStage as group}

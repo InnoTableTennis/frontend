@@ -12,9 +12,9 @@ const TOURNAMENT_SORT_FILTER_MATCH_FORM: tournamentSortFilterMatchFormStore = {
 const TOURNAMENT_SORT_FILTER_PLAYER_FORM: tournamentSortFilterPlayerFormStore = {
 	name: '',
 	telegramAlias: '',
-	minRating: '',
-	maxRating: '',
-	descending: true,
+	minRating: null,
+	maxRating: null,
+	descending: false,
 	sortBy: 'place',
 };
 

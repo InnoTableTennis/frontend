@@ -44,8 +44,8 @@ export type TournamentStage =
 export interface tournamentSortFilterPlayerFormStore {
 	name: string;
 	telegramAlias: string;
-	minRating: string;
-	maxRating: string;
+	minRating: number | null;
+	maxRating: number | null;
 	descending: boolean;
 	sortBy: 'rating' | 'place' | 'delta';
 }

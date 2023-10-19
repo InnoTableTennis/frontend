@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Pagination from '$lib/components/base/pagination/Pagination.svelte';
 	import { TournamentSortFilterParticpantsFormStore } from '$lib/client/stores/stores.tournaments';
-	import type { Participant } from '$lib/types/tournamentTypes';
+	import type { Participant } from '$lib/types/types.tournaments';
 	import type { Player } from '$lib/types/types';
 
 	export let participants: Player[];
@@ -22,6 +22,7 @@
 		}
 		handleInsert();
 	}
+	constructParticipants();
 
 	function sortFilter() {
 		sortedParticipants = [];
@@ -41,191 +42,78 @@
 	}
 
 	function filter() {
-		let name = $TournamentSortFilterParticpantsFormStore.name;
-		let alias = $TournamentSortFilterParticpantsFormStore.telegramAlias;
+		let name = $TournamentSortFilterParticpantsFormStore.name.toLowerCase();
+		let alias = $TournamentSortFilterParticpantsFormStore?.telegramAlias?.toLowerCase();
 		let minRating = $TournamentSortFilterParticpantsFormStore.minRating;
 		let maxRating = $TournamentSortFilterParticpantsFormStore.maxRating;
 
-		for (let i = 0; i < initialParticipants.length; i++) {
-			if (name === '' && alias === '' && minRating === '' && maxRating === '') {
-				sortedParticipants.push(initialParticipants[i]);
-			} else if (name === '' && alias === '' && minRating === '') {
-				if (initialParticipants[i].rating < Number(maxRating)) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '' && alias === '' && maxRating === '') {
-				if (initialParticipants[i].rating > Number(minRating)) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '' && minRating === '' && maxRating === '') {
-				if (initialParticipants[i].telegramAlias.includes(alias)) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (alias === '' && minRating === '' && maxRating === '') {
-				if (initialParticipants[i].name.includes(name)) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '' && alias === '') {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].rating > Number(minRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '' && minRating === '') {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].telegramAlias.includes(alias)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '' && maxRating === '') {
-				if (
-					initialParticipants[i].rating > Number(minRating) &&
-					initialParticipants[i].telegramAlias.includes(alias)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (alias === '' && minRating === '') {
-				if (
-					initialParticipants[i].name.includes(name) &&
-					initialParticipants[i].rating < Number(maxRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (alias === '' && maxRating === '') {
-				if (
-					initialParticipants[i].rating > Number(minRating) &&
-					initialParticipants[i].name.includes(name)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (minRating === '' && maxRating === '') {
-				if (
-					initialParticipants[i].telegramAlias.includes(alias) &&
-					initialParticipants[i].name.includes(name)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (name === '') {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].telegramAlias.includes(alias) &&
-					initialParticipants[i].rating > Number(minRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (alias === '') {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].name.includes(name) &&
-					initialParticipants[i].rating > Number(minRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (minRating === '') {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].telegramAlias.includes(alias) &&
-					initialParticipants[i].name.includes(name)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else if (maxRating === '') {
-				if (
-					initialParticipants[i].telegramAlias.includes(alias) &&
-					initialParticipants[i].name.includes(name) &&
-					initialParticipants[i].rating > Number(minRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			} else {
-				if (
-					initialParticipants[i].rating < Number(maxRating) &&
-					initialParticipants[i].telegramAlias.includes(alias) &&
-					initialParticipants[i].name.includes(name) &&
-					initialParticipants[i].rating > Number(minRating)
-				) {
-					sortedParticipants.push(initialParticipants[i]);
-				}
-			}
-		}
+		sortedParticipants = initialParticipants
+			.filter((participant) => participant.name.toLowerCase().includes(name))
+			.filter((participant) => !alias || participant?.telegramAlias?.toLowerCase()?.includes(alias))
+			.filter((participant) => minRating == null || participant.rating >= minRating)
+			.filter((participant) => maxRating == null || participant.rating <= maxRating);
 	}
 
 	function sortPlace(participantsArray: Participant[], descending: boolean) {
-		participantsArray.sort(function (player1, player2) {
-			if (player1.place < player2.place) {
-				if (descending) return 1;
-				return -1;
-			} else if (player1.place === player2.place) {
-				return 0;
-			} else {
-				if (descending) return -1;
-				return 1;
-			}
-		});
+		participantsArray.sort((player1, player2) => {
+				if (descending) {
+					return player2.place - player1.place;
+				} else {
+					return player1.place - player2.place;
+				}
+			})
 	}
 
 	function sortRating(participantsArray: Participant[], descending: boolean) {
-		participantsArray.sort(function (player1, player2) {
-			if (player1.rating < player2.rating) {
-				if (descending) return 1;
-				return -1;
-			} else if (player1.rating === player2.rating) {
-				return 0;
+		participantsArray.sort((player1, player2) => {
+			if (descending) {
+				return player2.rating - player1.rating;
 			} else {
-				if (descending) return -1;
-				return 1;
+				return player1.rating - player2.rating;
 			}
 		});
 	}
 
 	function sortDelta(participantsArray: Participant[], descending: boolean) {
-		participantsArray.sort(function (player1, player2) {
-			if (player1.delta < player2.delta) {
-				if (descending) return 1;
-				return -1;
-			} else if (player1.delta === player2.delta) {
-				return 0;
+		participantsArray.sort((player1, player2) => {
+			if (descending) {
+				return player2.delta - player1.delta;
 			} else {
-				if (descending) return -1;
-				return 1;
+				return player1.delta - player2.delta;
 			}
 		});
 	}
 </script>
 
-{#await constructParticipants() then}
-	<Pagination isTopHidden={true}>
-		<div class="scroll">
-			<section class="games-list">
-				<div class="table-header">
-					<span>#</span>
-					<span>Name</span>
-					<span>Telegram Alias</span>
-					<span>Delta</span>
-					<span>Rating</span>
-					<!-- <span>Additional Info</span> -->
-					<span />
-				</div>
+<Pagination isTopHidden={true}>
+	<div class="scroll">
+		<section class="games-list">
+			<div class="table-header">
+				<span>#</span>
+				<span>Name</span>
+				<span>Telegram Alias</span>
+				<span>Delta</span>
+				<span>Rating</span>
+				<!-- <span>Additional Info</span> -->
+				<span />
+			</div>
 
-				{#each sortedParticipants as player}
-					<div class="players-grid">
-						<div>
-							<span class="position bold">{player.place}</span>
-						</div>
-						<div class="no-wrap bold">{player.name}</div>
-						<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
-						<div class="no-wrap" class:green={player.delta > 0} class:red={player.delta < 0}>
-							{player.delta > 0 ? '+' : ''}{player.delta}
-						</div>
-						<div class="rating bold">{Math.floor(player.rating * 100) / 100}</div>
+			{#each sortedParticipants as player}
+				<div class="players-grid">
+					<div>
+						<span class="position bold">{player.place}</span>
 					</div>
-				{/each}
-			</section>
-		</div>
-	</Pagination>
-{/await}
+					<div class="no-wrap bold">{player.name}</div>
+					<div class="no-wrap">{getAlias(player.telegramAlias)}</div>
+					<div class="no-wrap" class:green={player.delta > 0} class:red={player.delta < 0}>
+						{player.delta > 0 ? '+' : ''}{player.delta}
+					</div>
+					<div class="rating bold">{Math.floor(player.rating * 100) / 100}</div>
+				</div>
+			{/each}
+		</section>
+	</div>
+</Pagination>
 
 <style>
 	.games-list {

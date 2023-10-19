@@ -4,7 +4,7 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import AddParticipantForm from '$lib/components/forms/AddParticipantForm.svelte';
 	import ParticipantsCreateTable from '$lib/components/tables/ParticipantsCreateTable.svelte';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher()

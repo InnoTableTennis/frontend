@@ -7,7 +7,7 @@
 	export let placeholder: string;
 
 	export let defaultValue = '';
-	export let defaultNumValue: number | string = '';
+	export let defaultNumValue: number | null = null;
 	export let required = false;
 	export let isFirst = false;
 

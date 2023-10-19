@@ -20,9 +20,9 @@
 			$SortFilterTournamentFormStore.title =
 				searchParams?.get('title') || $SortFilterTournamentFormStore.title;
 			$SortFilterTournamentFormStore.maxParticipants =
-				searchParams?.get('maxParticipants') || $SortFilterTournamentFormStore.maxParticipants;
+				Number(searchParams?.get('maxParticipants')) || $SortFilterTournamentFormStore.maxParticipants;
 			$SortFilterTournamentFormStore.minParticipants =
-				searchParams?.get('minParticipants') || $SortFilterTournamentFormStore.minParticipants;
+				Number(searchParams?.get('minParticipants')) || $SortFilterTournamentFormStore.minParticipants;
 			$SortFilterTournamentFormStore.endDateString =
 				searchParams?.get('endDateString') || $SortFilterTournamentFormStore.endDateString;
 			$SortFilterTournamentFormStore.startDateString =

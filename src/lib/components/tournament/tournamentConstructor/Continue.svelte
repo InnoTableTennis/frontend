@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import Button from '$lib/components/base/Button.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import type { Tournament } from '$lib/types/types';

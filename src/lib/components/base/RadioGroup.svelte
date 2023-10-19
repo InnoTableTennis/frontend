@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
 	export let group: string;
 	export let values: string[];
 	export let labels: string[];

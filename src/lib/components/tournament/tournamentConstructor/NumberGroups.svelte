@@ -5,7 +5,7 @@
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Tournament } from '$lib/types/types';
 	import { alertPopup } from '$lib/client/popup/popup.handler';
-	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
+	import type { Group, TournamentStage } from '$lib/types/types.tournaments';
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;

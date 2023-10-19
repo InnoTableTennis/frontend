@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ProfileMatchesTable from '$lib/components/tables/ProfileMatchesTable.svelte';
-	import type { ProfileMatch } from '$lib/types/profileTypes';
+	import type { ProfileMatch } from '$lib/types/types.profile';
 
 	export let dataMatches: ProfileMatch[];
 </script>

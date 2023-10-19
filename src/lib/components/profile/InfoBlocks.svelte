@@ -3,7 +3,7 @@
 
 	import DownExpandIcon from '$lib/components/icons/DownExpandIcon.svelte';
 	import UpCompressIcon from '$lib/components/icons/UpCompressIcon.svelte';
-	import type { Stats } from '$lib/types/profileTypes';
+	import type { Stats } from '$lib/types/types.profile';
 
 	export let profileStats: Stats;
 	let statsBlockStatus = false;

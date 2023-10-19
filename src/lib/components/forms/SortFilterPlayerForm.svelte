@@ -20,9 +20,9 @@
 			$SortFilterPlayerFormStore.telegramAlias =
 				searchParams?.get('telegramAlias') || $SortFilterPlayerFormStore.telegramAlias;
 			$SortFilterPlayerFormStore.minRating =
-				searchParams?.get('minRating') || $SortFilterPlayerFormStore.minRating;
+				Number(searchParams?.get('minRating')) || $SortFilterPlayerFormStore.minRating;
 			$SortFilterPlayerFormStore.maxRating =
-				searchParams?.get('endDateString') || $SortFilterPlayerFormStore.maxRating;
+				Number(searchParams?.get('endDateString')) || $SortFilterPlayerFormStore.maxRating;
 			if (searchParams?.get('sortBy')) {
 				$SortFilterPlayerFormStore.sortBy = searchParams.get('sortBy') as 'rating' | 'name';
 			}

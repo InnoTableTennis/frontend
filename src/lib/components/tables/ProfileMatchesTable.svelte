@@ -1,7 +1,7 @@
 <script lang="ts">
 	import MatchHeader from '$lib/components/tables/MatchHeader.svelte';
 	import ProfilePagination from '$lib/components/profile/ProfilePagination.svelte';
-	import type { ProfileMatch } from '$lib/types/profileTypes';
+	import type { ProfileMatch } from '$lib/types/types.profile';
 
 	import { isLeader } from '$lib/client/stores/stores';
 
