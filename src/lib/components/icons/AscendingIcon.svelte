@@ -6,8 +6,8 @@
 	export let disabledColor = 'var(--secondary-bg-color)';
 </script>
 
-<svg {width} {height} viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<rect {width} {height} rx="5" fill={disabled ? disabledColor : enabledColor} />
+<svg style="width:{width}; height:{height}" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<rect style="width:{width}; height:{height}" rx="5" fill={disabled ? disabledColor : enabledColor} />
 	<path
 		fill-rule="evenodd"
 		clip-rule="evenodd"
