@@ -14,16 +14,16 @@
 
 	$: if (form?.error) {
 		handleError(form.error);
-	};
+	}
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
 	let mode = 'view';
-	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing || (mode === 'view');
+	$: isChoosing = ((mode === 'edit' || mode === 'delete') && isEditing) || mode === 'view';
 </script>
 
 <svelte:head>
@@ -41,17 +41,14 @@
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddPlayerForm/>
+				<AddPlayerForm />
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
 				Please choose a player to edit
 			{:else}
 				<div class="form">
-					<EditPlayerForm
-						player={editData}
-						bind:chosenId
-					/>
+					<EditPlayerForm player={editData} bind:chosenId />
 				</div>
 			{/if}
 		{:else if mode === 'delete'}

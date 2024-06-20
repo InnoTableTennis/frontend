@@ -18,16 +18,16 @@
 
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	$: tournament = data.tournament;
 
 	let stage: TournamentStage = 'create';
 	let finals: Player[][];
-	let numberFinals : number;
+	let numberFinals: number;
 
 	async function handleUpdateState(e: CustomEvent) {
-		const state = e.detail.state;		
+		const state = e.detail.state;
 
 		await db
 			.updateTournament(tournament.id, state)
@@ -35,7 +35,7 @@
 			// 	invalidate('tournament:update');
 			// })
 			.catch((error) => {
-				handleError(error)
+				handleError(error);
 				console.error(error);
 			});
 	}
@@ -57,15 +57,21 @@
 {:else if stage === 'addParticipants'}
 	<AddParticipants {tournament} bind:stage on:update={handleUpdateState} />
 {:else if stage === 'numberGroups'}
-	<NumberGroups {tournament} bind:stage on:update={handleUpdateState}/>
+	<NumberGroups {tournament} bind:stage on:update={handleUpdateState} />
 {:else if stage === 'groups'}
-	<Groups {tournament} bind:stage bind:finals on:update={handleUpdateState}/>
+	<Groups {tournament} bind:stage bind:finals on:update={handleUpdateState} />
 {:else if stage === 'continue'}
-	<Continue bind:stage {tournament}/>
+	<Continue bind:stage {tournament} />
 {:else if stage === 'numberFinals'}
 	<NumberFinals {tournament} bind:numberFinals bind:stage />
 {:else if stage === 'finalsDistribution'}
-	<FinalsDistribution bind:numberFinals bind:stage {tournament} bind:finals on:update={handleUpdateState}/>
+	<FinalsDistribution
+		bind:numberFinals
+		bind:stage
+		{tournament}
+		bind:finals
+		on:update={handleUpdateState}
+	/>
 {:else if stage === 'secondStage'}
-	<SecondStage bind:numberFinals bind:stage {tournament} on:update={handleUpdateState}/>
+	<SecondStage bind:numberFinals bind:stage {tournament} on:update={handleUpdateState} />
 {/if}

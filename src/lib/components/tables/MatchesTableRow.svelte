@@ -15,12 +15,7 @@
 	}
 </script>
 
-<button
-	class="match-line"
-	class:selected
-	on:click={handleClick}
-	disabled={!isChoosing || selected}
->
+<button class="match-line" class:selected on:click={handleClick} disabled={!isChoosing || selected}>
 	<div class="matches-grid">
 		<div class="no-wrap content">
 			{match.firstPlayerName}

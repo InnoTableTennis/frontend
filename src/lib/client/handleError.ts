@@ -3,7 +3,7 @@ import type { Error } from '$lib/types/types';
 // import type { Error } from '$lib/types/types';
 
 export function handleError(errorMessage: string) {
-	const error : Error = {message:errorMessage}
+	const error: Error = { message: errorMessage };
 
 	if (error.message === 'Validation failed. Constraints: Score is not specified in format x:x') {
 		error.message = 'Score is not specified in format number:number. Please rewrite score format!';

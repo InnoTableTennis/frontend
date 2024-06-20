@@ -10,16 +10,16 @@
 	export let editData;
 	export let isChoosing: boolean;
 	export let mode: string;
-    export let position : number;
+	export let position: number;
 
-	$: selected = chosenId === player.id;    
+	$: selected = chosenId === player.id;
 
 	async function handleClick(event: MouseEvent) {
 		chosenId = player.id;
 		if (mode === 'edit') {
 			editData = player;
 		} else if (mode === 'view') {
-			goto(`${base}/players/${player.id}`)
+			goto(`${base}/players/${player.id}`);
 		}
 	}
 
@@ -49,17 +49,17 @@
 </button>
 
 <style>
-    .player-line {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        border: none;
-        width: 100%;
-        height: 1.3rem;
-        margin-bottom: 0.4rem;
-    }
-    .position {
+	.player-line {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0;
+		border: none;
+		width: 100%;
+		height: 1.3rem;
+		margin-bottom: 0.4rem;
+	}
+	.position {
 		color: var(--content-color);
 		display: inline-block;
 		text-align: left;
@@ -83,7 +83,7 @@
 	}
 
 	.selected {
-        background-color: var(--secondary-color);
+		background-color: var(--secondary-color);
 		border-radius: 3px;
 	}
 
@@ -113,7 +113,6 @@
 		height: 1.25rem;
 	}
 
-    
 	.players-grid.not-leader {
 		grid-template-columns: 1.8rem 1fr 1fr 6rem 4.6rem;
 	}

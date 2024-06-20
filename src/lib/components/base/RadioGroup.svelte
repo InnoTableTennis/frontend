@@ -6,13 +6,7 @@
 
 {#each values as value, i}
 	<div>
-		<input
-			type="radio"
-			id={labels[i]}
-			class="radio"
-			bind:group
-			{value}
-		/>
+		<input type="radio" id={labels[i]} class="radio" bind:group {value} />
 		<label for={labels[i]}>{labels[i]}</label>
 	</div>
 {/each}

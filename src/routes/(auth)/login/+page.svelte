@@ -3,10 +3,10 @@
 	import Login from '$lib/components/navigation/Login.svelte';
 
 	export let form;
-	
+
 	$: if (form?.error) {
 		handleError(form.error);
-	};
+	}
 </script>
 
 <svelte:head>
@@ -21,4 +21,4 @@
 	/>
 </svelte:head>
 
-<Login/>
+<Login />

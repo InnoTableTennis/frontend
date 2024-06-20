@@ -39,7 +39,7 @@
 		if (tournament.state.firstStage) {
 			tournament.state.firstStage[e.detail] = newGroup;
 		}
-		dispatch('update', {state: tournament.state})
+		dispatch('update', { state: tournament.state });
 	}
 	async function updatePlaces(e: CustomEvent, id: number) {
 		let players = e.detail;
@@ -56,7 +56,6 @@
 			}
 		}
 	}
-	
 </script>
 
 <div class="groups-layout">

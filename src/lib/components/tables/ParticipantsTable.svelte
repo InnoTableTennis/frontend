@@ -56,12 +56,12 @@
 
 	function sortPlace(participantsArray: Participant[], descending: boolean) {
 		participantsArray.sort((player1, player2) => {
-				if (descending) {
-					return player2.place - player1.place;
-				} else {
-					return player1.place - player2.place;
-				}
-			})
+			if (descending) {
+				return player2.place - player1.place;
+			} else {
+				return player1.place - player2.place;
+			}
+		});
 	}
 
 	function sortRating(participantsArray: Participant[], descending: boolean) {

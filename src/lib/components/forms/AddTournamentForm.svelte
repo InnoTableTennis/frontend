@@ -10,17 +10,21 @@
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !($AddTournamentFormStore.title && $AddTournamentFormStore.startDateString && $AddTournamentFormStore.endDateString);
+		isSubmissionDisabled = !(
+			$AddTournamentFormStore.title &&
+			$AddTournamentFormStore.startDateString &&
+			$AddTournamentFormStore.endDateString
+		);
 	}
 
-	let startDateString = convertDateToString(new Date())
-	$AddTournamentFormStore.endDateString = convertDateToString(new Date())
-	
-	$: $AddTournamentFormStore.startDateString = startDateString
-	$: $AddTournamentFormStore.endDateString = startDateString
-	
+	let startDateString = convertDateToString(new Date());
+	$AddTournamentFormStore.endDateString = convertDateToString(new Date());
+
+	$: $AddTournamentFormStore.startDateString = startDateString;
+	$: $AddTournamentFormStore.endDateString = startDateString;
+
 	function resetForm() {
-		$AddTournamentFormStore = structuredClone(ADD_TOURNAMENT_FORM)
+		$AddTournamentFormStore = structuredClone(ADD_TOURNAMENT_FORM);
 	}
 </script>
 

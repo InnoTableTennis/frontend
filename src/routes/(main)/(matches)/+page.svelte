@@ -16,10 +16,10 @@
 
 	$: if (form?.error) {
 		handleError(form.error);
-	};
+	}
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	let editData: Match = {} as Match;
 	let isEditing = false;
@@ -30,10 +30,7 @@
 	async function getFormData() {
 		const playersPromise = db.getAllPlayers();
 		const tournamentsPromise = db.getAllTournaments();
-		const [players, tournaments] = await Promise.all([
-			playersPromise,
-			tournamentsPromise,
-		]);
+		const [players, tournaments] = await Promise.all([playersPromise, tournamentsPromise]);
 		return { players, tournaments };
 	}
 </script>
@@ -54,10 +51,7 @@
 		{#if isEditing}
 			{#await getFormData() then resp}
 				{#if mode === 'add'}
-					<AddMatchForm
-						players={resp.players}
-						tournaments={resp.tournaments}
-					/>
+					<AddMatchForm players={resp.players} tournaments={resp.tournaments} />
 				{:else if mode === 'edit'}
 					{#if chosenId === -1}
 						Please choose a match to edit

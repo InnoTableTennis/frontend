@@ -15,7 +15,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		paths: {
-			base: dev ? process.env.PUBLIC_DEV_SERVER_URL : process.env.PUBLIC_PROD_SERVER_URL
+			base: dev ? process.env.PUBLIC_DEV_SERVER_URL : process.env.PUBLIC_PROD_SERVER_URL,
 		},
 	},
 };

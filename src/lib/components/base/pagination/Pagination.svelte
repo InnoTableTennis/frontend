@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import PaginationBar from '$lib/components/base/pagination/PaginationBar.svelte';
-	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/client/defaults'
+	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/client/defaults';
 
 	let url: URL;
 	export let currentPageNumber: number = 0;
@@ -29,7 +29,6 @@
 		const new_url = new URL(`${url.origin}${url.pathname}?${searchParams}&${url.searchParams}`);
 		goto(new_url.href, { replaceState: true, noScroll: true });
 	}
-	
 </script>
 
 <PaginationBar

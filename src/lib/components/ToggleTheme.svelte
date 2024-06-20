@@ -2,9 +2,9 @@
 	import { fly } from 'svelte/transition';
 	import { Moon, Sun } from 'lucide-svelte';
 	import { browser } from '$app/environment';
-	import { DEFAULT_THEME } from '$lib/client/defaults'
-	
-	let theme = browser && localStorage.getItem('color-scheme') || DEFAULT_THEME;
+	import { DEFAULT_THEME } from '$lib/client/defaults';
+
+	let theme = (browser && localStorage.getItem('color-scheme')) || DEFAULT_THEME;
 
 	$: {
 		document.documentElement.setAttribute('color-scheme', theme);

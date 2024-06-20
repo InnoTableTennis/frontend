@@ -14,8 +14,8 @@
 	export let editData: Player;
 	export let mode: string;
 
-	let currentPageNumber : number;
-	let currentPageSize : number;
+	let currentPageNumber: number;
+	let currentPageSize: number;
 </script>
 
 {#if players.length}
@@ -48,10 +48,24 @@
 							}}
 						>
 							<input type="hidden" name="playerId" value={player.id} />
-							<PlayersTableRow {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1} />
+							<PlayersTableRow
+								{player}
+								bind:chosenId
+								bind:editData
+								{isChoosing}
+								{mode}
+								position={(currentPageNumber - 1) * currentPageSize + i + 1}
+							/>
 						</form>
 					{:else}
-						<PlayersTableRow {player} bind:chosenId bind:editData {isChoosing} {mode} position={(currentPageNumber - 1) * currentPageSize + i + 1}/>
+						<PlayersTableRow
+							{player}
+							bind:chosenId
+							bind:editData
+							{isChoosing}
+							{mode}
+							position={(currentPageNumber - 1) * currentPageSize + i + 1}
+						/>
 					{/if}
 				{/each}
 			</section>

@@ -1,6 +1,9 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SORT_FILTER_TOURNAMENT_FORM, SortFilterTournamentFormStore } from '$lib/client/stores/stores.forms';
+	import {
+		SORT_FILTER_TOURNAMENT_FORM,
+		SortFilterTournamentFormStore,
+	} from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
@@ -20,9 +23,11 @@
 			$SortFilterTournamentFormStore.title =
 				searchParams?.get('title') || $SortFilterTournamentFormStore.title;
 			$SortFilterTournamentFormStore.maxParticipants =
-				Number(searchParams?.get('maxParticipants')) || $SortFilterTournamentFormStore.maxParticipants;
+				Number(searchParams?.get('maxParticipants')) ||
+				$SortFilterTournamentFormStore.maxParticipants;
 			$SortFilterTournamentFormStore.minParticipants =
-				Number(searchParams?.get('minParticipants')) || $SortFilterTournamentFormStore.minParticipants;
+				Number(searchParams?.get('minParticipants')) ||
+				$SortFilterTournamentFormStore.minParticipants;
 			$SortFilterTournamentFormStore.endDateString =
 				searchParams?.get('endDateString') || $SortFilterTournamentFormStore.endDateString;
 			$SortFilterTournamentFormStore.startDateString =

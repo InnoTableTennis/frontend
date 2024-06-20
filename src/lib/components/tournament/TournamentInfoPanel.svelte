@@ -13,17 +13,16 @@
 		<div class="description">in total</div>
 	</div>
 	{#if places.length}
-	<div class="info-block places">
-		
-		<div class="name">Places</div>
-		{#each places as place, i}
-		<div class="place-line" class:hidden={i > 2}>
-			<div class="place">{i + 1}</div>
-			<div class="player">{place.name}</div>
+		<div class="info-block places">
+			<div class="name">Places</div>
+			{#each places as place, i}
+				<div class="place-line" class:hidden={i > 2}>
+					<div class="place">{i + 1}</div>
+					<div class="player">{place.name}</div>
+				</div>
+			{/each}
+			<div class="footer" />
 		</div>
-		{/each}
-		<div class="footer" />
-	</div>
 	{/if}
 	<div class="info-block">
 		<div class="name">Number of participants</div>

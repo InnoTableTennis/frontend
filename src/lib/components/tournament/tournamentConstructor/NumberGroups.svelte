@@ -53,8 +53,8 @@
 					secondStage: null,
 				};
 			}
-			
-			dispatch('update', {state: tournament.state});
+
+			dispatch('update', { state: tournament.state });
 			stage = 'groups';
 		}
 	};
@@ -63,34 +63,34 @@
 	}
 </script>
 
-	<BackArrowButton action={back} />
+<BackArrowButton action={back} />
 
-	<div class="center">
-		<div class="content">
-			<h1>Choose the number of groups in the tournament</h1>
-			<form on:submit|preventDefault={nextStage}>
-				<div class="input">
-					<InputTemplate
-						type="number"
-						min="1"
-						max="100"
-						name="groupNumber"
-						placeholder=""
-						defaultNumValue={tournament.state.firstStage?.length
-							? tournament.state.firstStage?.length
-							: numberGroups}
-						bind:numberVal={numberGroups}
-						textAlignCenter={true}
-					/>
-				</div>
-				<div class="button">
-					<Button type="submit"
-						>{numberGroups === tournament.state.firstStage?.length ? 'Continue' : 'Confirm'}</Button
-					>
-				</div>
-			</form>
-		</div>
+<div class="center">
+	<div class="content">
+		<h1>Choose the number of groups in the tournament</h1>
+		<form on:submit|preventDefault={nextStage}>
+			<div class="input">
+				<InputTemplate
+					type="number"
+					min="1"
+					max="100"
+					name="groupNumber"
+					placeholder=""
+					defaultNumValue={tournament.state.firstStage?.length
+						? tournament.state.firstStage?.length
+						: numberGroups}
+					bind:numberVal={numberGroups}
+					textAlignCenter={true}
+				/>
+			</div>
+			<div class="button">
+				<Button type="submit"
+					>{numberGroups === tournament.state.firstStage?.length ? 'Continue' : 'Confirm'}</Button
+				>
+			</div>
+		</form>
 	</div>
+</div>
 
 <style>
 	.center {

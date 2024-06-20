@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { SORT_FILTER_PLAYER_FORM, SortFilterPlayerFormStore } from '$lib/client/stores/stores.forms';
+	import {
+		SORT_FILTER_PLAYER_FORM,
+		SortFilterPlayerFormStore,
+	} from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
@@ -36,7 +39,7 @@
 	let radioLabels = ['Sort by rating', 'Sort by name'];
 
 	const resetForm = function () {
-		$SortFilterPlayerFormStore = structuredClone(SORT_FILTER_PLAYER_FORM)
+		$SortFilterPlayerFormStore = structuredClone(SORT_FILTER_PLAYER_FORM);
 	};
 
 	function handleSubmit(event: SubmitEvent) {
@@ -114,7 +117,7 @@
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
-	
+
 	<h2>Sort by</h2>
 
 	<div class="column-2-elems">

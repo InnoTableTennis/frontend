@@ -8,7 +8,7 @@
 	import type { OverlayOutput } from '$lib/types/types.popup';
 	const dispatch = createEventDispatcher();
 	export let finalInfo: Final;
-	export let tournamentDate : string = '';
+	export let tournamentDate: string = '';
 	export let isInConstructor = false;
 
 	let groupInfo = finalInfo as Group;
@@ -174,10 +174,10 @@
 	const setMatchID = (currentMatch: Match) => {
 		const first = findPlayerNumber(currentMatch.firstPlayerName);
 		const second = findPlayerNumber(currentMatch.secondPlayerName);
-		
+
 		console.log(matchID);
-		console.log(first, second)
-		
+		console.log(first, second);
+
 		matchID[first][second] = matchID[second][first] = currentMatch.id;
 	};
 	const matchFinished = (row: number, column: number) => {
@@ -252,7 +252,7 @@
 			'Write the score:',
 			firstName,
 			secondName,
-			tournamentDate
+			tournamentDate,
 		);
 		if (results && results.firstScore != results.secondScore) {
 			const firstScore = String(results.firstScore);

@@ -27,7 +27,7 @@
 		<div class="overlay-head">
 			<div class="circle">!</div>
 		</div>
-		<div class='popup-container'>
+		<div class="popup-container">
 			<p class="overlay-text">{popupText}</p>
 			<div class="input-score">
 				<div class="player-block">
@@ -136,7 +136,7 @@
 	.overlay-button-block {
 		display: flex;
 		width: 100%;
-		justify-content:space-evenly;
+		justify-content: space-evenly;
 		margin: 1rem 0;
 		padding: 1rem 0 1.5rem;
 	}

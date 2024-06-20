@@ -20,7 +20,7 @@ export const actions = {
 				String(data.get('password') || ''),
 			);
 			cookies.set('userToken', token, { path: '/' });
-		} catch (error) {			
+		} catch (error) {
 			return fail(422, {
 				error: (<Error>error).message,
 			});

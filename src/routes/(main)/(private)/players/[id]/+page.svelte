@@ -10,9 +10,9 @@
 
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
-	let profileStats = data.profileStats
+	let profileStats = data.profileStats;
 
 	let profileData: ProfileData = data.profileData;
 	let graphInfo: RatingHistoryItem[] = profileData.graph;

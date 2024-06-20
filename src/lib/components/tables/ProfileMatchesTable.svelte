@@ -6,7 +6,6 @@
 	import { isLeader } from '$lib/client/stores/stores';
 
 	export let dataMatches: ProfileMatch[];
-
 </script>
 
 {#if dataMatches.length}

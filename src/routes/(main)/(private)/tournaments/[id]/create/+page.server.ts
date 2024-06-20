@@ -8,11 +8,11 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 
 	const id = +params.id;
 
-	let tournament : Tournament = {} as Tournament;
+	let tournament: Tournament = {} as Tournament;
 	let error: string | undefined;
-	
+
 	try {
-		tournament = await db.getTournament(id)
+		tournament = await db.getTournament(id);
 	} catch (e) {
 		if (typeof e === 'string') {
 			error = e;
@@ -20,10 +20,10 @@ export const load: PageServerLoad = async ({ params, depends }) => {
 			error = e.message;
 		}
 	}
-	
+
 	return {
 		title: `${tournament.title} Constructor`,
 		tournament,
-		error
+		error,
 	};
 };

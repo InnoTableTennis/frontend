@@ -5,7 +5,7 @@ export interface OverlayOutput {
 }
 
 export interface OverlayInput {
-    message: string
+	message: string;
 	firstName: string;
 	secondName: string;
 	date?: string;

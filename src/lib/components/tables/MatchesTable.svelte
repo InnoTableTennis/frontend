@@ -15,7 +15,7 @@
 	export let editData: Match;
 	export let matches: Match[] = [];
 	export let totalPages: number = 0;
-	
+
 	let oneTournament = true;
 </script>
 

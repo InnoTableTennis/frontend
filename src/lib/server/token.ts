@@ -42,7 +42,7 @@ export function getExpirationDate(token: string): Date {
 	try {
 		expDate = new Date((<DecodedJWT>jwt_decode(token)).exp * 1000);
 	} catch (error) {
-		expDate = new Date(0)
+		expDate = new Date(0);
 	}
 	return expDate;
 }

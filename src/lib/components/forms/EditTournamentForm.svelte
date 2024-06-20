@@ -13,7 +13,11 @@
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(tournament.title && tournament.startDateString && tournament.endDateString);
+		isSubmissionDisabled = !(
+			tournament.title &&
+			tournament.startDateString &&
+			tournament.endDateString
+		);
 	}
 
 	function resetTournament() {

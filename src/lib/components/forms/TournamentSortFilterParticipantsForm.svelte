@@ -17,7 +17,7 @@
 	const sortTournament = function () {
 		dispatch('update');
 	};
-	
+
 	const resetForm = function () {
 		$TournamentSortFilterParticpantsFormStore.name = '';
 		$TournamentSortFilterParticpantsFormStore.telegramAlias = '';

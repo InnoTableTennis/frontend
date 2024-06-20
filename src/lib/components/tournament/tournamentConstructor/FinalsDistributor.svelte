@@ -3,8 +3,8 @@
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
 	import { onMount } from 'svelte';
 
-	export let numberFinals : number;
-	export let numberGroups : number;
+	export let numberFinals: number;
+	export let numberGroups: number;
 	export let numberParticipants = 0;
 	export let chosenId: number[] = [];
 	export let types: ('Groups' | 'Single Elimination')[] = [];
@@ -25,7 +25,7 @@
 		for (let i = 0; i < numberFinals; i++) {
 			types.push(typeOptions[0]);
 		}
-	})
+	});
 
 	const formChosenId = () => {
 		let peopleInFinal = Math.ceil(peopleInGroups / numberFinals);

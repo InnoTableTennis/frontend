@@ -109,11 +109,7 @@
 
 <form on:submit={sortMatch} on:change={saveForm}>
 	<div class="column-1-elems">
-		<RadioGroup
-			bind:group={sortBy}
-			values={radioValues}
-			labels={radioLabels}
-		/>
+		<RadioGroup bind:group={sortBy} values={radioValues} labels={radioLabels} />
 	</div>
 	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">

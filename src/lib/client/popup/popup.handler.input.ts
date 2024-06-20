@@ -51,7 +51,12 @@ async function waitForClick() {
 		waitForAnswer(inputPopup, 'submit'),
 	]);
 }
-export async function alertInputPopup(message: string, firstName: string, secondName: string, date?: string) {
-	inputOverlayText.set({message, firstName, secondName, date});
+export async function alertInputPopup(
+	message: string,
+	firstName: string,
+	secondName: string,
+	date?: string,
+) {
+	inputOverlayText.set({ message, firstName, secondName, date });
 	return await waitForClick();
 }

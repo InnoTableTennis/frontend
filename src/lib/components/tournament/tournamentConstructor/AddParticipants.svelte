@@ -7,15 +7,15 @@
 	import type { TournamentStage } from '$lib/types/types.tournaments';
 	import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher();
 
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
-	let participants = tournament.state.participants
+	let participants = tournament.state.participants;
 
-	$: tournament.state.participants = participants;		
-	
+	$: tournament.state.participants = participants;
+
 	$: numberParticipants = participants.length;
 
 	let participant: Player = {} as Player;
@@ -25,10 +25,9 @@
 	};
 
 	function handleParticipantsUpdate(e: CustomEvent) {
+		participants = e.detail.participants;
 
-		participants = e.detail.participants		
-
-		dispatch('update', {state: {...tournament.state, participants}})
+		dispatch('update', { state: { ...tournament.state, participants } });
 	}
 </script>
 

@@ -4,20 +4,20 @@
 	import type { LayoutData } from './$types';
 	import { handleError } from '$lib/client/handleError';
 
-	export let data : LayoutData;
+	export let data: LayoutData;
 
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	$: $isLeader = data.isLeader;
 	$: $isAdmin = data.isAdmin;
 	$: $username = data.username;
-	$: $playerInfo = data.playerInfo;	
+	$: $playerInfo = data.playerInfo;
 </script>
 
 <header>
-	<NavBar isAuthorized={data.isAuthorized}/>
+	<NavBar isAuthorized={data.isAuthorized} />
 </header>
 
 <main>

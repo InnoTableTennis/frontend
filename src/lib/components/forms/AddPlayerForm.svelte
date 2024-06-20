@@ -13,7 +13,7 @@
 	}
 
 	function resetForm() {
-		$AddPlayerFormStore = structuredClone(ADD_PLAYER_FORM)
+		$AddPlayerFormStore = structuredClone(ADD_PLAYER_FORM);
 	}
 </script>
 

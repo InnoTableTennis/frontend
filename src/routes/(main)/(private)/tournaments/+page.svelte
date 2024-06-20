@@ -15,10 +15,10 @@
 
 	$: if (form?.error) {
 		handleError(form.error);
-	};
+	}
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	let editData: Tournament = {} as Tournament;
 	let isEditing = false;
@@ -45,17 +45,14 @@
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddTournamentForm/>
+				<AddTournamentForm />
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
 				Please choose a tournament to edit
 			{:else}
 				<div class="form">
-					<EditTournamentForm
-						tournament={editData}
-						bind:chosenId
-					/>
+					<EditTournamentForm tournament={editData} bind:chosenId />
 				</div>
 			{/if}
 		{:else if mode === 'delete'}

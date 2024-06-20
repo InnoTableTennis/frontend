@@ -13,11 +13,10 @@
 
 	$: if (data.error) {
 		handleError(data.error);
-	};
-	
+	}
+
 	$: tournament = data.tournament;
 	$: deltas = data.deltas;
-
 </script>
 
 <svelte:head>
@@ -68,21 +67,19 @@
 	<div class="main">
 		{#if tournament.state}
 			<!-- {#if tournament.finished} -->
-				<h1>List of all the participants</h1>
-				<div class="form-list-layout">
-					<div class="form">
-						<TournamentSortFilterParticipantsForm
-							on:update={() => handleInsert()}
-						/>
-					</div>
-					<div class="participants-list">
-						<ParticipantsTable
-							participants={tournament.state.participants}
-							{deltas}
-							bind:handleInsert
-						/>
-					</div>
+			<h1>List of all the participants</h1>
+			<div class="form-list-layout">
+				<div class="form">
+					<TournamentSortFilterParticipantsForm on:update={() => handleInsert()} />
 				</div>
+				<div class="participants-list">
+					<ParticipantsTable
+						participants={tournament.state.participants}
+						{deltas}
+						bind:handleInsert
+					/>
+				</div>
+			</div>
 			<!-- {/if} -->
 			{#if tournament.state.firstStage}
 				<h1>First stage - Groups</h1>
@@ -107,10 +104,7 @@
 				<TournamentFilterMatchForm on:update={() => handleInsert()} />
 			</div>
 			<div class="participants-list">
-				<TournamentMatchesTable
-					matches={tournament.matches}
-					bind:handleInsert
-				/>
+				<TournamentMatchesTable matches={tournament.matches} bind:handleInsert />
 			</div>
 		</div>
 	</div>

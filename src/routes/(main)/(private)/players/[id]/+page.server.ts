@@ -4,9 +4,8 @@ import * as db from '$lib/server/requests';
 import type { ProfileData, Stats } from '$lib/types/types.profile';
 
 export const load: PageServerLoad = async ({ params }) => {
-	
-	let profileData : ProfileData = {} as ProfileData;
-	let profileStats : Stats = {} as Stats;
+	let profileData: ProfileData = {} as ProfileData;
+	let profileStats: Stats = {} as Stats;
 	let error: string | undefined;
 
 	try {
@@ -25,6 +24,6 @@ export const load: PageServerLoad = async ({ params }) => {
 		title: profileData.name,
 		profileData,
 		profileStats,
-		error
+		error,
 	};
 };

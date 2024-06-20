@@ -14,7 +14,7 @@
 
 	export let match: Match;
 
-	export let chosenId = -1;	
+	export let chosenId = -1;
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
@@ -31,7 +31,7 @@
 	}
 
 	$: playerNames = players.map((player) => player.name);
-	
+
 	$: {
 		tournamentTitles = tournaments.map((tournament) => tournament.title);
 		latestTournamentTitle = tournamentTitles[0];
@@ -61,7 +61,7 @@
 
 	function resetMatch() {
 		match = {} as Match;
-		chosenId = -1;		
+		chosenId = -1;
 	}
 </script>
 
@@ -76,10 +76,10 @@
 			cancel();
 		}
 
-		return async ({update}) => {
-			await update({reset: false})
+		return async ({ update }) => {
+			await update({ reset: false });
 			resetMatch();
-		} 
+		};
 	}}
 >
 	<input type="hidden" name="matchId" value={match.id} />

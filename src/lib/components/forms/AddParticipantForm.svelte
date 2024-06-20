@@ -7,13 +7,12 @@
 	import { alertPopup } from '$lib/client/popup/popup.handler';
 	import { createEventDispatcher } from 'svelte';
 
-	const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher();
 
-	export let playerName : string;
+	export let playerName: string;
 	export let allPlayers: Player[];
 	export let participants: Player[];
 	export let numberParticipants = 0;
-	
 
 	let abilityToChange = false;
 
@@ -44,7 +43,7 @@
 					if (!participantNames.includes(allPlayers[i].name)) {
 						participants = [...participants, allPlayers[i]];
 						numberParticipants++;
-						dispatch('update', {participants})
+						dispatch('update', { participants });
 					}
 				}
 			}
@@ -65,7 +64,7 @@
 					participants.splice(i, 1);
 					participants = participants;
 					numberParticipants--;
-					dispatch('update', {participants})
+					dispatch('update', { participants });
 				}
 			}
 		}
@@ -77,7 +76,12 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit|preventDefault={async ()=>{await addParticipant(); resetForm()}}>
+<form
+	on:submit|preventDefault={async () => {
+		await addParticipant();
+		resetForm();
+	}}
+>
 	<div class="input">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -93,8 +97,13 @@
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<Button on:click={async () => {await removeParticipant(); resetForm()}}>Remove</Button>
-		<Button type='submit'>Add</Button>
+		<Button
+			on:click={async () => {
+				await removeParticipant();
+				resetForm();
+			}}>Remove</Button
+		>
+		<Button type="submit">Add</Button>
 	</div>
 </form>
 

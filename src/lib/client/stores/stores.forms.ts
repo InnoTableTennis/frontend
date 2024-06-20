@@ -34,7 +34,11 @@ export const SORT_FILTER_MATCH_FORM: sortFilterMatchFormStore = {
 	descending: true,
 	sortBy: 'date',
 };
-export const ADD_PLAYER_FORM: addPlayerFormStore = { name: '', telegramAlias: '', initialRating: 0 };
+export const ADD_PLAYER_FORM: addPlayerFormStore = {
+	name: '',
+	telegramAlias: '',
+	initialRating: 0,
+};
 export const ADD_TOURNAMENT_FORM: addTournamentFormStore = {
 	title: '',
 	startDateString: convertDateToStringDash(new Date()),
@@ -46,7 +50,7 @@ export const ADD_MATCH_FORM: addMatchFormStore = {
 	tournamentTitle: '',
 	firstPlayerScore: 0,
 	secondPlayerScore: 0,
-	localDateString: ''
+	localDateString: '',
 };
 
 export const SortFilterPlayerFormStore = writable(structuredClone(SORT_FILTER_PLAYER_FORM));

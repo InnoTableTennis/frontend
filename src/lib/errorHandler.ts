@@ -18,11 +18,11 @@ export async function handleGetErrors(response: Response, token: string): Promis
 		if (response.status == 403) {
 			let errorMessage = 'You are not authorized to see the content of this page.';
 			if (token == '') errorMessage += ' Please Log In first!';
-			throw error(response.status, {message : errorMessage});
+			throw error(response.status, { message: errorMessage });
 		}
 
 		const errorResponse = await response.json();
-		
+
 		throw new Error(errorResponse.message);
 	}
 }
@@ -38,7 +38,7 @@ export async function handleModifyErrors(response: Response, token: string): Pro
 		handleCommonErrors(response, token);
 
 		if (response.status === 504) {
-			throw error(response.status, {message : response.statusText})
+			throw error(response.status, { message: response.statusText });
 		}
 
 		if (response.status == 403) {

@@ -15,7 +15,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	if (isTokenExpired) {
 		token == '';
 		cookies.delete('userToken');
-	}	
+	}
 
 	userToken.set(token);
 
@@ -26,7 +26,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 	const isLeader = userRoles.includes('LEADER') && isAuthorized;
 	const isAdmin = userRoles.includes('ADMIN') && isAuthorized;
 
-	let playerInfo : ProfileData | undefined;
+	let playerInfo: ProfileData | undefined;
 	let error: string | undefined;
 
 	if (isAuthorized && !isAdmin) {
@@ -46,6 +46,6 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
 		isAdmin,
 		username,
 		playerInfo,
-		error
+		error,
 	};
 };

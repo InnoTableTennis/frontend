@@ -18,13 +18,13 @@
 	let latestTournamentTitle = '';
 
 	$: playerNames = players.map((player) => player.name);
-	
+
 	tournamentTitles = tournaments.map((tournament) => tournament.title);
 	latestTournamentTitle = tournamentTitles[0];
-	
+
 	if (!$AddMatchFormStore.tournamentTitle) {
 		$AddMatchFormStore.tournamentTitle = latestTournamentTitle;
-		changeDateByTournamentTitle($AddMatchFormStore.tournamentTitle);			
+		changeDateByTournamentTitle($AddMatchFormStore.tournamentTitle);
 	}
 
 	let isSubmissionDisabled = true;
@@ -43,7 +43,7 @@
 	let inputResets = new Array(2);
 
 	function resetForm() {
-		$AddMatchFormStore = structuredClone(ADD_MATCH_FORM)
+		$AddMatchFormStore = structuredClone(ADD_MATCH_FORM);
 		inputResets.forEach((reset) => {
 			reset();
 		});
@@ -63,13 +63,12 @@
 	function changeDateByTournamentTitle(tournamentTitle: string) {
 		const tournament = tournaments.find((tournament) => tournament.title === tournamentTitle);
 
-		
 		if (tournament) {
 			const dateString = tournament.startDateString;
 			const year = Number(dateString.slice(6, 10));
 			const month = Number(dateString.slice(3, 5)) - 1;
 			const day = Number(dateString.slice(0, 2));
-			
+
 			$AddMatchFormStore.localDateString = convertDateToString(new Date(year, month, day));
 		}
 	}

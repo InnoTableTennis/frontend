@@ -115,7 +115,6 @@ export async function updateTournament(
 	tournamentID: number,
 	state: TournamentState | null,
 ): Promise<void> {
-
 	const response: Response = await fetch(SERVER_API + '/tournaments/' + tournamentID + '/state', {
 		method: 'PATCH',
 		headers: {

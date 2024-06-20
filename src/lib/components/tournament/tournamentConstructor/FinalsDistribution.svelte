@@ -94,7 +94,7 @@
 				tournament.state.secondStage = temp;
 			}
 		}
-		dispatch('update', {state: tournament.state})
+		dispatch('update', { state: tournament.state });
 		stage = 'secondStage';
 	}
 </script>

@@ -6,7 +6,6 @@
 	import { base } from '$app/paths';
 	import type { Tournament } from '$lib/types/types';
 
-
 	export let stage: TournamentStage;
 	export let tournament: Tournament;
 
@@ -14,7 +13,7 @@
 		stage = 'numberFinals';
 	};
 	const finishTournament = async function () {
-		goto(`${base}/tournaments/${tournament.id}`)
+		goto(`${base}/tournaments/${tournament.id}`);
 	};
 	function back() {
 		stage = 'groups';

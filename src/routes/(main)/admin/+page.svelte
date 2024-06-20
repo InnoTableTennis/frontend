@@ -11,10 +11,10 @@
 
 	$: if (form?.error) {
 		handleError(form.error);
-	};
+	}
 	$: if (data.error) {
 		handleError(data.error);
-	};
+	}
 
 	$: leaders = data.leaders;
 
@@ -71,7 +71,7 @@
 				method="POST"
 				action="?/promoteLeader"
 				use:enhance={async ({ cancel }) => {
-					let alias = leaderToPromote
+					let alias = leaderToPromote;
 					if (leaderToPromote[0] == '@') alias = leaderToPromote.slice(1);
 					let isConfirmed = await alertPopup(
 						`Are you sure that you want to promote @${alias} to leaders?`,
@@ -106,7 +106,7 @@
 			Here you can write the message that bot will send to all players
 		</p>
 		<form
-		class="broadcast-form"
+			class="broadcast-form"
 			method="POST"
 			action="?/broadcastMessage"
 			use:enhance={async ({ cancel }) => {

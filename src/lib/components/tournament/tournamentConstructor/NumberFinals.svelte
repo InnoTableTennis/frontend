@@ -10,7 +10,7 @@
 	export let tournament: Tournament;
 
 	export let numberFinals = tournament.state.secondStage?.length ?? 1;
-	
+
 	const nextStage = async function () {
 		if (
 			!tournament.state ||

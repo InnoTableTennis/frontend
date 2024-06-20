@@ -5,16 +5,15 @@ import { countDeltas } from '$lib/server/tournament.utils';
 import type { Tournament } from '$lib/types/types';
 
 export const load: PageServerLoad = async ({ params }) => {
+	const id = +params.id;
 
-	const id = +params.id
-
-	let tournament : Tournament = {} as Tournament;
-	let deltas : number[] = [];
+	let tournament: Tournament = {} as Tournament;
+	let deltas: number[] = [];
 	let error: string | undefined;
-	
+
 	try {
-		tournament = await db.getTournament(id)
-		deltas = countDeltas(tournament)
+		tournament = await db.getTournament(id);
+		deltas = countDeltas(tournament);
 	} catch (e) {
 		if (typeof e === 'string') {
 			error = e;
@@ -23,11 +22,10 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 	}
 
-
 	return {
 		title: tournament.title,
 		tournament,
 		deltas,
-		error
+		error,
 	};
 };

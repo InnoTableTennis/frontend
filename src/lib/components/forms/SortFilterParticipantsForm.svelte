@@ -112,11 +112,7 @@
 	<h2>Sort by</h2>
 
 	<div class="column-2-elems">
-		<RadioGroup
-			bind:group={sortBy}
-			values={radioValues}
-			labels={radioLabels}
-		/>
+		<RadioGroup bind:group={sortBy} values={radioValues} labels={radioLabels} />
 	</div>
 	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">

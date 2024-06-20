@@ -117,8 +117,10 @@ export const getShorterName = (name: string): string => {
 	return firstName[0] + '. ' + secondName;
 };
 
-export function objectToURLSearchParams(obj: { [key: string]: FormDataEntryValue | string | null }): string {
-		const result: {
+export function objectToURLSearchParams(obj: {
+	[key: string]: FormDataEntryValue | string | null;
+}): string {
+	const result: {
 		[key: string]: string;
 	} = {};
 	for (const [key, value] of Object.entries(obj)) {
