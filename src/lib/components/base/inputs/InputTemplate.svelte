@@ -1,20 +1,32 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { changeDateDottedFormat, changeDateFormat } from '$lib/utils';
 
 	export let type: string;
 	export let name: string;
 	export let placeholder: string;
 
 	export let defaultValue = '';
-	export let defaultNumValue: number | string = 0;
+	export let defaultNumValue: number | null = null;
 	export let required = false;
 	export let isFirst = false;
 
 	export let min = '0';
 	export let max = '10';
 
-	export let stringVal = '';
-	export let numberVal: number | string = 0;
+	export let stringVal = defaultValue;
+	export let numberVal = defaultNumValue;
+
+	let dateVal = stringVal ? changeDateFormat(stringVal) : '';
+	$: {
+		if (type === 'date') {
+			dateVal = stringVal ? changeDateFormat(stringVal) : '';
+		}
+	}
+	function handleDateChange() {
+		stringVal = dateVal ? changeDateDottedFormat(dateVal) : '';
+	}
+	$: isDateEmpty = dateVal == '' ? true : false;
 
 	export let textAlignCenter = false;
 
@@ -23,16 +35,11 @@
 		numberVal = defaultNumValue;
 	};
 
-	$: stringVal = defaultValue;
-	$: numberVal = defaultNumValue;
-
 	let input: HTMLInputElement | HTMLTextAreaElement;
 
 	onMount(() => {
 		if (isFirst) input.focus();
 	});
-
-	$: isEmpty = stringVal == '' ? true : false;
 </script>
 
 {#if type === 'number'}
@@ -40,6 +47,16 @@
 		type="number"
 		{min}
 		{max}
+		{name}
+		bind:value={numberVal}
+		{placeholder}
+		{required}
+		bind:this={input}
+		class:text-center={textAlignCenter}
+	/>
+{:else if type === 'float'}
+	<input
+		type="text"
 		{name}
 		bind:value={numberVal}
 		{placeholder}
@@ -59,12 +76,13 @@
 		<input
 			type="date"
 			{name}
-			bind:value={stringVal}
+			bind:value={dateVal}
+			on:change={handleDateChange}
 			{placeholder}
 			{required}
 			bind:this={input}
 			class="date"
-			class:isEmpty
+			class:isDateEmpty
 			class:text-center={textAlignCenter}
 		/>
 	</div>
@@ -96,6 +114,11 @@
 		font-size: var(--fontsize-medium1);
 		transition: 0.2s linear;
 	}
+	.date-container {
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+	}
 	input:focus {
 		outline: none;
 		color: var(--content-color);
@@ -121,7 +144,7 @@
 		position: relative;
 		top: -2.8rem;
 	}
-	.isEmpty {
+	.isDateEmpty {
 		opacity: 0;
 	}
 	.date:focus {

@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { stringifyNumber } from '$lib/helper';
+	import { stringifyNumber } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
+	import { onMount } from 'svelte';
 
-	export let numberFinals = 0;
-	export let numberGroups = 0;
+	export let numberFinals: number;
+	export let numberGroups: number;
 	export let numberParticipants = 0;
 	export let chosenId: number[] = [];
-	export let types: string[] = [];
+	export let types: ('Groups' | 'Single Elimination')[] = [];
 
 	let groups: number[] = [];
 	let finals: number[][] = [];
 
 	let peopleInGroups = Math.ceil(numberParticipants / numberGroups);
-	let typeOptions: string[] = ['Finals', 'Groups'];
+	let typeOptions: ('Groups' | 'Single Elimination')[] = ['Groups', 'Single Elimination'];
 
-	const countGroups = function () {
+	onMount(() => {
 		for (let i = 0; i < numberFinals; i++) {
 			finals.push([]);
 		}
@@ -24,7 +25,7 @@
 		for (let i = 0; i < numberFinals; i++) {
 			types.push(typeOptions[0]);
 		}
-	};
+	});
 
 	const formChosenId = () => {
 		let peopleInFinal = Math.ceil(peopleInGroups / numberFinals);
@@ -44,58 +45,56 @@
 	formChosenId();
 </script>
 
-{#await countGroups() then}
-	<div class="content">
-		{#each finals as final, i}
+<div class="content">
+	{#each finals as final, i}
+		<div
+			class="separator"
+			class:invisible={peopleInGroups <= 8 || numberFinals <= 1}
+			class:invisible-small={peopleInGroups <= 4 || numberFinals <= 1}
+		/>
+		<div class="line">
+			<h2>
+				{stringifyNumber(i + 1)
+					.charAt(0)
+					.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
+			</h2>
 			<div
-				class="separator"
-				class:invisible={peopleInGroups <= 8 || numberFinals <= 1}
-				class:invisible-small={peopleInGroups <= 4 || numberFinals <= 1}
-			/>
-			<div class="line">
-				<h2>
-					{stringifyNumber(i + 1)
-						.charAt(0)
-						.toUpperCase() + stringifyNumber(i + 1).slice(1)} final
-				</h2>
-				<div
-					class="buttons"
-					class:not-fit={peopleInGroups > 8}
-					class:not-fit-small={peopleInGroups > 4}
-				>
-					{#each groups as j}
-						<button
-							class="button"
-							class:selected={chosenId[j - 1] === i * peopleInGroups + j}
-							on:click|preventDefault={() => {
-								if (
-									(j === 1 || (j > 1 && chosenId[j - 2] <= i * peopleInGroups + j)) &&
-									(j === peopleInGroups ||
-										(j < peopleInGroups && chosenId[j] >= i * peopleInGroups + j))
-								) {
-									chosenId[j - 1] = i * peopleInGroups + j;
-								}
-								final;
-							}}
-						>
-							{j}
-						</button>
-					{/each}
-				</div>
-				<div class="input">
-					<DropdownInput
-						name="type"
-						placeholder="Type"
-						options={typeOptions}
-						on:select={(event) => handleSelectType(event, i)}
-						defaultValue={types[i]}
-						bind:inputVal={types[i]}
-					/>
-				</div>
+				class="buttons"
+				class:not-fit={peopleInGroups > 8}
+				class:not-fit-small={peopleInGroups > 4}
+			>
+				{#each groups as j}
+					<button
+						class="button"
+						class:selected={chosenId[j - 1] === i * peopleInGroups + j}
+						on:click|preventDefault={() => {
+							if (
+								(j === 1 || (j > 1 && chosenId[j - 2] <= i * peopleInGroups + j)) &&
+								(j === peopleInGroups ||
+									(j < peopleInGroups && chosenId[j] >= i * peopleInGroups + j))
+							) {
+								chosenId[j - 1] = i * peopleInGroups + j;
+							}
+							final;
+						}}
+					>
+						{j}
+					</button>
+				{/each}
 			</div>
-		{/each}
-	</div>
-{/await}
+			<div class="input">
+				<DropdownInput
+					name="type"
+					placeholder="Type"
+					options={typeOptions}
+					on:select={(event) => handleSelectType(event, i)}
+					defaultValue={types[i]}
+					bind:inputVal={types[i]}
+				/>
+			</div>
+		</div>
+	{/each}
+</div>
 
 <style>
 	.content {

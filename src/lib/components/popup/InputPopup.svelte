@@ -1,53 +1,70 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import { fade } from 'svelte/transition';
-	import { inputOverlayText, outputOverlayText } from '$lib/stores';
+	import { inputOverlayText, outputOverlayText } from '$lib/client/stores/stores';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
+	import { convertDateToString } from '$lib/utils';
 	export let popupText: string;
 	export let firstPlayer: string;
 	export let secondPlayer: string;
+	export let date: string = convertDateToString(new Date());
+
 	const buttonPressed = (e: Event) => {
 		e.preventDefault();
 		let data = new FormData(e.target as HTMLFormElement);
-		$outputOverlayText = [Number(data.get('firstScore')), Number(data.get('secondScore'))];
+		$outputOverlayText = {
+			firstScore: Number(data.get('firstScore')),
+			secondScore: Number(data.get('secondScore')),
+			date: String(data.get('matchDate')),
+		};
 		$inputOverlayText = null;
 	};
 </script>
 
-<form class="fullscreen-overlay" transition:fade on:submit={buttonPressed}>
+<form class="fullscreen-overlay" transition:fade on:submit|preventDefault={buttonPressed}>
 	<button class="overlay-background" type="button" />
 	<div class="overlay-content">
 		<div class="overlay-head">
 			<div class="circle">!</div>
 		</div>
-		<p class="overlay-text">{popupText}</p>
-		<div class="inputScore">
-			<div class="player-block">
-				<p>{firstPlayer}</p>
-				<div class="input">
-					<InputTemplate
-						type={'number'}
-						name={'firstScore'}
-						defaultNumValue={0}
-						placeholder={'First Score'}
-					/>
+		<div class="popup-container">
+			<p class="overlay-text">{popupText}</p>
+			<div class="input-score">
+				<div class="player-block">
+					<p>{firstPlayer}</p>
+					<div class="input">
+						<InputTemplate
+							type={'number'}
+							name={'firstScore'}
+							defaultNumValue={0}
+							placeholder={'First Score'}
+						/>
+					</div>
+				</div>
+				<div class="player-block">
+					<p>{secondPlayer}</p>
+					<div class="input">
+						<InputTemplate
+							type={'number'}
+							name={'secondScore'}
+							defaultNumValue={0}
+							placeholder={'Second Score'}
+						/>
+					</div>
 				</div>
 			</div>
-			<div class="player-block">
-				<p>{secondPlayer}</p>
-				<div class="input">
-					<InputTemplate
-						type={'number'}
-						name={'secondScore'}
-						defaultNumValue={0}
-						placeholder={'Second Score'}
-					/>
-				</div>
+			<div class="input-date">
+				<!-- <div> -->
+				<InputTemplate type="date" name="matchDate" defaultValue={date} placeholder="Match Date" />
+				<!-- </div> -->
 			</div>
-		</div>
-		<div class="overlay-button-block">
-			<div class="overlay-button">
-				<Button type={'submit'}>Ok</Button>
+			<div class="overlay-button-block">
+				<div class="overlay-button">
+					<Button type={'submit'}>Submit</Button>
+				</div>
+				<div class="overlay-button">
+					<Button dark={true} type={'submit'}>Cancel</Button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -80,7 +97,6 @@
 		position: relative;
 		background: var(--main-color);
 		z-index: 1;
-		height: 20rem;
 		width: 25rem;
 		text-align: center;
 		border-radius: 30px;
@@ -90,7 +106,8 @@
 	}
 	.overlay-head {
 		display: flex;
-		height: 25%;
+		height: 2.5rem;
+		padding: 0.5rem 0;
 		background-color: var(--secondary-color);
 		border-top-left-radius: 30px;
 		border-top-right-radius: 30px;
@@ -109,22 +126,22 @@
 		font-size: var(--fontsize-large);
 		font-weight: var(--fontweight-1);
 	}
+	.popup-container {
+		padding: 0 10%;
+	}
 	.overlay-text {
 		font-size: var(--fontsize-large);
 		margin: 1rem auto;
 	}
 	.overlay-button-block {
-		position: absolute;
 		display: flex;
-		bottom: 5%;
-		height: 15%;
 		width: 100%;
-		justify-content: center;
+		justify-content: space-evenly;
+		margin: 1rem 0;
+		padding: 1rem 0 1.5rem;
 	}
 	.overlay-button {
-		width: 20%;
-	}
-	.player-block {
+		/* margin: 0.5rem 0 1rem; */
 		width: 40%;
 	}
 	.player-block p {
@@ -134,56 +151,55 @@
 		align-items: center;
 		justify-content: center;
 	}
-	.inputScore {
+
+	.input-date {
+		display: flex;
+		justify-content: space-between;
+		margin: 0.5rem 0;
+	}
+
+	.input-score {
 		margin-top: 1.5rem;
 		width: 100%;
 		display: flex;
-		justify-content: space-around;
+		gap: 1.5rem;
+		justify-content: space-between;
 	}
 	.input {
-		width: 80%;
-		margin: 0.5rem auto;
+		margin: 0.5rem 0;
 	}
 	@media (max-width: 800px) {
 		.overlay-content {
-			height: 50%;
 			width: 60%;
-		}
-		.player-block {
-			width: 40%;
 		}
 	}
 	@media (max-width: 480px) {
 		.overlay-content {
 			padding: 0;
-			height: 30rem;
 			width: 70%;
-		}
-		.overlay-head {
-			height: 20%;
 		}
 		.overlay-text {
 			font-size: var(--fontsize-large);
 			margin-top: 2rem;
 		}
-		.overlay-button-block {
-			bottom: 5%;
-		}
-		.overlay-button {
+		/* .overlay-button {
 			width: 60%;
-		}
-		.inputScore {
-			display: block;
-			margin: 2rem auto;
+		} */
+		.input-score {
+			margin-top: 0;
+			/* display: block; */
+			/* margin: 2rem auto; */
+			flex-direction: column;
 		}
 		.player-block {
-			width: 80%;
-			margin: 1rem auto;
 			text-align: center;
 		}
 		.input {
 			margin: 0 auto;
-			width: 70%;
+		}
+
+		.input-date {
+			margin-top: 1.5rem;
 		}
 	}
 </style>

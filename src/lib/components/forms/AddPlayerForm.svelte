@@ -1,55 +1,19 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
-	import { AddPlayerFormStore } from '$lib/formStores';
+	import { ADD_PLAYER_FORM, AddPlayerFormStore } from '$lib/client/stores/stores.forms';
 
-	import { createEventDispatcher } from 'svelte';
-
-	import * as db from '$lib/requests';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-	import { countNameWords } from '$lib/helper';
-
-	const dispatch = createEventDispatcher();
-
-	let name = $AddPlayerFormStore.name;
-	let telegramAlias = $AddPlayerFormStore.telegramAlias;
-	let initialRating = $AddPlayerFormStore.initialRating;
 
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !(countNameWords(name) >= 2);
+		isSubmissionDisabled = !$AddPlayerFormStore.name;
 	}
 
-	const addPlayer = async (e: Event) => {
-		const data = new FormData(e.target as HTMLFormElement);
-
-		const name = data.get('name') as string;
-
-		db.createPlayer(name, data.get('telegramAlias') as string, Number(data.get('rating')))
-			.then(() => {
-				dispatch('update');
-				resetForm();
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	};
-
-	const saveForm = function () {
-		$AddPlayerFormStore = {
-			name: name,
-			telegramAlias: telegramAlias,
-			initialRating: initialRating,
-		};
-	};
-
 	function resetForm() {
-		name = '';
-		telegramAlias = '';
-		initialRating = 100;
-		saveForm();
+		$AddPlayerFormStore = structuredClone(ADD_PLAYER_FORM);
 	}
 </script>
 
@@ -58,7 +22,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addPlayer} on:change={saveForm}>
+<form method="POST" action="?/createPlayer" use:enhance>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -68,7 +32,7 @@
 				placeholder="Player's name"
 				required={true}
 				isFirst={true}
-				bind:stringVal={name}
+				bind:stringVal={$AddPlayerFormStore.name}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -76,7 +40,7 @@
 			<InputTemplate
 				type="text"
 				name="telegramAlias"
-				bind:stringVal={telegramAlias}
+				bind:stringVal={$AddPlayerFormStore.telegramAlias}
 				placeholder="Player's alias"
 			/>
 		</label>
@@ -85,12 +49,10 @@
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
 			<InputTemplate
-				type="number"
-				min="0"
-				max="1000"
+				type="float"
 				name="rating"
 				placeholder="Rating"
-				defaultNumValue={initialRating}
+				defaultNumValue={$AddPlayerFormStore.initialRating}
 			/>
 		</label>
 	</div>

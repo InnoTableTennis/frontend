@@ -1,9 +1,23 @@
 <script lang="ts">
 	import NavBar from '$lib/components/navigation/NavBar.svelte';
+	import { isLeader, playerInfo, isAdmin, username } from '$lib/client/stores/stores';
+	import type { LayoutData } from './$types';
+	import { handleError } from '$lib/client/handleError';
+
+	export let data: LayoutData;
+
+	$: if (data.error) {
+		handleError(data.error);
+	}
+
+	$: $isLeader = data.isLeader;
+	$: $isAdmin = data.isAdmin;
+	$: $username = data.username;
+	$: $playerInfo = data.playerInfo;
 </script>
 
 <header>
-	<NavBar />
+	<NavBar isAuthorized={data.isAuthorized} />
 </header>
 
 <main>

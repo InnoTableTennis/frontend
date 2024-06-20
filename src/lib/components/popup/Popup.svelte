@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/base/Button.svelte';
 	import { fade } from 'svelte/transition';
-	import { overlayText } from '$lib/stores';
+	import { overlayText } from '$lib/client/stores/stores';
 	export let popupText: string;
 	const buttonPressed = (e: Event) => {
 		e.preventDefault();

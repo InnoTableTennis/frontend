@@ -2,54 +2,23 @@
 	import Button from '$lib/components/base/Button.svelte';
 	import ProfileIcon from '$lib/components/icons/ProfileIcon.svelte';
 
-	import { onMount } from 'svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { getUsername } from '$lib/token';
-	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
-	import * as db from '$lib/requests';
-	import type { Player } from '$lib/types/types';
+	import { isAdmin, playerInfo, username } from '$lib/client/stores/stores';
 	import { base } from '$app/paths';
+	import { enhance } from '$app/forms';
 
 	let isMenuVisible = false;
-
-	const logOut = () => {
-		localStorage.removeItem('token');
-		userToken.set('');
-	};
 
 	const toggleProfileMenu = () => {
 		isMenuVisible = isMenuVisible ? false : true;
 	};
 
-	let playerInfo: Player | null = null;
+	export let isAuthorized = false;
 
-	const dispatch = createEventDispatcher();
-
-	const requestUserinfo = async () => {
-		let players: Player[] = [];
-		await db
-			.getPlayers()
-			.then((result) => {
-				players = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-		return players.find((user) => user.telegramAlias == getUsername($userToken));
-	};
-	let linkToProfile = `${base}/players/`;
-
-	onMount(() => {
-		requestUserinfo().then((response) => {
-			playerInfo = response as Player;
-			linkToProfile += playerInfo.id;
-		});
-	});
+	let linkToProfile = `${base}/players/` + $username;
 </script>
 
 <div class="profile-container">
-	{#if !getRoles($userToken).includes('USER')}
+	{#if !isAuthorized}
 		<div class="sign-in">
 			<a id="nav-link-matches" href="{base}/login">Sign in</a>
 		</div>
@@ -70,16 +39,26 @@
 					<div class="profile-menu-wrapper">
 						<div class="upper-subcontainer">
 							<div class="name-tag">
-								<div class="name">{playerInfo?.name}</div>
-								<div class="tag">@{playerInfo?.telegramAlias}</div>
+								<div class="name">
+									{#if $isAdmin}
+										{$username}
+									{:else}
+										{$playerInfo?.name}
+									{/if}
+								</div>
+								<div class="tag">@{$username}</div>
 							</div>
 							<div class="space-for-icon" />
 						</div>
 						<div class="lower-subcontainer">
-							<a href={linkToProfile}>
-								<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
-							</a>
-							<button class="log-out-button" on:click={logOut}>Log Out</button>
+							{#if !$isAdmin}
+								<a href={linkToProfile}>
+									<button class="open-profile-button" on:click={toggleProfileMenu}>Profile</button>
+								</a>
+							{/if}
+							<form method="POST" action="/logout" class="log-out-form" use:enhance>
+								<button class="log-out-button">Log Out</button>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -116,6 +95,7 @@
 		z-index: 3;
 		background: var(--main-color);
 		border: 0;
+		cursor: pointer;
 	}
 	.profile-icon {
 		width: 3rem;
@@ -204,18 +184,23 @@
 		cursor: pointer;
 	}
 
+	.log-out-form {
+		width: 100%;
+		height: 2rem;
+		margin: 0.25rem;
+	}
+
 	.log-out-button {
 		border-radius: 10px;
 		outline: none;
 		border: 2px solid var(--content-color);
-		padding: 0.1rem 0rem;
 		background: var(--main-color);
 		color: var(--content-color);
 		font-weight: var(--fontweight-2);
+		padding: 0.1rem 0rem;
 		transition: 0.1s;
 		width: 100%;
-		height: 2rem;
-		margin: 0.25rem;
+		height: 100%;
 	}
 	.lower-subcontainer a {
 		width: 100%;
@@ -231,10 +216,10 @@
 		z-index: 1;
 		background: none;
 		border: none;
-		position: absolute;
+		position: fixed;
 		right: 0;
 		top: 0;
-		height: 99vh;
+		height: 100vh;
 		width: 100vw;
 	}
 	@media (min-width: 480px) {

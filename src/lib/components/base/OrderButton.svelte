@@ -3,17 +3,15 @@
 	import DescendingIcon from '$lib/components/icons/DescendingIcon.svelte';
 
 	export let value = true;
-
-	$: value = true;
 </script>
 
 <div class="line-2-elems">
 	<label class="sorting-order" id="sorting-order-descending">
-		<input type="radio" id="descending" name="sorting-order" bind:group={value} value={true} />
+		<input type="radio" id="descending" name="descending" bind:group={value} value={true} />
 		<DescendingIcon disabled={!value} />
 	</label>
 	<label class="sorting-order">
-		<input type="radio" id="ascending" name="sorting-order" bind:group={value} value={false} />
+		<input type="radio" id="ascending" name="descending" bind:group={value} value={false} />
 		<AscendingIcon disabled={value} />
 	</label>
 </div>

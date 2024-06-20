@@ -1,56 +1,69 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
-	import { SortFilterMatchFormStore } from '$lib/formStores';
+	import {
+		SORT_FILTER_MATCH_FORM,
+		SortFilterMatchFormStore,
+	} from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 
-	import { createEventDispatcher } from 'svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
 
-	const dispatch = createEventDispatcher();
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import { objectToURLSearchParams } from '$lib/utils';
+	import { onMount } from 'svelte';
 
-	let name = $SortFilterMatchFormStore.name;
-	let score = $SortFilterMatchFormStore.score;
-	let minDateString = $SortFilterMatchFormStore.minDateString;
-	let maxDateString = $SortFilterMatchFormStore.maxDateString;
-	let sortBy: 'date' = 'date' as const;
-	let isDescending = true;
+	onMount(() => {
+		if ($page.url.pathname == '/') {
+			let searchParams = $page.url.searchParams;
+
+			$SortFilterMatchFormStore.name = searchParams?.get('name') || $SortFilterMatchFormStore.name;
+			$SortFilterMatchFormStore.score =
+				searchParams?.get('score') || $SortFilterMatchFormStore.score;
+			$SortFilterMatchFormStore.minDateString =
+				searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
+			$SortFilterMatchFormStore.minDateString =
+				searchParams?.get('minDateString') || $SortFilterMatchFormStore.minDateString;
+			$SortFilterMatchFormStore.maxDateString =
+				searchParams?.get('maxDateString') || $SortFilterMatchFormStore.maxDateString;
+			if (searchParams?.get('sortBy')) {
+				$SortFilterMatchFormStore.sortBy = searchParams.get('sortBy') as 'date';
+			}
+			if (searchParams?.get('descending')) {
+				$SortFilterMatchFormStore.descending = searchParams.get('descending') !== 'false';
+			}
+		}
+	});
+
+	$: $SortFilterMatchFormStore.score = $SortFilterMatchFormStore.score.replace(/\s/g, '');
 
 	let radioValues = ['date'];
 	let radioLabels = ['Sort by date'];
 
-	const sortMatch = () => {
-		dispatch('update');
-	};
-
-	const saveForm = function () {
-		score = score.replace(/\s/g, '');
-		$SortFilterMatchFormStore = {
-			name: name,
-			score: score,
-			minDateString: changeDateAnotherFormat(minDateString),
-			maxDateString: changeDateAnotherFormat(maxDateString),
-			descending: isDescending,
-			sortBy: sortBy,
-		};
-	};
-
 	const resetForm = function () {
-		name = '';
-		score = '';
-		minDateString = '';
-		maxDateString = '';
-		sortBy = 'date';
-		isDescending = true;
-		saveForm();
+		$SortFilterMatchFormStore = structuredClone(SORT_FILTER_MATCH_FORM);
 	};
 
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
+	function handleSubmit(event: SubmitEvent) {
+		const url = new URL($page.url);
+
+		const currentPageSize = url.searchParams.get('currentPageSize');
+
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		const searchParams = objectToURLSearchParams({
+			...Object.fromEntries(formData),
+			minDateString: $SortFilterMatchFormStore.minDateString,
+			maxDateString: $SortFilterMatchFormStore.maxDateString,
+			currentPageSize,
+		});
+
+		const new_url = new URL(`${url.origin}${url.pathname}?${searchParams}`);
+
+		event.preventDefault();
+		goto(new_url.href, { replaceState: true, noScroll: true, keepFocus: true });
 	}
 </script>
 
@@ -59,7 +72,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortMatch} on:change={saveForm} class="filters">
+<form class="filters" on:submit={handleSubmit}>
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -67,8 +80,8 @@
 				type="text"
 				name="name"
 				isFirst={true}
-				bind:stringVal={name}
-				bind:defaultValue={name}
+				bind:stringVal={$SortFilterMatchFormStore.name}
+				bind:defaultValue={$SortFilterMatchFormStore.name}
 				placeholder="Search by player"
 			/>
 		</label>
@@ -77,8 +90,8 @@
 			<InputTemplate
 				type="text"
 				name="score"
-				bind:stringVal={score}
-				bind:defaultValue={score}
+				bind:stringVal={$SortFilterMatchFormStore.score}
+				bind:defaultValue={$SortFilterMatchFormStore.score}
 				placeholder="Search by score"
 			/>
 		</label>
@@ -90,8 +103,7 @@
 				type="date"
 				name="minDateString"
 				placeholder="Min date"
-				bind:defaultValue={minDateString}
-				bind:stringVal={minDateString}
+				bind:stringVal={$SortFilterMatchFormStore.minDateString}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -100,8 +112,7 @@
 				type="date"
 				name="maxDateString"
 				placeholder="Max date"
-				bind:defaultValue={maxDateString}
-				bind:stringVal={maxDateString}
+				bind:stringVal={$SortFilterMatchFormStore.maxDateString}
 			/>
 		</label>
 	</div>
@@ -110,20 +121,18 @@
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
-</form>
 
-<h2>Sort by</h2>
+	<h2>Sort by</h2>
 
-<form on:submit={sortMatch} on:change={saveForm}>
 	<div class="column-1-elems">
+		<input hidden name="sortBy" bind:value={$SortFilterMatchFormStore.sortBy} />
 		<RadioGroup
-			group={sortBy}
+			bind:group={$SortFilterMatchFormStore.sortBy}
 			values={radioValues}
 			labels={radioLabels}
-			on:update={updateRadioGroupValue}
 		/>
 	</div>
-	<OrderButton bind:value={isDescending} />
+	<OrderButton bind:value={$SortFilterMatchFormStore.descending} />
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>

@@ -1,6 +1,12 @@
 <script lang="ts">
+	import { handleError } from '$lib/client/handleError.js';
 	import Login from '$lib/components/navigation/Login.svelte';
-	import { handleError } from '$lib/errorHandler';
+
+	export let form;
+
+	$: if (form?.error) {
+		handleError(form.error);
+	}
 </script>
 
 <svelte:head>
@@ -15,4 +21,4 @@
 	/>
 </svelte:head>
 
-<Login on:error={handleError} />
+<Login />

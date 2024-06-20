@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { userToken } from '$lib/stores';
+	export let data;
 </script>
 
-{#if $userToken}
+{#if data.isAuthorized}
 	<slot />
 {:else}
 	<p class="details">Oops! That page doesn't exist or it is private</p>

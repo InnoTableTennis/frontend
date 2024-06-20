@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	import { beforeUpdate, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 
 	import Errors from '$lib/components/error/Errors.svelte';
 
-	import { loadedPage, userToken } from '$lib/stores';
+	import { loadedPage } from '$lib/client/stores/stores';
 	import PopupCaller from '$lib/components/popup/PopupCaller.svelte';
 
 	let isLoaded = false;
@@ -14,11 +14,6 @@
 		isLoaded = true;
 		$loadedPage = $page.data.title;
 	}
-
-	beforeUpdate(() => {
-		const token = localStorage.getItem('token');
-		userToken.set(token ?? '');
-	});
 
 	onDestroy(() => {
 		isLoaded = false;

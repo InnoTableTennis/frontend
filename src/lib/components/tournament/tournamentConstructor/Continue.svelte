@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { alertPopup } from '$lib/popupHandler';
 	import Button from '$lib/components/base/Button.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
-	import type { TournamentStage } from '$lib/types/tournamentTypes';
+	import type { TournamentStage } from '$lib/types/types.tournaments';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import type { Tournament } from '$lib/types/types';
 
 	export let stage: TournamentStage;
+	export let tournament: Tournament;
 
 	const nextStage = function () {
 		stage = 'numberFinals';
 	};
 	const finishTournament = async function () {
-		let isConfirmed = await alertPopup('Are you sure that you want finish this tournament?');
-		if (isConfirmed) {
-			stage = 'groups';
-		}
+		goto(`${base}/tournaments/${tournament.id}`);
 	};
 	function back() {
 		stage = 'groups';

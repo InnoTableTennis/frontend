@@ -1,22 +1,29 @@
 <script lang="ts">
 	import AddPlayerForm from '$lib/components/forms/AddPlayerForm.svelte';
-	import PlayersList from '$lib/components/lists/PlayersList.svelte';
+	import PlayersTable from '$lib/components/tables/PlayersTable.svelte';
 	import SortFilterPlayerForm from '$lib/components/forms/SortFilterPlayerForm.svelte';
 	import type { Player } from '$lib/types/types';
-	import { userToken } from '$lib/stores';
-	import { getRoles } from '$lib/token';
-	import { handleError } from '$lib/errorHandler';
 	import ToggleCheckboxButton from '$lib/components/base/ToggleCheckboxButton.svelte';
 	import EditSwitchBar from '$lib/components/navigation/EditSwitchBar.svelte';
 	import EditPlayerForm from '$lib/components/forms/EditPlayerForm.svelte';
+	import { isLeader } from '$lib/client/stores/stores.js';
+	import { handleError } from '$lib/client/handleError.js';
 
-	let handleInsert: () => void;
+	export let data;
+	export let form;
+
+	$: if (form?.error) {
+		handleError(form.error);
+	}
+	$: if (data.error) {
+		handleError(data.error);
+	}
+
 	let editData: Player = {} as Player;
 	let isEditing = false;
 	let chosenId = -1;
-	let mode = 'add';
-	$: isLeader = getRoles($userToken).includes('LEADER');
-	$: isChoosing = (mode === 'edit' || mode === 'delete') && isEditing;
+	let mode = 'view';
+	$: isChoosing = ((mode === 'edit' || mode === 'delete') && isEditing) || mode === 'view';
 </script>
 
 <svelte:head>
@@ -30,44 +37,18 @@
 	/>
 </svelte:head>
 
-<div class="info">
-	{#if isLeader}
-		<div class="edit-mode">
-			<ToggleCheckboxButton
-				bind:checked={isEditing}
-				bind:chosenId
-				bind:editData
-				bind:mode
-				label={'Edit Mode'}
-			/>
-			<span />
-		</div>
-	{/if}
-
-	{#if isEditing}
-		<div class="edit-switch-bar">
-			<EditSwitchBar bind:mode bind:chosenId bind:editData />
-		</div>
-	{/if}
-</div>
-
 <div class="form-list-layout">
 	{#if isEditing}
 		{#if mode === 'add'}
 			<div class="form">
-				<AddPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+				<AddPlayerForm />
 			</div>
 		{:else if mode === 'edit'}
 			{#if chosenId === -1}
 				Please choose a player to edit
 			{:else}
 				<div class="form">
-					<EditPlayerForm
-						on:error={handleError}
-						on:update={() => handleInsert()}
-						bind:player={editData}
-						bind:chosenId
-					/>
+					<EditPlayerForm player={editData} bind:chosenId />
 				</div>
 			{/if}
 		{:else if mode === 'delete'}
@@ -75,18 +56,36 @@
 		{/if}
 	{:else}
 		<div class="form">
-			<SortFilterPlayerForm on:error={handleError} on:update={() => handleInsert()} />
+			<SortFilterPlayerForm />
 		</div>
 	{/if}
+
 	<div class="players-list">
-		<PlayersList
-			on:error={handleError}
-			bind:handleInsert
-			{isLeader}
+		{#if $isLeader}
+			<div class="edit-mode">
+				<ToggleCheckboxButton
+					bind:checked={isEditing}
+					bind:chosenId
+					bind:editData
+					bind:mode
+					label={'Edit Mode'}
+				/>
+				<span />
+			</div>
+		{/if}
+
+		{#if isEditing}
+			<div class="edit-switch-bar">
+				<EditSwitchBar bind:mode bind:chosenId bind:editData />
+			</div>
+		{/if}
+		<PlayersTable
 			bind:mode
 			bind:isChoosing
 			bind:chosenId
 			bind:editData
+			players={data.players}
+			totalPages={data.totalPages}
 		/>
 	</div>
 </div>

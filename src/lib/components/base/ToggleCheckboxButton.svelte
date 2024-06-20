@@ -11,7 +11,7 @@
 		if (checked) {
 			mode = 'add';
 		} else {
-			mode = '';
+			mode = 'view';
 		}
 		editData = {};
 	}

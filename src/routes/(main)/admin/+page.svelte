@@ -1,75 +1,25 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte';
-	import { handleError } from '$lib/errorHandler';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler.js';
+	import { handleError } from '$lib/client/handleError.js';
 
-	import * as db from '$lib/requests';
-	import type { Player } from '$lib/types/types';
+	export let form;
+	export let data;
 
-	let leaders: Player[] = [];
+	$: if (form?.error) {
+		handleError(form.error);
+	}
+	$: if (data.error) {
+		handleError(data.error);
+	}
+
+	$: leaders = data.leaders;
 
 	let telegramMessage = '';
 	let leaderToPromote = '';
-
-	const broadcastMessage = async (message: string) => {
-		const isConfirmed = await alertPopup(`Are you sure that you want to broadcast this message?`);
-		if (!isConfirmed) return;
-
-		await db
-			.broadcastMessage(message)
-			.then(() => {
-				telegramMessage = '';
-			})
-			.catch((error) => {
-				handleError(error);
-			});
-	};
-
-	const promoteLeader = async (telegramAlias: string) => {
-		const isConfirmed = await alertPopup(
-			`Are you sure that you want to promote @${telegramAlias} to leaders?`,
-		);
-		if (!isConfirmed) return;
-
-		if (telegramAlias.trim() == '') return;
-
-		await db
-			.promoteLeader(telegramAlias)
-			.then(() => {
-				leaderToPromote = '';
-			})
-			.catch((error) => {
-				handleError(error);
-			});
-
-		requestLeadersList();
-	};
-
-	const demoteLeader = async (leader: Player) => {
-		const isConfirmed = await alertPopup(
-			`Are you sure that you want to demote leader ${leader.name}?`,
-		);
-		if (!isConfirmed) return;
-
-		await db.demoteLeader(String(leader.id)).catch((error) => {
-			handleError(error);
-		});
-
-		requestLeadersList();
-	};
-
-	async function requestLeadersList() {
-		await db
-			.getLeaders()
-			.then((result) => {
-				leaders = result.data;
-			})
-			.catch((error) => {
-				handleError(error);
-			});
-	}
 </script>
 
 <svelte:head>
@@ -89,34 +39,63 @@
 	<div class="side-wrapper left">
 		<h3>Admins</h3>
 		<div class="scrollable">
-			{#await requestLeadersList() then}
-				{#each leaders as leader}
-					<div class="leaders-row">
-						<button aria-label="Demote" on:click={() => demoteLeader(leader)} class="demote-btn"
-							><DeleteIcon /></button
-						>
-						<div class="people-list">{leader.name} - @{leader.telegramAlias}</div>
-					</div>
-				{/each}
-			{/await}
+			{#each leaders as leader}
+				<div class="leaders-row">
+					<form
+						method="POST"
+						action="?/demoteLeader"
+						use:enhance={async ({ cancel }) => {
+							let isConfirmed = await alertPopup(
+								`Are you sure that you want to demote leader ${leader.name}?`,
+							);
+							if (!isConfirmed) {
+								cancel();
+							}
+
+							return async ({ update }) => {
+								await update({ reset: false });
+							};
+						}}
+					>
+						<input type="hidden" value={leader.id} name="id" />
+						<button aria-label="Demote" class="demote-btn"><DeleteIcon /></button>
+					</form>
+					<div class="people-list">{leader.name} - @{leader.telegramAlias}</div>
+				</div>
+			{/each}
 		</div>
 		<div class="form-holder">
 			<h4>Add new admin</h4>
-			<form class="add-admin">
+			<form
+				class="add-admin"
+				method="POST"
+				action="?/promoteLeader"
+				use:enhance={async ({ cancel }) => {
+					let alias = leaderToPromote;
+					if (leaderToPromote[0] == '@') alias = leaderToPromote.slice(1);
+					let isConfirmed = await alertPopup(
+						`Are you sure that you want to promote @${alias} to leaders?`,
+					);
+					if (!isConfirmed) {
+						cancel();
+					}
+
+					return async ({ update }) => {
+						await update({ reset: false });
+						leaderToPromote = '';
+					};
+				}}
+			>
 				<InputTemplate
 					type="text"
-					name="alias"
+					name="telegramAlias"
 					placeholder="Enter alias"
 					required={true}
 					bind:stringVal={leaderToPromote}
 				/>
 				<div>
-					<Button
-						type="submit"
-						on:click={() => {
-							promoteLeader(leaderToPromote);
-						}}>Add</Button
-					>
+					<input type="hidden" value={leaderToPromote} />
+					<Button type="submit">Add</Button>
 				</div>
 			</form>
 		</div>
@@ -126,19 +105,35 @@
 		<p class="broadcast-description">
 			Here you can write the message that bot will send to all players
 		</p>
-		<div class="textarea-container">
-			<InputTemplate
-				type="textarea"
-				name="message"
-				placeholder="Write here the message"
-				required={true}
-				bind:stringVal={telegramMessage}
-			/>
-		</div>
-		<div class="send-message">
-			<div />
-			<Button on:click={() => broadcastMessage(telegramMessage)}>Send</Button>
-		</div>
+		<form
+			class="broadcast-form"
+			method="POST"
+			action="?/broadcastMessage"
+			use:enhance={async ({ cancel }) => {
+				let isConfirmed = await alertPopup('Are you sure that you want to broadcast this message?');
+				if (!isConfirmed) {
+					cancel();
+				}
+				return async ({ update }) => {
+					await update({ reset: false });
+					telegramMessage = '';
+				};
+			}}
+		>
+			<div class="textarea-container">
+				<InputTemplate
+					type="textarea"
+					name="message"
+					placeholder="Write here the message"
+					required={true}
+					bind:stringVal={telegramMessage}
+				/>
+			</div>
+			<div class="send-message">
+				<div />
+				<Button type="submit">Send</Button>
+			</div>
+		</form>
 	</div>
 </div>
 
@@ -179,7 +174,7 @@
 
 	.side-wrapper.right {
 		display: grid;
-		grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+		grid-template-rows: auto auto minmax(0, 1fr);
 		height: 30rem;
 	}
 
@@ -195,6 +190,11 @@
 		display: flex;
 		gap: 0.5rem;
 		margin: 1rem 0;
+	}
+
+	.broadcast-form {
+		display: grid;
+		grid-template-rows: minmax(0, 1fr) auto;
 	}
 
 	.leaders-row:first-of-type {

@@ -1,38 +1,19 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import BackArrowButton from '$lib/components/base/BackArrowButton.svelte';
 	import type { Tournament } from '$lib/types/types';
-	import { alertPopup } from '$lib/popupHandler';
-	import type { Group, TournamentStage, TournamentState } from '$lib/types/tournamentTypes';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import type { Group, TournamentStage } from '$lib/types/types.tournaments';
 
 	export let stage: TournamentStage;
-	export let id: number;
+	export let tournament: Tournament;
 
 	const dispatch = createEventDispatcher();
 
-	let numberGroups = 0;
-	let tournament: Tournament = {} as Tournament;
+	let numberGroups = tournament.state.firstStage?.length ?? 0;
 	let groups: Group[] = [];
-
-	async function addGroups(state: TournamentState | null) {
-		await db.updateTournament(id, state).catch((error) => {
-			dispatch('error', error);
-		});
-	}
-
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
 
 	const makeGroups = function () {
 		groups = [];
@@ -72,7 +53,8 @@
 					secondStage: null,
 				};
 			}
-			await addGroups(tournament.state);
+
+			dispatch('update', { state: tournament.state });
 			stage = 'groups';
 		}
 	};
@@ -81,36 +63,34 @@
 	}
 </script>
 
-{#await requestTournament() then}
-	<BackArrowButton action={back} />
+<BackArrowButton action={back} />
 
-	<div class="center">
-		<div class="content">
-			<h1>Choose the number of groups in the tournament</h1>
-			<form on:submit={nextStage}>
-				<div class="input">
-					<InputTemplate
-						type="number"
-						min="1"
-						max="100"
-						name="groupNumber"
-						placeholder=""
-						defaultNumValue={tournament.state.firstStage?.length
-							? tournament.state.firstStage?.length
-							: numberGroups}
-						bind:numberVal={numberGroups}
-						textAlignCenter={true}
-					/>
-				</div>
-				<div class="button">
-					<Button type="submit"
-						>{numberGroups === tournament.state.firstStage?.length ? 'Continue' : 'Confirm'}</Button
-					>
-				</div>
-			</form>
-		</div>
+<div class="center">
+	<div class="content">
+		<h1>Choose the number of groups in the tournament</h1>
+		<form on:submit|preventDefault={nextStage}>
+			<div class="input">
+				<InputTemplate
+					type="number"
+					min="1"
+					max="100"
+					name="groupNumber"
+					placeholder=""
+					defaultNumValue={tournament.state.firstStage?.length
+						? tournament.state.firstStage?.length
+						: numberGroups}
+					bind:numberVal={numberGroups}
+					textAlignCenter={true}
+				/>
+			</div>
+			<div class="button">
+				<Button type="submit"
+					>{numberGroups === tournament.state.firstStage?.length ? 'Continue' : 'Confirm'}</Button
+				>
+			</div>
+		</form>
 	</div>
-{/await}
+</div>
 
 <style>
 	.center {

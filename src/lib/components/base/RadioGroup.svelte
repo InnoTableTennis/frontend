@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
 	export let group: string;
 	export let values: string[];
 	export let labels: string[];
@@ -10,14 +6,7 @@
 
 {#each values as value, i}
 	<div>
-		<input
-			type="radio"
-			id={labels[i]}
-			class="radio"
-			bind:group
-			{value}
-			on:click={() => dispatch('update', { value })}
-		/>
+		<input type="radio" id={labels[i]} class="radio" bind:group {value} />
 		<label for={labels[i]}>{labels[i]}</label>
 	</div>
 {/each}

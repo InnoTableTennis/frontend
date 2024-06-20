@@ -1,17 +1,13 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 
 	import Button from '$lib/components/base/Button.svelte';
 
-	import * as db from '$lib/requests';
-	import { convertDateToStringDash, changeDateFormat } from '$lib/helper';
+	import { convertDateToString } from '$lib/utils';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-	import { alertPopup } from '$lib/popupHandler';
-
-	const dispatch = createEventDispatcher();
+	import { alertPopup } from '$lib/client/popup/popup.handler';
 
 	export let players: Player[];
 	export let tournaments: Tournament[];
@@ -19,86 +15,37 @@
 	export let match: Match;
 
 	export let chosenId = -1;
-	let selectedDate = '';
 
 	let tournamentTitles = [''];
 	let latestTournamentTitle = '';
 
 	let isSubmissionDisabled = true;
 
-	let firstPlayerName = '';
-	let secondPlayerName = '';
-	let tournamentTitle = '';
-	let firstPlayerScore = 0;
-	let secondPlayerScore = 0;
-
 	$: {
 		isSubmissionDisabled = !(
-			firstPlayerName &&
-			secondPlayerName &&
-			(firstPlayerScore !== 0 || secondPlayerScore !== 0) &&
-			tournamentTitle !== null
+			match.firstPlayerName &&
+			match.secondPlayerName &&
+			(match.firstPlayerScore !== 0 || match.secondPlayerScore !== 0) &&
+			match.tournamentTitle !== null
 		);
 	}
 
 	$: playerNames = players.map((player) => player.name);
+
 	$: {
 		tournamentTitles = tournaments.map((tournament) => tournament.title);
 		latestTournamentTitle = tournamentTitles[0];
-		if (!tournamentTitle) {
-			tournamentTitle = latestTournamentTitle;
-			changeDateByTournamentTitle(tournamentTitle);
-		}
 	}
-
-	$: tournamentTitle = match.tournamentTitle;
-
-	let localDateString = '';
-
-	$: selectedDate = changeDateFormat(match.localDateString);
-	$: localDateString = selectedDate;
-
-	const editMatch = async (e: Event) => {
-		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
-		if (!isConfirmed) return;
-		const data = new FormData(e.target as HTMLFormElement);
-		if (
-			!players.find((player) => player.name === firstPlayerName) ||
-			!players.find((player) => player.name === secondPlayerName)
-		) {
-			dispatch('error', 'There are no such players!');
-		} else if (!tournaments.find((tournament) => tournament.title === tournamentTitle)) {
-			dispatch('error', 'There is no such tournament!');
-		} else {
-			db.editMatch(
-				match.id.toString(),
-				data.get('firstPlayerName') as string,
-				data.get('secondPlayerName') as string,
-				Number(data.get('firstPlayerScore')),
-				Number(data.get('secondPlayerScore')),
-				data.get('tournamentTitle') as string,
-				data.get('localDateString') as string,
-			)
-				.then(() => {
-					dispatch('update');
-				})
-				.catch((error) => {
-					dispatch('error', error);
-				});
-		}
-		match = {} as Match;
-		chosenId = -1;
-	};
 
 	function handleSelectFirstPlayerName(event: CustomEvent) {
-		firstPlayerName = event.detail;
+		match.firstPlayerName = event.detail;
 	}
 	function handleSelectSecondPlayerName(event: CustomEvent) {
-		secondPlayerName = event.detail;
+		match.secondPlayerName = event.detail;
 	}
 	function handleSelectTournament(event: CustomEvent) {
-		tournamentTitle = event.detail;
-		changeDateByTournamentTitle(tournamentTitle);
+		match.tournamentTitle = event.detail;
+		changeDateByTournamentTitle(match.tournamentTitle);
 	}
 
 	function changeDateByTournamentTitle(tournamentTitle: string) {
@@ -108,14 +55,34 @@
 			const year = Number(dateString.slice(6, 10));
 			const month = Number(dateString.slice(3, 5)) - 1;
 			const day = Number(dateString.slice(0, 2));
-			localDateString = convertDateToStringDash(new Date(year, month, day));
+			match.localDateString = convertDateToString(new Date(year, month, day));
 		}
+	}
+
+	function resetMatch() {
+		match = {} as Match;
+		chosenId = -1;
 	}
 </script>
 
 <h2>Edit Match</h2>
 
-<form on:submit={editMatch}>
+<form
+	method="POST"
+	action="?/editMatch"
+	use:enhance={async ({ cancel }) => {
+		let isConfirmed = await alertPopup('Are you sure that you want to edit this match?');
+		if (!isConfirmed) {
+			cancel();
+		}
+
+		return async ({ update }) => {
+			await update({ reset: false });
+			resetMatch();
+		};
+	}}
+>
+	<input type="hidden" name="matchId" value={match.id} />
 	<div class="column-2-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -125,7 +92,7 @@
 				options={playerNames}
 				on:select={handleSelectFirstPlayerName}
 				defaultValue={match.firstPlayerName}
-				bind:inputVal={firstPlayerName}
+				bind:inputVal={match.firstPlayerName}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -136,7 +103,7 @@
 				options={playerNames}
 				on:select={handleSelectSecondPlayerName}
 				defaultValue={match.secondPlayerName}
-				bind:inputVal={secondPlayerName}
+				bind:inputVal={match.secondPlayerName}
 			/>
 		</label>
 	</div>
@@ -147,8 +114,8 @@
 				type="number"
 				name="firstPlayerScore"
 				placeholder="First score"
+				bind:numberVal={match.firstPlayerScore}
 				defaultNumValue={match.firstPlayerScore}
-				bind:numberVal={firstPlayerScore}
 			/>
 		</label>
 
@@ -158,8 +125,8 @@
 				type="number"
 				name="secondPlayerScore"
 				placeholder="Second score"
+				bind:numberVal={match.secondPlayerScore}
 				defaultNumValue={match.secondPlayerScore}
-				bind:numberVal={secondPlayerScore}
 			/>
 		</label>
 	</div>
@@ -170,7 +137,8 @@
 				type="date"
 				name="localDateString"
 				placeholder="Date"
-				defaultValue={localDateString}
+				bind:stringVal={match.localDateString}
+				defaultValue={match.localDateString}
 			/>
 		</label>
 
@@ -181,7 +149,7 @@
 				placeholder="Tournament"
 				options={tournamentTitles}
 				on:select={handleSelectTournament}
-				defaultValue={tournamentTitle}
+				defaultValue={match.tournamentTitle}
 			/>
 		</label>
 	</div>

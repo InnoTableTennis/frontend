@@ -1,58 +1,71 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SortFilterTournamentFormStore } from '$lib/formStores';
+	import {
+		SORT_FILTER_TOURNAMENT_FORM,
+		SortFilterTournamentFormStore,
+	} from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
-
-	import { createEventDispatcher } from 'svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
+	import { page } from '$app/stores';
+	import { objectToURLSearchParams } from '$lib/utils';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
+	onMount(() => {
+		if ($page.url.pathname == '/') {
+			let searchParams = $page.url.searchParams;
 
-	let title = $SortFilterTournamentFormStore.title;
-	let minParticipants = $SortFilterTournamentFormStore.minParticipants;
-	let maxParticipants = $SortFilterTournamentFormStore.maxParticipants;
-	let startDateString = $SortFilterTournamentFormStore.startDateString;
-	let endDateString = $SortFilterTournamentFormStore.endDateString;
-	let sortBy: 'date' | 'kf' | 'players' = 'date';
-	let isDescending = true;
+			const sortBy = searchParams?.get('sortBy') as 'date' | 'players' | 'coefficient';
 
-	let radioValues = ['date', 'players', 'kf'];
+			$SortFilterTournamentFormStore.title =
+				searchParams?.get('title') || $SortFilterTournamentFormStore.title;
+			$SortFilterTournamentFormStore.maxParticipants =
+				Number(searchParams?.get('maxParticipants')) ||
+				$SortFilterTournamentFormStore.maxParticipants;
+			$SortFilterTournamentFormStore.minParticipants =
+				Number(searchParams?.get('minParticipants')) ||
+				$SortFilterTournamentFormStore.minParticipants;
+			$SortFilterTournamentFormStore.endDateString =
+				searchParams?.get('endDateString') || $SortFilterTournamentFormStore.endDateString;
+			$SortFilterTournamentFormStore.startDateString =
+				searchParams?.get('startDateString') || $SortFilterTournamentFormStore.startDateString;
+			if (['date', 'players', 'kf'].includes(sortBy)) {
+				$SortFilterTournamentFormStore.sortBy = sortBy;
+			}
+			if (searchParams?.get('descending')) {
+				$SortFilterTournamentFormStore.descending = searchParams.get('descending') !== 'false';
+			}
+		}
+	});
+
+	let radioValues = ['date', 'players', 'coefficient'];
 	let radioLabels = ['Sort by date', 'Sort by number of players', 'Sort by kf'];
 
-	const sortTournament = function () {
-		dispatch('update');
-	};
-
-	const saveForm = function () {
-		$SortFilterTournamentFormStore = {
-			title: title,
-			minParticipants: minParticipants,
-			maxParticipants: maxParticipants,
-			startDateString: changeDateAnotherFormat(startDateString),
-			endDateString: changeDateAnotherFormat(endDateString),
-			descending: isDescending,
-			sortBy: sortBy,
-		};
-	};
-
 	const resetForm = function () {
-		title = '';
-		minParticipants = '';
-		maxParticipants = '';
-		startDateString = '';
-		endDateString = '';
-		sortBy = 'date';
-		isDescending = true;
-		saveForm();
+		$SortFilterTournamentFormStore = structuredClone(SORT_FILTER_TOURNAMENT_FORM);
 	};
 
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
+	function handleSubmit(event: SubmitEvent) {
+		const url = new URL($page.url);
+
+		const currentPageSize = url.searchParams.get('currentPageSize');
+
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		const searchParams = objectToURLSearchParams({
+			...Object.fromEntries(formData),
+			endDateString: $SortFilterTournamentFormStore.endDateString,
+			startDateString: $SortFilterTournamentFormStore.startDateString,
+			currentPageSize,
+		});
+
+		const new_url = new URL(`${url.origin}${url.pathname}?${searchParams}`);
+
+		event.preventDefault();
+		goto(new_url.href, { replaceState: true, noScroll: true, keepFocus: true });
 	}
 </script>
 
@@ -61,7 +74,7 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={sortTournament} on:change={saveForm} class="filters">
+<form on:submit={handleSubmit} class="filters">
 	<div class="column-1-elems">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -69,8 +82,7 @@
 				type="text"
 				name="title"
 				isFirst={true}
-				bind:stringVal={title}
-				bind:defaultValue={title}
+				bind:stringVal={$SortFilterTournamentFormStore.title}
 				placeholder="Search by title"
 			/>
 		</label>
@@ -83,8 +95,7 @@
 				min="0"
 				max="1000"
 				name="minParticipants"
-				bind:numberVal={minParticipants}
-				bind:defaultNumValue={minParticipants}
+				bind:numberVal={$SortFilterTournamentFormStore.minParticipants}
 				placeholder="Min participants"
 			/>
 		</label>
@@ -95,8 +106,7 @@
 				min="0"
 				max="1000"
 				name="maxParticipants"
-				bind:numberVal={maxParticipants}
-				bind:defaultNumValue={maxParticipants}
+				bind:numberVal={$SortFilterTournamentFormStore.maxParticipants}
 				placeholder="Max participants"
 			/>
 		</label>
@@ -106,8 +116,7 @@
 				type="date"
 				name="startDateString"
 				placeholder="Start date"
-				bind:defaultValue={startDateString}
-				bind:stringVal={startDateString}
+				bind:stringVal={$SortFilterTournamentFormStore.startDateString}
 			/>
 		</label>
 		<!-- svelte-ignore a11y-label-has-associated-control -->
@@ -116,8 +125,7 @@
 				type="date"
 				name="endDateString"
 				placeholder="End date"
-				bind:defaultValue={endDateString}
-				bind:stringVal={endDateString}
+				bind:stringVal={$SortFilterTournamentFormStore.endDateString}
 			/>
 		</label>
 	</div>
@@ -126,20 +134,18 @@
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
-</form>
 
-<h2>Sort by</h2>
+	<h2>Sort by</h2>
 
-<form on:submit={sortTournament} on:change={saveForm}>
 	<div class="column-3-elems">
+		<input hidden name="sortBy" bind:value={$SortFilterTournamentFormStore.sortBy} />
 		<RadioGroup
-			group={sortBy}
+			bind:group={$SortFilterTournamentFormStore.sortBy}
 			values={radioValues}
 			labels={radioLabels}
-			on:update={updateRadioGroupValue}
 		/>
 	</div>
-	<OrderButton bind:value={isDescending} />
+	<OrderButton bind:value={$SortFilterTournamentFormStore.descending} />
 	<div class="line-2-elems">
 		<div class="last-box full-width margin-top">
 			<Button dark={false} disabled={false} type={'submit'}>Sort</Button>

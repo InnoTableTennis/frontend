@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { SortFilterProfileMatchFormStore } from '$lib/formStores';
+	import { SortFilterProfileMatchFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
-	import { changeDateAnotherFormat } from '$lib/helper';
+	import { changeDateDottedFormat } from '$lib/utils';
 	import InputTemplate from '$lib/components/base/inputs/InputTemplate.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
 
@@ -30,8 +30,8 @@
 		$SortFilterProfileMatchFormStore = {
 			name: name,
 			score: score,
-			minDateString: changeDateAnotherFormat(minDateString),
-			maxDateString: changeDateAnotherFormat(maxDateString),
+			minDateString: changeDateDottedFormat(minDateString),
+			maxDateString: changeDateDottedFormat(maxDateString),
 			descending: isDescending,
 			sortBy: sortBy,
 		};
@@ -46,11 +46,6 @@
 		isDescending = true;
 		saveForm();
 	};
-
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
-	}
 </script>
 
 <div class="line-2-elems">
@@ -114,12 +109,7 @@
 
 <form on:submit={sortMatch} on:change={saveForm}>
 	<div class="column-1-elems">
-		<RadioGroup
-			group={sortBy}
-			values={radioValues}
-			labels={radioLabels}
-			on:update={updateRadioGroupValue}
-		/>
+		<RadioGroup bind:group={sortBy} values={radioValues} labels={radioLabels} />
 	</div>
 	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">

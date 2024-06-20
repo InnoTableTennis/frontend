@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Error from '$lib/components/error/Error.svelte';
-	import { errors } from '$lib/stores';
+	import { errors } from '$lib/client/stores/stores';
 </script>
 
 <div class="errors-container">

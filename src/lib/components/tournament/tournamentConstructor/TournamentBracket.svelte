@@ -1,14 +1,14 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import type { Match, Player, Tournament } from '$lib/types/types';
 	import { Play, Dot } from 'lucide-svelte';
-	import { convertDateToStringDash } from '$lib/helper';
-	import { alertPopup } from '$lib/popupHandler';
-	import { isLeader } from '$lib/stores';
-	import { alertInputPopup } from '$lib/inputPopupHandler';
+	import { convertDateToStringDash } from '$lib/utils';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import { isLeader } from '$lib/client/stores/stores';
+	import { alertInputPopup } from '$lib/client/popup/popup.handler.input';
 	import { TSMap } from 'typescript-map';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import type { Final, SingleEliminationBracket } from '$lib/types/tournamentTypes';
+	import type { Final, SingleEliminationBracket } from '$lib/types/types.tournaments';
 
 	const dispatch = createEventDispatcher();
 
@@ -225,7 +225,6 @@
 		}
 
 		// get the future match
-		console.log(data.matchesNetwork);
 		let matchToUpdate = Number(data.matchesNetwork.get(matchIdx.toString()));
 
 		// if there is no next match, set the winner of the final
@@ -262,8 +261,8 @@
 		let matchToEdit = data.allMatches[matchIdx];
 
 		if (scores) {
-			matchToEdit.firstPlayerScore = Number(scores[0]);
-			matchToEdit.secondPlayerScore = Number(scores[1]);
+			matchToEdit.firstPlayerScore = Number(scores.firstScore);
+			matchToEdit.secondPlayerScore = Number(scores.secondScore);
 
 			setWinner(matchIdx);
 
@@ -290,13 +289,13 @@
 		);
 
 		if (scores) {
-			if (scores[0] == 0 && scores[1] === 0) {
+			if (scores.firstScore == 0 && scores.secondScore === 0) {
 				dispatch('error', 'Cannot set both scores to zero!');
 				return;
 			}
 			// set the scores
-			data.allMatches[matchIdx].firstPlayerScore = Number(scores[0]);
-			data.allMatches[matchIdx].secondPlayerScore = Number(scores[1]);
+			data.allMatches[matchIdx].firstPlayerScore = Number(scores.firstScore);
+			data.allMatches[matchIdx].secondPlayerScore = Number(scores.secondScore);
 
 			// delete the match from in prgress matches
 			data.inProgressMatches.splice(data.inProgressMatches.indexOf(matchIdx), 1);
@@ -354,7 +353,6 @@
 			data.rounds.push([]);
 		}
 		createLayout();
-		console.log(data.matchesNetwork);
 
 		dispatch('update', data);
 	}
@@ -366,7 +364,6 @@
 	onMount(() => {
 		if (data.init) {
 			build();
-			console.log(data.matchesNetwork);
 		}
 	});
 </script>

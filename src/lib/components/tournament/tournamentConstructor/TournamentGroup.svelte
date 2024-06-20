@@ -1,19 +1,16 @@
 <script lang="ts">
 	import type { Match, Player } from '$lib/types/types';
-	import { alertInputPopup } from '$lib/inputPopupHandler';
-	import { createMatch, editMatch } from '$lib/requests';
+	import { alertInputPopup } from '$lib/client/popup/popup.handler.input';
+	import { createMatch, editMatch } from '$lib/client/requests';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { isLeader } from '$lib/stores';
-	import { page } from '$app/stores';
-	import type { Final, Group } from '$lib/types/tournamentTypes';
+	import { isLeader } from '$lib/client/stores/stores';
+	import type { Final, Group } from '$lib/types/types.tournaments';
+	import type { OverlayOutput } from '$lib/types/types.popup';
 	const dispatch = createEventDispatcher();
-	export let finalInfo: Final = {
-		type: 'Group',
-		tournamentTitle: 'Tournament',
-		players: [],
-		matches: [],
-		id: 0,
-	} as Final;
+	export let finalInfo: Final;
+	export let tournamentDate = '';
+	export let isInConstructor = false;
+
 	let groupInfo = finalInfo as Group;
 	let data = [] as Player[];
 	if (groupInfo.players && groupInfo.players.length > 0) {
@@ -177,6 +174,10 @@
 	const setMatchID = (currentMatch: Match) => {
 		const first = findPlayerNumber(currentMatch.firstPlayerName);
 		const second = findPlayerNumber(currentMatch.secondPlayerName);
+
+		console.log(matchID);
+		console.log(first, second);
+
 		matchID[first][second] = matchID[second][first] = currentMatch.id;
 	};
 	const matchFinished = (row: number, column: number) => {
@@ -188,15 +189,23 @@
 			}
 		}
 	};
-	async function setMatch(row: number, column: number, first: number, second: number) {
+	async function setMatch(
+		row: number,
+		column: number,
+		first: number,
+		second: number,
+		date: string,
+	) {
 		if (!tableResults[row][column] && !tableResults[column][row]) {
-			await createMatch(
+			const match = await createMatch(
 				data[row].name,
 				data[column].name,
 				first,
 				second,
 				groupInfo.tournamentTitle,
-			).then(setMatchID);
+				date,
+			);
+			setMatchID(match);
 			let newMatch = {} as Match;
 			newMatch.firstPlayerName = data[row].name;
 			newMatch.secondPlayerName = data[column].name;
@@ -212,6 +221,7 @@
 				first,
 				second,
 				groupInfo.tournamentTitle,
+				date,
 			);
 			for (let changedMatch of groupInfo.matches) {
 				if (changedMatch.id == matchID[row][column]) {
@@ -236,23 +246,24 @@
 		dispatch('update', newGroup);
 	}
 	async function handleWaiting(firstName: string, secondName: string) {
-		let results: number[] | null = await alertInputPopup('Write the score:', firstName, secondName);
-		let finishedPlayerResults = [] as string[][];
-		if (results && results[0] != results[1]) {
-			finishedPlayerResults = [
-				[firstName, results[0].toString()],
-				[secondName, results[1].toString()],
-			];
-			const first = findPlayerNumber(finishedPlayerResults[0][0]);
-			const second = findPlayerNumber(finishedPlayerResults[1][0]);
-			const firstScore = finishedPlayerResults[0][1];
-			const secondScore = finishedPlayerResults[1][1];
+		const first = findPlayerNumber(firstName);
+		const second = findPlayerNumber(secondName);
+		let results: OverlayOutput | null = await alertInputPopup(
+			'Write the score:',
+			firstName,
+			secondName,
+			tournamentDate,
+		);
+		if (results && results.firstScore != results.secondScore) {
+			const firstScore = String(results.firstScore);
+			const secondScore = String(results.secondScore);
+			const matchDate = results.date;
 			if (first != -1 && second != -1) {
 				tablePoints[first][second] = firstScore > secondScore ? 2 : 1;
 				tablePoints[second][first] = secondScore > firstScore ? 2 : 1;
 				countPoints(first);
 				countPoints(second);
-				setMatch(first, second, Number(firstScore), Number(secondScore));
+				setMatch(first, second, Number(firstScore), Number(secondScore), matchDate);
 				tableResults[first][second] = Number(firstScore);
 				tableResults[second][first] = Number(secondScore);
 				if (tablePlaying[first][second]) {
@@ -376,7 +387,7 @@
 									{#if (tableResults[rowIndex][index] || tableResults[index][rowIndex]) && !checkTable(rowIndex, index)}
 										<button
 											class="results-cell"
-											disabled={!$isLeader || $page.data.title !== 'Create Tournament'}
+											disabled={!$isLeader || !isInConstructor}
 											on:click={(event) => {
 												waitingForMatchResult(event, rowIndex, index);
 											}}
@@ -388,7 +399,7 @@
 									{:else if rowIndex !== index && checkTable(rowIndex, index) && tablePlaying[rowIndex][index]}
 										<button
 											class="finish-match-button match-button"
-											disabled={!$isLeader || $page.data.title !== 'Create Tournament'}
+											disabled={!$isLeader || !isInConstructor}
 											on:click={(event) => {
 												waitingForMatchResult(event, rowIndex, index);
 											}}
@@ -396,7 +407,7 @@
 									{:else if rowIndex !== index && checkTable(rowIndex, index) && !tablePlaying[rowIndex][index]}
 										<button
 											class="start-match-button match-button"
-											disabled={!$isLeader || $page.data.title !== 'Create Tournament'}
+											disabled={!$isLeader || !isInConstructor}
 											on:click={(event) => {
 												matchStarted(event, rowIndex, index);
 											}}
@@ -404,7 +415,7 @@
 									{:else if rowIndex !== index}
 										<button
 											class="invisible-match-button"
-											disabled={!$isLeader || $page.data.title !== 'Create Tournament'}
+											disabled={!$isLeader || !isInConstructor}
 											on:click={(event) => {
 												waitingForMatchResultImmediately(event, rowIndex, index);
 											}}

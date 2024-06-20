@@ -1,27 +1,32 @@
 <script lang="ts">
-	import { AddPlayerFormStore } from '$lib/formStores';
+	import { AddPlayerFormStore } from '$lib/client/stores/stores.forms';
 	import type { Player } from '$lib/types/types';
 	import Button from '$lib/components/base/Button.svelte';
 	import ResetButton from '$lib/components/base/ResetButton.svelte';
 	import DropdownInput from '$lib/components/base/inputs/DropdownInput.svelte';
-	import { alertPopup } from '$lib/popupHandler';
+	import { alertPopup } from '$lib/client/popup/popup.handler';
+	import { createEventDispatcher } from 'svelte';
 
-	export let player: Player;
-	export let players: Player[];
-	export let participants: Player[] = [];
+	const dispatch = createEventDispatcher();
+
+	export let playerName: string;
+	export let allPlayers: Player[];
+	export let participants: Player[];
 	export let numberParticipants = 0;
 
 	let abilityToChange = false;
 
-	let name = $AddPlayerFormStore.name;
-	$: playerNames = players.map((player) => player.name);
+	$: playerNames = allPlayers.map((player) => player.name);
+	$: participantNames = participants.map((player) => player.name);
+
+	let resetDropout: () => void;
 
 	function resetForm() {
-		name = '';
+		resetDropout();
 	}
 
 	function handleSelectPlayerName(event: CustomEvent) {
-		name = event.detail;
+		playerName = event.detail;
 	}
 
 	async function addParticipant() {
@@ -33,11 +38,12 @@
 			abilityToChange = true;
 		}
 		if (abilityToChange) {
-			for (let i = 0; i < players.length; i++) {
-				if (players[i].name === name) {
-					if (!participants.includes(players[i])) {
-						participants = [...participants, players[i]];
+			for (let i = 0; i < allPlayers.length; i++) {
+				if (allPlayers[i].name === playerName) {
+					if (!participantNames.includes(allPlayers[i].name)) {
+						participants = [...participants, allPlayers[i]];
 						numberParticipants++;
+						dispatch('update', { participants });
 					}
 				}
 			}
@@ -54,10 +60,11 @@
 		}
 		if (abilityToChange) {
 			for (let i = 0; i < participants.length; i++) {
-				if (participants[i].name === name) {
+				if (participants[i].name === playerName) {
 					participants.splice(i, 1);
 					participants = participants;
 					numberParticipants--;
+					dispatch('update', { participants });
 				}
 			}
 		}
@@ -69,7 +76,12 @@
 	<ResetButton onClick={resetForm} label="Reset" />
 </div>
 
-<form on:submit={addParticipant}>
+<form
+	on:submit|preventDefault={async () => {
+		await addParticipant();
+		resetForm();
+	}}
+>
 	<div class="input">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label>
@@ -79,14 +91,19 @@
 				options={playerNames}
 				on:select={handleSelectPlayerName}
 				isFirstInput={true}
-				defaultValue={player.name}
-				bind:inputVal={name}
+				bind:inputVal={playerName}
+				bind:reset={resetDropout}
 			/>
 		</label>
 	</div>
 	<div class="line-2-elems">
-		<Button on:click={async () => await removeParticipant()}>Remove</Button>
-		<Button on:click={async () => await addParticipant()}>Add</Button>
+		<Button
+			on:click={async () => {
+				await removeParticipant();
+				resetForm();
+			}}>Remove</Button
+		>
+		<Button type="submit">Add</Button>
 	</div>
 </form>
 

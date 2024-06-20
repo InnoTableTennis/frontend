@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as db from '$lib/requests';
+	import * as db from '$lib/client/requests';
 	import { createEventDispatcher } from 'svelte';
 	import Button from '$lib/components/base/Button.svelte';
 	import FinalsDistributor from '$lib/components/tournament/tournamentConstructor/FinalsDistributor.svelte';
@@ -10,40 +10,20 @@
 		Group,
 		SingleEliminationBracket,
 		TournamentStage,
-	} from '$lib/types/tournamentTypes';
+	} from '$lib/types/types.tournaments';
 
 	export let numberFinals = 0;
-	export let id: number;
 	export let stage: TournamentStage;
 	export let finals: Player[][];
+	export let tournament: Tournament;
 
-	let types: string[] = [];
+	let types: ('Groups' | 'Single Elimination')[] = [];
 	let chosenId: number[];
 
 	const dispatch = createEventDispatcher();
 
-	let numberGroups: number | undefined;
-	let numberParticipants: number;
-	let tournament: Tournament = {} as Tournament;
-
-	async function requestTournament() {
-		await db
-			.getTournament(id)
-			.then((result) => {
-				tournament = result.data;
-				numberGroups = tournament.state.firstStage?.length;
-				numberParticipants = tournament.state.participants.length;
-			})
-			.catch((error) => {
-				dispatch('error', error);
-			});
-	}
-	async function updateTournament() {
-		await db.updateTournament(id, tournament.state).catch((error) => {
-			dispatch('error', error);
-		});
-		await requestTournament();
-	}
+	$: numberGroups = tournament.state.firstStage?.length ?? 0;
+	$: numberParticipants = tournament.state.participants.length;
 
 	function back() {
 		stage = 'numberFinals';
@@ -87,7 +67,7 @@
 					temp.push(newGroup);
 				}
 			}
-			if (types[i] === 'Finals') {
+			if (types[i] === 'Single Elimination') {
 				if (temp) {
 					temp.push(newBracket);
 				} else {
@@ -95,7 +75,6 @@
 					temp.push(newBracket);
 				}
 			}
-			console.log(types[i], temp[i]);
 		}
 		if (
 			!tournament.state.secondStage ||
@@ -115,38 +94,34 @@
 				tournament.state.secondStage = temp;
 			}
 		}
-		await updateTournament();
-		await requestTournament();
+		dispatch('update', { state: tournament.state });
 		stage = 'secondStage';
 	}
-	requestTournament();
 </script>
 
-{#await requestTournament() then}
-	<BackArrowButton action={back} />
+<BackArrowButton action={back} />
 
-	<div class="content">
-		<h1>How many finals do you want?</h1>
-		<div class="numberFinals">
-			{numberFinals}
+<div class="content">
+	<h1>How many finals do you want?</h1>
+	<div class="numberFinals">
+		{numberFinals}
+	</div>
+	<div class="distribution">
+		<h1>Distribute places between finals</h1>
+		<div class="distributor">
+			<FinalsDistributor
+				bind:numberGroups
+				bind:numberParticipants
+				bind:numberFinals
+				bind:chosenId
+				bind:types
+			/>
 		</div>
-		<div class="distribution">
-			<h1>Distribute places between finals</h1>
-			<div class="distributor">
-				<FinalsDistributor
-					bind:numberGroups
-					bind:numberParticipants
-					bind:numberFinals
-					bind:chosenId
-					bind:types
-				/>
-			</div>
-			<div class="button">
-				<Button type="button" on:click={nextStage}>Confirm</Button>
-			</div>
+		<div class="button">
+			<Button type="button" on:click={nextStage}>Confirm</Button>
 		</div>
 	</div>
-{/await}
+</div>
 
 <style>
 	.content {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { enhance } from '$app/forms';
-	import { SortFilterPlayerFormStore } from '$lib/formStores';
+	import { SortFilterPlayerFormStore } from '$lib/client/stores/stores.forms';
 	import Button from '$lib/components/base/Button.svelte';
 	import RadioGroup from '$lib/components/base/RadioGroup.svelte';
 	import OrderButton from '$lib/components/base/OrderButton.svelte';
@@ -40,17 +40,12 @@
 	const resetForm = function () {
 		name = '';
 		telegramAlias = '';
-		minRating = '';
-		maxRating = '';
+		minRating = null;
+		maxRating = null;
 		sortBy = 'rating';
 		isDescending = true;
 		saveForm();
 	};
-
-	function updateRadioGroupValue(event: CustomEvent) {
-		sortBy = event.detail.value;
-		saveForm();
-	}
 </script>
 
 <div class="line-2-elems">
@@ -113,18 +108,11 @@
 			<Button dark={false} disabled={false} type={'submit'}>Search</Button>
 		</div>
 	</div>
-</form>
 
-<h2>Sort by</h2>
+	<h2>Sort by</h2>
 
-<form on:submit={sortPlayer} on:change={saveForm}>
 	<div class="column-2-elems">
-		<RadioGroup
-			group={sortBy}
-			values={radioValues}
-			labels={radioLabels}
-			on:update={updateRadioGroupValue}
-		/>
+		<RadioGroup bind:group={sortBy} values={radioValues} labels={radioLabels} />
 	</div>
 	<OrderButton bind:value={isDescending} />
 	<div class="line-2-elems">

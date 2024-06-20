@@ -10,7 +10,6 @@
 	export let xScale: d3.ScaleLinear<number, number>;
 	export let yScale: d3.ScaleLinear<number, number>;
 
-	$: console.log(xScale(tournament.date));
 	$: isGreen = tournament.delta >= 0;
 
 	const tooltipStyle = `position: absolute;
