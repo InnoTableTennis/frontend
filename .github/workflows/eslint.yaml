@@ -20,6 +20,14 @@ jobs:
       - run: npm ci
         env:
           CI: TRUE
+
+      - name: Set up environment variables
+        run: |
+          echo "DEV_SERVER_URL=${{ secrets.DEV_SERVER_URL }}" >> $GITHUB_ENV
+          echo "PROD_SERVER_URL=${{ secrets.PROD_SERVER_URL }}" >> $GITHUB_ENV
+          echo "PUBLIC_DEV_SERVER_URL=${{ secrets.PUBLIC_DEV_SERVER_URL }}" >> $GITHUB_ENV
+          echo "PUBLIC_PROD_SERVER_URL=${{ secrets.PUBLIC_PROD_SERVER_URL }}" >> $GITHUB_ENV
+
       - name: Format code
         run: npm run format
       - name: Start linting
