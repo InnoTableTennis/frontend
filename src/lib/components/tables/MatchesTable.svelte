@@ -14,7 +14,7 @@
 	export let mode = 'add';
 	export let editData: Match;
 	export let matches: Match[] = [];
-	export let totalPages: number = 0;
+	export let totalPages = 0;
 
 	let oneTournament = true;
 </script>

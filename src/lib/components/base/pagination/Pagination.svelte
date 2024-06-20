@@ -5,8 +5,8 @@
 	import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '$lib/client/defaults';
 
 	let url: URL;
-	export let currentPageNumber: number = 0;
-	export let currentPageSize: number = 0;
+	export let currentPageNumber = 0;
+	export let currentPageSize = 0;
 	$: {
 		url = new URL($page.url);
 		currentPageNumber = Number(url.searchParams.get('currentPageNumber') || DEFAULT_PAGE_NUMBER);

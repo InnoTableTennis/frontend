@@ -9,7 +9,7 @@
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !Boolean($AddPlayerFormStore.name);
+		isSubmissionDisabled = !$AddPlayerFormStore.name;
 	}
 
 	function resetForm() {

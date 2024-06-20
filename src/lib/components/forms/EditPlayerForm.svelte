@@ -12,7 +12,7 @@
 	let isSubmissionDisabled = true;
 
 	$: {
-		isSubmissionDisabled = !Boolean(player.name);
+		isSubmissionDisabled = !player.name;
 	}
 
 	function resetPlayer() {

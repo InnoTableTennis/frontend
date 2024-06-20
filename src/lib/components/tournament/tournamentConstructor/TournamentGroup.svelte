@@ -8,7 +8,7 @@
 	import type { OverlayOutput } from '$lib/types/types.popup';
 	const dispatch = createEventDispatcher();
 	export let finalInfo: Final;
-	export let tournamentDate: string = '';
+	export let tournamentDate = '';
 	export let isInConstructor = false;
 
 	let groupInfo = finalInfo as Group;
