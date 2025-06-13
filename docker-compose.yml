@@ -1,0 +1,11 @@
+services:
+  frontend:
+    container_name: tabletennis-frontend
+    image: kekstroke/table-tennis-frontend:latest
+    restart: unless-stopped
+    environment:
+      ORIGIN: http://localhost
+      PROD_SERVER_URL: http://tabletennis-backend-dev:8080
+      PUBLIC_PROD_SERVER_URL: http://tabletennis-backend-dev:8080
+    ports:
+      - 3000:3000
